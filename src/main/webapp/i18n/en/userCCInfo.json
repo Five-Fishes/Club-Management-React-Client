@@ -1,0 +1,26 @@
+{
+  "clubmanagementApp": {
+    "userCCInfo": {
+      "home": {
+        "title": "User CC Infos",
+        "createLabel": "Create a new User CC Info",
+        "createOrEditLabel": "Create or edit a User CC Info",
+        "notFound": "No User CC Info found"
+      },
+      "created": "A new User CC Info is created with identifier {{ param }}",
+      "updated": "A User CC Info is updated with identifier {{ param }}",
+      "deleted": "A User CC Info is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete User CC Info {{ id }}?"
+      },
+      "detail": {
+        "title": "User CC Info"
+      },
+      "userId": "User Id",
+      "clubFamilyId": "Club Family Id",
+      "familyRole": "Family Role",
+      "yearSession": "Year Session",
+      "clubFamilyName": "Club Family Name"
+    }
+  }
+}

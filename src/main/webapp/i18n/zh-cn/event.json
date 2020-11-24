@@ -1,0 +1,33 @@
+{
+  "clubmanagementApp": {
+    "event": {
+      "home": {
+        "title": "Events",
+        "createLabel": "创建新 Event",
+        "createOrEditLabel": "创建或编辑 Event",
+        "notFound": "No Event found"
+      },
+      "created": "Event {{ param }} 创建成功",
+      "updated": "Event {{ param }} 更新成功",
+      "deleted": "Event {{ param }} 删除成功",
+      "delete": {
+        "question": "你确定要删除 Event {{ id }} 吗？"
+      },
+      "detail": {
+        "title": "Event"
+      },
+      "name": "Name",
+      "description": "Description",
+      "remarks": "Remarks",
+      "venue": "Venue",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "fee": "Fee",
+      "requiredTransport": "Required Transport",
+      "status": "Status",
+      "imageUrl": "Image Url",
+      "fileName": "File Name",
+      "fileType": "File Type"
+    }
+  }
+}

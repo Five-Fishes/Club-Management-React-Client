@@ -1,0 +1,9 @@
+{
+  "clubmanagementApp": {
+    "ClubFamilyRole": {
+      "null": "",
+      "FATHER": "FATHER",
+      "MOTHER": "MOTHER"
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+    "name": "EventChecklist",
+    "fields": [
+        {
+            "fieldName": "eventId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "EventChecklistStatus",
+            "fieldValues": "OPEN,IN_PROGRESS,FINISHED"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "EventChecklistType",
+            "fieldValues": "PREPARATION,PURCHASE"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20201124071551",
+    "entityTableName": "event_checklist",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

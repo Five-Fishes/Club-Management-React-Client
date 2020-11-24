@@ -1,0 +1,23 @@
+{
+  "clubmanagementApp": {
+    "faculty": {
+      "home": {
+        "title": "Faculties",
+        "createLabel": "创建新 Faculty",
+        "createOrEditLabel": "创建或编辑 Faculty",
+        "notFound": "No Faculty found"
+      },
+      "created": "Faculty {{ param }} 创建成功",
+      "updated": "Faculty {{ param }} 更新成功",
+      "deleted": "Faculty {{ param }} 删除成功",
+      "delete": {
+        "question": "你确定要删除 Faculty {{ id }} 吗？"
+      },
+      "detail": {
+        "title": "Faculty"
+      },
+      "name": "Name",
+      "shortName": "Short Name"
+    }
+  }
+}

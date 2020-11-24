@@ -1,0 +1,24 @@
+{
+  "clubmanagementApp": {
+    "eventCrew": {
+      "home": {
+        "title": "Event Crews",
+        "createLabel": "Create a new Event Crew",
+        "createOrEditLabel": "Create or edit a Event Crew",
+        "notFound": "No Event Crew found"
+      },
+      "created": "A new Event Crew is created with identifier {{ param }}",
+      "updated": "A Event Crew is updated with identifier {{ param }}",
+      "deleted": "A Event Crew is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Event Crew {{ id }}?"
+      },
+      "detail": {
+        "title": "Event Crew"
+      },
+      "userId": "User Id",
+      "eventId": "Event Id",
+      "role": "Role"
+    }
+  }
+}

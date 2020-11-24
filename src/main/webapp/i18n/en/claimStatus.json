@@ -1,0 +1,11 @@
+{
+  "clubmanagementApp": {
+    "ClaimStatus": {
+      "null": "",
+      "OPEN": "OPEN",
+      "CLAIMED": "CLAIMED",
+      "SUSPENDED": "SUSPENDED",
+      "EXPIRED": "EXPIRED"
+    }
+  }
+}

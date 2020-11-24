@@ -1,0 +1,10 @@
+{
+  "clubmanagementApp": {
+    "EventStatus": {
+      "null": "",
+      "OPEN": "OPEN",
+      "POSTPONED": "POSTPONED",
+      "CANCELLED": "CANCELLED"
+    }
+  }
+}

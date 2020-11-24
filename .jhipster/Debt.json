@@ -1,0 +1,44 @@
+{
+    "name": "Debt",
+    "fields": [
+        {
+            "fieldName": "receiptId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "eventAttendeeId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "amount",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "DebtStatus",
+            "fieldValues": "OPEN,COLLECTED,UNREACHABLE"
+        },
+        {
+            "fieldName": "receiptUrl",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "fileName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "fileType",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20201124071554",
+    "entityTableName": "debt",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

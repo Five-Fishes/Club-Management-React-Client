@@ -1,0 +1,28 @@
+{
+  "clubmanagementApp": {
+    "debt": {
+      "home": {
+        "title": "Debts",
+        "createLabel": "Create a new Debt",
+        "createOrEditLabel": "Create or edit a Debt",
+        "notFound": "No Debt found"
+      },
+      "created": "A new Debt is created with identifier {{ param }}",
+      "updated": "A Debt is updated with identifier {{ param }}",
+      "deleted": "A Debt is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Debt {{ id }}?"
+      },
+      "detail": {
+        "title": "Debt"
+      },
+      "receiptId": "Receipt Id",
+      "eventAttendeeId": "Event Attendee Id",
+      "amount": "Amount",
+      "status": "Status",
+      "receiptUrl": "Receipt Url",
+      "fileName": "File Name",
+      "fileType": "File Type"
+    }
+  }
+}

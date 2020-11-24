@@ -1,0 +1,9 @@
+{
+  "clubmanagementApp": {
+    "TransactionType": {
+      "null": "",
+      "INCOME": "INCOME",
+      "EXPENSE": "EXPENSE"
+    }
+  }
+}

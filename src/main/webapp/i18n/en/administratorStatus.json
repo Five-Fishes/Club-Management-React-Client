@@ -1,0 +1,10 @@
+{
+  "clubmanagementApp": {
+    "AdministratorStatus": {
+      "null": "",
+      "ACTIVE": "ACTIVE",
+      "DEACTIVATE": "DEACTIVATE",
+      "PENDING": "PENDING"
+    }
+  }
+}
