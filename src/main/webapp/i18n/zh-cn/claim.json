@@ -1,0 +1,28 @@
+{
+  "clubmanagementApp": {
+    "claim": {
+      "home": {
+        "title": "Claims",
+        "createLabel": "创建新 Claim",
+        "createOrEditLabel": "创建或编辑 Claim",
+        "notFound": "No Claim found"
+      },
+      "created": "Claim {{ param }} 创建成功",
+      "updated": "Claim {{ param }} 更新成功",
+      "deleted": "Claim {{ param }} 删除成功",
+      "delete": {
+        "question": "你确定要删除 Claim {{ id }} 吗？"
+      },
+      "detail": {
+        "title": "Claim"
+      },
+      "receiptId": "Receipt Id",
+      "transactionId": "Transaction Id",
+      "amount": "Amount",
+      "status": "Status",
+      "receiptUrl": "Receipt Url",
+      "fileName": "File Name",
+      "fileType": "File Type"
+    }
+  }
+}

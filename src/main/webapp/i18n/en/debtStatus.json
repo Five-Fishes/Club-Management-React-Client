@@ -1,0 +1,10 @@
+{
+  "clubmanagementApp": {
+    "DebtStatus": {
+      "null": "",
+      "OPEN": "OPEN",
+      "COLLECTED": "COLLECTED",
+      "UNREACHABLE": "UNREACHABLE"
+    }
+  }
+}

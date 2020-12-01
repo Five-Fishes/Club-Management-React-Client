@@ -1,0 +1,44 @@
+{
+    "name": "Claim",
+    "fields": [
+        {
+            "fieldName": "receiptId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "transactionId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "amount",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "ClaimStatus",
+            "fieldValues": "OPEN,CLAIMED,SUSPENDED,EXPIRED"
+        },
+        {
+            "fieldName": "receiptUrl",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "fileName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "fileType",
+            "fieldType": "String"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20201124071553",
+    "entityTableName": "claim",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,11 @@
+{
+  "clubmanagementApp": {
+    "UserUniStatus": {
+      "null": "",
+      "GRADUATED": "GRADUATED",
+      "STUDYING": "STUDYING",
+      "EXTENDED": "EXTENDED",
+      "TRANSFERRED": "TRANSFERRED"
+    }
+  }
+}

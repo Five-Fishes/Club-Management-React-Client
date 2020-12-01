@@ -1,0 +1,26 @@
+{
+  "clubmanagementApp": {
+    "eventChecklist": {
+      "home": {
+        "title": "Event Checklists",
+        "createLabel": "Create a new Event Checklist",
+        "createOrEditLabel": "Create or edit a Event Checklist",
+        "notFound": "No Event Checklist found"
+      },
+      "created": "A new Event Checklist is created with identifier {{ param }}",
+      "updated": "A Event Checklist is updated with identifier {{ param }}",
+      "deleted": "A Event Checklist is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Event Checklist {{ id }}?"
+      },
+      "detail": {
+        "title": "Event Checklist"
+      },
+      "eventId": "Event Id",
+      "name": "Name",
+      "description": "Description",
+      "status": "Status",
+      "type": "Type"
+    }
+  }
+}

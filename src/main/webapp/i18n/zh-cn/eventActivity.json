@@ -1,0 +1,26 @@
+{
+  "clubmanagementApp": {
+    "eventActivity": {
+      "home": {
+        "title": "Event Activities",
+        "createLabel": "创建新 Event Activity",
+        "createOrEditLabel": "创建或编辑 Event Activity",
+        "notFound": "No Event Activity found"
+      },
+      "created": "Event Activity {{ param }} 创建成功",
+      "updated": "Event Activity {{ param }} 更新成功",
+      "deleted": "Event Activity {{ param }} 删除成功",
+      "delete": {
+        "question": "你确定要删除 Event Activity {{ id }} 吗？"
+      },
+      "detail": {
+        "title": "Event Activity"
+      },
+      "eventId": "Event Id",
+      "startDate": "Start Date",
+      "durationInDay": "Duration In Day",
+      "name": "Name",
+      "description": "Description"
+    }
+  }
+}

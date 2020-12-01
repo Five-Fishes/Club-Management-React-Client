@@ -1,0 +1,26 @@
+{
+  "clubmanagementApp": {
+    "eventChecklist": {
+      "home": {
+        "title": "Event Checklists",
+        "createLabel": "创建新 Event Checklist",
+        "createOrEditLabel": "创建或编辑 Event Checklist",
+        "notFound": "No Event Checklist found"
+      },
+      "created": "Event Checklist {{ param }} 创建成功",
+      "updated": "Event Checklist {{ param }} 更新成功",
+      "deleted": "Event Checklist {{ param }} 删除成功",
+      "delete": {
+        "question": "你确定要删除 Event Checklist {{ id }} 吗？"
+      },
+      "detail": {
+        "title": "Event Checklist"
+      },
+      "eventId": "Event Id",
+      "name": "Name",
+      "description": "Description",
+      "status": "Status",
+      "type": "Type"
+    }
+  }
+}

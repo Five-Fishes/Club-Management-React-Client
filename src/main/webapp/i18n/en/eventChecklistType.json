@@ -1,0 +1,9 @@
+{
+  "clubmanagementApp": {
+    "EventChecklistType": {
+      "null": "",
+      "PREPARATION": "PREPARATION",
+      "PURCHASE": "PURCHASE"
+    }
+  }
+}

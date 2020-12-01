@@ -1,0 +1,56 @@
+{
+    "name": "Transaction",
+    "fields": [
+        {
+            "fieldName": "eventId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "receiptId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "TransactionType",
+            "fieldValues": "INCOME,EXPENSE"
+        },
+        {
+            "fieldName": "amount",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "details",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "receiptUrl",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "fileName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "fileType",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "createdBy",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "createdDate",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20201124071552",
+    "entityTableName": "transaction",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

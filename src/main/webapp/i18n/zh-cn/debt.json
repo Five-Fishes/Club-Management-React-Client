@@ -1,0 +1,28 @@
+{
+  "clubmanagementApp": {
+    "debt": {
+      "home": {
+        "title": "Debts",
+        "createLabel": "创建新 Debt",
+        "createOrEditLabel": "创建或编辑 Debt",
+        "notFound": "No Debt found"
+      },
+      "created": "Debt {{ param }} 创建成功",
+      "updated": "Debt {{ param }} 更新成功",
+      "deleted": "Debt {{ param }} 删除成功",
+      "delete": {
+        "question": "你确定要删除 Debt {{ id }} 吗？"
+      },
+      "detail": {
+        "title": "Debt"
+      },
+      "receiptId": "Receipt Id",
+      "eventAttendeeId": "Event Attendee Id",
+      "amount": "Amount",
+      "status": "Status",
+      "receiptUrl": "Receipt Url",
+      "fileName": "File Name",
+      "fileType": "File Type"
+    }
+  }
+}

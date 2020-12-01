@@ -1,0 +1,33 @@
+{
+  "clubmanagementApp": {
+    "event": {
+      "home": {
+        "title": "Events",
+        "createLabel": "Create a new Event",
+        "createOrEditLabel": "Create or edit a Event",
+        "notFound": "No Event found"
+      },
+      "created": "A new Event is created with identifier {{ param }}",
+      "updated": "A Event is updated with identifier {{ param }}",
+      "deleted": "A Event is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Event {{ id }}?"
+      },
+      "detail": {
+        "title": "Event"
+      },
+      "name": "Name",
+      "description": "Description",
+      "remarks": "Remarks",
+      "venue": "Venue",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "fee": "Fee",
+      "requiredTransport": "Required Transport",
+      "status": "Status",
+      "imageUrl": "Image Url",
+      "fileName": "File Name",
+      "fileType": "File Type"
+    }
+  }
+}
