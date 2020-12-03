@@ -5,6 +5,10 @@ $header-color-hover: darken($header-color, 20%);
 /* ==========================================================================
 Navbar styles
 ========================================================================== */
+#app-header {
+  height: 64px;
+}
+
 .navbar-version {
   font-size: 10px;
   color: $header-color-secondary;
