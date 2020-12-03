@@ -45,7 +45,6 @@ export class App extends React.Component<IAppProps> {
               currentLocale={this.props.currentLocale}
               onLocaleChange={this.props.setLocale}
               ribbonEnv={this.props.ribbonEnv}
-              isInProduction={this.props.isInProduction}
               isSwaggerEnabled={this.props.isSwaggerEnabled}
             />
           </ErrorBoundary>
