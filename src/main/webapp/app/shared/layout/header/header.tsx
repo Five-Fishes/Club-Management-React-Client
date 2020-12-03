@@ -33,6 +33,10 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     this.props.onLocaleChange(langKey);
   };
 
+  toggleMenu = () => {
+    this.setState({ menuOpen: !this.state.menuOpen });
+  };
+
   render() {
     const { currentLocale, isAuthenticated, isAdmin, isSwaggerEnabled } = this.props;
 
@@ -42,7 +46,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
       <div id="app-header">
         <LoadingBar className="loading-bar" />
         <Navbar dark className="bg-primary">
-          <NavbarToggler aria-label="Menu" onClick="" />
+          <NavbarToggler aria-label="Menu" onClick={this.toggleMenu} />
           <Brand />
           <Nav id="header-tabs" className="ml-auto">
             <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
