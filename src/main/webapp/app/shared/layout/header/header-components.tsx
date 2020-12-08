@@ -9,17 +9,16 @@ import appConfig from 'app/config/constants';
 
 export const BrandIcon = props => (
   <div {...props} className="brand-icon">
-    <img src="content/images/logo-jhipster.png" alt="Logo" />
+    <img src="content/images/thirdcc_logo.png" alt="Logo" />
   </div>
 );
 
 export const Brand = props => (
   <NavbarBrand tag={Link} to="/" className="brand-logo">
     <BrandIcon />
-    <span className="brand-title">
+    <span className="brand-title d-none d-md-inline">
       <Translate contentKey="global.title">Clubmanagement</Translate>
     </span>
-    <span className="navbar-version">{appConfig.VERSION}</span>
   </NavbarBrand>
 );
 
