@@ -14,6 +14,7 @@ import PrivateRoute from 'app/shared/auth/private-route';
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import PageNotFound from 'app/shared/error/page-not-found';
 import { AUTHORITIES } from 'app/config/constants';
+import AuthLogin from 'app/modules/auth/login/auth-login';
 
 // tslint:disable:space-in-parens
 const Account = Loadable({
@@ -30,12 +31,13 @@ const Admin = Loadable({
 const Routes = () => (
   <div className="view-routes">
     <Switch>
-      <ErrorBoundaryRoute path="/login" component={Login} />
+      <ErrorBoundaryRoute exact path="/auth/login" component={AuthLogin} />
+      {/* <ErrorBoundaryRoute path="/login" component={Login} />
       <ErrorBoundaryRoute path="/logout" component={Logout} />
       <ErrorBoundaryRoute path="/register" component={Register} />
       <ErrorBoundaryRoute path="/activate/:key?" component={Activate} />
       <ErrorBoundaryRoute path="/reset/request" component={PasswordResetInit} />
-      <ErrorBoundaryRoute path="/reset/finish/:key?" component={PasswordResetFinish} />
+      <ErrorBoundaryRoute path="/reset/finish/:key?" component={PasswordResetFinish} /> */}
       <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
       <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
       <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.USER]} />
