@@ -1,8 +1,57 @@
+// Custom styles and variables
+@import './bootstrap-variables';
 // Override Boostrap variables
 @import '~bootswatch/dist/minty/variables';
 // Import Bootstrap source files from node_modules
 @import 'node_modules/bootstrap/scss/bootstrap';
 @import '~bootswatch/dist/minty/bootswatch';
+// Roboto Font
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+/* ==========================================================================
+Heading Font Style
+========================================================================== */
+h1 {
+  font-size: 32px;
+  font-family: 'Roboto Bold', sans-serif;
+  color: #000;
+}
+h2 {
+  font-size: 24px;
+  font-family: 'Roboto Bold', sans-serif;
+  color: #000;
+}
+h3 {
+  font-size: 18px;
+  font-family: 'Roboto Medium', sans-serif;
+  color: #000;
+}
+h4 {
+  font-size: 16px;
+  font-family: 'Roboto Medium', sans-serif;
+  color: #7b7b7b;
+}
+h5 {
+  font-size: 14px;
+  font-family: 'Roboto Medium', sans-serif;
+  color: #7b7b7b;
+}
+h6 {
+  font-size: 14px;
+  font-family: 'Roboto Regular', sans-serif;
+  color: #7b7b7b;
+}
+p {
+  font-size: 12px;
+  font-family: 'Roboto Regular', sans-serif;
+  color: #7b7b7b;
+}
+small {
+  font-size: 12px;
+  font-family: 'Roboto Light', sans-serif;
+  color: #7b7b7b;
+}
+/* End Heading Font Style */
 body {
   margin: 0;
 }
