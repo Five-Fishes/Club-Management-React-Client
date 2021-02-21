@@ -2,12 +2,14 @@ import './header.scss';
 
 import React from 'react';
 import { Storage } from 'react-jhipster';
-import { Navbar, Nav, NavbarToggler } from 'reactstrap';
+import { Navbar, Nav, NavbarToggler, Button } from 'reactstrap';
 
 import LoadingBar from 'react-redux-loading-bar';
 
 import { Brand } from './header-components';
 import { AccountMenu, LocaleMenu } from '../menus';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface IHeaderProps {
   isAuthenticated: boolean;
@@ -50,7 +52,16 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
           <Brand />
           <Nav id="header-tabs" className="ml-auto">
             <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
-            <AccountMenu isAuthenticated={isAuthenticated} />
+            {isAuthenticated ? (
+              <div>avatar image</div>
+            ) : (
+              <Link to="/auth/login">
+                <Button color="primary">
+                  <FontAwesomeIcon icon="sign-in-alt" className="mr-2" />
+                  <span className="d-none d-md-inline">Sign In</span>
+                </Button>
+              </Link>
+            )}
           </Nav>
         </Navbar>
       </div>
