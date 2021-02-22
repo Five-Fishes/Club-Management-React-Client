@@ -47,8 +47,10 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     return (
       <div id="app-header">
         <LoadingBar className="loading-bar" />
-        <Navbar dark className="bg-primary">
-          <NavbarToggler aria-label="Menu" onClick={this.toggleMenu} />
+        <Navbar dark>
+          <Button outline color="primary" aria-label="Menu" onClick={this.toggleMenu}>
+            <FontAwesomeIcon icon="bars" />
+          </Button>
           <Brand />
           <Nav id="header-tabs" className="ml-auto">
             <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
@@ -57,8 +59,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             ) : (
               <Link to="/auth/login">
                 <Button color="primary">
-                  <FontAwesomeIcon icon="sign-in-alt" className="mr-2" />
-                  <span className="d-none d-md-inline">Sign In</span>
+                  <FontAwesomeIcon icon="user" />
+                  <span className="d-none d-md-inline ml-2">Sign In</span>
                 </Button>
               </Link>
             )}

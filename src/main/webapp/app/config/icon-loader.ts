@@ -30,6 +30,7 @@ import { faRoad } from '@fortawesome/free-solid-svg-icons/faRoad';
 import { faCloud } from '@fortawesome/free-solid-svg-icons/faCloud';
 import { faGlobe } from '@fortawesome/free-solid-svg-icons/faGlobe';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons/faEnvelope';
+import { faBars } from '@fortawesome/free-solid-svg-icons/faBars';
 
 //brands
 import { faFacebookF } from '@fortawesome/free-brands-svg-icons/faFacebookF';
@@ -71,6 +72,7 @@ export const loadIcons = () => {
     faSearch,
     faGlobe,
     faEnvelope,
+    faBars,
     faFacebookF,
     faGoogle
   );
