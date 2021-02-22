@@ -32,20 +32,16 @@ export class AuthLogin extends React.Component<ILoginProps> {
     }
     return (
       <>
-        <Container>
-          <Row>
-            <Col xs="12" sm="6">
+        <Container className="h-100 w-75 d-flex align-items-center justify-content-center pb-3">
+          <Row className="h-100 d-flex align-items-center justify-content-center">
+            <Col xs="12" md="6">
               <CardImg className="my-2" width="100%" src="content/images/thirdcc_logo.png" alt="3rd CC Logo" />
             </Col>
-            <Col xs="0" lg="3">
-              {/* empty space for lg*/}
-            </Col>
-            <Col xs="12" sm="6" lg="3" className="my-auto">
+            <Col xs="12" md="6" lg="4" className="my-auto offset-lg-2">
               <LoginButton type="google" />
               <LoginButton type="facebook" />
               <LoginButton type="email" />
-              <Link to="/auth/register" className="text-left">
-                {' '}
+              <Link to="/auth/register" className="text-decoration-none my-3">
                 No account? Create now
               </Link>
             </Col>
@@ -98,10 +94,10 @@ function LoginButton(props) {
   }
   return (
     <>
-      <div className="w-100 my-2">
+      <div className="w-100 my-3">
         <Button
-          className="w-100 d-flex align-items-center shadow"
-          style={{ backgroundColor: selectedConfig.bgColor, color: selectedConfig.textColor }}
+          className="w-100 d-flex align-items-center rounded shadow"
+          style={{ backgroundColor: selectedConfig.bgColor, color: selectedConfig.textColor, borderColor: '#c2c2c2' }}
           onClick={selectedConfig.callback}
         >
           <FontAwesomeIcon icon={selectedConfig.icon} className="mr-2" />
