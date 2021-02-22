@@ -18,6 +18,7 @@ import { hasAnyAuthority } from 'app/shared/auth/private-route';
 import ErrorBoundary from 'app/shared/error/error-boundary';
 import { AUTHORITIES } from 'app/config/constants';
 import AppRoutes from 'app/routes';
+import Events from './modules/events/events';
 
 const baseHref = document
   .querySelector('base')
@@ -48,11 +49,13 @@ export class App extends React.Component<IAppProps> {
             />
           </ErrorBoundary>
           <div className="container-fluid view-container" id="app-view-container">
-            <Card className="jh-card">
+            {/* <Card className="jh-card">
               <ErrorBoundary>
-                <AppRoutes />
+                 <AppRoutes />
+                
               </ErrorBoundary>
-            </Card>
+            </Card> */}
+            <Events />
           </div>
           <Footer />
         </div>
