@@ -29,7 +29,7 @@ const Admin = Loadable({
 // tslint:enable
 
 const Routes = () => (
-  <div className="view-routes">
+  <div className="h-100">
     <Switch>
       <ErrorBoundaryRoute exact path="/auth/login" component={AuthLogin} />
       {/* <ErrorBoundaryRoute path="/login" component={Login} />

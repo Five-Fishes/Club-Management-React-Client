@@ -7,9 +7,14 @@ body {
   margin: 0;
 }
 
+html,
+body,
+#root {
+  height: 100%;
+}
+
 a {
   color: #533f03;
-  font-weight: bold;
 }
 
 * {
@@ -22,25 +27,25 @@ a {
   }
 }
 
-.app-container {
-  box-sizing: border-box;
-  .view-container {
-    width: 100%;
-    min-height: calc(100% - 64px - 32px); //100% - height of header - height of footer
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: 1rem;
-    .card {
-      padding: 1rem;
-    }
-    .view-routes {
-      height: 100%;
-      > div {
-        height: 100%;
-      }
-    }
-  }
-}
+// .app-container {
+//   box-sizing: border-box;
+//   .view-container {
+//     width: 100%;
+//     min-height: calc(100% - 64px - 32px); //100% - height of header - height of footer
+//     overflow-y: auto;
+//     overflow-x: hidden;
+//     padding: 1rem;
+//     .card {
+//       padding: 1rem;
+//     }
+//     .view-routes {
+//       height: 100%;
+//       > div {
+//         height: 100%;
+//       }
+//     }
+//   }
+// }
 
 .fullscreen {
   position: fixed;

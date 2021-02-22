@@ -35,7 +35,7 @@ export class App extends React.Component<IAppProps> {
   render() {
     return (
       <Router basename={baseHref}>
-        <div className="app-container vh-100">
+        <div className="h-100 d-flex flex-column" style={{ overflowX: 'hidden' }}>
           <ToastContainer position={toast.POSITION.TOP_LEFT} className="toastify-container" toastClassName="toastify-toast" />
           <ErrorBoundary>
             <Header
@@ -47,7 +47,7 @@ export class App extends React.Component<IAppProps> {
               isSwaggerEnabled={this.props.isSwaggerEnabled}
             />
           </ErrorBoundary>
-          <div className="view-container">
+          <div className="flex-grow-1">
             <ErrorBoundary>
               <AppRoutes />
             </ErrorBoundary>
