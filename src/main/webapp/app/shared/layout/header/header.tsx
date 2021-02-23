@@ -63,7 +63,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
                 />
               </Link>
             ) : (
-              <Link to="/auth/login">
+              <Link className="my-auto" to="/auth/login">
                 <Button color="primary">
                   <FontAwesomeIcon icon="user" />
                   <span className="d-none d-md-inline ml-2">Sign In</span>
