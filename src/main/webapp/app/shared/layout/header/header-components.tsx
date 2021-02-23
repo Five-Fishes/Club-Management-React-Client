@@ -9,7 +9,7 @@ import appConfig from 'app/config/constants';
 
 export const BrandIcon = props => (
   <div {...props} className="brand-icon">
-    <img style={{ maxHeight: '100%' }} src="content/images/thirdcc_logo.png" alt="Logo" />
+    <img className="mh-100" src="content/images/thirdcc_logo.png" alt="Logo" />
   </div>
 );
 
