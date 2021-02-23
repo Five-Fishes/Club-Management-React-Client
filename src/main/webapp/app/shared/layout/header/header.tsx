@@ -47,15 +47,21 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     return (
       <div id="app-header">
         <LoadingBar className="loading-bar" />
-        <Navbar dark>
+        <Navbar dark className="h-100">
           <Button outline color="primary" aria-label="Menu" onClick={this.toggleMenu}>
             <FontAwesomeIcon icon="bars" />
           </Button>
           <Brand />
-          <Nav id="header-tabs" className="ml-auto">
+          <Nav id="header-tabs" className="h-100 ml-auto">
             <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
             {isAuthenticated ? (
-              <div>avatar image</div>
+              <Link to="/profile" className="h-100 p-1">
+                <img
+                  className="mh-100 border rounded-circle shadow"
+                  src="content/images/jhipster_family_member_0_head-192.png"
+                  alt="avatar"
+                />
+              </Link>
             ) : (
               <Link to="/auth/login">
                 <Button color="primary">
