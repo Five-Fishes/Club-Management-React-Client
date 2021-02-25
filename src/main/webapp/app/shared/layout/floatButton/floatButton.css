@@ -1,0 +1,8 @@
+.floatButton {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  border-radius: 100px;
+  height: 60px;
+  width: 60px;
+}

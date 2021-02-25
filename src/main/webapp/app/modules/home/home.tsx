@@ -9,6 +9,8 @@ import { Row, Col, Alert } from 'reactstrap';
 import { IRootState } from 'app/shared/reducers';
 import { getSession } from 'app/shared/reducers/authentication';
 
+import FloatButton from '../../shared/layout/floatButton/floatButton';
+
 export interface IHomeProp extends StateProps, DispatchProps {}
 
 export class Home extends React.Component<IHomeProp> {
@@ -20,6 +22,7 @@ export class Home extends React.Component<IHomeProp> {
     const { account } = this.props;
     return (
       <Row>
+        <FloatButton />
         <Col md="9">
           <h2>
             <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
