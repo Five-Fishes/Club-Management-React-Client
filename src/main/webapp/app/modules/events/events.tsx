@@ -1,14 +1,16 @@
 import React from 'react';
-import { IEvent } from '../../shared/model/event.model';
+import { IEvent, EventStatus } from '../../shared/model/event.model';
 import { Container, Row, Col, Card, CardImg, Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons/faEllipsisH';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import './events.css';
+import FloatButton from '../../shared/layout/floatButton/FloatButton';
 
 const dummy: IEvent[] = [
   {
+    id: 1,
     name: 'First CC Gathering',
     description: ' First CC Event',
     remarks: undefined,
@@ -17,11 +19,12 @@ const dummy: IEvent[] = [
     endDate: moment().add(1, 'days'),
     fee: 0,
     requiredTransport: false,
-    status: 'OPEN',
+    status: EventStatus.OPEN,
     imageUrl:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png'
   },
   {
+    id: 2,
     name: 'First CC Gathering',
     description: ' First CC Event',
     remarks: undefined,
@@ -30,7 +33,7 @@ const dummy: IEvent[] = [
     endDate: moment().add(1, 'days'),
     fee: 0,
     requiredTransport: false,
-    status: 'OPEN',
+    status: EventStatus.OPEN,
     imageUrl:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png'
   }
@@ -39,7 +42,7 @@ const dummy: IEvent[] = [
 export class Events extends React.Component {
   renderedEvents = dummy.map(event => {
     return (
-      <div className="my-3">
+      <div className="my-3" key={event.id}>
         <Card className="p-4">
           <Row>
             <Col xs="4" className="pr-0">
@@ -65,6 +68,7 @@ export class Events extends React.Component {
   render() {
     return (
       <Container>
+        <FloatButton />
         <Row>
           <h1>Events</h1>
         </Row>
