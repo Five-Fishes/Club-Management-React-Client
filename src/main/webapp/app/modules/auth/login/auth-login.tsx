@@ -41,7 +41,7 @@ export class AuthLogin extends React.Component<ILoginProps> {
               <LoginButton type="google" />
               <LoginButton type="facebook" />
               <LoginButton type="email" />
-              <Link to="/auth/register" className="text-decoration-none my-3">
+              <Link to="/auth/email/register" className="text-decoration-none my-3">
                 No account? Create now
               </Link>
             </Col>
@@ -83,7 +83,7 @@ function LoginButton(props) {
       textColor: '#FFF',
       callback: function() {
         console.log('Email');
-        history.push('/auth/login/email');
+        history.push('/auth/email/login');
       }
     }
   ];

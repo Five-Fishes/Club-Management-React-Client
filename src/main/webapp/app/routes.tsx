@@ -15,6 +15,9 @@ import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import PageNotFound from 'app/shared/error/page-not-found';
 import { AUTHORITIES } from 'app/config/constants';
 import AuthLogin from 'app/modules/auth/login/auth-login';
+import AuthEmailLogin from 'app/modules/auth/email-login/auth-email-login';
+import AuthEmailRegister from './modules/auth/email-register/auth-email-register';
+import AuthEmailReset from './modules/auth/email-reset/auth-email-reset';
 
 // tslint:disable:space-in-parens
 const Account = Loadable({
@@ -32,6 +35,9 @@ const Routes = () => (
   <div className="h-100">
     <Switch>
       <ErrorBoundaryRoute exact path="/auth/login" component={AuthLogin} />
+      <ErrorBoundaryRoute exact path="/auth/email/login" component={AuthEmailLogin} />
+      <ErrorBoundaryRoute exact path="/auth/email/register" component={AuthEmailRegister} />
+      <ErrorBoundaryRoute exact path="/auth/email/reset" component={AuthEmailReset} />
       {/* <ErrorBoundaryRoute path="/login" component={Login} />
       <ErrorBoundaryRoute path="/logout" component={Logout} />
       <ErrorBoundaryRoute path="/register" component={Register} />
