@@ -12,17 +12,25 @@ import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstr
 
 export interface ILoginProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
-export interface IAuthEmailRegisterState {}
+export interface IAuthEmailRegisterState {
+  isSubmitBtnEnabled: boolean;
+}
 
-export class AuthEmailRegister extends React.Component<ILoginProps> {
+export class AuthEmailRegister extends React.Component<ILoginProps, IAuthEmailRegisterState> {
   constructor(props) {
     super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.state = {};
+    this.handleValidSubmit = this.handleValidSubmit.bind(this);
+    this.state = {
+      isSubmitBtnEnabled: true
+    };
   }
 
-  handleSubmit(event, errors, values) {
+  handleValidSubmit(event, values) {
     console.log(values);
+    console.log('submitting');
+    this.setState({
+      isSubmitBtnEnabled: false
+    });
   }
 
   render() {
@@ -38,7 +46,7 @@ export class AuthEmailRegister extends React.Component<ILoginProps> {
               <CardImg className="my-2" width="100%" src="content/images/thirdcc_logo.png" alt="3rd CC Logo" />
             </Col>
             <Col xs="12" md="6" lg="4" className="my-auto offset-lg-2">
-              <AvForm onSubmit={this.handleSubmit} className="d-flex flex-column mt-3">
+              <AvForm onValidSubmit={this.handleValidSubmit} className="d-flex flex-column mt-3">
                 <div>
                   <AvField
                     name="email"
@@ -83,7 +91,7 @@ export class AuthEmailRegister extends React.Component<ILoginProps> {
                 <Link to="/auth/login" className="text-decoration-none">
                   Already have an account? Sign in now
                 </Link>
-                <Button type="submit" className="w-100 mt-4">
+                <Button type="submit" className="w-100 mt-4" disabled={!this.state.isSubmitBtnEnabled}>
                   Create Account
                 </Button>
               </AvForm>
