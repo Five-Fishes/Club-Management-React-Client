@@ -1,11 +1,8 @@
-// Custom styles and variables
-@import './bootstrap-variables';
 // Override Boostrap variables
 @import '~bootswatch/dist/minty/variables';
 // Import Bootstrap source files from node_modules
 @import 'node_modules/bootstrap/scss/bootstrap';
 @import '~bootswatch/dist/minty/bootswatch';
-
 body {
   margin: 0;
 }
