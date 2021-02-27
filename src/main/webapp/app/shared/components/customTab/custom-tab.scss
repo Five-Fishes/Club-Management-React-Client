@@ -1,3 +1,9 @@
+.tab-container {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .tab-item {
   width: 87.5px;
   min-height: 35px;

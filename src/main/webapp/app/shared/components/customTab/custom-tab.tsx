@@ -3,41 +3,29 @@ import { ButtonGroup, Button } from 'reactstrap';
 import classnames from 'classnames';
 
 import './custom-tab.scss';
+import { Translate } from 'react-jhipster';
 
 export interface ITabProps {
   currentTab: string;
   tabList: ITabInfo[];
 }
 
-export interface ITabState {
-  activeTab: string;
-}
-
 export interface ITabInfo {
   tabName: string;
+  tabTranslateKey: string;
   tabRoute: string;
 }
 
-export class CustomTab extends React.Component<ITabProps, ITabState> {
+export class CustomTab extends React.Component<ITabProps, {}> {
   constructor(props) {
     super(props);
-    this.state = {
-      activeTab: this.props.currentTab
-    };
-  }
-
-  toggle(value: string) {
-    this.setState({
-      activeTab: value
-    });
   }
 
   render() {
-    const { activeTab } = this.state;
     return (
-      <div className="overflow-x-scroll">
+      <div className="overflow-x-scroll tab-container my-2 border-5">
         <ButtonGroup>
-          <TabItems itemsList={this.props.tabList} activeTab={activeTab} />
+          <TabItems itemsList={this.props.tabList} activeTab={this.props.currentTab} />
         </ButtonGroup>
       </div>
     );
@@ -56,6 +44,6 @@ const TabItems = ({ itemsList, activeTab }) =>
       color="#07ADE1"
       className={classnames('tab-item', item.tabName === activeTab ? 'active-tab' : '')}
     >
-      {item.tabName}
+      <Translate contentKey={item.tabTranslateKey}>{item.tabName}</Translate>
     </Button>
   ));
