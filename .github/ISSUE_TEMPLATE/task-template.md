@@ -1,14 +1,16 @@
 ---
-name: Task Template
-about: Create a task that is pick up and working on
+name: Development Task Template
+about: Create a development task issue
 title: User Profile View Page
-labels: task
+labels: dev
 assignees: ''
 
 ---
 
 Page Url: /acoount/profile
 Module: Account
+Authority:
+- CC Head
 Components: (if any)
 - [ ] Edit Button 
 
