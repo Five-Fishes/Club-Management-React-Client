@@ -2,7 +2,7 @@ import React from 'react';
 import { ButtonGroup, Button } from 'reactstrap';
 import classnames from 'classnames';
 
-import './tab-component.scss';
+import './custom-tab.scss';
 
 export interface ITabProps {
   currentTab: string;
