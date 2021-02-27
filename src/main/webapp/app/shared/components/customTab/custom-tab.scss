@@ -1,26 +1,25 @@
 .tab-container {
+  border-radius: 5px;
   &::-webkit-scrollbar {
     display: none;
   }
 }
 
 .tab-item {
-  width: 87.5px;
+  width: 100px;
   min-height: 35px;
-  border-radius: 5px;
   font-family: 'Roboto';
-  font-size: 16px;
   line-height: 19px;
   align-items: center;
   text-align: center;
-  color: #07ade1;
-  border-color: #07ade1;
+  color: var(--primary);
+  border-color: var(--primary);
 }
 .tab-item:hover {
-  background-color: #07ade1;
+  background-color: var(--primary);
 }
 
 .active-tab {
-  background-color: #07ade1;
+  background-color: var(--primary);
   color: white;
 }

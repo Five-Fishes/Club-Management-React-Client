@@ -23,7 +23,7 @@ export class CustomTab extends React.Component<ITabProps, {}> {
 
   render() {
     return (
-      <div className="overflow-x-scroll tab-container my-2 border-5">
+      <div className="overflow-x-scroll tab-container my-2">
         <ButtonGroup>
           <TabItems itemsList={this.props.tabList} activeTab={this.props.currentTab} />
         </ButtonGroup>
