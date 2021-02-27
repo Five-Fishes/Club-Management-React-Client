@@ -18,19 +18,13 @@ export interface ITabInfo {
   tabRoute: string;
 }
 
-export class TabComponent extends React.Component<ITabProps, ITabState> {
+export class CustomTab extends React.Component<ITabProps, ITabState> {
   constructor(props) {
     super(props);
     this.state = {
       activeTab: this.props.currentTab
     };
   }
-
-  // componentDidUpdate() {
-  //   this.setState({
-  //     activeTab: this.props.currentTab
-  //   });
-  // }
 
   toggle(value: string) {
     this.setState({
@@ -40,7 +34,6 @@ export class TabComponent extends React.Component<ITabProps, ITabState> {
 
   render() {
     const { activeTab } = this.state;
-    window.console.log(activeTab);
     return (
       <div className="overflow-x-scroll">
         <ButtonGroup>
@@ -52,8 +45,7 @@ export class TabComponent extends React.Component<ITabProps, ITabState> {
 }
 
 const navigateTo = (path: string) => () => {
-  window.console.log(path);
-  // window.location.href = path;
+  window.location.href = path;
 };
 
 const TabItems = ({ itemsList, activeTab }) =>
