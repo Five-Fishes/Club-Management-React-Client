@@ -8,9 +8,40 @@ import { Row, Col, Alert } from 'reactstrap';
 
 import { IRootState } from 'app/shared/reducers';
 import { getSession } from 'app/shared/reducers/authentication';
+import { TabComponent, ITabInfo } from 'app/shared/components/tab-component';
 
 export interface IHomeProp extends StateProps, DispatchProps {}
 
+const sampleTabList: ITabInfo[] = [
+  {
+    tabName: 'Details',
+    tabRoute: '/event/details'
+  },
+  {
+    tabName: 'Timeline',
+    tabRoute: '/event/timeline'
+  },
+  {
+    tabName: 'Checklist',
+    tabRoute: '/event/checklist'
+  },
+  {
+    tabName: 'Budegt',
+    tabRoute: '/event/budget'
+  },
+  {
+    tabName: 'Activity',
+    tabRoute: '/event/activity'
+  },
+  {
+    tabName: 'Crew',
+    tabRoute: '/event/event-crew'
+  },
+  {
+    tabName: 'Attendee',
+    tabRoute: '/event/event-attendee'
+  }
+];
 export class Home extends React.Component<IHomeProp> {
   componentDidMount() {
     this.props.getSession();
@@ -27,6 +58,7 @@ export class Home extends React.Component<IHomeProp> {
           <p className="lead">
             <Translate contentKey="home.subtitle">This is your homepage</Translate>
           </p>
+          <TabComponent tabList={sampleTabList} currentTab="Details" />
           {account && account.login ? (
             <div>
               <Alert color="success">

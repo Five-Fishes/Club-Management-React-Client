@@ -1,0 +1,20 @@
+.tab-item {
+  width: 87.5px;
+  min-height: 35px;
+  border-radius: 5px;
+  font-family: 'Roboto';
+  font-size: 16px;
+  line-height: 19px;
+  align-items: center;
+  text-align: center;
+  color: #07ade1;
+  border-color: #07ade1;
+}
+.tab-item:hover {
+  background-color: #07ade1;
+}
+
+.active-tab {
+  background-color: #07ade1;
+  color: white;
+}
