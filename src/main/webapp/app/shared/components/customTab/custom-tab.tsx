@@ -4,6 +4,7 @@ import classnames from 'classnames';
 
 import './custom-tab.scss';
 import { Translate } from 'react-jhipster';
+import history from 'app/shared/util/history-util';
 
 export interface ITabProps {
   currentTab: string;
@@ -33,7 +34,8 @@ export class CustomTab extends React.Component<ITabProps, {}> {
 }
 
 const navigateTo = (path: string) => () => {
-  window.location.href = path;
+  history.push(path);
+  // window.location.href = path;
 };
 
 const TabItems = ({ itemsList, activeTab }) =>
