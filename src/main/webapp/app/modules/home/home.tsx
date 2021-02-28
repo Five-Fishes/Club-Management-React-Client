@@ -10,24 +10,6 @@ import { IRootState } from 'app/shared/reducers';
 import { getSession } from 'app/shared/reducers/authentication';
 import { CustomTab } from '../../shared/components/customTab/custom-tab';
 
-const tabs = [
-  {
-    tabName: 'Checklist',
-    tabTranslateKey: 'clubmanagementApp.eventChecklist.tab',
-    tabRoute: '/checklist'
-  },
-  {
-    tabName: 'Attendees',
-    tabTranslateKey: 'clubmanagementApp.eventAttendee.tab',
-    tabRoute: '/attendees'
-  },
-  {
-    tabName: 'Crews',
-    tabTranslateKey: 'clubmanagementApp.eventCrew.tab',
-    tabRoute: '/crews'
-  }
-];
-
 export interface IHomeProp extends StateProps, DispatchProps {}
 export class Home extends React.Component<IHomeProp> {
   componentDidMount() {
@@ -38,7 +20,6 @@ export class Home extends React.Component<IHomeProp> {
     const { account } = this.props;
     return (
       <Row>
-        <CustomTab currentTab="Attendees" tabList={tabs} />
         <Col md="9">
           <h2>
             <Translate contentKey="home.title">Welcome, Java Hipster!</Translate>
