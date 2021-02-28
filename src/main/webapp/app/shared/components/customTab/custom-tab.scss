@@ -23,3 +23,10 @@
   background-color: var(--primary);
   color: white;
 }
+
+.link-unstyled,
+.link-unstyled:link,
+.link-unstyled:hover {
+  color: inherit;
+  text-decoration: inherit;
+}
