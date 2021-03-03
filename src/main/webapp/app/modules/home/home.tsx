@@ -10,7 +10,6 @@ import { IRootState } from 'app/shared/reducers';
 import { getSession } from 'app/shared/reducers/authentication';
 
 export interface IHomeProp extends StateProps, DispatchProps {}
-
 export class Home extends React.Component<IHomeProp> {
   componentDidMount() {
     this.props.getSession();
