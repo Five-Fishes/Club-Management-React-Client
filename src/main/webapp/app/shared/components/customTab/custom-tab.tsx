@@ -4,7 +4,7 @@ import classnames from 'classnames';
 
 import './custom-tab.scss';
 import { Translate } from 'react-jhipster';
-import history from 'app/shared/util/history-util';
+import { Link } from 'react-router-dom';
 
 export interface ITabProps {
   currentTab: string;
@@ -33,19 +33,11 @@ export class CustomTab extends React.Component<ITabProps, {}> {
   }
 }
 
-const navigateTo = (path: string) => () => {
-  history.push(path);
-  // window.location.href = path;
-};
-
 const TabItems = ({ itemsList, activeTab }) =>
   itemsList.map(item => (
-    <Button
-      id="tab-btn"
-      onClick={navigateTo(item.tabRoute)}
-      color="#07ADE1"
-      className={classnames('tab-item', item.tabName === activeTab ? 'active-tab' : '')}
-    >
-      <Translate contentKey={item.tabTranslateKey}>{item.tabName}</Translate>
+    <Button id="tab-btn" color="#07ADE1" className={classnames('tab-item', item.tabName === activeTab ? 'active-tab' : '')}>
+      <Link to={item.tabRoute} className="link-unstyled">
+        <Translate contentKey={item.tabTranslateKey}>{item.tabName}</Translate>
+      </Link>
     </Button>
   ));
