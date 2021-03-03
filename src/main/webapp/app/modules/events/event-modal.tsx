@@ -1,12 +1,12 @@
 import React from 'react';
 import { Modal, ModalBody, ModalHeader, Button } from 'reactstrap';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import './event-modal.css';
-export interface IEventModalProps {
+export interface IEventModalProps extends RouteComponentProps {
   isOpen: Boolean;
   toggleModal: Function;
+  eventId: number;
 }
 
 class EventModal extends React.Component<IEventModalProps> {
@@ -17,7 +17,9 @@ class EventModal extends React.Component<IEventModalProps> {
         <ModalBody className="event-modal-body">
           <h2 className="text-center">Options</h2>
           <div className="d-flex flex-column mt-4">
-            <Button color="secondary"> Update </Button>
+            <Button onClick={() => this.props.history.push(`/update/${this.props.eventId}`)} color="secondary">
+              Update
+            </Button>
             <br />
             <Button color="cancel"> Delete </Button>
           </div>
@@ -27,4 +29,4 @@ class EventModal extends React.Component<IEventModalProps> {
   }
 }
 
-export default EventModal;
+export default withRouter(EventModal);
