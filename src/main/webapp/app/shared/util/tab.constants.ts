@@ -4,26 +4,26 @@ export const eventTabList: ITabInfo[] = [
   {
     tabName: 'Details',
     tabTranslateKey: 'clubmanagementApp.event.tab',
-    tabRoute: '/'
+    tabRoute: '/event'
   },
   {
     tabName: 'Checklist',
     tabTranslateKey: 'clubmanagementApp.eventChecklist.tab',
-    tabRoute: '/checklist'
+    tabRoute: '/event/checklist'
   },
   {
     tabName: 'Budget',
     tabTranslateKey: 'clubmanagementApp.eventBudget.tab',
-    tabRoute: '/budget'
+    tabRoute: '/event/budget'
   },
   {
     tabName: 'Attendees',
     tabTranslateKey: 'clubmanagementApp.eventAttendee.tab',
-    tabRoute: '/attendees'
+    tabRoute: '/event/attendees'
   },
   {
     tabName: 'Crews',
     tabTranslateKey: 'clubmanagementApp.eventCrew.tab',
-    tabRoute: '/crews'
+    tabRoute: '/event/crews'
   }
 ];
