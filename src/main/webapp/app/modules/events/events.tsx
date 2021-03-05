@@ -6,11 +6,12 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons/faEllipsisH';
 import { Translate } from 'react-jhipster';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import EventModal from './event-modal';
 
 import moment from 'moment';
 
-import './events.css';
-import FloatButton from '../../shared/layout/floatButton/FloatButton';
+import './events.scss';
+import FloatButton from '../../shared/components/floatButton/FloatButton';
 
 const dummy: IEvent[] = [
   {
@@ -73,14 +74,14 @@ const dummy: IEvent[] = [
 
 export interface IEventProp extends StateProps, DispatchProps {}
 
-const EventCard = ({ event }) => (
+const EventCard = ({ event, toggleModal }) => (
   <Card className="p-3 pt-4 event-card">
     <Row>
       <Col xs="4" lg="5" className="pr-0">
         <CardImg height="100%" width="100%" className="rounded-0" src={event.imageUrl} alt="Event image" />
       </Col>
       <Col xs="8" lg="7">
-        <Button color="link" className="option-icon p-0">
+        <Button color="link" className="option-icon p-0" onClick={() => toggleModal(event.id)}>
           <FontAwesomeIcon icon={faEllipsisH} />
         </Button>
         <div className="my-auto">
@@ -97,19 +98,28 @@ const EventCard = ({ event }) => (
 );
 
 export class Events extends React.Component<IEventProp> {
+  state = { modalIsOpen: false, eventId: null };
+
+  toggleModal = eventId => {
+    this.setState({ modalIsOpen: true, eventId: eventId });
+  };
+
+  closeModal = () => {
+    this.setState({ modalIsOpen: false, eventId: null });
+  };
+
   renderedEvents = dummy.map(event => (
     <div className="my-3" key={event.id}>
-      <EventCard event={event} />
+      <EventCard event={event} toggleModal={this.toggleModal} />
     </div>
   ));
 
   render() {
     return (
       <Container>
+        <EventModal isOpen={this.state.modalIsOpen} eventId={this.state.eventId} toggleModal={this.closeModal} />
         <FloatButton />
-        <h1>
-          <Translate contentKey="clubmanagementApp.event.home.title">Events</Translate>
-        </h1>
+        <h1>Events</h1>
         <div>{this.renderedEvents}</div>
       </Container>
     );

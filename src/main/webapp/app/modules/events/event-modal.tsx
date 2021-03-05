@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, ModalBody, ModalHeader, Button } from 'reactstrap';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-import './event-modal.css';
+import './event-modal.scss';
 export interface IEventModalProps extends RouteComponentProps {
   isOpen: Boolean;
   toggleModal: Function;
