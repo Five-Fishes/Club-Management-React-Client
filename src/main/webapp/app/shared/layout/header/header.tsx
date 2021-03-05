@@ -7,7 +7,7 @@ import { Navbar, Nav, NavbarToggler } from 'reactstrap';
 import LoadingBar from 'react-redux-loading-bar';
 
 import { Brand } from './header-components';
-import { AccountMenu, LocaleMenu } from '../menus';
+import { AccountMenu, LocaleMenu, ModuleMenu } from '../menus';
 
 export interface IHeaderProps {
   isAuthenticated: boolean;
@@ -46,9 +46,10 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
       <div id="app-header">
         <LoadingBar className="loading-bar" />
         <Navbar dark className="bg-primary">
-          <NavbarToggler aria-label="Menu" onClick={this.toggleMenu} />
+          {/* <NavbarToggler aria-label="Menu" onClick={this.toggleMenu} /> */}
           <Brand />
           <Nav id="header-tabs" className="ml-auto">
+            <ModuleMenu isAuthenticated={isAuthenticated} />
             <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
             <AccountMenu isAuthenticated={isAuthenticated} />
           </Nav>
