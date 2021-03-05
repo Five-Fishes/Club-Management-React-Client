@@ -1,9 +1,0 @@
-.floatButton {
-  position: fixed;
-  bottom: 3rem;
-  right: 1rem;
-  border-radius: 100px;
-  height: 60px;
-  width: 60px;
-  z-index: 10000;
-}
