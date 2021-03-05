@@ -1,0 +1,21 @@
+.event-img {
+  min-width: 100%;
+  height: 200px;
+  border-radius: 10px;
+  margin: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.event-details-info {
+  display: grid;
+  grid-template-columns: 10% 1fr;
+}
+
+.btn {
+  font-family: 'Roboto', sans-serif !important;
+}
+
+.desc-box {
+  min-height: 140px;
+}
