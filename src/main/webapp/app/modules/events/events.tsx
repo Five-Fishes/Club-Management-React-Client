@@ -6,12 +6,25 @@ import { faEllipsisH } from '@fortawesome/free-solid-svg-icons/faEllipsisH';
 import { Translate } from 'react-jhipster';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import EventModal from './event-modal';
-
 import moment from 'moment';
 
 import './events.scss';
+import EventModal from './event-modal';
+import { CustomTab, ITabInfo } from '../../shared/components/customTab/custom-tab';
 import FloatButton from '../../shared/components/floatButton/FloatButton';
+
+const sampleTabList: ITabInfo[] = [
+  {
+    tabName: 'Upcoming',
+    tabTranslateKey: 'clubmanagementApp.event.upcoming',
+    tabRoute: '/event/details'
+  },
+  {
+    tabName: 'Previous',
+    tabTranslateKey: 'clubmanagementApp.event.previous',
+    tabRoute: '/event/timeline'
+  }
+];
 
 const dummy: IEvent[] = [
   {
@@ -85,7 +98,7 @@ const EventCard = ({ event, toggleModal }) => (
           <FontAwesomeIcon icon={faEllipsisH} />
         </Button>
         <div className="my-auto">
-          <Link to={`/details/${event.id}`}>
+          <Link to={`/events/${event.id}/details`}>
             <h4>{event.name}</h4>
           </Link>
           <p className="mb-0">Date: {event.startDate.format('DD MMM YYYY')}</p>
@@ -120,6 +133,9 @@ export class Events extends React.Component<IEventProp> {
         <EventModal isOpen={this.state.modalIsOpen} eventId={this.state.eventId} toggleModal={this.closeModal} />
         <FloatButton />
         <h1>Events</h1>
+        <div className="d-flex justify-content-center">
+          <CustomTab tabList={sampleTabList} currentTab="Upcoming" />
+        </div>
         <div>{this.renderedEvents}</div>
       </Container>
     );
