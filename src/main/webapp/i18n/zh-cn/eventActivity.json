@@ -20,7 +20,8 @@
       "startDate": "Start Date",
       "durationInDay": "Duration In Day",
       "name": "Name",
-      "description": "Description"
+      "description": "Description",
+      "tab": "Timeline"
     }
   }
 }
