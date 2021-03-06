@@ -1,0 +1,32 @@
+.tab-container {
+  border-radius: 5px;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tab-item {
+  width: 100px;
+  min-height: 35px;
+  font-family: 'Roboto';
+  line-height: 19px;
+  align-items: center;
+  text-align: center;
+  color: var(--primary);
+  border-color: var(--primary);
+}
+.tab-item:hover {
+  background-color: var(--primary);
+}
+
+.active-tab {
+  background-color: var(--primary);
+  color: white;
+}
+
+.link-unstyled,
+.link-unstyled:link,
+.link-unstyled:hover {
+  color: inherit;
+  text-decoration: inherit;
+}

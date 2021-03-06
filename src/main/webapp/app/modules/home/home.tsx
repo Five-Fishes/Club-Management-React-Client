@@ -9,7 +9,6 @@ import { Row, Col, Alert } from 'reactstrap';
 import { IRootState } from 'app/shared/reducers';
 
 export interface IHomeProp extends StateProps, DispatchProps {}
-
 export class Home extends React.Component<IHomeProp> {
   render() {
     const { account } = this.props;

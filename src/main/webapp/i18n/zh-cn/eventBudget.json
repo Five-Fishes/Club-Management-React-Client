@@ -1,0 +1,27 @@
+{
+  "clubmanagementApp": {
+    "eventBudget": {
+      "home": {
+        "title": "Event Budget",
+        "createLabel": "创建新 Event Budget",
+        "createOrEditLabel": "创建或编辑 Event Budget",
+        "notFound": "No Event Budget found"
+      },
+      "created": "Event Budget {{ param }} 创建成功",
+      "updated": "Event Budget {{ param }} 更新成功",
+      "deleted": "Event Budget {{ param }} 删除成功",
+      "delete": {
+        "question": "你确定要删除 Event Budget {{ id }} 吗？"
+      },
+      "detail": {
+        "title": "Event Budget"
+      },
+      "eventId": "Event Id",
+      "amount": "Amount",
+      "name": "Name",
+      "details": "Details",
+      "type": "Type",
+      "tab": "Budget"
+    }
+  }
+}
