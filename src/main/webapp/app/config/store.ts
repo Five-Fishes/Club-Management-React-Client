@@ -24,6 +24,8 @@ const composedMiddlewares = middlewares =>
       )
     : compose(applyMiddleware(...defaultMiddlewares, ...middlewares));
 
-const initialize = (initialState?: IRootState, middlewares = []) => createStore(reducer, initialState, composedMiddlewares(middlewares));
+export const initialize = (initialState?: IRootState, middlewares = []) =>
+  createStore(reducer, initialState, composedMiddlewares(middlewares));
 
-export default initialize;
+const store = initialize();
+export default store;

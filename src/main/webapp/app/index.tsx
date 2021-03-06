@@ -4,22 +4,19 @@ import { Provider } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import DevTools from './config/devtools';
-import initStore from './config/store';
+import store from './config/store';
 import { registerLocale } from './config/translation';
 import setupAxiosInterceptors from './config/axios-interceptor';
-import { clearAuthentication } from './shared/reducers/authentication';
 import ErrorBoundary from './shared/error/error-boundary';
 import AppComponent from './app';
 import { loadIcons } from './config/icon-loader';
+import { AUTH_TOKEN_KEY, FIREBASE_TOKEN_KEY } from 'app/config/constants';
+import { logout } from './shared/services/auth.service';
 
 const devTools = process.env.NODE_ENV === 'development' ? <DevTools /> : null;
 
-const store = initStore();
 registerLocale(store);
-
-const actions = bindActionCreators({ clearAuthentication }, store.dispatch);
-setupAxiosInterceptors(() => actions.clearAuthentication('login.error.unauthorized'));
-
+setupAxiosInterceptors(logout);
 loadIcons();
 
 const rootEl = document.getElementById('root');
