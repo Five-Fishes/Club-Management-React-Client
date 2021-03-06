@@ -34,7 +34,7 @@ export class Home extends React.Component<IHomeProp> {
             <div>
               <Alert color="warning">
                 <Translate contentKey="global.messages.info.authenticated.prefix">If you want to </Translate>
-                <Link to="/login" className="alert-link">
+                <Link to="/auth/login" className="alert-link">
                   <Translate contentKey="global.messages.info.authenticated.link"> sign in</Translate>
                 </Link>
                 <Translate contentKey="global.messages.info.authenticated.suffix">

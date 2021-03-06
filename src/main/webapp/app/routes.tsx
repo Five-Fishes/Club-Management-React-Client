@@ -34,12 +34,6 @@ const Routes = () => (
       <ErrorBoundaryRoute exact path="/auth/email/register" component={AuthEmailRegister} />
       <ErrorBoundaryRoute exact path="/auth/email/reset" component={AuthEmailReset} />
       <PrivateRoute exact path="/profile" component={UserProfile} />
-      {/* <ErrorBoundaryRoute path="/login" component={Login} />
-      <ErrorBoundaryRoute path="/logout" component={Logout} />
-      <ErrorBoundaryRoute path="/register" component={Register} />
-      <ErrorBoundaryRoute path="/activate/:key?" component={Activate} />
-      <ErrorBoundaryRoute path="/reset/request" component={PasswordResetInit} />
-      <ErrorBoundaryRoute path="/reset/finish/:key?" component={PasswordResetFinish} /> */}
       <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
       <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
       <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.USER]} />

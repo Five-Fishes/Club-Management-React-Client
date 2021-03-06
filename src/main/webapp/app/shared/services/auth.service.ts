@@ -86,7 +86,7 @@ export function fetchAccount(): Promise<void> {
     axios
       .get(`/api/account`)
       .then(res => {
-        store.dispatch({ type: ACTION_TYPES.FETCH_ACCOUNT, payload: res });
+        store.dispatch({ type: ACTION_TYPES.FETCH_ACCOUNT, payload: res.data });
         resolve();
       })
       .catch(err => {
