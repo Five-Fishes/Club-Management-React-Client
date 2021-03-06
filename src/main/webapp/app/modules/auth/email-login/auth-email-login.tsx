@@ -3,20 +3,19 @@ import { connect } from 'react-redux';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
 
 import { IRootState } from 'app/shared/reducers';
-import { login } from 'app/shared/reducers/authentication';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { CardImg, Container, Button, Row, Col, Label } from 'reactstrap';
-import { Link, useHistory } from 'react-router-dom';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
+import { CardImg, Container, Button, Row, Col } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import { AvForm, AvField } from 'availity-reactstrap-validation';
+import { emailLogin, fetchAccount, getAuthToken } from 'app/shared/services/auth.service';
+import { toast } from 'react-toastify';
 
-export interface ILoginProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
+export interface IAuthEmailLoginProps extends StateProps, RouteComponentProps<{}> {}
 
 export interface IAuthEmailLoginState {
   isSubmitBtnEnabled: boolean;
 }
 
-export class AuthEmailLogin extends React.Component<ILoginProps, IAuthEmailLoginState> {
+export class AuthEmailLogin extends React.Component<IAuthEmailLoginProps, IAuthEmailLoginState> {
   constructor(props) {
     super(props);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
@@ -26,11 +25,28 @@ export class AuthEmailLogin extends React.Component<ILoginProps, IAuthEmailLogin
   }
 
   handleValidSubmit(event, values) {
-    console.log(values);
-    console.log('submitting');
     this.setState({
       isSubmitBtnEnabled: false
     });
+    emailLogin(values)
+      .then(firebaseToken => {
+        return getAuthToken(firebaseToken);
+      })
+      .then(() => {
+        return fetchAccount();
+      })
+      .then(() => {
+        toast.success('Login Successfully');
+        this.props.history.push('/');
+      })
+      .catch(() => {
+        toast.error('Fail to login');
+      })
+      .finally(() => {
+        this.setState({
+          isSubmitBtnEnabled: true
+        });
+      });
   }
 
   render() {
@@ -94,12 +110,9 @@ const mapStateToProps = ({ authentication }: IRootState) => ({
   isAuthenticated: authentication.isAuthenticated
 });
 
-const mapDispatchToProps = { login };
-
 type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof mapDispatchToProps;
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  null
 )(AuthEmailLogin);

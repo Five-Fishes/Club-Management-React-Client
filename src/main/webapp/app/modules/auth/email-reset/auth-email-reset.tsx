@@ -1,22 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect, RouteComponentProps } from 'react-router-dom';
-
 import { IRootState } from 'app/shared/reducers';
-import { login } from 'app/shared/reducers/authentication';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CardImg, Container, Button, Row, Col, Label } from 'reactstrap';
-import { Link, useHistory } from 'react-router-dom';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
+import { Link } from 'react-router-dom';
+import { AvForm, AvField } from 'availity-reactstrap-validation';
+import { emailResetPassword } from 'app/shared/services/auth.service';
+import { toast } from 'react-toastify';
 
-export interface ILoginProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
+export interface IAuthEmailResetProps extends StateProps, RouteComponentProps<{}> {}
 
 export interface IAuthEmailResetState {
   isSubmitBtnEnabled: boolean;
 }
 
-export class AuthEmailReset extends React.Component<ILoginProps, IAuthEmailResetState> {
+export class AuthEmailReset extends React.Component<IAuthEmailResetProps, IAuthEmailResetState> {
   constructor(props) {
     super(props);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
@@ -26,11 +24,22 @@ export class AuthEmailReset extends React.Component<ILoginProps, IAuthEmailReset
   }
 
   handleValidSubmit(event, values) {
-    console.log(values);
-    console.log('submitting');
     this.setState({
       isSubmitBtnEnabled: false
     });
+    emailResetPassword(values.email)
+      .then(() => {
+        toast.success('Reset password instruction was sent to your inbox');
+        this.props.history.push('/auth/email/login');
+      })
+      .catch(err => {
+        toast.error('Fail to reset password');
+      })
+      .finally(() => {
+        this.setState({
+          isSubmitBtnEnabled: true
+        });
+      });
   }
 
   render() {
@@ -81,12 +90,6 @@ const mapStateToProps = ({ authentication }: IRootState) => ({
   isAuthenticated: authentication.isAuthenticated
 });
 
-const mapDispatchToProps = { login };
-
 type StateProps = ReturnType<typeof mapStateToProps>;
-type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AuthEmailReset);
+export default connect(mapStateToProps)(AuthEmailReset);
