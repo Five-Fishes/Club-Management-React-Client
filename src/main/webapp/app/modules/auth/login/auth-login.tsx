@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import firebase from 'firebase';
 import { toast } from 'react-toastify';
-import { getAuthToken, socialLogin } from 'app/shared/services/auth.service';
+import { fetchAccount, getAuthToken, socialLogin } from 'app/shared/services/auth.service';
 
 export interface IAuthLoginProps extends StateProps, RouteComponentProps<{}> {}
 
@@ -41,7 +41,10 @@ export class AuthLogin extends React.Component<IAuthLoginProps> {
       .then(firebaseToken => {
         return getAuthToken(firebaseToken);
       })
-      .then(authToken => {
+      .then(() => {
+        return fetchAccount();
+      })
+      .then(() => {
         toast.success('Login Successfully');
       })
       .catch(error => {
@@ -56,7 +59,10 @@ export class AuthLogin extends React.Component<IAuthLoginProps> {
       .then(firebaseToken => {
         return getAuthToken(firebaseToken);
       })
-      .then(authToken => {
+      .then(() => {
+        return fetchAccount();
+      })
+      .then(() => {
         toast.success('Login Successfully');
       })
       .catch(error => {
