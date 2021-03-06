@@ -1,10 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect, RouteComponentProps } from 'react-router-dom';
+import { Redirect, RouteComponentProps, Link } from 'react-router-dom';
 
 import { IRootState } from 'app/shared/reducers';
 import { CardImg, Container, Button, Row, Col } from 'reactstrap';
-import { Link } from 'react-router-dom';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { emailLogin, fetchAccount, getAuthToken } from 'app/shared/services/auth.service';
 import { toast } from 'react-toastify';
@@ -29,12 +28,8 @@ export class AuthEmailLogin extends React.Component<IAuthEmailLoginProps, IAuthE
       isSubmitBtnEnabled: false
     });
     emailLogin(values)
-      .then(firebaseToken => {
-        return getAuthToken(firebaseToken);
-      })
-      .then(() => {
-        return fetchAccount();
-      })
+      .then(firebaseToken => getAuthToken(firebaseToken))
+      .then(() => fetchAccount())
       .then(() => {
         toast.success('Login Successfully');
         this.props.history.push('/');

@@ -7,7 +7,7 @@ import { ACTION_TYPES } from '../reducers/authentication';
 import { ILogin } from '../model/auth/login.model';
 
 export async function getAuthToken(firebaseToken: string): Promise<void> {
-  let headers = {
+  const headers = {
     [FIREBASE_AUTH_HEADER_NAME]: firebaseToken
   };
   const response = await axios.post('/api/firebase/authenticate', null, {

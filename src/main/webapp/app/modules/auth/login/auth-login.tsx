@@ -1,19 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect, RouteComponentProps } from 'react-router-dom';
+import { Redirect, RouteComponentProps, Link } from 'react-router-dom';
 
 import { IRootState } from 'app/shared/reducers';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CardImg, Container, Button, Row, Col } from 'reactstrap';
-import { Link } from 'react-router-dom';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import firebase from 'firebase';
 import { toast } from 'react-toastify';
 import { fetchAccount, getAuthToken, socialLogin } from 'app/shared/services/auth.service';
 
 export interface IAuthLoginProps extends StateProps, RouteComponentProps<{}> {}
-
-export interface IAuthLoginState {}
 
 interface ILoginConfig {
   type: 'google' | 'facebook' | 'email';
@@ -30,7 +27,6 @@ export class AuthLogin extends React.Component<IAuthLoginProps> {
     this.handleFacebookLogin = this.handleFacebookLogin.bind(this);
     this.handleEmailLogin = this.handleEmailLogin.bind(this);
   }
-  state: IAuthLoginState = {};
 
   handleEmailLogin() {
     this.props.history.push('/auth/email/login');
@@ -38,15 +34,9 @@ export class AuthLogin extends React.Component<IAuthLoginProps> {
 
   async handleGoogleLogin() {
     socialLogin('google')
-      .then(firebaseToken => {
-        return getAuthToken(firebaseToken);
-      })
-      .then(() => {
-        return fetchAccount();
-      })
-      .then(() => {
-        toast.success('Login Successfully');
-      })
+      .then(firebaseToken => getAuthToken(firebaseToken))
+      .then(() => fetchAccount())
+      .then(() => toast.success('Login Successfully'))
       .catch(error => {
         const firebaseError = error as firebase.FirebaseError;
         const errorMessage = firebaseError.message;
@@ -56,15 +46,9 @@ export class AuthLogin extends React.Component<IAuthLoginProps> {
 
   handleFacebookLogin() {
     socialLogin('facebook')
-      .then(firebaseToken => {
-        return getAuthToken(firebaseToken);
-      })
-      .then(() => {
-        return fetchAccount();
-      })
-      .then(() => {
-        toast.success('Login Successfully');
-      })
+      .then(firebaseToken => getAuthToken(firebaseToken))
+      .then(() => fetchAccount())
+      .then(() => toast.success('Login Successfully'))
       .catch(error => {
         const firebaseError = error as firebase.FirebaseError;
         const errorMessage = firebaseError.message;

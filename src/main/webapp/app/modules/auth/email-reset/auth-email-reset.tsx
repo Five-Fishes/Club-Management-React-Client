@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect, RouteComponentProps } from 'react-router-dom';
+import { Redirect, RouteComponentProps, Link } from 'react-router-dom';
 import { IRootState } from 'app/shared/reducers';
 import { CardImg, Container, Button, Row, Col, Label } from 'reactstrap';
-import { Link } from 'react-router-dom';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
 import { emailResetPassword } from 'app/shared/services/auth.service';
 import { toast } from 'react-toastify';

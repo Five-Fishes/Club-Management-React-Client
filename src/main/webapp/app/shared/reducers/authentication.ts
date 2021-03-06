@@ -4,7 +4,7 @@ export const ACTION_TYPES = {
   FETCH_ACCOUNT: 'authentication/FETCH_ACCOUNT'
 };
 
-export type IAuthenticationInitialState = {
+export interface IAuthenticationInitialState {
   isAuthenticated: boolean;
   authorities: string[];
   activated: boolean;
@@ -12,7 +12,7 @@ export type IAuthenticationInitialState = {
   id: number;
   imageUrl: string;
   email: string;
-};
+}
 
 const initialState: IAuthenticationInitialState = {
   isAuthenticated: false,
