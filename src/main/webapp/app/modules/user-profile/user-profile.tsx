@@ -9,17 +9,12 @@ import { toast } from 'react-toastify';
 
 export interface IUserProfileProps extends StateProps, RouteComponentProps<{}> {}
 
-export interface IUserProfileState {
-  isSubmitBtnEnabled: boolean;
-}
+export interface IUserProfileState {}
 
 export class UserProfile extends React.Component<IUserProfileProps, IUserProfileState> {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
-    this.state = {
-      isSubmitBtnEnabled: true
-    };
   }
 
   handleClick() {

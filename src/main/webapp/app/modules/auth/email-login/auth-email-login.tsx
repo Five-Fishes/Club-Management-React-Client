@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 export interface IAuthEmailLoginProps extends StateProps, RouteComponentProps<{}> {}
 
 export interface IAuthEmailLoginState {
-  isSubmitBtnEnabled: boolean;
+  isSubmitting: boolean;
 }
 
 export class AuthEmailLogin extends React.Component<IAuthEmailLoginProps, IAuthEmailLoginState> {
@@ -19,13 +19,13 @@ export class AuthEmailLogin extends React.Component<IAuthEmailLoginProps, IAuthE
     super(props);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
     this.state = {
-      isSubmitBtnEnabled: true
+      isSubmitting: false
     };
   }
 
   handleValidSubmit(event, values) {
     this.setState({
-      isSubmitBtnEnabled: false
+      isSubmitting: true
     });
     emailLogin(values)
       .then(firebaseToken => getAuthToken(firebaseToken))
@@ -39,7 +39,7 @@ export class AuthEmailLogin extends React.Component<IAuthEmailLoginProps, IAuthE
       })
       .finally(() => {
         this.setState({
-          isSubmitBtnEnabled: true
+          isSubmitting: false
         });
       });
   }
@@ -86,7 +86,7 @@ export class AuthEmailLogin extends React.Component<IAuthEmailLoginProps, IAuthE
                 <Link to="/auth/email/register" className="text-decoration-none">
                   No account? Create now
                 </Link>
-                <Button type="submit" className="w-100 mt-4" disabled={!this.state.isSubmitBtnEnabled}>
+                <Button type="submit" className="w-100 mt-4" disabled={this.state.isSubmitting}>
                   Sign In
                 </Button>
                 <Link to="/auth/login" className="text-center text-decoration-none my-1">
@@ -107,7 +107,4 @@ const mapStateToProps = ({ authentication }: IRootState) => ({
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 
-export default connect(
-  mapStateToProps,
-  null
-)(AuthEmailLogin);
+export default connect(mapStateToProps)(AuthEmailLogin);

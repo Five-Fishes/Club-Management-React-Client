@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 export interface IAuthEmailResetProps extends StateProps, RouteComponentProps<{}> {}
 
 export interface IAuthEmailResetState {
-  isSubmitBtnEnabled: boolean;
+  isSubmitting: boolean;
 }
 
 export class AuthEmailReset extends React.Component<IAuthEmailResetProps, IAuthEmailResetState> {
@@ -18,13 +18,13 @@ export class AuthEmailReset extends React.Component<IAuthEmailResetProps, IAuthE
     super(props);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
     this.state = {
-      isSubmitBtnEnabled: true
+      isSubmitting: false
     };
   }
 
   handleValidSubmit(event, values) {
     this.setState({
-      isSubmitBtnEnabled: false
+      isSubmitting: true
     });
     emailResetPassword(values.email)
       .then(() => {
@@ -36,7 +36,7 @@ export class AuthEmailReset extends React.Component<IAuthEmailResetProps, IAuthE
       })
       .finally(() => {
         this.setState({
-          isSubmitBtnEnabled: true
+          isSubmitting: false
         });
       });
   }
@@ -73,7 +73,7 @@ export class AuthEmailReset extends React.Component<IAuthEmailResetProps, IAuthE
                 <Link to="/auth/login" className="text-decoration-none">
                   Already have an account? Sign in now
                 </Link>
-                <Button type="submit" className="w-100 mt-4" disabled={!this.state.isSubmitBtnEnabled}>
+                <Button type="submit" className="w-100 mt-4" disabled={this.state.isSubmitting}>
                   Reset Password
                 </Button>
               </AvForm>

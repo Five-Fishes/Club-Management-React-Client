@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 export interface IAuthEmailRegisterProps extends StateProps, RouteComponentProps<{}> {}
 
 export interface IAuthEmailRegisterState {
-  isSubmitBtnEnabled: boolean;
+  isSubmitting: boolean;
 }
 
 export class AuthEmailRegister extends React.Component<IAuthEmailRegisterProps, IAuthEmailRegisterState> {
@@ -18,13 +18,13 @@ export class AuthEmailRegister extends React.Component<IAuthEmailRegisterProps, 
     super(props);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
     this.state = {
-      isSubmitBtnEnabled: true
+      isSubmitting: false
     };
   }
 
   handleValidSubmit(event, values) {
     this.setState({
-      isSubmitBtnEnabled: false
+      isSubmitting: true
     });
     emailRegister(values)
       .then(() => {
@@ -34,7 +34,7 @@ export class AuthEmailRegister extends React.Component<IAuthEmailRegisterProps, 
       .catch(() => toast.error('Fail to register an account'))
       .finally(() => {
         this.setState({
-          isSubmitBtnEnabled: true
+          isSubmitting: false
         });
       });
   }
@@ -97,7 +97,8 @@ export class AuthEmailRegister extends React.Component<IAuthEmailRegisterProps, 
                 <Link to="/auth/login" className="text-decoration-none">
                   Already have an account? Sign in now
                 </Link>
-                <Button type="submit" className="w-100 mt-4" disabled={!this.state.isSubmitBtnEnabled}>
+                isSubmitting
+                <Button type="submit" className="w-100 mt-4" disabled={this.state.isSubmitting}>
                   Create Account
                 </Button>
               </AvForm>
@@ -115,7 +116,4 @@ const mapStateToProps = ({ authentication }: IRootState) => ({
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 
-export default connect(
-  mapStateToProps,
-  null
-)(AuthEmailRegister);
+export default connect(mapStateToProps)(AuthEmailRegister);
