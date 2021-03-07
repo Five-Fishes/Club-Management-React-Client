@@ -11,12 +11,12 @@ import EventChecklistDeleteDialog from './event-checklist-delete-dialog';
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/new`} component={EventChecklistUpdate} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={EventChecklistUpdate} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={EventChecklistDetail} />
-      <ErrorBoundaryRoute path={match.url} component={EventChecklist} />
+      <ErrorBoundaryRoute exact path={`${match.url}/event/:eventId/new`} component={EventChecklistUpdate} />
+      <ErrorBoundaryRoute exact path={`${match.url}/event/:eventId/:id/edit`} component={EventChecklistUpdate} />
+      <ErrorBoundaryRoute exact path={`${match.url}/event/:eventId/:id`} component={EventChecklistDetail} />
+      <ErrorBoundaryRoute path={`${match.url}/event/:eventId`} component={EventChecklist} />
     </Switch>
-    <ErrorBoundaryRoute path={`${match.url}/:id/delete`} component={EventChecklistDeleteDialog} />
+    <ErrorBoundaryRoute path={`${match.url}/event/:eventId/:id/delete`} component={EventChecklistDeleteDialog} />
   </>
 );
 
