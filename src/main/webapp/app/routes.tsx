@@ -15,10 +15,6 @@ import AuthEmailReset from './modules/auth/email-reset/auth-email-reset';
 import UserProfile from './modules/user-profile/user-profile';
 
 // tslint:disable:space-in-parens
-const Account = Loadable({
-  loader: () => import(/* webpackChunkName: "account" */ 'app/modules/account'),
-  loading: () => <div>loading ...</div>
-});
 
 const Admin = Loadable({
   loader: () => import(/* webpackChunkName: "administration" */ 'app/modules/administration'),
@@ -35,7 +31,6 @@ const Routes = () => (
       <ErrorBoundaryRoute exact path="/auth/email/reset" component={AuthEmailReset} />
       <PrivateRoute exact path="/profile" component={UserProfile} />
       <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
-      <PrivateRoute path="/account" component={Account} hasAnyAuthorities={[AUTHORITIES.ADMIN, AUTHORITIES.USER]} />
       <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.USER]} />
       <ErrorBoundaryRoute path="/" exact component={Home} />
       <ErrorBoundaryRoute component={PageNotFound} />
