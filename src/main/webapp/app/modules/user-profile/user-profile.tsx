@@ -40,7 +40,4 @@ const mapStateToProps = ({ authentication }: IRootState) => ({
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 
-export default connect(
-  mapStateToProps,
-  null
-)(UserProfile);
+export default connect(mapStateToProps)(UserProfile);
