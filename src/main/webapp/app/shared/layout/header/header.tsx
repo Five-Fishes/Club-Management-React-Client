@@ -2,12 +2,14 @@ import './header.scss';
 
 import React from 'react';
 import { Storage } from 'react-jhipster';
-import { Navbar, Nav, NavbarToggler } from 'reactstrap';
+import { Navbar, Nav, NavbarToggler, Button } from 'reactstrap';
 
 import LoadingBar from 'react-redux-loading-bar';
 
 import { Brand } from './header-components';
 import { AccountMenu, LocaleMenu } from '../menus';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface IHeaderProps {
   isAuthenticated: boolean;
@@ -45,12 +47,29 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     return (
       <div id="app-header">
         <LoadingBar className="loading-bar" />
-        <Navbar dark className="bg-primary">
-          <NavbarToggler aria-label="Menu" onClick={this.toggleMenu} />
+        <Navbar dark className="h-100">
+          <Button outline color="primary" aria-label="Menu" onClick={this.toggleMenu}>
+            <FontAwesomeIcon icon="bars" />
+          </Button>
           <Brand />
-          <Nav id="header-tabs" className="ml-auto">
+          <Nav id="header-tabs" className="h-100 ml-auto">
             <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
-            <AccountMenu isAuthenticated={isAuthenticated} />
+            {isAuthenticated ? (
+              <Link to="/profile" className="h-100 p-1">
+                <img
+                  className="mh-100 border rounded-circle shadow"
+                  src="content/images/jhipster_family_member_0_head-192.png"
+                  alt="avatar"
+                />
+              </Link>
+            ) : (
+              <Link className="my-auto" to="/auth/login">
+                <Button color="primary">
+                  <FontAwesomeIcon icon="user" />
+                  <span className="d-none d-md-inline ml-2">Sign In</span>
+                </Button>
+              </Link>
+            )}
           </Nav>
         </Navbar>
       </div>

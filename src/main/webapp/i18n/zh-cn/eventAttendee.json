@@ -18,7 +18,8 @@
       },
       "userId": "User Id",
       "eventId": "Event Id",
-      "provideTransport": "Provide Transport"
+      "provideTransport": "Provide Transport",
+      "tab": "Attendees"
     }
   }
 }
