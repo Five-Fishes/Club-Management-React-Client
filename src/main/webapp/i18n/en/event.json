@@ -29,7 +29,8 @@
       "status": "Status",
       "imageUrl": "Image Url",
       "fileName": "File Name",
-      "fileType": "File Type"
+      "fileType": "File Type",
+      "tab": "Details"
     }
   }
 }

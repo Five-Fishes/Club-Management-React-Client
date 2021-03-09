@@ -20,7 +20,8 @@
       "name": "Name",
       "description": "Description",
       "status": "Status",
-      "type": "Type"
+      "type": "Type",
+      "tab": "Checklist"
     }
   }
 }

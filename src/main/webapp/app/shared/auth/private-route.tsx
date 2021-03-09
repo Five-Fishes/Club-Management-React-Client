@@ -14,9 +14,8 @@ export interface IPrivateRouteProps extends IOwnProps, StateProps {}
 export const PrivateRouteComponent = ({
   component: Component,
   isAuthenticated,
-  sessionHasBeenFetched,
-  isAuthorized,
   hasAnyAuthorities = [],
+  isAuthorized,
   ...rest
 }: IPrivateRouteProps) => {
   const checkAuthorities = props =>
@@ -33,21 +32,17 @@ export const PrivateRouteComponent = ({
     );
 
   const renderRedirect = props => {
-    if (!sessionHasBeenFetched) {
-      return <div />;
-    } else {
-      return isAuthenticated ? (
-        checkAuthorities(props)
-      ) : (
-        <Redirect
-          to={{
-            pathname: '/login',
-            search: props.location.search,
-            state: { from: props.location }
-          }}
-        />
-      );
-    }
+    return isAuthenticated ? (
+      checkAuthorities(props)
+    ) : (
+      <Redirect
+        to={{
+          pathname: '/auth/login',
+          search: props.location.search,
+          state: { from: props.location }
+        }}
+      />
+    );
   };
 
   if (!Component) throw new Error(`A component needs to be specified for private route for path ${(rest as any).path}`);
@@ -55,23 +50,19 @@ export const PrivateRouteComponent = ({
   return <Route {...rest} render={renderRedirect} />;
 };
 
-export const hasAnyAuthority = (authorities: string[], hasAnyAuthorities: string[]) => {
-  if (authorities && authorities.length !== 0) {
-    if (hasAnyAuthorities.length === 0) {
-      return true;
-    }
-    return hasAnyAuthorities.some(auth => authorities.includes(auth));
+export function hasAnyAuthority(authorities: string[], hasAnyAuthorities: string[]): boolean {
+  if (authorities && authorities.length === 0) {
+    return false;
   }
-  return false;
-};
+  if (hasAnyAuthorities.length === 0) {
+    return true;
+  }
+  return hasAnyAuthorities.some(auth => authorities.includes(auth));
+}
 
-const mapStateToProps = (
-  { authentication: { isAuthenticated, account, sessionHasBeenFetched } }: IRootState,
-  { hasAnyAuthorities = [] }: IOwnProps
-) => ({
+const mapStateToProps = ({ authentication: { isAuthenticated, authorities } }: IRootState, { hasAnyAuthorities = [] }: IOwnProps) => ({
   isAuthenticated,
-  isAuthorized: hasAnyAuthority(account.authorities, hasAnyAuthorities),
-  sessionHasBeenFetched
+  isAuthorized: hasAnyAuthority(authorities, hasAnyAuthorities)
 });
 
 type StateProps = ReturnType<typeof mapStateToProps>;
