@@ -1,5 +1,7 @@
+/* tslint:disable:no-submodule-imports*/
 import firebase from 'firebase/app';
 import 'firebase/auth';
+/* tslint:enable:no-submodule-imports*/
 
 export const FirebaseConfig = {
   apiKey: 'AIzaSyBf0tf3CgQ-QurMEX3C369xd1LM2XbgG8s',
