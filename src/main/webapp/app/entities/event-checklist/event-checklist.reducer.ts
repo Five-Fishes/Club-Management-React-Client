@@ -5,6 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IEventChecklist, defaultValue } from 'app/shared/model/event-checklist.model';
+import { IGetAllByEventId } from 'app/shared/type/event-custom-action';
 
 export const ACTION_TYPES = {
   FETCH_EVENTCHECKLIST_LIST: 'eventChecklist/FETCH_EVENTCHECKLIST_LIST',
@@ -13,7 +14,9 @@ export const ACTION_TYPES = {
   UPDATE_EVENTCHECKLIST: 'eventChecklist/UPDATE_EVENTCHECKLIST',
   DELETE_EVENTCHECKLIST: 'eventChecklist/DELETE_EVENTCHECKLIST',
   SET_BLOB: 'eventChecklist/SET_BLOB',
-  RESET: 'eventChecklist/RESET'
+  RESET: 'eventChecklist/RESET',
+  SET_EVENT_CHECKLIST_ID: 'eventChecklist/SET_EVENT_CHECKLIST_ID',
+  SET_SHOW_ACTION_OPTIONS: 'eventChecklist/SET_SHOW_ACTION_OPTIONS'
 };
 
 const initialState = {
@@ -23,7 +26,9 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
+  selectedEventChecklistId: 0,
+  showActionOptions: false
 };
 
 export type EventChecklistState = Readonly<typeof initialState>;
@@ -103,6 +108,18 @@ export default (state: EventChecklistState = initialState, action): EventCheckli
       return {
         ...initialState
       };
+    case ACTION_TYPES.SET_EVENT_CHECKLIST_ID:
+      const { eventChecklistId } = action.payload;
+      return {
+        ...state,
+        selectedEventChecklistId: eventChecklistId
+      };
+    case ACTION_TYPES.SET_SHOW_ACTION_OPTIONS:
+      const { show } = action.payload;
+      return {
+        ...state,
+        showActionOptions: show
+      };
     default:
       return state;
   }
@@ -114,6 +131,14 @@ const apiUrl = 'api/event-checklists';
 
 export const getEntities: ICrudGetAllAction<IEventChecklist> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_EVENTCHECKLIST_LIST,
+    payload: axios.get<IEventChecklist>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
+
+export const getChecklistsByEventId: IGetAllByEventId<IEventChecklist> = (eventId, page, size, sort) => {
+  const requestUrl = `${apiUrl}/event/${eventId}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_EVENTCHECKLIST_LIST,
     payload: axios.get<IEventChecklist>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
@@ -167,4 +192,18 @@ export const setBlob = (name, data, contentType?) => ({
 
 export const reset = () => ({
   type: ACTION_TYPES.RESET
+});
+
+export const setSelectedEventChecklistId = eventChecklistId => ({
+  type: ACTION_TYPES.SET_EVENT_CHECKLIST_ID,
+  payload: {
+    eventChecklistId
+  }
+});
+
+export const setShowActionOptions = show => ({
+  type: ACTION_TYPES.SET_SHOW_ACTION_OPTIONS,
+  payload: {
+    show
+  }
 });

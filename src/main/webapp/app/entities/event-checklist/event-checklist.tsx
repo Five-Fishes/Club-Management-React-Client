@@ -1,19 +1,23 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row, Table } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 // tslint:disable-next-line:no-unused-variable
 import { byteSize, Translate, ICrudGetAllAction, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntities } from './event-checklist.reducer';
+import { getChecklistsByEventId, setSelectedEventChecklistId, setShowActionOptions } from './event-checklist.reducer';
 import { IEventChecklist } from 'app/shared/model/event-checklist.model';
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
+import '../../styles/event-module.scss';
+import { CustomTab } from 'app/shared/components/customTab/custom-tab';
+import { eventTabList } from 'app/shared/util/tab.constants';
+import { ListingCard } from 'app/shared/components/listing-card/listing-card';
 
-export interface IEventChecklistProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+export interface IEventChecklistProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string; eventId: string }> {}
 
 export type IEventChecklistState = IPaginationBaseState;
 
@@ -44,112 +48,90 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
   handlePagination = activePage => this.setState({ activePage }, () => this.sortEntities());
 
   getEntities = () => {
+    const eventId = this.props.match.params.eventId;
+    window.console.log('Event Id: ', eventId);
     const { activePage, itemsPerPage, sort, order } = this.state;
-    this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
+    this.props.getChecklistsByEventId(eventId, activePage - 1, itemsPerPage, `${sort},${order}`);
+  };
+
+  showCardAction = (eventChecklistId: number) => {
+    this.props.setSelectedEventChecklistId(eventChecklistId);
+    this.props.setShowActionOptions(true);
+    window.console.log('SHOW ', this.props.match.path);
+  };
+
+  toggleShowOptions = () => {
+    this.props.setShowActionOptions(!this.props.showActionOptions);
   };
 
   render() {
-    const { eventChecklistList, match, totalItems } = this.props;
+    const { eventChecklistList, match, totalItems, selectedEventChecklistId } = this.props;
     return (
       <div>
-        <h2 id="event-checklist-heading">
+        <h2 id="event-checklist-heading" className="event-module-heading">
           <Translate contentKey="clubmanagementApp.eventChecklist.home.title">Event Checklists</Translate>
-          <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
+        </h2>
+        <CustomTab tabList={eventTabList} currentTab="Checklist" />
+        <div className="text-center">
+          <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
             <FontAwesomeIcon icon="plus" />
             &nbsp;
-            <Translate contentKey="clubmanagementApp.eventChecklist.home.createLabel">Create new Event Checklist</Translate>
+            <Translate contentKey="entity.action.add">Add</Translate>
           </Link>
-        </h2>
-        <div className="table-responsive">
+        </div>
+
+        <div>
           {eventChecklistList && eventChecklistList.length > 0 ? (
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th className="hand" onClick={this.sort('id')}>
-                    <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('eventId')}>
-                    <Translate contentKey="clubmanagementApp.eventChecklist.eventId">Event Id</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('name')}>
-                    <Translate contentKey="clubmanagementApp.eventChecklist.name">Name</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('description')}>
-                    <Translate contentKey="clubmanagementApp.eventChecklist.description">Description</Translate>{' '}
-                    <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('status')}>
-                    <Translate contentKey="clubmanagementApp.eventChecklist.status">Status</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('type')}>
-                    <Translate contentKey="clubmanagementApp.eventChecklist.type">Type</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {eventChecklistList.map((eventChecklist, i) => (
-                  <tr key={`entity-${i}`}>
-                    <td>
-                      <Button tag={Link} to={`${match.url}/${eventChecklist.id}`} color="link" size="sm">
-                        {eventChecklist.id}
-                      </Button>
-                    </td>
-                    <td>{eventChecklist.eventId}</td>
-                    <td>{eventChecklist.name}</td>
-                    <td>{eventChecklist.description}</td>
-                    <td>
-                      <Translate contentKey={`clubmanagementApp.EventChecklistStatus.${eventChecklist.status}`} />
-                    </td>
-                    <td>
-                      <Translate contentKey={`clubmanagementApp.EventChecklistType.${eventChecklist.type}`} />
-                    </td>
-                    <td className="text-right">
-                      <div className="btn-group flex-btn-group-container">
-                        <Button tag={Link} to={`${match.url}/${eventChecklist.id}`} color="info" size="sm">
-                          <FontAwesomeIcon icon="eye" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.view">View</Translate>
-                          </span>
-                        </Button>
-                        <Button tag={Link} to={`${match.url}/${eventChecklist.id}/edit`} color="primary" size="sm">
-                          <FontAwesomeIcon icon="pencil-alt" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.edit">Edit</Translate>
-                          </span>
-                        </Button>
-                        <Button tag={Link} to={`${match.url}/${eventChecklist.id}/delete`} color="danger" size="sm">
-                          <FontAwesomeIcon icon="trash" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.delete">Delete</Translate>
-                          </span>
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+            eventChecklistList.map((eventChecklist, i) => (
+              // tslint:disable
+              <ListingCard
+                key={`event-checklist-${eventChecklist.id}`}
+                showActionMenu
+                title={eventChecklist.name}
+                actionMenuHandler={this.showCardAction.bind(this, eventChecklist.id)}
+              >
+                <span className="card-item d-block mb-2">
+                  <span>
+                    <Translate contentKey="clubmanagementApp.eventChecklist.type">Type</Translate>:
+                    <span className="font-weight-bolder text-dark">{eventChecklist.type}</span>
+                  </span>
+                  <span className="float-right">
+                    <Translate contentKey="clubmanagementApp.eventChecklist.status">Status</Translate>:
+                    <span className="font-weight-bolder text-dark">{eventChecklist.status}</span>
+                  </span>
+                </span>
+                <span className="card-item d-block">
+                  <span>
+                    <Translate contentKey="clubmanagementApp.eventChecklist.description">Description</Translate>:
+                    <span className="font-weight-bolder text-dark">{eventChecklist.description}</span>
+                  </span>
+                </span>
+              </ListingCard>
+            ))
           ) : (
             <div className="alert alert-warning">
               <Translate contentKey="clubmanagementApp.eventChecklist.home.notFound">No Event Checklists found</Translate>
             </div>
           )}
         </div>
-        <div className={eventChecklistList && eventChecklistList.length > 0 ? '' : 'd-none'}>
-          <Row className="justify-content-center">
-            <JhiItemCount page={this.state.activePage} total={totalItems} itemsPerPage={this.state.itemsPerPage} i18nEnabled />
-          </Row>
-          <Row className="justify-content-center">
-            <JhiPagination
-              activePage={this.state.activePage}
-              onSelect={this.handlePagination}
-              maxButtons={5}
-              itemsPerPage={this.state.itemsPerPage}
-              totalItems={this.props.totalItems}
-            />
-          </Row>
-        </div>
+        <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions}>
+          <ModalHeader toggle={this.toggleShowOptions} />
+          <ModalBody>
+            <h2 className="text-center">Options</h2>
+            <Button tag={Link} to={`${match.url}/${selectedEventChecklistId}/edit`} color="primary" className="d-block mx-auto my-3 w-75">
+              <FontAwesomeIcon icon="pencil-alt" />{' '}
+              <span>
+                <Translate contentKey="entity.action.update">Update</Translate>
+              </span>
+            </Button>
+            <Button tag={Link} to={`${match.url}/${selectedEventChecklistId}/delete`} color="cancel" className="d-block mx-auto my-3 w-75">
+              <FontAwesomeIcon icon="trash" />{' '}
+              <span>
+                <Translate contentKey="entity.action.delete">Delete</Translate>
+              </span>
+            </Button>
+          </ModalBody>
+        </Modal>
       </div>
     );
   }
@@ -157,11 +139,15 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
 
 const mapStateToProps = ({ eventChecklist }: IRootState) => ({
   eventChecklistList: eventChecklist.entities,
-  totalItems: eventChecklist.totalItems
+  totalItems: eventChecklist.totalItems,
+  selectedEventChecklistId: eventChecklist.selectedEventChecklistId,
+  showActionOptions: eventChecklist.showActionOptions
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getChecklistsByEventId,
+  setSelectedEventChecklistId,
+  setShowActionOptions
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
