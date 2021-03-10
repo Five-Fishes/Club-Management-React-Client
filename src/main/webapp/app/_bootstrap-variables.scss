@@ -15,36 +15,3 @@ $theme-colors: (
   'action': #1db2a1,
   'cancel': #dd5959
 );
-
-:root {
-  --tertiary: #154b67;
-  --action: #1db2a1;
-  --cancel: #dd5959;
-}
-
-.text-tertiary {
-  color: var(--tertiary) !important;
-}
-
-.bg-tertiary {
-  background-color: var(--tertiary) !important;
-  color: white;
-}
-
-.text-action {
-  color: var(--action) !important;
-}
-
-.bg-action {
-  background-color: var(--action) !important;
-  color: white;
-}
-
-.text-cancel {
-  color: var(--cancel) !important;
-}
-
-.bg-cancel {
-  background-color: var(--cancel) !important;
-  color: white;
-}

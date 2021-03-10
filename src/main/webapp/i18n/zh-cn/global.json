@@ -104,12 +104,14 @@
   },
   "entity": {
     "action": {
+      "add": "增加",
       "addblob": "增加 BLOB",
       "addimage": "增加图片",
       "back": "返回",
       "cancel": "取消",
       "delete": "删除",
       "edit": "编辑",
+      "update": "更新",
       "open": "Open",
       "save": "保存",
       "view": "查看"
