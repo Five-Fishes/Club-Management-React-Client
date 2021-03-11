@@ -10,7 +10,7 @@ export async function getAuthToken(firebaseToken: string): Promise<void> {
   const headers = {
     [FIREBASE_AUTH_HEADER_NAME]: firebaseToken
   };
-  const response = await axios.post('/api/firebase/authenticate', null, {
+  const response = await axios.post('/api/authenticate/firebase', null, {
     headers
   });
   const jwtToken: string = response.data['id_token'];
