@@ -32,11 +32,7 @@ export class EventDetail extends React.Component<IEventDetailProps> {
           <CustomTab currentTab="Details" tabList={eventTabList} />
         </div>
         <div className="pt-3">
-          <img
-            className="event-img"
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"
-            alt="Event Image"
-          />
+          <img className="event-img" src={eventEntity.imageUrl} alt={eventEntity.fileName} />
           <div className="mt-4">
             <h2>{eventEntity.name}</h2>
             <div className="event-details-info my-3">
