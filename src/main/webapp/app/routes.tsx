@@ -13,8 +13,7 @@ import AuthEmailLogin from 'app/modules/auth/email-login/auth-email-login';
 import AuthEmailRegister from './modules/auth/email-register/auth-email-register';
 import AuthEmailReset from './modules/auth/email-reset/auth-email-reset';
 import UserProfile from './modules/user-profile/user-profile';
-import EventDetails from 'app/modules/events/event-details';
-import EventDetail from 'app/entities/event/event-detail';
+import EventDetails from 'app/entities/event/event-detail';
 
 // tslint:disable:space-in-parens
 
@@ -32,7 +31,6 @@ const Routes = () => (
       <ErrorBoundaryRoute exact path="/auth/email/register" component={AuthEmailRegister} />
       <ErrorBoundaryRoute exact path="/auth/email/reset" component={AuthEmailReset} />
       <ErrorBoundaryRoute path="/events/:id/details" component={EventDetails} />
-      <ErrorBoundaryRoute path="/event/:id/details" component={EventDetail} />
       <PrivateRoute exact path="/profile" component={UserProfile} />
       <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
       <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.USER]} />

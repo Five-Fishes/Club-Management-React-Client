@@ -10,6 +10,7 @@
 .event-details-info {
   display: grid;
   grid-template-columns: 10% 1fr;
+  row-gap: 5px;
 }
 
 .btn {
@@ -18,4 +19,12 @@
 
 .desc-box {
   min-height: 140px;
+}
+
+.desc-box h5 {
+  font-size: 16px;
+}
+
+.desc-box p {
+  font-size: 14px;
 }
