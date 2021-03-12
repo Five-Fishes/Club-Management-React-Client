@@ -13,7 +13,7 @@ export async function getAuthToken(firebaseToken: string): Promise<void> {
   const response = await axios.post('/api/authenticate/firebase', null, {
     headers
   });
-  const jwtToken: string = response.data['id_token'];
+  const jwtToken: string = response.data['accessToken'];
   Storage.local.set(AUTH_TOKEN_KEY, jwtToken);
   store.dispatch({ type: ACTION_TYPES.LOGIN });
 }
