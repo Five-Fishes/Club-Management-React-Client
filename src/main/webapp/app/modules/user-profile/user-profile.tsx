@@ -9,9 +9,7 @@ import { toast } from 'react-toastify';
 
 export interface IUserProfileProps extends StateProps, RouteComponentProps<{}> {}
 
-export interface IUserProfileState {}
-
-export class UserProfile extends React.Component<IUserProfileProps, IUserProfileState> {
+export class UserProfile extends React.Component<IUserProfileProps, {}> {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
