@@ -16,7 +16,7 @@ export class ListingCard extends React.Component<IListingCardProps> {
 
   render() {
     return (
-      <div className="card-container container">
+      <div className="card-container container my-3">
         <Row className="align-items-center justify-content-center">
           <Col xs="10">
             {Boolean(this.props.title) && <span className="font-weight-bold text-dark d-block mb-1">{this.props.title}</span>}

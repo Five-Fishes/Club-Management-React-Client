@@ -18,7 +18,6 @@ export const PrivateRouteComponent = ({
   isAuthorized,
   ...rest
 }: IPrivateRouteProps) => {
-  debugger;
   const checkAuthorities = props =>
     isAuthorized ? (
       <ErrorBoundary>
