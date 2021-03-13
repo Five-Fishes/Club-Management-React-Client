@@ -69,7 +69,7 @@ export class Event extends React.Component<IEventProps, IEventState> {
   };
 
   openModal = eventId => {
-    this.setState({ modalIsOpen: true, eventId: eventId });
+    this.setState({ modalIsOpen: true, eventId });
   };
 
   closeModal = () => {
