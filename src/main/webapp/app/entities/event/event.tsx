@@ -99,32 +99,36 @@ export class Event extends React.Component<IEventProps, IEventState> {
   }
 }
 
-const EventCard = ({ event, toggleModal }) => (
-  <Card className="p-3 pt-4 event-card">
-    <Row>
-      <Col xs="4" lg="5" className="pr-0">
-        <CardImg height="100%" width="100%" className="rounded-0" src={event.imageUrl} alt={event.fileName} />
-      </Col>
-      <Col xs="8" lg="7">
-        <Button color="link" className="option-icon p-0" onClick={() => toggleModal(event.id)}>
-          <FontAwesomeIcon icon={'ellipsis-h'} />
-        </Button>
-        <div className="my-auto">
-          <Link to={`/events/${event.id}/details`}>
-            <h4 className="event-title">{event.name}</h4>
-          </Link>
-          <p className="mb-0">
-            Start Date: <TextFormat type="date" value={event.startDate} format={APP_DATE_FORMAT} />
-          </p>
-          <p className="mb-0">
-            End Date: <TextFormat type="date" value={event.endDate} format={APP_DATE_FORMAT} />
-          </p>
-          <p className="mb-0">Venue: {event.venue}</p>
-        </div>
-      </Col>
-    </Row>
-  </Card>
-);
+const EventCard = ({ event, toggleModal }) => {
+  const onToggleModal = () => toggleModal(event.id);
+
+  return (
+    <Card className="p-3 pt-4 event-card">
+      <Row>
+        <Col xs="4" lg="5" className="pr-0">
+          <CardImg height="100%" width="100%" className="rounded-0" src={event.imageUrl} alt={event.fileName} />
+        </Col>
+        <Col xs="8" lg="7">
+          <Button color="link" className="option-icon p-0" onClick={onToggleModal}>
+            <FontAwesomeIcon icon={'ellipsis-h'} />
+          </Button>
+          <div className="my-auto">
+            <Link to={`/events/${event.id}/details`}>
+              <h4 className="event-title">{event.name}</h4>
+            </Link>
+            <p className="mb-0">
+              Start Date: <TextFormat type="date" value={event.startDate} format={APP_DATE_FORMAT} />
+            </p>
+            <p className="mb-0">
+              End Date: <TextFormat type="date" value={event.endDate} format={APP_DATE_FORMAT} />
+            </p>
+            <p className="mb-0">Venue: {event.venue}</p>
+          </div>
+        </Col>
+      </Row>
+    </Card>
+  );
+};
 
 const mapStateToProps = ({ event }: IRootState) => ({
   eventList: event.entities,

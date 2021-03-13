@@ -10,6 +10,10 @@ export interface IEventModalProps extends RouteComponentProps {
 }
 
 class EventModal extends React.Component<IEventModalProps> {
+  onButtonClick = () => {
+    this.props.history.push(`/update/${this.props.eventId}`);
+  };
+
   render() {
     return (
       <Modal size="sm" centered isOpen={this.props.isOpen}>
@@ -17,7 +21,7 @@ class EventModal extends React.Component<IEventModalProps> {
         <ModalBody className="event-modal-body">
           <h2 className="text-center">Options</h2>
           <div className="d-flex flex-column mt-4">
-            <Button onClick={() => this.props.history.push(`/update/${this.props.eventId}`)} color="secondary">
+            <Button onClick={this.onButtonClick} color="secondary">
               Update
             </Button>
             <br />
