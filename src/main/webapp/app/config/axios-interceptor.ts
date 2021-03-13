@@ -22,7 +22,7 @@ function setupAxiosInterceptors(onUnauthenticated: () => Promise<void>) {
       await onUnauthenticated();
       return;
     }
-    Promise.reject(err);
+    throw err;
   };
   axios.interceptors.request.use(onRequestSuccess);
   axios.interceptors.response.use(onResponseSuccess, onResponseError);
