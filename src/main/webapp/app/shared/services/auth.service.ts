@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { Storage } from 'react-jhipster';
 import { firebaseAuth, firebaseGoogleAuthProvider, firebaseFacebookAuthProvider } from 'app/config/firebase';
-import { FIREBASE_AUTH_HEADER_NAME, AUTH_TOKEN_KEY, FIREBASE_TOKEN_KEY, REFRESH_TOKEN_KEY } from 'app/config/constants';
+import { FIREBASE_AUTH_HEADER_NAME, ACCESS_TOKEN_KEY, FIREBASE_TOKEN_KEY, REFRESH_TOKEN_KEY } from 'app/config/constants';
 import store from 'app/config/store';
 import { ACTION_TYPES } from '../reducers/authentication';
 import { ILogin } from '../model/auth/login.model';
+import { IAuthToken } from '../model/auth/auth-token.model';
 
 export async function getAuthToken(firebaseToken: string): Promise<void> {
   const headers = {
@@ -13,30 +14,35 @@ export async function getAuthToken(firebaseToken: string): Promise<void> {
   const response = await axios.post('/api/authenticate/firebase', null, {
     headers
   });
-  const jwtToken: string = response.data['accessToken'];
-  const refreshToken: string = response.data['refreshToken'];
-  Storage.local.set(AUTH_TOKEN_KEY, jwtToken);
-  Storage.local.set(REFRESH_TOKEN_KEY, refreshToken);
+  const responseBody: IAuthToken = response.data;
+  Storage.local.set(ACCESS_TOKEN_KEY, responseBody.accessToken);
+  Storage.local.set(REFRESH_TOKEN_KEY, responseBody.refreshToken);
   await fetchAccount();
 }
 
 export function logout(): void {
   Storage.local.remove(FIREBASE_TOKEN_KEY);
-  Storage.local.remove(AUTH_TOKEN_KEY);
+  Storage.local.remove(ACCESS_TOKEN_KEY);
   Storage.local.remove(REFRESH_TOKEN_KEY);
   store.dispatch({ type: ACTION_TYPES.LOGOUT });
 }
 
 export async function handleUnauthenticated(): Promise<void> {
-  const token = Storage.local.get(AUTH_TOKEN_KEY) || Storage.session.get(AUTH_TOKEN_KEY);
+  const token = Storage.local.get(ACCESS_TOKEN_KEY) || Storage.session.get(ACCESS_TOKEN_KEY);
   const refreshToken = Storage.local.get(REFRESH_TOKEN_KEY) || Storage.session.get(REFRESH_TOKEN_KEY);
   if (token && refreshToken) {
-    const response = await axios.post(`/api/authenticate/refresh?refreshToken=${refreshToken}`);
-    const newJwtToken: string = response.data['accessToken'];
-    const newRefreshToken: string = response.data['refreshToken'];
-    Storage.local.set(AUTH_TOKEN_KEY, newJwtToken);
-    Storage.local.set(REFRESH_TOKEN_KEY, newRefreshToken);
-    fetchAccount();
+    let response = null;
+    try {
+      response = await axios.post(`/api/authenticate/refresh?refreshToken=${refreshToken}`);
+    } catch (err) {
+      Storage.local.remove(ACCESS_TOKEN_KEY);
+      Storage.local.remove(REFRESH_TOKEN_KEY);
+      throw err;
+    }
+    const responseBody: IAuthToken = response.data;
+    Storage.local.set(ACCESS_TOKEN_KEY, responseBody.accessToken);
+    Storage.local.set(REFRESH_TOKEN_KEY, responseBody.refreshToken);
+    await fetchAccount();
   }
 }
 
