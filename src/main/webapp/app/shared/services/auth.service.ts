@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Storage } from 'react-jhipster';
 import { firebaseAuth, firebaseGoogleAuthProvider, firebaseFacebookAuthProvider } from 'app/config/firebase';
-import { FIREBASE_AUTH_HEADER_NAME, AUTH_TOKEN_KEY, FIREBASE_TOKEN_KEY } from 'app/config/constants';
+import { FIREBASE_AUTH_HEADER_NAME, AUTH_TOKEN_KEY, FIREBASE_TOKEN_KEY, REFRESH_TOKEN_KEY } from 'app/config/constants';
 import store from 'app/config/store';
 import { ACTION_TYPES } from '../reducers/authentication';
 import { ILogin } from '../model/auth/login.model';
@@ -14,13 +14,16 @@ export async function getAuthToken(firebaseToken: string): Promise<void> {
     headers
   });
   const jwtToken: string = response.data['accessToken'];
+  const refreshToken: string = response.data['refreshToken'];
   Storage.local.set(AUTH_TOKEN_KEY, jwtToken);
+  Storage.local.set(REFRESH_TOKEN_KEY, refreshToken);
   store.dispatch({ type: ACTION_TYPES.LOGIN });
 }
 
 export function logout(): void {
   Storage.local.remove(FIREBASE_TOKEN_KEY);
   Storage.local.remove(AUTH_TOKEN_KEY);
+  Storage.local.remove(REFRESH_TOKEN_KEY);
   store.dispatch({ type: ACTION_TYPES.LOGOUT });
 }
 
