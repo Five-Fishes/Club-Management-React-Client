@@ -38,6 +38,7 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons/faGoogle';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons/faEllipsisV';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
+import { faEllipsisH } from '@fortawesome/free-solid-svg-icons/faEllipsisH';
 
 export const loadIcons = () => {
   library.add(
@@ -76,6 +77,7 @@ export const loadIcons = () => {
     faBars,
     faFacebookF,
     faGoogle,
-    faEllipsisV
+    faEllipsisV,
+    faEllipsisH
   );
 };

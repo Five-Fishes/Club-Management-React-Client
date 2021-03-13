@@ -14,7 +14,6 @@ import {
   JhiItemCount
 } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsisH } from '@fortawesome/free-solid-svg-icons/faEllipsisH';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntities } from './event.reducer';
@@ -69,7 +68,7 @@ export class Event extends React.Component<IEventProps, IEventState> {
     this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
   };
 
-  toggleModal = eventId => {
+  openModal = eventId => {
     this.setState({ modalIsOpen: true, eventId: eventId });
   };
 
@@ -91,7 +90,7 @@ export class Event extends React.Component<IEventProps, IEventState> {
         <div>
           {eventList.map(event => (
             <div className="my-3" key={event.id}>
-              <EventCard event={event} toggleModal={this.toggleModal} />
+              <EventCard event={event} toggleModal={this.openModal} />
             </div>
           ))}
         </div>
@@ -108,7 +107,7 @@ const EventCard = ({ event, toggleModal }) => (
       </Col>
       <Col xs="8" lg="7">
         <Button color="link" className="option-icon p-0" onClick={() => toggleModal(event.id)}>
-          <FontAwesomeIcon icon={faEllipsisH} />
+          <FontAwesomeIcon icon={'ellipsis-h'} />
         </Button>
         <div className="my-auto">
           <Link to={`/events/${event.id}/details`}>
