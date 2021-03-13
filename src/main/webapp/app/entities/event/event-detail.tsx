@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './event.reducer';
-import { faCalendarAlt, faClock, faMapMarkerAlt, faMoneyBillAlt } from '@fortawesome/free-solid-svg-icons';
+
 // tslint:disable-next-line:no-unused-variable
 import { APP_LOCAL_TIME_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { CustomTab } from 'app/shared/components/customTab/custom-tab';
@@ -36,22 +36,22 @@ export class EventDetail extends React.Component<IEventDetailProps> {
           <div className="mt-4">
             <h2>{eventEntity.name}</h2>
             <div className="event-details-info my-3">
-              <FontAwesomeIcon icon={faCalendarAlt} size="sm" />
+              <FontAwesomeIcon icon={'calendar-alt'} size="sm" />
               <h6>
                 Date: <TextFormat value={eventEntity.startDate} type="date" format={APP_LOCAL_DATE_FORMAT} />{' '}
               </h6>
 
-              <FontAwesomeIcon icon={faClock} size="sm" />
+              <FontAwesomeIcon icon={'clock'} size="sm" />
               <h6>
                 Time: <TextFormat value={eventEntity.startDate} type="date" format={APP_LOCAL_TIME_FORMAT} />{' '}
               </h6>
 
-              <FontAwesomeIcon icon={faMapMarkerAlt} size="sm" />
+              <FontAwesomeIcon icon={'map-marker-alt'} size="sm" />
               <h6>
                 <Translate contentKey="clubmanagementApp.event.venue">Venue</Translate>: {eventEntity.venue}
               </h6>
 
-              <FontAwesomeIcon icon={faMoneyBillAlt} size="sm" />
+              <FontAwesomeIcon icon={'money-bill-alt'} size="sm" />
               <h6>
                 <Translate contentKey="clubmanagementApp.event.fee">Fee</Translate>: RM{eventEntity.fee}
               </h6>

@@ -47,13 +47,13 @@ export class App extends React.Component<IAppProps> {
               isSwaggerEnabled={this.props.isSwaggerEnabled}
             />
           </ErrorBoundary>
-          <Container>
-            <div className="flex-grow-1">
-              <ErrorBoundary>
-                <AppRoutes />
-              </ErrorBoundary>
-            </div>
-          </Container>
+
+          <div className="flex-grow-1">
+            <ErrorBoundary>
+              <AppRoutes />
+            </ErrorBoundary>
+          </div>
+
           <Footer />
         </div>
       </Router>
