@@ -17,7 +17,7 @@ export async function getAuthToken(firebaseToken: string): Promise<void> {
   const refreshToken: string = response.data['refreshToken'];
   Storage.local.set(AUTH_TOKEN_KEY, jwtToken);
   Storage.local.set(REFRESH_TOKEN_KEY, refreshToken);
-  store.dispatch({ type: ACTION_TYPES.LOGIN });
+  await fetchAccount();
 }
 
 export function logout(): void {
@@ -25,6 +25,19 @@ export function logout(): void {
   Storage.local.remove(AUTH_TOKEN_KEY);
   Storage.local.remove(REFRESH_TOKEN_KEY);
   store.dispatch({ type: ACTION_TYPES.LOGOUT });
+}
+
+export async function handleUnauthenticated(): Promise<void> {
+  const token = Storage.local.get(AUTH_TOKEN_KEY) || Storage.session.get(AUTH_TOKEN_KEY);
+  const refreshToken = Storage.local.get(REFRESH_TOKEN_KEY) || Storage.session.get(REFRESH_TOKEN_KEY);
+  if (token && refreshToken) {
+    const response = await axios.post(`/api/authenticate/refresh?refreshToken=${refreshToken}`);
+    const newJwtToken: string = response.data['accessToken'];
+    const newRefreshToken: string = response.data['refreshToken'];
+    Storage.local.set(AUTH_TOKEN_KEY, newJwtToken);
+    Storage.local.set(REFRESH_TOKEN_KEY, newRefreshToken);
+    fetchAccount();
+  }
 }
 
 const SocialProvider = {

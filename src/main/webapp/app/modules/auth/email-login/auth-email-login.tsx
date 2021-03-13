@@ -5,7 +5,7 @@ import { Redirect, RouteComponentProps, Link } from 'react-router-dom';
 import { IRootState } from 'app/shared/reducers';
 import { CardImg, Container, Button, Row, Col } from 'reactstrap';
 import { AvForm, AvField } from 'availity-reactstrap-validation';
-import { emailLogin, fetchAccount, getAuthToken } from 'app/shared/services/auth.service';
+import { emailLogin, getAuthToken } from 'app/shared/services/auth.service';
 import { toast } from 'react-toastify';
 
 export interface IAuthEmailLoginProps extends StateProps, RouteComponentProps<{}> {}
@@ -29,7 +29,6 @@ export class AuthEmailLogin extends React.Component<IAuthEmailLoginProps, IAuthE
     });
     emailLogin(values)
       .then(firebaseToken => getAuthToken(firebaseToken))
-      .then(() => fetchAccount())
       .then(() => {
         toast.success('Login Successfully');
         this.props.history.push('/');

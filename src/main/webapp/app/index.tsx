@@ -11,12 +11,12 @@ import ErrorBoundary from './shared/error/error-boundary';
 import AppComponent from './app';
 import { loadIcons } from './config/icon-loader';
 import { AUTH_TOKEN_KEY, FIREBASE_TOKEN_KEY } from 'app/config/constants';
-import { logout } from './shared/services/auth.service';
+import { handleUnauthenticated } from './shared/services/auth.service';
 
 const devTools = process.env.NODE_ENV === 'development' ? <DevTools /> : null;
 
 registerLocale(store);
-setupAxiosInterceptors(logout);
+setupAxiosInterceptors(handleUnauthenticated);
 loadIcons();
 
 const rootEl = document.getElementById('root');

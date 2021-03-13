@@ -1,5 +1,4 @@
 export const ACTION_TYPES = {
-  LOGIN: 'authentication/LOGIN',
   LOGOUT: 'authentication/LOGOUT',
   FETCH_ACCOUNT: 'authentication/FETCH_ACCOUNT'
 };
@@ -28,11 +27,6 @@ const initialState: IAuthenticationInitialState = {
 
 export default (state: IAuthenticationInitialState = initialState, action): IAuthenticationInitialState => {
   switch (action.type) {
-    case ACTION_TYPES.LOGIN:
-      return {
-        ...state,
-        isAuthenticated: true
-      };
     case ACTION_TYPES.LOGOUT:
       return {
         ...state,
