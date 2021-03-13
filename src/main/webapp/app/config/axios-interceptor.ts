@@ -20,7 +20,10 @@ function setupAxiosInterceptors(onUnauthenticated: () => Promise<void>) {
     const status = err.status || (err.response ? err.response.status : 0);
     if (status === 401) {
       await onUnauthenticated();
+      await axios.request(err.config);
+      return;
     }
+    Promise.reject(err);
   };
   axios.interceptors.request.use(onRequestSuccess);
   axios.interceptors.response.use(onResponseSuccess, onResponseError);

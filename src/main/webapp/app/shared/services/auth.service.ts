@@ -28,15 +28,13 @@ export function logout(): void {
 }
 
 export async function handleUnauthenticated(): Promise<void> {
-  const token = Storage.local.get(ACCESS_TOKEN_KEY) || Storage.session.get(ACCESS_TOKEN_KEY);
   const refreshToken = Storage.local.get(REFRESH_TOKEN_KEY) || Storage.session.get(REFRESH_TOKEN_KEY);
-  if (token && refreshToken) {
+  if (refreshToken) {
     let response = null;
     try {
       response = await axios.post(`/api/authenticate/refresh?refreshToken=${refreshToken}`);
     } catch (err) {
-      Storage.local.remove(ACCESS_TOKEN_KEY);
-      Storage.local.remove(REFRESH_TOKEN_KEY);
+      logout();
       throw err;
     }
     const responseBody: IAuthToken = response.data;
