@@ -4,8 +4,6 @@ import Loadable from 'react-loadable';
 
 import Home from 'app/modules/home/home';
 import Entities from 'app/entities';
-import Events from 'app/entities/event/event';
-import EventDetails from 'app/entities/event/event-detail';
 import PrivateRoute from 'app/shared/auth/private-route';
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import PageNotFound from 'app/shared/error/page-not-found';
@@ -31,8 +29,6 @@ const Routes = () => (
       <ErrorBoundaryRoute exact path="/auth/email/login" component={AuthEmailLogin} />
       <ErrorBoundaryRoute exact path="/auth/email/register" component={AuthEmailRegister} />
       <ErrorBoundaryRoute exact path="/auth/email/reset" component={AuthEmailReset} />
-      <ErrorBoundaryRoute exact path="/events/upcoming" component={Events} />
-      <ErrorBoundaryRoute exact path="/events/:id/details" component={EventDetails} />
       <PrivateRoute exact path="/profile" component={UserProfile} />
       <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
       <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.USER]} />
