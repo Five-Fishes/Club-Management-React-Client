@@ -3,7 +3,7 @@ import './event-details.scss';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button } from 'reactstrap';
+import { Button, Container } from 'reactstrap';
 // tslint:disable-next-line:no-unused-variable
 import { Translate, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -26,7 +26,7 @@ export class EventDetail extends React.Component<IEventDetailProps> {
   render() {
     const { eventEntity } = this.props;
     return (
-      <div className="event-details mt-3 mb-4">
+      <Container>
         <h1>Event Details</h1>
         <div className="my-4">
           <CustomTab currentTab="Details" tabList={eventTabList} />
@@ -73,7 +73,7 @@ export class EventDetail extends React.Component<IEventDetailProps> {
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     );
   }
 }
