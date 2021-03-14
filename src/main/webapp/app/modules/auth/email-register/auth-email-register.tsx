@@ -97,7 +97,6 @@ export class AuthEmailRegister extends React.Component<IAuthEmailRegisterProps, 
                 <Link to="/auth/login" className="text-decoration-none">
                   Already have an account? Sign in now
                 </Link>
-                isSubmitting
                 <Button type="submit" className="w-100 mt-4" disabled={this.state.isSubmitting}>
                   Create Account
                 </Button>
