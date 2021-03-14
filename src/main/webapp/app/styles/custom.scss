@@ -1,0 +1,35 @@
+.text-tertiary {
+  color: var(--tertiary) !important;
+}
+
+.bg-tertiary {
+  background-color: var(--tertiary) !important;
+  color: white;
+}
+
+.text-action {
+  color: var(--action) !important;
+}
+
+.bg-action {
+  background-color: var(--action) !important;
+  color: white;
+}
+
+.text-cancel {
+  color: var(--cancel) !important;
+}
+
+.bg-cancel {
+  background-color: var(--cancel) !important;
+  color: white;
+}
+
+.mobile-fullWidth {
+  width: 80%;
+}
+@media (min-width: 480px) {
+  .mobile-fullWidth {
+    max-width: 400px;
+  }
+}

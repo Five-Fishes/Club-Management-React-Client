@@ -8,7 +8,7 @@ import { CardImg, Container, Button, Row, Col } from 'reactstrap';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import firebase from 'firebase';
 import { toast } from 'react-toastify';
-import { fetchAccount, getAuthToken, socialLogin } from 'app/shared/services/auth.service';
+import { getAuthToken, socialLogin } from 'app/shared/services/auth.service';
 
 export interface IAuthLoginProps extends StateProps, RouteComponentProps<{}> {}
 
@@ -35,7 +35,6 @@ export class AuthLogin extends React.Component<IAuthLoginProps> {
   async handleGoogleLogin() {
     socialLogin('google')
       .then(firebaseToken => getAuthToken(firebaseToken))
-      .then(() => fetchAccount())
       .then(() => toast.success('Login Successfully'))
       .catch(error => {
         const firebaseError = error as firebase.FirebaseError;
@@ -47,7 +46,6 @@ export class AuthLogin extends React.Component<IAuthLoginProps> {
   handleFacebookLogin() {
     socialLogin('facebook')
       .then(firebaseToken => getAuthToken(firebaseToken))
-      .then(() => fetchAccount())
       .then(() => toast.success('Login Successfully'))
       .catch(error => {
         const firebaseError = error as firebase.FirebaseError;

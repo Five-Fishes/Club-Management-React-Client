@@ -25,5 +25,6 @@ export const APP_WHOLE_NUMBER_FORMAT = '0,0';
 export const APP_TWO_DIGITS_AFTER_POINT_NUMBER_FORMAT = '0,0.[00]';
 
 export const FIREBASE_AUTH_HEADER_NAME = 'X-Authorization-Firebase';
-export const AUTH_TOKEN_KEY = 'authToken';
+export const ACCESS_TOKEN_KEY = 'accessToken';
+export const REFRESH_TOKEN_KEY = 'refreshToken';
 export const FIREBASE_TOKEN_KEY = 'firebaseToken';
