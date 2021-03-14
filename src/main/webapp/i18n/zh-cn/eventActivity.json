@@ -17,11 +17,11 @@
         "title": "Event Activity"
       },
       "eventId": "Event Id",
-      "startDate": "Start Date",
-      "durationInDay": "Duration In Day",
-      "name": "Name",
-      "description": "Description",
-      "tab": "Timeline"
+      "startDate": "开始日期",
+      "durationInDay": "为期（天数）",
+      "name": "名程",
+      "description": "描述",
+      "tab": "Activities"
     }
   }
 }

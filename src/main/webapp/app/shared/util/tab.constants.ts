@@ -12,6 +12,11 @@ export const eventTabList: ITabInfo[] = [
     tabRoute: '/event/checklist'
   },
   {
+    tabName: 'Activities',
+    tabTranslateKey: 'clubmanagementApp.eventActivity.tab',
+    tabRoute: '/entity/event-activity/event/1'
+  },
+  {
     tabName: 'Budget',
     tabTranslateKey: 'clubmanagementApp.eventBudget.tab',
     tabRoute: '/event/budget'

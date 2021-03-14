@@ -18,10 +18,10 @@
       },
       "eventId": "Event Id",
       "startDate": "Start Date",
-      "durationInDay": "Duration In Day",
+      "durationInDay": "Duration (In Day)",
       "name": "Name",
       "description": "Description",
-      "tab": "Timeline"
+      "tab": "Activities"
     }
   }
 }

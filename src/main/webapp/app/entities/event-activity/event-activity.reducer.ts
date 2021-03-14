@@ -13,7 +13,9 @@ export const ACTION_TYPES = {
   UPDATE_EVENTACTIVITY: 'eventActivity/UPDATE_EVENTACTIVITY',
   DELETE_EVENTACTIVITY: 'eventActivity/DELETE_EVENTACTIVITY',
   SET_BLOB: 'eventActivity/SET_BLOB',
-  RESET: 'eventActivity/RESET'
+  RESET: 'eventActivity/RESET',
+  SET_EVENT_ACTIVITY_ID: 'SET_EVENT_ACTIVITY_ID',
+  SET_SHOW_ACTION_OPTIONS: 'SET_SHOW_ACTION_OPTIONS'
 };
 
 const initialState = {
@@ -23,7 +25,9 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
+  selectedEventActivityId: 0,
+  showActionOptions: false
 };
 
 export type EventActivityState = Readonly<typeof initialState>;
@@ -99,6 +103,18 @@ export default (state: EventActivityState = initialState, action): EventActivity
           [name + 'ContentType']: contentType
         }
       };
+    case ACTION_TYPES.SET_EVENT_ACTIVITY_ID:
+      const { eventActivityId } = action.payload;
+      return {
+        ...state,
+        selectedEventActivityId: eventActivityId
+      };
+    case ACTION_TYPES.SET_SHOW_ACTION_OPTIONS:
+      const { show } = action.payload;
+      return {
+        ...state,
+        showActionOptions: show
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -162,6 +178,20 @@ export const setBlob = (name, data, contentType?) => ({
     name,
     data,
     contentType
+  }
+});
+
+export const setSelectedEventActivityId = eventActivityId => ({
+  type: ACTION_TYPES.SET_EVENT_ACTIVITY_ID,
+  payload: {
+    eventActivityId
+  }
+});
+
+export const setShowActionOptions = show => ({
+  type: ACTION_TYPES.SET_SHOW_ACTION_OPTIONS,
+  payload: {
+    show
   }
 });
 
