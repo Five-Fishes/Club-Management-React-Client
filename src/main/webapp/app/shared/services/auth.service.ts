@@ -1,27 +1,47 @@
 import axios from 'axios';
 import { Storage } from 'react-jhipster';
 import { firebaseAuth, firebaseGoogleAuthProvider, firebaseFacebookAuthProvider } from 'app/config/firebase';
-import { FIREBASE_AUTH_HEADER_NAME, AUTH_TOKEN_KEY, FIREBASE_TOKEN_KEY } from 'app/config/constants';
+import { FIREBASE_AUTH_HEADER_NAME, ACCESS_TOKEN_KEY, FIREBASE_TOKEN_KEY, REFRESH_TOKEN_KEY } from 'app/config/constants';
 import store from 'app/config/store';
 import { ACTION_TYPES } from '../reducers/authentication';
 import { ILogin } from '../model/auth/login.model';
+import { IAuthToken } from '../model/auth/auth-token.model';
 
 export async function getAuthToken(firebaseToken: string): Promise<void> {
   const headers = {
     [FIREBASE_AUTH_HEADER_NAME]: firebaseToken
   };
-  const response = await axios.post('/api/firebase/authenticate', null, {
+  const response = await axios.post('/api/authenticate/firebase', null, {
     headers
   });
-  const jwtToken: string = response.data['id_token'];
-  Storage.local.set(AUTH_TOKEN_KEY, jwtToken);
-  store.dispatch({ type: ACTION_TYPES.LOGIN });
+  const responseBody: IAuthToken = response.data;
+  Storage.local.set(ACCESS_TOKEN_KEY, responseBody.accessToken);
+  Storage.local.set(REFRESH_TOKEN_KEY, responseBody.refreshToken);
+  await fetchAccount();
 }
 
 export function logout(): void {
   Storage.local.remove(FIREBASE_TOKEN_KEY);
-  Storage.local.remove(AUTH_TOKEN_KEY);
+  Storage.local.remove(ACCESS_TOKEN_KEY);
+  Storage.local.remove(REFRESH_TOKEN_KEY);
   store.dispatch({ type: ACTION_TYPES.LOGOUT });
+}
+
+export async function handleUnauthenticated(): Promise<void> {
+  const refreshToken = Storage.local.get(REFRESH_TOKEN_KEY) || Storage.session.get(REFRESH_TOKEN_KEY);
+  if (refreshToken) {
+    let response = null;
+    try {
+      response = await axios.post(`/api/authenticate/refresh?refreshToken=${refreshToken}`);
+    } catch (err) {
+      logout();
+      throw err;
+    }
+    const responseBody: IAuthToken = response.data;
+    Storage.local.set(ACCESS_TOKEN_KEY, responseBody.accessToken);
+    Storage.local.set(REFRESH_TOKEN_KEY, responseBody.refreshToken);
+    await fetchAccount();
+  }
 }
 
 const SocialProvider = {
