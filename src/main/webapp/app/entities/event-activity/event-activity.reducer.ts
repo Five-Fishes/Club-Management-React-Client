@@ -5,6 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IEventActivity, defaultValue } from 'app/shared/model/event-activity.model';
+import { IGetAllByEventId } from 'app/shared/type/event-custom-action';
 
 export const ACTION_TYPES = {
   FETCH_EVENTACTIVITY_LIST: 'eventActivity/FETCH_EVENTACTIVITY_LIST',
@@ -130,6 +131,14 @@ const apiUrl = 'api/event-activities';
 
 export const getEntities: ICrudGetAllAction<IEventActivity> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_EVENTACTIVITY_LIST,
+    payload: axios.get<IEventActivity>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
+
+export const getEventActivitiesByEventId: IGetAllByEventId<IEventActivity> = (eventId, page, size, sort) => {
+  const requestUrl = `${apiUrl}/event/${eventId}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_EVENTACTIVITY_LIST,
     payload: axios.get<IEventActivity>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)

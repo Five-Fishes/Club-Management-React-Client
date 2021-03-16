@@ -49,9 +49,8 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
 
   getEntities = () => {
     const eventId = this.props.match.params.eventId;
-    window.console.log('Event Id: ', eventId);
     const { activePage, itemsPerPage, sort, order } = this.state;
-    this.props.getChecklistsByEventId(eventId, activePage - 1, itemsPerPage, `${sort},${order}`);
+    this.props.getChecklistsByEventId(Number.parseInt(eventId, 10), activePage - 1, itemsPerPage, `${sort},${order}`);
   };
 
   showCardAction = (eventChecklistId: number) => {

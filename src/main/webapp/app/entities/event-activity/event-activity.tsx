@@ -7,12 +7,13 @@ import { Translate, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntities, setSelectedEventActivityId, setShowActionOptions } from './event-activity.reducer';
+import { getEventActivitiesByEventId, setSelectedEventActivityId, setShowActionOptions } from './event-activity.reducer';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import '../../styles/event-module.scss';
 import { CustomTab } from 'app/shared/components/customTab/custom-tab';
 import { eventTabList } from 'app/shared/util/tab.constants';
 import { ListingCard } from 'app/shared/components/listing-card/listing-card';
+import { convertDateTimeFromServerToLocaleDate } from 'app/shared/util/date-utils';
 
 export interface IEventActivityProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string; eventId: string }> {}
 
@@ -45,8 +46,9 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
   handlePagination = activePage => this.setState({ activePage }, () => this.sortEntities());
 
   getEntities = () => {
+    const { eventId } = this.props.match.params;
     const { activePage, itemsPerPage, sort, order } = this.state;
-    this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
+    this.props.getEventActivitiesByEventId(Number.parseInt(eventId, 10), activePage - 1, itemsPerPage, `${sort},${order}`);
   };
 
   showCardAction = (eventActivityId: number) => {
@@ -86,7 +88,7 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
                 <span className="card-item d-block mb-2">
                   <span>
                     <Translate contentKey="clubmanagementApp.eventActivity.startDate">Start Date</Translate>:{' '}
-                    <span className="font-weight-bolder text-dark">{eventActivity.startDate}</span>
+                    <span className="font-weight-bolder text-dark">{convertDateTimeFromServerToLocaleDate(eventActivity.startDate)}</span>
                   </span>
                 </span>
                 <span className="card-item d-block mb-2">
@@ -156,7 +158,7 @@ const mapStateToProps = ({ eventActivity }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getEntities,
+  getEventActivitiesByEventId,
   setSelectedEventActivityId,
   setShowActionOptions
 };
