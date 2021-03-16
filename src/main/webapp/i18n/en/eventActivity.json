@@ -3,6 +3,8 @@
     "eventActivity": {
       "home": {
         "title": "Event Activities",
+        "createTitle": "Create Event Activity",
+        "updateTitle": "Update Event Activity",
         "createLabel": "Create a new Event Activity",
         "createOrEditLabel": "Create or edit a Event Activity",
         "notFound": "No Event Activity found"

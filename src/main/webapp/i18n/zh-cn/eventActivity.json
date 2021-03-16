@@ -3,6 +3,8 @@
     "eventActivity": {
       "home": {
         "title": "Event Activities",
+        "createTitle": "创建 Event Activity",
+        "updateTitle": "更新 Event Activity",
         "createLabel": "创建新 Event Activity",
         "createOrEditLabel": "创建或编辑 Event Activity",
         "notFound": "No Event Activity found"

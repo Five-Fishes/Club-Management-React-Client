@@ -6,6 +6,7 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 
 import { IEventActivity, defaultValue } from 'app/shared/model/event-activity.model';
 import { IGetAllByEventId } from 'app/shared/type/event-custom-action';
+import { deprecate } from 'util';
 
 export const ACTION_TYPES = {
   FETCH_EVENTACTIVITY_LIST: 'eventActivity/FETCH_EVENTACTIVITY_LIST',
@@ -158,7 +159,7 @@ export const createEntity: ICrudPutAction<IEventActivity> = entity => async disp
     type: ACTION_TYPES.CREATE_EVENTACTIVITY,
     payload: axios.post(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  dispatch(getEventActivitiesByEventId(entity.eventId));
   return result;
 };
 
@@ -167,7 +168,7 @@ export const updateEntity: ICrudPutAction<IEventActivity> = entity => async disp
     type: ACTION_TYPES.UPDATE_EVENTACTIVITY,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  dispatch(getEventActivitiesByEventId(entity.eventId));
   return result;
 };
 

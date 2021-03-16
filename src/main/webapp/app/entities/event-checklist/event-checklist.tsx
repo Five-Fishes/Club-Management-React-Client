@@ -56,7 +56,6 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
   showCardAction = (eventChecklistId: number) => {
     this.props.setSelectedEventChecklistId(eventChecklistId);
     this.props.setShowActionOptions(true);
-    window.console.log('SHOW ', this.props.match.path);
   };
 
   toggleShowOptions = () => {
