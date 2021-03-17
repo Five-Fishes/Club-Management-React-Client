@@ -2,9 +2,10 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from 'reactstrap';
 import { IEventCrew } from 'app/shared/model/event-crew.model';
+import { IEventAttendee } from 'app/shared/model/event-attendee.model';
 
 export interface IEventTableRowProps {
-  user: IEventCrew;
+  user: IEventCrew | IEventAttendee | any;
   index: number;
   openModal: Function;
 }
@@ -20,10 +21,10 @@ export class EventTableRow extends React.Component<IEventTableRowProps> {
     const { user, index } = this.props;
 
     return (
-      <tr key={user.id}>
+      <tr>
         <td scope="row">{index + 1}</td>
         <td>{user.name}</td>
-        <td>{user.role}</td>
+        <td>{user.role ? user.role : user.year}</td>
         <td>{user.provideTransport ? <FontAwesomeIcon icon="car" /> : null}</td>
         <td>
           <Button color="Link" className="icon-btn" onClick={this.contactUser}>
