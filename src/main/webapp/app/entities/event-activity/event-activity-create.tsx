@@ -7,7 +7,10 @@ import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 import { createEntity, reset } from './event-activity.reducer';
+import { getEntity as getEventEntity } from '../event/event.reducer';
 import { convertDateTimeToServer } from 'app/shared/util/date-utils';
+import moment from 'moment';
+import { APP_LOCAL_DATETIME_FORMAT } from 'app/config/constants';
 
 export interface IEventActivityCreateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
@@ -31,6 +34,7 @@ export class EventActivityCreate extends React.Component<IEventActivityCreatePro
 
   componentDidMount() {
     this.props.reset();
+    this.props.getEventEntity(this.props.match.params.eventId);
   }
 
   saveEntity = (event, errors, values) => {
@@ -53,7 +57,7 @@ export class EventActivityCreate extends React.Component<IEventActivityCreatePro
 
   render() {
     const { eventId } = this.props.match.params;
-    const { eventActivityEntity, loading, updating, errorMessage } = this.props;
+    const { eventActivityEntity, loading, updating, errorMessage, eventEntity } = this.props;
 
     const { description } = eventActivityEntity;
 
@@ -89,7 +93,17 @@ export class EventActivityCreate extends React.Component<IEventActivityCreatePro
                     type="datetime-local"
                     className="form-control"
                     name="startDate"
-                    placeholder={'YYYY-MM-DD HH:mm'}
+                    placeholder={'YYYY-MM-DDTHH:mm'}
+                    validate={{
+                      dateRange: {
+                        format: APP_LOCAL_DATETIME_FORMAT,
+                        start: { value: moment().format(APP_LOCAL_DATETIME_FORMAT), errorMessage: 'Activity Date cannot early than today' },
+                        end: {
+                          value: eventEntity.hasOwnProperty('endDate') ? eventEntity.endDate : '2030-12-30T10:00',
+                          errorMessage: 'Activity Date cannot later than Event Date'
+                        }
+                      }
+                    }}
                     value={null}
                   />
                 </AvGroup>
@@ -133,11 +147,13 @@ const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.eventActivity.loading,
   updating: storeState.eventActivity.updating,
   updateSuccess: storeState.eventActivity.updateSuccess,
-  errorMessage: storeState.eventActivity.errorMessage
+  errorMessage: storeState.eventActivity.errorMessage,
+  eventEntity: storeState.event.entity
 });
 
 const mapDispatchToProps = {
   createEntity,
+  getEventEntity,
   reset
 };
 
