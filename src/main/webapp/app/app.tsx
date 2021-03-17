@@ -47,12 +47,10 @@ export class App extends React.Component<IAppProps> {
               isSwaggerEnabled={this.props.isSwaggerEnabled}
             />
           </ErrorBoundary>
-          <div className="container-fluid view-container" id="app-view-container">
-            <Card className="jh-card">
-              <ErrorBoundary>
-                <AppRoutes />
-              </ErrorBoundary>
-            </Card>
+          <div className="container-fluid view-container" id="app-view-container" style={{ padding: '30px' }}>
+            <ErrorBoundary>
+              <AppRoutes />
+            </ErrorBoundary>
           </div>
           <Footer />
         </div>
