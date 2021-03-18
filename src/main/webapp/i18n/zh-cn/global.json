@@ -45,6 +45,9 @@
         "database": "数据库",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
       },
+      "module": {
+        "event": "活动"
+      },
       "language": "语言"
     },
     "form": {

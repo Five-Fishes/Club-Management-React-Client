@@ -81,7 +81,9 @@ export class Event extends React.Component<IEventProps, IEventState> {
     return (
       <Container>
         <EventModal isOpen={this.state.modalIsOpen} eventId={this.state.eventId} toggleModal={this.closeModal} />
-        <FloatButton />
+        <Link to="/entity/event/new">
+          <FloatButton />
+        </Link>
         <h1>Events</h1>
         <div className="my-3">
           <CustomTab currentTab="Upcoming" tabList={eventMainTabList} />

@@ -83,12 +83,15 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
       <div>
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.event.home.createOrEditLabel">
-              <Translate contentKey="clubmanagementApp.event.home.createOrEditLabel">Create or edit a Event</Translate>
+            <h2
+              id="clubmanagementApp.event.home.createOrEditLabel"
+              style={{ fontFamily: 'Roboto', fontWeight: 500, fontSize: '28px', color: '#0E516D' }}
+            >
+              <Translate contentKey="clubmanagementApp.event.home.createOrEditLabel">Create New Event</Translate>
             </h2>
           </Col>
         </Row>
-        <Row className="justify-content-center">
+        <Row className="justify-content-center" style={{ paddingBottom: '30px' }}>
           <Col md="8">
             {loading ? (
               <p>Loading...</p>
@@ -160,7 +163,13 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
                 </AvGroup>
                 <AvGroup>
                   <Label id="requiredTransportLabel" check>
-                    <AvInput id="event-requiredTransport" type="checkbox" className="form-control" name="requiredTransport" />
+                    <AvInput
+                      id="event-requiredTransport"
+                      type="checkbox"
+                      className="form-control"
+                      name="requiredTransport"
+                      style={{ height: '20px', marginTop: '0px', marginLeft: '150px' }}
+                    />
                     <Translate contentKey="clubmanagementApp.event.requiredTransport">Required Transport</Translate>
                   </Label>
                 </AvGroup>
@@ -182,11 +191,17 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
                 </AvGroup>
                 <AvGroup>
                   <Label id="imageUrlLabel" for="event-imageUrl">
-                    <Translate contentKey="clubmanagementApp.event.imageUrl">Image Url</Translate>
+                    <Translate contentKey="clubmanagementApp.event.image">Image</Translate>
                   </Label>
                   <AvField id="event-imageUrl" type="text" name="imageUrl" />
                 </AvGroup>
                 <AvGroup>
+                  <Label id="imageUrlLabel" for="event-imageUrl">
+                    <Translate contentKey="clubmanagementApp.event.image">Image</Translate>
+                  </Label>
+                  <input type="file" accept="image/*" />
+                </AvGroup>
+                {/* <AvGroup>
                   <Label id="fileNameLabel" for="event-fileName">
                     <Translate contentKey="clubmanagementApp.event.fileName">File Name</Translate>
                   </Label>
@@ -197,20 +212,20 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
                     <Translate contentKey="clubmanagementApp.event.fileType">File Type</Translate>
                   </Label>
                   <AvField id="event-fileType" type="text" name="fileType" />
-                </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/event" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
+                </AvGroup> */}
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Button tag={Link} id="cancel-save" to="/entity/event" replace color="cancel" style={{ width: '150px' }}>
+                    {/* <FontAwesomeIcon icon="arrow-left" />
+                    &nbsp; */}
+                    <Translate contentKey="entity.action.cancel">Cancel</Translate>
+                  </Button>
                   &nbsp;
-                  <span className="d-none d-md-inline">
-                    <Translate contentKey="entity.action.back">Back</Translate>
-                  </span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp;
-                  <Translate contentKey="entity.action.save">Save</Translate>
-                </Button>
+                  <Button color="action" id="save-entity" type="submit" disabled={updating} style={{ width: '150px' }}>
+                    {/* <FontAwesomeIcon icon="save" />
+                    &nbsp; */}
+                    <Translate contentKey="entity.action.save">Save</Translate>
+                  </Button>
+                </div>
               </AvForm>
             )}
           </Col>

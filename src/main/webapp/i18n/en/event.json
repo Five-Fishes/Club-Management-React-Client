@@ -4,7 +4,7 @@
       "home": {
         "title": "Events",
         "createLabel": "Create a new Event",
-        "createOrEditLabel": "Create or edit a Event",
+        "createOrEditLabel": "Create New Event",
         "notFound": "No Event found"
       },
       "created": "A new Event is created with identifier {{ param }}",
@@ -27,7 +27,7 @@
       "fee": "Fee",
       "requiredTransport": "Required Transport",
       "status": "Status",
-      "imageUrl": "Image Url",
+      "image": "Image",
       "fileName": "File Name",
       "fileType": "File Type",
       "tab": "Details"
