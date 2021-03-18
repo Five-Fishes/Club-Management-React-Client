@@ -43,7 +43,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     const { currentLocale, isAuthenticated, isAdmin, isSwaggerEnabled } = this.props;
 
     const btn = (
-      <Button outline color="primary" aria-label="Menu" onClick={this.toggleMenu}>
+      <Button outline color="primary" aria-label="Menu" onClick={this.toggleMenu} style={{ background: 'white' }}>
         <FontAwesomeIcon icon="bars" />
       </Button>
     );
@@ -54,7 +54,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
       <div id="app-header">
         <LoadingBar className="loading-bar" />
         <Navbar dark className="h-100">
-          {btn}
+          {isAuthenticated && btn}
           <Brand />
           <Nav id="header-tabs" className="h-100 ml-auto">
             <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />

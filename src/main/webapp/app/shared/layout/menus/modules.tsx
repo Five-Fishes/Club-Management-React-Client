@@ -6,30 +6,55 @@ import { NavLink as Link } from 'react-router-dom';
 import { Translate, translate } from 'react-jhipster';
 import { NavDropdown } from './menu-components';
 
-const accountMenuItemsAuthenticated = (
-  <>
-    <Link to="/entity/event">link</Link>
-  </>
-);
-
-const accountMenuItems = (
-  <>
-    <MenuItem id="login-item" icon="sign-in-alt" to="/login">
-      <Translate contentKey="global.menu.account.login">Sign in</Translate>
-    </MenuItem>
-    <MenuItem icon="sign-in-alt" to="/entity/event">
-      <Translate contentKey="global.menu.account.register">Register</Translate>
-    </MenuItem>
-  </>
-);
-
 export const ModuleMenu = ({ isAuthenticated = false, button }) => (
   <div
     className="h-100"
-    style={{ height: '100vh', width: '50%', background: 'black', position: 'fixed', left: 0, top: 0, padding: 16, zIndex: 1000 }}
+    style={{
+      left: 0,
+      top: 0,
+      zIndex: 1001,
+      height: '100vh',
+      width: '100%',
+      position: 'fixed'
+    }}
   >
-    {button}
-    {isAuthenticated ? accountMenuItemsAuthenticated : accountMenuItems}
+    <div
+      style={{
+        background: 'black',
+        opacity: 0.5,
+        height: '100vh'
+      }}
+      onClick={() => {
+        button.props.onClick();
+      }}
+    />
+    <div
+      style={{
+        background: '#07ADE1',
+        left: 0,
+        top: 0,
+        position: 'absolute',
+        height: '100vh',
+        padding: '12px 16px',
+        minWidth: 325,
+        maxWidth: 325,
+        display: 'flex',
+        flexDirection: 'column'
+      }}
+    >
+      <div style={{ display: 'flex' }}>
+        <div>{button}</div>
+      </div>
+
+      <Link
+        to="/entity/event"
+        onClick={() => {
+          button.props.onClick();
+        }}
+      >
+        link
+      </Link>
+    </div>
   </div>
 );
 
