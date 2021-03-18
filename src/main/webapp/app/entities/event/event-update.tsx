@@ -13,6 +13,7 @@ import { IEvent } from 'app/shared/model/event.model';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
+import './events.scss';
 
 export interface IEventUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -81,17 +82,14 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
 
     return (
       <div>
-        <Row className="justify-content-center">
+        <Row className="justify-content-center event-horizontal-padding">
           <Col md="8">
-            <h2
-              id="clubmanagementApp.event.home.createOrEditLabel"
-              style={{ fontFamily: 'Roboto', fontWeight: 500, fontSize: '28px', color: '#0E516D' }}
-            >
+            <h2 className="event-page-title" id="clubmanagementApp.event.home.createOrEditLabel">
               <Translate contentKey="clubmanagementApp.event.home.createOrEditLabel">Create New Event</Translate>
             </h2>
           </Col>
         </Row>
-        <Row className="justify-content-center" style={{ paddingBottom: '30px' }}>
+        <Row className="justify-content-center event-horizontal-padding event-bottom-padding">
           <Col md="8">
             {loading ? (
               <p>Loading...</p>
@@ -213,14 +211,14 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
                   </Label>
                   <AvField id="event-fileType" type="text" name="fileType" />
                 </AvGroup> */}
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Button tag={Link} id="cancel-save" to="/entity/event" replace color="cancel" style={{ width: '150px' }}>
+                <div className="button-container">
+                  <Button className="event-button" tag={Link} id="cancel-save" to="/entity/event" replace color="cancel">
                     {/* <FontAwesomeIcon icon="arrow-left" />
                     &nbsp; */}
                     <Translate contentKey="entity.action.cancel">Cancel</Translate>
                   </Button>
                   &nbsp;
-                  <Button color="action" id="save-entity" type="submit" disabled={updating} style={{ width: '150px' }}>
+                  <Button className="event-button" color="action" id="save-entity" type="submit" disabled={updating}>
                     {/* <FontAwesomeIcon icon="save" />
                     &nbsp; */}
                     <Translate contentKey="entity.action.save">Save</Translate>

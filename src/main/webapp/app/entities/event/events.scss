@@ -20,3 +20,28 @@
 .event-title:hover {
   white-space: normal;
 }
+
+.event-bottom-padding {
+  padding-bottom: 30px;
+}
+
+.event-horizontal-padding {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.event-button {
+  width: 150px;
+}
+
+.event-page-title {
+  font-family: 'Roboto';
+  font-weight: 500;
+  font-size: 28px;
+  color: '#0E516D';
+}
+
+.button-container {
+  display: 'flex';
+  justify-content: 'space-between';
+}
