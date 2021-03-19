@@ -14,16 +14,9 @@ import { APP_LOCAL_DATETIME_FORMAT } from 'app/config/constants';
 
 export interface IEventActivityCreateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
-export interface IEventActivityCreateState {
-  isNew: boolean;
-}
-
-export class EventActivityCreate extends React.Component<IEventActivityCreateProps, IEventActivityCreateState> {
+export class EventActivityCreate extends React.Component<IEventActivityCreateProps> {
   constructor(props) {
     super(props);
-    this.state = {
-      isNew: !this.props.match.params || !this.props.match.params.id
-    };
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -94,6 +87,7 @@ export class EventActivityCreate extends React.Component<IEventActivityCreatePro
                     className="form-control"
                     name="startDate"
                     placeholder={'YYYY-MM-DDTHH:mm'}
+                    required
                     validate={{
                       dateRange: {
                         format: APP_LOCAL_DATETIME_FORMAT,
