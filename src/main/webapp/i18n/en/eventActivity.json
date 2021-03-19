@@ -13,7 +13,7 @@
       "updated": "A Event Activity is updated with identifier {{ param }}",
       "deleted": "A Event Activity is deleted with identifier {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Event Activity {{ id }}?"
+        "question": "Are you sure you want to delete Event Activity <b>{{ id }}</b>?"
       },
       "detail": {
         "title": "Event Activity"
