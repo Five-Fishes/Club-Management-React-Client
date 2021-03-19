@@ -2,30 +2,24 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
-import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
+import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, setFileData, byteSize, ICrudPutAction } from 'react-jhipster';
+import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
-import { getEntity, updateEntity, createEntity, setBlob, reset } from './event-activity.reducer';
-import { IEventActivity } from 'app/shared/model/event-activity.model';
-// tslint:disable-next-line:no-unused-variable
+import { getEntity, updateEntity } from './event-activity.reducer';
+import { getEntity as getEventEntity } from '../event/event.reducer';
+
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
+import { APP_LOCAL_DATETIME_FORMAT } from 'app/config/constants';
+import moment from 'moment';
 
-export interface IEventActivityUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IEventActivityUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
-export interface IEventActivityUpdateState {
-  isNew: boolean;
-}
-
-export class EventActivityUpdate extends React.Component<IEventActivityUpdateProps, IEventActivityUpdateState> {
+export class EventActivityUpdate extends React.Component<IEventActivityUpdateProps> {
   constructor(props) {
     super(props);
-    this.state = {
-      isNew: !this.props.match.params || !this.props.match.params.id
-    };
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -35,20 +29,9 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
   }
 
   componentDidMount() {
-    if (this.state.isNew) {
-      this.props.reset();
-    } else {
-      this.props.getEntity(this.props.match.params.id);
-    }
+    this.props.getEntity(this.props.match.params.id, this.props.match.params.eventId);
+    this.props.getEventEntity(this.props.match.params.eventId);
   }
-
-  onBlobChange = (isAnImage, name) => event => {
-    setFileData(event, (contentType, data) => this.props.setBlob(name, data, contentType), isAnImage);
-  };
-
-  clearBlob = name => () => {
-    this.props.setBlob(name, undefined, undefined);
-  };
 
   saveEntity = (event, errors, values) => {
     values.startDate = convertDateTimeToServer(values.startDate);
@@ -59,31 +42,24 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
         ...eventActivityEntity,
         ...values
       };
-
-      if (this.state.isNew) {
-        this.props.createEntity(entity);
-      } else {
-        this.props.updateEntity(entity);
-      }
+      this.props.updateEntity(entity);
     }
   };
 
   handleClose = () => {
-    this.props.history.push('/entity/event-activity');
+    this.props.history.push(`/entity/event-activity/event/${this.props.match.params.eventId}`);
   };
 
   render() {
-    const { eventActivityEntity, loading, updating } = this.props;
-    const { isNew } = this.state;
-
-    const { description } = eventActivityEntity;
+    const { eventActivityEntity, loading, updating, errorMessage, eventEntity } = this.props;
+    const { eventId } = this.props.match.params;
 
     return (
       <div>
         <Row className="justify-content-center">
           <Col md="8">
             <h2 id="clubmanagementApp.eventActivity.home.createOrEditLabel">
-              <Translate contentKey="clubmanagementApp.eventActivity.home.createOrEditLabel">Create or edit a EventActivity</Translate>
+              <Translate contentKey="clubmanagementApp.eventActivity.home.updateTitle">Update Event Activity</Translate>
             </h2>
           </Col>
         </Row>
@@ -92,20 +68,12 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <AvForm model={isNew ? {} : eventActivityEntity} onSubmit={this.saveEntity}>
-                {!isNew ? (
-                  <AvGroup>
-                    <Label for="event-activity-id">
-                      <Translate contentKey="global.field.id">ID</Translate>
-                    </Label>
-                    <AvInput id="event-activity-id" type="text" className="form-control" name="id" required readOnly />
-                  </AvGroup>
-                ) : null}
+              <AvForm model={eventActivityEntity} onSubmit={this.saveEntity}>
                 <AvGroup>
-                  <Label id="eventIdLabel" for="event-activity-eventId">
-                    <Translate contentKey="clubmanagementApp.eventActivity.eventId">Event Id</Translate>
+                  <Label id="nameLabel" for="event-activity-name">
+                    <Translate contentKey="clubmanagementApp.eventActivity.name">Name</Translate>
                   </Label>
-                  <AvField id="event-activity-eventId" type="string" className="form-control" name="eventId" />
+                  <AvField id="event-activity-name" type="text" name="name" />
                 </AvGroup>
                 <AvGroup>
                   <Label id="startDateLabel" for="event-activity-startDate">
@@ -116,8 +84,19 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
                     type="datetime-local"
                     className="form-control"
                     name="startDate"
-                    placeholder={'YYYY-MM-DD HH:mm'}
-                    value={isNew ? null : convertDateTimeFromServer(this.props.eventActivityEntity.startDate)}
+                    placeholder={'YYYY-MM-DDTHH:mm'}
+                    required
+                    validate={{
+                      dateRange: {
+                        format: APP_LOCAL_DATETIME_FORMAT,
+                        start: { value: moment().format(APP_LOCAL_DATETIME_FORMAT), errorMessage: 'Activity Date cannot early than today' },
+                        end: {
+                          value: eventEntity.hasOwnProperty('endDate') ? eventEntity.endDate : '2030-12-30T10:00',
+                          errorMessage: 'Activity Date cannot later than Event Date'
+                        }
+                      }
+                    }}
+                    value={convertDateTimeFromServer(this.props.eventActivityEntity.startDate)}
                   />
                 </AvGroup>
                 <AvGroup>
@@ -127,30 +106,25 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
                   <AvField id="event-activity-durationInDay" type="text" name="durationInDay" />
                 </AvGroup>
                 <AvGroup>
-                  <Label id="nameLabel" for="event-activity-name">
-                    <Translate contentKey="clubmanagementApp.eventActivity.name">Name</Translate>
-                  </Label>
-                  <AvField id="event-activity-name" type="text" name="name" />
-                </AvGroup>
-                <AvGroup>
                   <Label id="descriptionLabel" for="event-activity-description">
                     <Translate contentKey="clubmanagementApp.eventActivity.description">Description</Translate>
                   </Label>
                   <AvInput id="event-activity-description" type="textarea" name="description" />
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/event-activity" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
-                  &nbsp;
-                  <span className="d-none d-md-inline">
+                <span className="text-error">{errorMessage ? errorMessage.response.data.detail : ''}</span>
+                <div className="text-center mx-4 d-flex justify-content-between justify-content-md-center mb-2">
+                  <Button tag={Link} id="cancel-save" to={`/entity/event-activity/event/${eventId}`} replace color="cancel">
+                    <FontAwesomeIcon icon="arrow-left" />
+                    &nbsp;
                     <Translate contentKey="entity.action.back">Back</Translate>
-                  </span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
+                  </Button>
                   &nbsp;
-                  <Translate contentKey="entity.action.save">Save</Translate>
-                </Button>
+                  <Button color="action" id="save-entity" type="submit" disabled={updating}>
+                    <FontAwesomeIcon icon="save" />
+                    &nbsp;
+                    <Translate contentKey="entity.action.update">Update</Translate>
+                  </Button>
+                </div>
               </AvForm>
             )}
           </Col>
@@ -164,15 +138,15 @@ const mapStateToProps = (storeState: IRootState) => ({
   eventActivityEntity: storeState.eventActivity.entity,
   loading: storeState.eventActivity.loading,
   updating: storeState.eventActivity.updating,
-  updateSuccess: storeState.eventActivity.updateSuccess
+  updateSuccess: storeState.eventActivity.updateSuccess,
+  errorMessage: storeState.eventActivity.errorMessage,
+  eventEntity: storeState.event.entity
 });
 
 const mapDispatchToProps = {
   getEntity,
   updateEntity,
-  setBlob,
-  createEntity,
-  reset
+  getEventEntity
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

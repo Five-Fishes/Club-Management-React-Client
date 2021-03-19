@@ -9,15 +9,15 @@ import { IEventActivity } from 'app/shared/model/event-activity.model';
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './event-activity.reducer';
 
-export interface IEventActivityDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IEventActivityDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
 export class EventActivityDeleteDialog extends React.Component<IEventActivityDeleteDialogProps> {
   componentDidMount() {
-    this.props.getEntity(this.props.match.params.id);
+    this.props.getEntity(this.props.match.params.id, this.props.match.params.eventId);
   }
 
   confirmDelete = event => {
-    this.props.deleteEntity(this.props.eventActivityEntity.id);
+    this.props.deleteEntity(this.props.match.params.id, this.props.match.params.eventId);
     this.handleClose(event);
   };
 
@@ -33,18 +33,18 @@ export class EventActivityDeleteDialog extends React.Component<IEventActivityDel
         <ModalHeader toggle={this.handleClose}>
           <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
         </ModalHeader>
-        <ModalBody id="clubmanagementApp.eventActivity.delete.question">
-          <Translate contentKey="clubmanagementApp.eventActivity.delete.question" interpolate={{ id: eventActivityEntity.id }}>
+        <ModalBody id="clubmanagementApp.eventActivity.delete.question" className="text-center">
+          <Translate contentKey="clubmanagementApp.eventActivity.delete.question" interpolate={{ id: eventActivityEntity.name }}>
             Are you sure you want to delete this EventActivity?
           </Translate>
         </ModalBody>
-        <ModalFooter>
+        <ModalFooter className="justify-content-between mx-3">
           <Button color="secondary" onClick={this.handleClose}>
             <FontAwesomeIcon icon="ban" />
             &nbsp;
             <Translate contentKey="entity.action.cancel">Cancel</Translate>
           </Button>
-          <Button id="jhi-confirm-delete-eventActivity" color="danger" onClick={this.confirmDelete}>
+          <Button id="jhi-confirm-delete-eventActivity" color="cancel" onClick={this.confirmDelete}>
             <FontAwesomeIcon icon="trash" />
             &nbsp;
             <Translate contentKey="entity.action.delete">Delete</Translate>

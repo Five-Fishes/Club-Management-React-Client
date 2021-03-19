@@ -5,7 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IEventActivity, defaultValue } from 'app/shared/model/event-activity.model';
-import { IGetAllByEventId } from 'app/shared/type/event-custom-action';
+import { IGetActionWithEventId, IGetAllByEventId, IDeleteActionWithEventId } from 'app/shared/type/event-custom-action';
 import { deprecate } from 'util';
 
 export const ACTION_TYPES = {
@@ -146,8 +146,8 @@ export const getEventActivitiesByEventId: IGetAllByEventId<IEventActivity> = (ev
   };
 };
 
-export const getEntity: ICrudGetAction<IEventActivity> = id => {
-  const requestUrl = `${apiUrl}/${id}`;
+export const getEntity: IGetActionWithEventId<IEventActivity> = (id, eventId) => {
+  const requestUrl = `${apiUrl}/${id}/event/${eventId}`;
   return {
     type: ACTION_TYPES.FETCH_EVENTACTIVITY,
     payload: axios.get<IEventActivity>(requestUrl)
@@ -172,13 +172,13 @@ export const updateEntity: ICrudPutAction<IEventActivity> = entity => async disp
   return result;
 };
 
-export const deleteEntity: ICrudDeleteAction<IEventActivity> = id => async dispatch => {
+export const deleteEntity: IDeleteActionWithEventId<IEventActivity> = (id, eventId) => async dispatch => {
   const requestUrl = `${apiUrl}/${id}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_EVENTACTIVITY,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
+  dispatch(getEventActivitiesByEventId(eventId as number));
   return result;
 };
 
