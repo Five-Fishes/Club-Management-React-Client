@@ -10,11 +10,11 @@ import { EventTable } from 'app/shared/components/eventTable/EventTable';
 import { IEventAttendee } from 'app/shared/model/event-attendee.model';
 
 const crewList: IEventCrew[] = [
-  { id: 1, name: 'Chan Ka Chun', role: EventCrewRole.HEAD, provideTransport: false, contactNumber: '12345' },
-  { id: 2, name: 'Clement Saw', role: EventCrewRole.HEAD, provideTransport: true, contactNumber: '33345' },
-  { id: 3, name: 'Lu Xianze', role: EventCrewRole.HEAD, provideTransport: true, contactNumber: '88334' },
-  { id: 4, name: 'Yaw Jian Hao', role: EventCrewRole.HEAD, provideTransport: true, contactNumber: '32112' },
-  { id: 5, name: 'Sia Sim Cheong', role: EventCrewRole.HEAD, provideTransport: false, contactNumber: '78231' }
+  { id: 1, name: 'Chan Ka Chun', role: EventCrewRole.HEAD, contactNumber: '12345' },
+  { id: 2, name: 'Clement Saw', role: EventCrewRole.HEAD, contactNumber: '33345' },
+  { id: 3, name: 'Lu Xianze', role: EventCrewRole.HEAD, contactNumber: '88334' },
+  { id: 4, name: 'Yaw Jian Hao', role: EventCrewRole.HEAD, contactNumber: '32112' },
+  { id: 5, name: 'Sia Sim Cheong', role: EventCrewRole.HEAD, contactNumber: '78231' }
 ];
 
 const attendeeList: IEventAttendee[] = [
@@ -51,6 +51,45 @@ class Frame extends React.Component {
       </Container>
     );
   }
+}
+
+{
+  eventCrewList.map((eventCrew, i) => (
+    <tr key={`entity-${i}`}>
+      <td>
+        <Button tag={Link} to={`${match.url}/${eventCrew.id}`} color="link" size="sm">
+          {eventCrew.id}
+        </Button>
+      </td>
+      <td>{eventCrew.userId}</td>
+      <td>{eventCrew.eventId}</td>
+      <td>
+        <Translate contentKey={`clubmanagementApp.EventCrewRole.${eventCrew.role}`} />
+      </td>
+      <td className="text-right">
+        <div className="btn-group flex-btn-group-container">
+          <Button tag={Link} to={`${match.url}/${eventCrew.id}`} color="info" size="sm">
+            <FontAwesomeIcon icon="eye" />{' '}
+            <span className="d-none d-md-inline">
+              <Translate contentKey="entity.action.view">View</Translate>
+            </span>
+          </Button>
+          <Button tag={Link} to={`${match.url}/${eventCrew.id}/edit`} color="primary" size="sm">
+            <FontAwesomeIcon icon="pencil-alt" />{' '}
+            <span className="d-none d-md-inline">
+              <Translate contentKey="entity.action.edit">Edit</Translate>
+            </span>
+          </Button>
+          <Button tag={Link} to={`${match.url}/${eventCrew.id}/delete`} color="danger" size="sm">
+            <FontAwesomeIcon icon="trash" />{' '}
+            <span className="d-none d-md-inline">
+              <Translate contentKey="entity.action.delete">Delete</Translate>
+            </span>
+          </Button>
+        </div>
+      </td>
+    </tr>
+  ));
 }
 
 export default Frame;

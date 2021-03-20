@@ -5,6 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IEventCrew, defaultValue } from 'app/shared/model/event-crew.model';
+import { IGetAllByEventId } from 'app/shared/type/event-custom-action';
 
 export const ACTION_TYPES = {
   FETCH_EVENTCREW_LIST: 'eventCrew/FETCH_EVENTCREW_LIST',
@@ -103,6 +104,14 @@ export const getEntities: ICrudGetAllAction<IEventCrew> = (page, size, sort) => 
   type: ACTION_TYPES.FETCH_EVENTCREW_LIST,
   payload: axios.get<IEventCrew>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
 });
+
+export const getEventCrewByEventId: IGetAllByEventId<IEventCrew> = (eventId, page, size, sort) => {
+  const requestUrl = `${apiUrl}/event/${eventId}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_EVENTCREW_LIST,
+    payload: axios.get<IEventCrew>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
 
 export const getEntity: ICrudGetAction<IEventCrew> = id => {
   const requestUrl = `${apiUrl}/${id}`;

@@ -9,7 +9,6 @@ export interface IEventCrew {
   eventId?: number;
   contactNumber?: String;
   role?: EventCrewRole;
-  provideTransport?: boolean;
 }
 
 export const defaultValue: Readonly<IEventCrew> = {};

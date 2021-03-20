@@ -1,19 +1,16 @@
 import React from 'react';
 import { Modal, ModalBody, ModalHeader, Button } from 'reactstrap';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
 import './event-modal.scss';
 export interface IEventModalProps extends RouteComponentProps {
   isOpen: Boolean;
   toggleModal: Function;
-  eventId: number;
+  updatePath: String;
+  deletePath: String;
 }
 
 class EventModal extends React.Component<IEventModalProps> {
-  onButtonClick = () => {
-    this.props.history.push(`/update/${this.props.eventId}`);
-  };
-
   render() {
     return (
       <Modal size="sm" centered isOpen={this.props.isOpen}>
@@ -21,11 +18,13 @@ class EventModal extends React.Component<IEventModalProps> {
         <ModalBody className="event-modal-body">
           <h2 className="text-center">Options</h2>
           <div className="d-flex flex-column mt-4">
-            <Button onClick={this.onButtonClick} color="secondary">
+            <Button tag={Link} to={this.props.updatePath} color="secondary">
               Update
             </Button>
             <br />
-            <Button color="cancel"> Delete </Button>
+            <Button tag={Link} to={this.props.deletePath} color="cancel">
+              Delete
+            </Button>
           </div>
         </ModalBody>
       </Modal>
