@@ -16,6 +16,7 @@ import '../../styles/event-module.scss';
 import { CustomTab } from 'app/shared/components/customTab/custom-tab';
 import { eventTabList } from 'app/shared/util/tab.constants';
 import { ListingCard } from 'app/shared/components/listing-card/listing-card';
+import './eventChecklist.scss';
 
 export interface IEventChecklistProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string; eventId: string }> {}
 
@@ -80,7 +81,7 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
           </Link>
         </div>
 
-        <div>
+        <div className="eventChecklist-list">
           {eventChecklistList && eventChecklistList.length > 0 ? (
             eventChecklistList.map((eventChecklist, i) => (
               // tslint:disable

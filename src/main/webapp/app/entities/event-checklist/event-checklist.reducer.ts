@@ -158,7 +158,7 @@ export const createEntity: ICrudPutAction<IEventChecklist> = entity => async dis
     type: ACTION_TYPES.CREATE_EVENTCHECKLIST,
     payload: axios.post(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  dispatch(getChecklistsByEventId(entity.eventId.toString()));
   return result;
 };
 
@@ -167,7 +167,7 @@ export const updateEntity: ICrudPutAction<IEventChecklist> = entity => async dis
     type: ACTION_TYPES.UPDATE_EVENTCHECKLIST,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  dispatch(getChecklistsByEventId(entity.eventId.toString()));
   return result;
 };
 
