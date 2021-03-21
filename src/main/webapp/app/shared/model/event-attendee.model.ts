@@ -1,6 +1,6 @@
 export interface IEventAttendee {
   id?: number;
-  name?: String;
+  userName?: String;
   userId?: number;
   eventId?: number;
   year?: number;

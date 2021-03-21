@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { IRootState } from 'app/shared/reducers';
 import { getEntities, getEventCrewByEventId } from './event-crew.reducer';
-import { IEventCrew } from 'app/shared/model/event-crew.model';
+import { IEventCrew, EventCrewRole } from 'app/shared/model/event-crew.model';
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { CustomTab } from 'app/shared/components/customTab/custom-tab';
@@ -40,20 +40,20 @@ export class EventCrew extends React.Component<IEventCrewProps> {
     this.props.getEventCrewByEventId(Number.parseInt(eventId, 10));
   }
 
-  sort = prop => () => {
-    this.setState(
-      {
-        order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
-      },
-      () => this.sortEntities()
-    );
-  };
+  //   sort = prop => () => {
+  //     this.setState(
+  //       {
+  //         order: this.state.order === 'asc' ? 'desc' : 'asc',
+  //         sort: prop
+  //       },
+  //       () => this.sortEntities()
+  //     );
+  //   };
 
-  sortEntities() {
-    this.getEntities();
-    this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
-  }
+  //   sortEntities() {
+  //     this.getEntities();
+  //     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
+  //   }
 
   getEntities = () => {
     const { eventId } = this.props.match.params;
@@ -90,7 +90,7 @@ export class EventCrew extends React.Component<IEventCrewProps> {
             <EventTable users={eventCrewList} openModal={this.openModal} />
           ) : (
             <div className="alert alert-warning">
-              <Translate contentKey="clubmanagementApp.eventCrew.home.notFound">No Event Crews found</Translate>
+              <Translate contentKey="clubmanagementApp.eventCrew.home.notFound">No Event Crews found {}</Translate>
             </div>
           )}
         </div>

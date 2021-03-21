@@ -7,9 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IEventCrew } from 'app/shared/model/event-crew.model';
 import { IRootState } from 'app/shared/reducers';
-import { getEntity, deleteEntity } from './event-crew.reducer';
+import { getEntity, deleteEntity, deleteEntityWithEventId } from './event-crew.reducer';
 
-export interface IEventCrewDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IEventCrewDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
 export class EventCrewDeleteDialog extends React.Component<IEventCrewDeleteDialogProps> {
   componentDidMount() {
@@ -17,7 +17,7 @@ export class EventCrewDeleteDialog extends React.Component<IEventCrewDeleteDialo
   }
 
   confirmDelete = event => {
-    this.props.deleteEntity(this.props.eventCrewEntity.id);
+    this.props.deleteEntityWithEventId(this.props.eventCrewEntity.id, this.props.match.params.eventId);
     this.handleClose(event);
   };
 
@@ -59,7 +59,7 @@ const mapStateToProps = ({ eventCrew }: IRootState) => ({
   eventCrewEntity: eventCrew.entity
 });
 
-const mapDispatchToProps = { getEntity, deleteEntity };
+const mapDispatchToProps = { getEntity, deleteEntity, deleteEntityWithEventId };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

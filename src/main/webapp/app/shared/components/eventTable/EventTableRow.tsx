@@ -5,12 +5,13 @@ import { IEventCrew } from 'app/shared/model/event-crew.model';
 import { IEventAttendee } from 'app/shared/model/event-attendee.model';
 
 export interface IEventTableRowProps {
-  user: IEventCrew | IEventAttendee | any;
+  user: IEventCrew | IEventAttendee;
   index: number;
   openModal: Function;
 }
 
 export class EventTableRow extends React.Component<IEventTableRowProps> {
+  state = { user: this.props.user };
   onToggleModal = () => this.props.openModal(this.props.user.id);
 
   contactUser = () => {
@@ -20,12 +21,19 @@ export class EventTableRow extends React.Component<IEventTableRowProps> {
   render() {
     const { user, index } = this.props;
 
+    let thirdColumn;
+    if ('role' in user) {
+      thirdColumn = user.role;
+    } else if ('year' in user) {
+      thirdColumn = user.year;
+    }
+
     return (
       <tr>
         <td scope="row">{index + 1}</td>
-        <td>{user.name}</td>
-        <td>{user.role ? user.role : user.year}</td>
-        <td>{user.provideTransport ? <FontAwesomeIcon icon="car" /> : null}</td>
+        <td>{user.userName}</td>
+        <td>{thirdColumn}</td>
+        <td>{'provideTransport' in user ? <FontAwesomeIcon icon="car" /> : null}</td>
         <td>
           <Button color="Link" className="icon-btn" onClick={this.contactUser}>
             <FontAwesomeIcon icon={['fab', 'whatsapp-square']} color="#25D366" size="lg" />

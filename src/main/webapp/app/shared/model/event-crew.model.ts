@@ -1,10 +1,11 @@
 export const enum EventCrewRole {
-  HEAD = 'HEAD'
+  HEAD = 'HEAD',
+  MEMBER = 'MEMBER'
 }
 
 export interface IEventCrew {
   id?: number;
-  name?: String;
+  userName?: String;
   userId?: number;
   eventId?: number;
   contactNumber?: String;
