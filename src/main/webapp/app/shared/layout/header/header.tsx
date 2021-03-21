@@ -76,7 +76,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             )}
           </Nav>
         </Navbar>
-        {this.state.menuOpen && <ModuleMenu isAuthenticated={isAuthenticated} button={btn} />}
+        {this.state.menuOpen && <ModuleMenu button={btn} />}
       </div>
     );
   }

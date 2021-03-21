@@ -1,12 +1,8 @@
 import React from 'react';
-import MenuItem from 'app/shared/layout/menus/menu-item';
-import { DropdownItem } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink as Link } from 'react-router-dom';
-import { Translate, translate } from 'react-jhipster';
-import { NavDropdown } from './menu-components';
 
-export const ModuleMenu = ({ isAuthenticated = false, button }) => (
+export const ModuleMenu = ({ button }) => (
   <div
     className="h-100"
     style={{
@@ -42,18 +38,21 @@ export const ModuleMenu = ({ isAuthenticated = false, button }) => (
         flexDirection: 'column'
       }}
     >
-      <div style={{ display: 'flex' }}>
-        <div>{button}</div>
-      </div>
+      <div style={{ display: 'flex' }}>{button}</div>
 
-      <Link
-        to="/entity/event"
-        onClick={() => {
-          button.props.onClick();
-        }}
-      >
-        link
-      </Link>
+      <div style={{ paddingTop: 30, paddingBottom: 30 }}>
+        <Link
+          to="/entity/event"
+          onClick={() => {
+            button.props.onClick();
+          }}
+        >
+          <div style={{ height: 50, width: '100%', padding: '0px 18px', color: 'white' }}>
+            <FontAwesomeIcon icon="user" />
+            Event
+          </div>
+        </Link>
+      </div>
     </div>
   </div>
 );
