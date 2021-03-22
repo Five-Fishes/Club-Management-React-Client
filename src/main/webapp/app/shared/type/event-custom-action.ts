@@ -1,5 +1,4 @@
-import { IPayload } from 'react-jhipster';
-import { IPayloadResult } from 'react-jhipster';
+import { IPayload, IPayloadResult } from 'react-jhipster';
 
 export declare type IGetAllByEventId<T> = (
   eventId?: number | string,
