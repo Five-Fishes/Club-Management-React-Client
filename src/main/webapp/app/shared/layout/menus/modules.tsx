@@ -20,9 +20,7 @@ export const ModuleMenu = ({ button }) => (
         opacity: 0.5,
         height: '100vh'
       }}
-      onClick={() => {
-        button.props.onClick();
-      }}
+      onClick={button.props.onClick}
     />
     <div
       style={{
@@ -41,12 +39,7 @@ export const ModuleMenu = ({ button }) => (
       <div style={{ display: 'flex' }}>{button}</div>
 
       <div style={{ paddingTop: 30, paddingBottom: 30 }}>
-        <Link
-          to="/entity/event"
-          onClick={() => {
-            button.props.onClick();
-          }}
-        >
+        <Link to="/entity/event" onClick={button.props.onClick}>
           <div style={{ height: 50, width: '100%', padding: '0px 18px', color: 'white' }}>
             <FontAwesomeIcon icon="user" />
             Event
