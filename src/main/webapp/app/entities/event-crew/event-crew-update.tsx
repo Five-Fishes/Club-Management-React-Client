@@ -62,7 +62,7 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
       this.props.reset();
       this.getUsersAndEvent();
     } else {
-      this.props.getEntity(this.props.match.params.id);
+      this.props.getEntity(this.props.match.params.id, this.props.match.params.eventId);
     }
   }
 

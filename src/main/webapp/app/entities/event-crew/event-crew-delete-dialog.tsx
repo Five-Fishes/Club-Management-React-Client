@@ -13,7 +13,7 @@ export interface IEventCrewDeleteDialogProps extends StateProps, DispatchProps, 
 
 export class EventCrewDeleteDialog extends React.Component<IEventCrewDeleteDialogProps> {
   componentDidMount() {
-    this.props.getEntity(this.props.match.params.id);
+    this.props.getEntity(this.props.match.params.id, this.props.match.params.eventId);
   }
 
   confirmDelete = event => {

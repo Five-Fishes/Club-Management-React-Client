@@ -12,11 +12,11 @@ import { IEventCrew } from 'app/shared/model/event-crew.model';
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
-export interface IEventCrewDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IEventCrewDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
 export class EventCrewDetail extends React.Component<IEventCrewDetailProps> {
   componentDidMount() {
-    this.props.getEntity(this.props.match.params.id);
+    this.props.getEntity(this.props.match.params.id, this.props.match.params.eventId);
   }
 
   render() {

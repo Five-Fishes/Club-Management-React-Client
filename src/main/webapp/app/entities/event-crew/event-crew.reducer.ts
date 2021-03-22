@@ -5,7 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IEventCrew, defaultValue } from 'app/shared/model/event-crew.model';
-import { IGetAllByEventId, IDeleteEvent, IPutEvent } from 'app/shared/type/event-custom-action';
+import { IGetAllByEventId, IDeleteEvent, IPutEvent, IGetEvent } from 'app/shared/type/event-custom-action';
 
 export const ACTION_TYPES = {
   FETCH_EVENTCREW_LIST: 'eventCrew/FETCH_EVENTCREW_LIST',
@@ -113,8 +113,8 @@ export const getEventCrewByEventId: IGetAllByEventId<IEventCrew> = (eventId, pag
   };
 };
 
-export const getEntity: ICrudGetAction<IEventCrew> = id => {
-  const requestUrl = `${apiUrl}/${id}`;
+export const getEntity: IGetEvent<IEventCrew> = (id, eventId) => {
+  const requestUrl = `${apiUrl}/${id}?eventId=${eventId}`;
   return {
     type: ACTION_TYPES.FETCH_EVENTCREW,
     payload: axios.get<IEventCrew>(requestUrl)
@@ -150,7 +150,7 @@ export const deleteEntity: ICrudDeleteAction<IEventCrew> = id => async dispatch 
 };
 
 export const deleteEntityWithEventId: IDeleteEvent<IEventCrew> = (id, eventId) => async dispatch => {
-  const requestUrl = `${apiUrl}/${id}`;
+  const requestUrl = `${apiUrl}/${id}?eventId=${eventId}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_EVENTCREW,
     payload: axios.delete(requestUrl)
