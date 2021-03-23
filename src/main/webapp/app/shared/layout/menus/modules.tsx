@@ -1,54 +1,31 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink as Link } from 'react-router-dom';
+import './modules.scss';
+
+const Module = ({ moduleName, iconName, path, sideNavToggler }) => {
+  return (
+    <Link to={path} onClick={sideNavToggler}>
+      <div className="module">
+        <FontAwesomeIcon icon={iconName} />
+        {moduleName}
+      </div>
+    </Link>
+  );
+};
 
 export const ModuleMenu = ({ button }) => {
   const handler = () => {
     button.props.onClick();
   };
   return (
-    <div
-      className="h-100"
-      style={{
-        left: 0,
-        top: 0,
-        zIndex: 1001,
-        height: '100vh',
-        width: '100%',
-        position: 'fixed'
-      }}
-    >
-      <div
-        style={{
-          background: 'black',
-          opacity: 0.5,
-          height: '100vh'
-        }}
-        onClick={handler}
-      />
-      <div
-        style={{
-          background: '#07ADE1',
-          left: 0,
-          top: 0,
-          position: 'absolute',
-          height: '100vh',
-          padding: '12px 16px',
-          minWidth: 325,
-          maxWidth: 325,
-          display: 'flex',
-          flexDirection: 'column'
-        }}
-      >
+    <div className="h-100 side-nav-base">
+      <div className="side-nav-gray-mask" onClick={handler} />
+      <div className="side-nav-body">
         <div style={{ display: 'flex' }}>{button}</div>
 
         <div style={{ paddingTop: 30, paddingBottom: 30 }}>
-          <Link to="/entity/event" onClick={handler}>
-            <div style={{ height: 50, width: '100%', padding: '0px 18px', color: 'white' }}>
-              <FontAwesomeIcon icon="user" />
-              Event
-            </div>
-          </Link>
+          <Module moduleName="Event" iconName="user" path="/entity/event" sideNavToggler={handler} />
         </div>
       </div>
     </div>
