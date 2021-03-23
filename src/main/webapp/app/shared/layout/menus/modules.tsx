@@ -3,16 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink as Link } from 'react-router-dom';
 import './modules.scss';
 
-const Module = ({ moduleName, iconName, path, sideNavToggler }) => {
-  return (
-    <Link to={path} onClick={sideNavToggler}>
-      <div className="module">
-        <FontAwesomeIcon icon={iconName} />
-        {moduleName}
-      </div>
-    </Link>
-  );
-};
+export const Module = ({ moduleName, iconName, path, sideNavToggler }) => (
+  <Link to={path} onClick={sideNavToggler}>
+    <div className="module">
+      <FontAwesomeIcon icon={iconName} />
+      {moduleName}
+    </div>
+  </Link>
+);
 
 export const ModuleMenu = ({ button }) => {
   const handler = () => {
