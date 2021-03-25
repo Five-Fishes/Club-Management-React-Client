@@ -85,7 +85,7 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
         <Row className="justify-content-center event-horizontal-padding">
           <Col md="8">
             <h2 className="event-page-title" id="clubmanagementApp.event.home.createOrEditLabel">
-              <Translate contentKey="clubmanagementApp.event.home.createOrEditLabel">Create New Event</Translate>
+              <Translate contentKey="clubmanagementApp.event.home.createOrEditLabel">Create New or Edit an Event</Translate>
             </h2>
           </Col>
         </Row>
@@ -164,9 +164,8 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
                     <AvInput
                       id="event-requiredTransport"
                       type="checkbox"
-                      className="form-control"
+                      className="form-control event-checkbox"
                       name="requiredTransport"
-                      style={{ height: '20px', marginTop: '0px', marginLeft: '150px' }}
                     />
                     <Translate contentKey="clubmanagementApp.event.requiredTransport">Required Transport</Translate>
                   </Label>
@@ -199,18 +198,6 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
                   </Label>
                   <input type="file" accept="image/*" />
                 </AvGroup>
-                {/* <AvGroup>
-                  <Label id="fileNameLabel" for="event-fileName">
-                    <Translate contentKey="clubmanagementApp.event.fileName">File Name</Translate>
-                  </Label>
-                  <AvField id="event-fileName" type="text" name="fileName" />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="fileTypeLabel" for="event-fileType">
-                    <Translate contentKey="clubmanagementApp.event.fileType">File Type</Translate>
-                  </Label>
-                  <AvField id="event-fileType" type="text" name="fileType" />
-                </AvGroup> */}
                 <div className="button-container">
                   <Button className="event-button" tag={Link} id="cancel-save" to="/entity/event" replace color="cancel">
                     {/* <FontAwesomeIcon icon="arrow-left" />

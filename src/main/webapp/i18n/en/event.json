@@ -4,7 +4,7 @@
       "home": {
         "title": "Events",
         "createLabel": "Create a new Event",
-        "createOrEditLabel": "Create New Event",
+        "createOrEditLabel": "Create New or Edit an Event",
         "notFound": "No Event found"
       },
       "created": "A new Event is created with identifier {{ param }}",

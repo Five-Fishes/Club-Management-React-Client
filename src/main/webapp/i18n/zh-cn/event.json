@@ -4,7 +4,7 @@
       "home": {
         "title": "Events",
         "createLabel": "创建新 Event",
-        "createOrEditLabel": "新活动",
+        "createOrEditLabel": "新活动或活动更新",
         "notFound": "No Event found"
       },
       "created": "Event {{ param }} 创建成功",
