@@ -1,5 +1,18 @@
 import { ITabInfo } from 'app/shared/components/customTab/custom-tab';
 
+export const eventMainTabList: ITabInfo[] = [
+  {
+    tabName: 'Upcoming',
+    tabTranslateKey: 'clubmanagementApp.event.upcoming',
+    tabRoute: '/event/upcoming'
+  },
+  {
+    tabName: 'Previous',
+    tabTranslateKey: 'clubmanagementApp.event.previous',
+    tabRoute: '/event/previous'
+  }
+];
+
 export const eventTabList: ITabInfo[] = [
   {
     tabName: 'Details',

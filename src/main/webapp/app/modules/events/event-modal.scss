@@ -1,0 +1,20 @@
+.event-modal {
+  min-height: 500px;
+  height: 100%;
+  margin-top: auto;
+  max-width: 300px;
+}
+
+.event-modal-header {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.event-modal-body {
+  padding: 1rem 2rem 3rem 2rem;
+}
+
+.event-modal-body button {
+  height: 50px;
+  font-family: 'Roboto';
+}
