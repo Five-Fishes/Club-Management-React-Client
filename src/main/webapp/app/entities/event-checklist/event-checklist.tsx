@@ -66,12 +66,13 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
 
   render() {
     const { eventChecklistList, match, totalItems, selectedEventChecklistId } = this.props;
+    const { eventId } = this.props.match.params;
     return (
       <div>
         <h2 id="event-checklist-heading" className="event-module-heading">
           <Translate contentKey="clubmanagementApp.eventChecklist.home.title">Event Checklists</Translate>
         </h2>
-        <CustomTab tabList={eventTabList} currentTab="Checklist" />
+        <CustomTab tabList={eventTabList(eventId)} currentTab="Checklist" />
         <div className="text-center">
           <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
             <FontAwesomeIcon icon="plus" />
