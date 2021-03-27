@@ -7,7 +7,7 @@ import { Navbar, Nav, NavbarToggler, Button } from 'reactstrap';
 import LoadingBar from 'react-redux-loading-bar';
 
 import { Brand } from './header-components';
-import { AccountMenu, LocaleMenu } from '../menus';
+import { AccountMenu, LocaleMenu, ModuleMenu } from '../menus';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -42,15 +42,19 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
   render() {
     const { currentLocale, isAuthenticated, isAdmin, isSwaggerEnabled } = this.props;
 
+    const btn = (
+      <Button outline color="primary" aria-label="Menu" onClick={this.toggleMenu} style={{ background: 'white' }}>
+        <FontAwesomeIcon icon="bars" />
+      </Button>
+    );
+
     /* jhipster-needle-add-element-to-menu - JHipster will add new menu items here */
 
     return (
       <div id="app-header">
         <LoadingBar className="loading-bar" />
         <Navbar dark className="h-100">
-          <Button outline color="primary" aria-label="Menu" onClick={this.toggleMenu}>
-            <FontAwesomeIcon icon="bars" />
-          </Button>
+          {isAuthenticated && btn}
           <Brand />
           <Nav id="header-tabs" className="h-100 ml-auto">
             <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
@@ -72,6 +76,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
             )}
           </Nav>
         </Navbar>
+        {this.state.menuOpen && <ModuleMenu button={btn} />}
       </div>
     );
   }
