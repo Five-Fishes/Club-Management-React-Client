@@ -4,7 +4,7 @@
       "home": {
         "title": "Event Checklists",
         "createLabel": "创建新 Event Checklist",
-        "createOrEditLabel": "创建或编辑 Event Checklist",
+        "createOrEditLabel": "创建或编辑筹备清单",
         "notFound": "No Event Checklist found"
       },
       "created": "Event Checklist {{ param }} 创建成功",
