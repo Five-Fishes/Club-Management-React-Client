@@ -41,13 +41,16 @@ export default (state: IAuthenticationInitialState = initialState, action): IAut
     case ACTION_TYPES.FETCH_ACCOUNT:
       return {
         ...state,
-        isAuthenticated: Boolean(action.payload),
-        authorities: action.payload.authorities,
-        activated: action.payload.activated,
-        firstName: action.payload.firstName,
+        isAuthenticated: Boolean(action.payload.id),
         id: action.payload.id,
+        firstName: action.payload.firstName,
+        email: action.payload.email,
         imageUrl: action.payload.imageUrl,
-        email: action.payload.email
+        authorities: action.payload.authorities,
+        eventHeadEventIds: action.payload.eventHeadEventIds,
+        eventCrewEventIds: action.payload.eventCrewEventIds,
+        isCurrentCCHead: action.payload.isCurrentCCHead,
+        isCurrentAdministrator: action.payload.isCurrentAdministrator
       };
     default:
       return state;
