@@ -5,22 +5,28 @@ export const ACTION_TYPES = {
 
 export interface IAuthenticationInitialState {
   isAuthenticated: boolean;
-  authorities: string[];
-  activated: boolean;
-  firstName: string;
   id: number;
-  imageUrl: string;
+  firstName: string;
   email: string;
+  imageUrl: string;
+  authorities: string[];
+  eventHeadEventIds: number[];
+  eventCrewEventIds: number[];
+  isCurrentCCHead: boolean;
+  isCurrentAdministrator: boolean;
 }
 
 const initialState: IAuthenticationInitialState = {
   isAuthenticated: false,
-  authorities: [],
-  activated: false,
-  firstName: '',
   id: NaN,
+  firstName: '',
+  email: '',
   imageUrl: '',
-  email: ''
+  authorities: [],
+  eventHeadEventIds: [],
+  eventCrewEventIds: [],
+  isCurrentCCHead: false,
+  isCurrentAdministrator: false
 };
 
 // Reducer
