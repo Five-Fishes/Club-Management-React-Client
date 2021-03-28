@@ -1,106 +1,99 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row, Table } from 'reactstrap';
-// tslint:disable-next-line:no-unused-variable
-import { byteSize, Translate, ICrudGetAllAction } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { RouteComponentProps } from 'react-router-dom';
+import { getSortState, IPaginationBaseState, Translate } from 'react-jhipster';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntities } from './budget.reducer';
-import { IBudget } from 'app/shared/model/budget.model';
-// tslint:disable-next-line:no-unused-variable
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { getEventBudgetByEventId, setSelectedEventBudgetId, setShowActionOptions } from './budget.reducer';
+import { eventTabList } from 'app/shared/util/tab.constants';
+import { CustomTab } from 'app/shared/components/customTab/custom-tab';
+import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
+import { ListingCard } from 'app/shared/components/listing-card/listing-card';
 
-export interface IBudgetProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+export interface IBudgetProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string; eventId: string }> {}
 
-export class Budget extends React.Component<IBudgetProps> {
+export type IEventBudgetState = IPaginationBaseState;
+
+export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
+  state: IEventBudgetState = {
+    ...getSortState(this.props.location, ITEMS_PER_PAGE)
+  };
+
   componentDidMount() {
-    this.props.getEntities();
+    this.getEntities();
   }
 
+  sort = prop => () => {
+    this.setState(
+      {
+        order: this.state.order === 'asc' ? 'desc' : 'asc',
+        sort: prop
+      },
+      () => this.sortEntities()
+    );
+  };
+
+  sortEntities() {
+    this.getEntities();
+    this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
+  }
+
+  handlePagination = activePage => this.setState({ activePage }, () => this.sortEntities());
+
+  getEntities = () => {
+    const eventId = this.props.match.params.eventId;
+    const { activePage, itemsPerPage, sort, order } = this.state;
+    this.props.getEventBudgetByEventId(eventId, activePage - 1, itemsPerPage, `${sort},${order}`);
+  };
+
+  showCardAction = (eventBudgetId: number) => {
+    this.props.setSelectedEventBudgetId(eventBudgetId);
+    this.props.setShowActionOptions(true);
+  };
+
   render() {
-    const { budgetList, match } = this.props;
+    const { budgetList, match, totalItems } = this.props;
+    const { eventId } = this.props.match.params;
+
     return (
       <div>
-        <h2 id="budget-heading">
-          <Translate contentKey="clubmanagementApp.budget.home.title">Budgets</Translate>
-          <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-            <FontAwesomeIcon icon="plus" />
-            &nbsp;
-            <Translate contentKey="clubmanagementApp.budget.home.createLabel">Create new Budget</Translate>
-          </Link>
+        <h2 id="event-budget-heading">
+          <Translate contentKey="clubmanagementApp.eventBudget.home.title">Event Budgets</Translate>
         </h2>
+        {/* Stats of Budget */}
+        <CustomTab tabList={eventTabList(eventId)} currentTab="Checklist" />
         <div className="table-responsive">
           {budgetList && budgetList.length > 0 ? (
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th>
-                    <Translate contentKey="global.field.id">ID</Translate>
-                  </th>
-                  <th>
-                    <Translate contentKey="clubmanagementApp.budget.eventId">Event Id</Translate>
-                  </th>
-                  <th>
-                    <Translate contentKey="clubmanagementApp.budget.amount">Amount</Translate>
-                  </th>
-                  <th>
-                    <Translate contentKey="clubmanagementApp.budget.type">Type</Translate>
-                  </th>
-                  <th>
-                    <Translate contentKey="clubmanagementApp.budget.name">Name</Translate>
-                  </th>
-                  <th>
-                    <Translate contentKey="clubmanagementApp.budget.details">Details</Translate>
-                  </th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {budgetList.map((budget, i) => (
-                  <tr key={`entity-${i}`}>
-                    <td>
-                      <Button tag={Link} to={`${match.url}/${budget.id}`} color="link" size="sm">
-                        {budget.id}
-                      </Button>
-                    </td>
-                    <td>{budget.eventId}</td>
-                    <td>{budget.amount}</td>
-                    <td>
-                      <Translate contentKey={`clubmanagementApp.TransactionType.${budget.type}`} />
-                    </td>
-                    <td>{budget.name}</td>
-                    <td>{budget.details}</td>
-                    <td className="text-right">
-                      <div className="btn-group flex-btn-group-container">
-                        <Button tag={Link} to={`${match.url}/${budget.id}`} color="info" size="sm">
-                          <FontAwesomeIcon icon="eye" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.view">View</Translate>
-                          </span>
-                        </Button>
-                        <Button tag={Link} to={`${match.url}/${budget.id}/edit`} color="primary" size="sm">
-                          <FontAwesomeIcon icon="pencil-alt" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.edit">Edit</Translate>
-                          </span>
-                        </Button>
-                        <Button tag={Link} to={`${match.url}/${budget.id}/delete`} color="danger" size="sm">
-                          <FontAwesomeIcon icon="trash" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.delete">Delete</Translate>
-                          </span>
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+            budgetList.map((eventBudget, i) => (
+              <ListingCard
+                key={`event-budget-${eventBudget.id}`}
+                showActionMenu
+                title={eventBudget.name}
+                actionMenuHandler={this.showCardAction.bind(this, eventBudget.id)}
+              >
+                <span className="card-item d-block mb-2">
+                  <span>
+                    <Translate contentKey="clubmanagementApp.eventBudget.name">Name</Translate>:
+                    <span className="font-weight-bolder text-dark">{eventBudget.name}</span>
+                  </span>
+                </span>
+                <span className="card-item d-block mb-2">
+                  <span>
+                    <Translate contentKey="clubmanagementApp.eventBudget.type">Type</Translate>:
+                    <span className="font-weight-bolder text-dark">{eventBudget.type}</span>
+                  </span>
+                </span>
+                <span className="card-item d-block mb-2">
+                  <span>
+                    <Translate contentKey="clubmanagementApp.eventBudget.details">Details</Translate>:
+                    <span className="font-weight-bolder text-dark">{eventBudget.details}</span>
+                  </span>
+                </span>
+              </ListingCard>
+            ))
           ) : (
             <div className="alert alert-warning">
-              <Translate contentKey="clubmanagementApp.budget.home.notFound">No Budgets found</Translate>
+              <Translate contentKey="clubmanagementApp.eventBudget.home.notFound">No Event Budgets found</Translate>
             </div>
           )}
         </div>
@@ -110,11 +103,14 @@ export class Budget extends React.Component<IBudgetProps> {
 }
 
 const mapStateToProps = ({ budget }: IRootState) => ({
-  budgetList: budget.entities
+  budgetList: budget.entities,
+  totalItems: budget.totalItems
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEventBudgetByEventId,
+  setSelectedEventBudgetId,
+  setShowActionOptions
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
