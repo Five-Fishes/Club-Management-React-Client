@@ -2,19 +2,19 @@
   "clubmanagementApp": {
     "budget": {
       "home": {
-        "title": "Budgets",
-        "createLabel": "创建新 Budget",
-        "createOrEditLabel": "创建或编辑 Budget",
-        "notFound": "No Budget found"
+        "title": "活动预算",
+        "createLabel": "创建新活动预算",
+        "createOrEditLabel": "创建或编辑活动预算",
+        "notFound": "无活动预算"
       },
-      "created": "Budget {{ param }} 创建成功",
-      "updated": "Budget {{ param }} 更新成功",
-      "deleted": "Budget {{ param }} 删除成功",
+      "created": "活动预算 {{ param }} 创建成功",
+      "updated": "活动预算 {{ param }} 更新成功",
+      "deleted": "活动预算 {{ param }} 删除成功",
       "delete": {
-        "question": "你确定要删除 Budget {{ id }} 吗？"
+        "question": "你确定要删除活动预算 {{ id }} 吗？"
       },
       "detail": {
-        "title": "Budget"
+        "title": "活动预算"
       },
       "eventId": "Event Id",
       "amount": "Amount",
