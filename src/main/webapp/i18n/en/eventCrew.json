@@ -17,7 +17,7 @@
         "title": "Event Crew"
       },
       "userId": "User Id",
-      "userName": "Crew",
+      "crew": "Crew",
       "eventId": "Event Id",
       "eventName": "Event",
       "role": "Role",

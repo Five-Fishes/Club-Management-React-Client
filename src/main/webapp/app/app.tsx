@@ -4,7 +4,7 @@ import './styles/custom.scss';
 
 import React from 'react';
 import { connect } from 'react-redux';
-import { Card } from 'reactstrap';
+import { Card, Container } from 'reactstrap';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { hot } from 'react-hot-loader';
@@ -50,11 +50,13 @@ export class App extends React.Component<IAppProps> {
               isSwaggerEnabled={this.props.isSwaggerEnabled}
             />
           </ErrorBoundary>
+
           <div className="flex-grow-1">
             <ErrorBoundary>
               <AppRoutes />
             </ErrorBoundary>
           </div>
+
           <Footer />
         </div>
       </Router>

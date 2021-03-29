@@ -13,7 +13,7 @@ import { IEventCrew, EventCrewRole } from 'app/shared/model/event-crew.model';
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { CustomTab } from 'app/shared/components/customTab/custom-tab';
-import EventModal from 'app/modules/events/event-modal';
+import EventModal from 'app/shared/components/eventModal/event-modal';
 import { eventTabList } from 'app/shared/util/tab.constants';
 import { EventTable } from 'app/shared/components/eventTable/EventTable';
 
@@ -64,6 +64,7 @@ export class EventCrew extends React.Component<IEventCrewProps> {
 
   render() {
     const { eventCrewList, match } = this.props;
+    const { eventId } = this.props.match.params;
     return (
       <Container>
         <EventModal
@@ -76,7 +77,7 @@ export class EventCrew extends React.Component<IEventCrewProps> {
           <Translate contentKey="clubmanagementApp.eventCrew.home.title">Event Crews</Translate>
         </h1>
         <div className="my-4">
-          <CustomTab currentTab="Crews" tabList={eventTabList} />
+          <CustomTab currentTab="Crews" tabList={eventTabList(eventId)} />
         </div>
 
         <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity w-100" id="jh-create-entity">

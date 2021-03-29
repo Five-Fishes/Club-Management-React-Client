@@ -21,7 +21,8 @@
         "userCcInfo": "User CC Info",
         "userUniInfo": "User Uni Info",
         "faculty": "Faculty",
-        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
+        "options": "选项"
       },
       "account": {
         "main": "账号",
@@ -44,6 +45,9 @@
         "apidocs": "API",
         "database": "数据库",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "module": {
+        "event": "活动"
       },
       "language": "语言"
     },

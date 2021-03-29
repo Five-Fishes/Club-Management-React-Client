@@ -17,9 +17,10 @@
         "title": "Event Crew"
       },
       "userId": "User Id",
-      "userName": "Crew",
+      "crew": "委员",
       "eventId": "Event Id",
       "eventName": "Event",
+      "role": "职务",
       "tab": "Crews"
     }
   }

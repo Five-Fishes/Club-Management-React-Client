@@ -8,9 +8,8 @@
       "entities": {
         "main": "Entities",
         "event": "Event",
-        "eventCrew": "Event Crew",
-        "eventAttendee": "Event Attendee",
-        "budget": "Budget",
+        "eventCrew": "Crew",
+        "eventAttendee": "Attendee",
         "eventActivity": "Event Activity",
         "eventChecklist": "Event Checklist",
         "transaction": "Transaction",
@@ -21,7 +20,8 @@
         "userCcInfo": "User CC Info",
         "userUniInfo": "User Uni Info",
         "faculty": "Faculty",
-        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
+        "options": "Options"
       },
       "account": {
         "main": "Account",
@@ -44,6 +44,9 @@
         "apidocs": "API",
         "database": "Database",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "module": {
+        "event": "Event"
       },
       "language": "Language"
     },

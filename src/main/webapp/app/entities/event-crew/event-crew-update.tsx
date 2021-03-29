@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Label } from 'reactstrap';
+import { Container, Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
 import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
@@ -94,7 +94,7 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
     const { eventCrewEntity, loading, updating } = this.props;
     const { isNew } = this.state;
     return (
-      <div>
+      <Container>
         <Row className="justify-content-center">
           <Col md="8">
             <h2 id="clubmanagementApp.eventCrew.home.createOrEditLabel">{isNew ? 'Create Event Crew' : 'Edit Event Crew'}</h2>
@@ -122,7 +122,7 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
                 </AvGroup>
                 <AvGroup>
                   <Label id="userIdLabel" for="event-crew-userId">
-                    <Translate contentKey="clubmanagementApp.eventCrew.userName">User Id</Translate>
+                    <Translate contentKey="clubmanagementApp.eventCrew.crew">User Id</Translate>
                   </Label>
                   {isNew ? (
                     <div>
@@ -173,7 +173,7 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
                     color="cancel"
                     className="px-5"
                   >
-                    Cancel
+                    <Translate contentKey="entity.action.cancel">Cancel</Translate>
                   </Button>
                   <Button color="action" id="save-entity" type="submit" disabled={updating} className="px-5">
                     <Translate contentKey="entity.action.save">Save</Translate>
@@ -183,7 +183,7 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
             )}
           </Col>
         </Row>
-      </div>
+      </Container>
     );
   }
 }
