@@ -8,9 +8,8 @@
       "entities": {
         "main": "Entities",
         "event": "Event",
-        "eventCrew": "Event Crew",
-        "eventAttendee": "Event Attendee",
-        "budget": "Budget",
+        "eventCrew": "Crew",
+        "eventAttendee": "Attendee",
         "eventActivity": "Event Activity",
         "eventChecklist": "Event Checklist",
         "transaction": "Transaction",
@@ -44,6 +43,9 @@
         "apidocs": "API",
         "database": "Database",
         "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "module": {
+        "event": "Event"
       },
       "language": "Language"
     },

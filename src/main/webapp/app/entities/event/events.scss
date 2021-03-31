@@ -1,0 +1,53 @@
+.option-icon {
+  position: absolute;
+  top: -1.25rem;
+  right: 10px;
+}
+
+.event-card {
+  border-color: white;
+  box-shadow: 2px 5px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+}
+
+.event-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 90%;
+}
+
+.event-title:hover {
+  white-space: normal;
+}
+
+.event-bottom-padding {
+  padding-bottom: 30px;
+}
+
+.event-horizontal-padding {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.event-button {
+  width: 150px;
+}
+
+.event-page-title {
+  font-family: 'Roboto';
+  font-weight: 500;
+  font-size: 28px;
+  color: '#0E516D';
+}
+
+.button-container {
+  display: 'flex';
+  justify-content: 'space-between';
+}
+
+.event-checkbox {
+  height: 20px;
+  margin-top: 0px;
+  margin-left: 150px;
+}
