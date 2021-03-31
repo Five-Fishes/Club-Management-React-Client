@@ -21,7 +21,7 @@
       "eventId": "Event Id",
       "startDate": "开始日期",
       "durationInDay": "为期（天数）",
-      "name": "名程",
+      "name": "名称",
       "description": "描述",
       "tab": "Activities"
     }
