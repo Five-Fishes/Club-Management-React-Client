@@ -19,7 +19,7 @@
       "eventId": "Event Id",
       "amount": "数额",
       "type": "种类",
-      "name": "名",
+      "name": "名称",
       "details": "详情",
       "budget": "预算",
       "realAmount": "实数",
