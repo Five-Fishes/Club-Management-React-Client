@@ -13,6 +13,7 @@ import { IEvent } from 'app/shared/model/event.model';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
+import './events.scss';
 
 export interface IEventUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -81,14 +82,14 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
 
     return (
       <div>
-        <Row className="justify-content-center">
+        <Row className="justify-content-center event-horizontal-padding">
           <Col md="8">
-            <h2 id="clubmanagementApp.event.home.createOrEditLabel">
-              <Translate contentKey="clubmanagementApp.event.home.createOrEditLabel">Create or edit a Event</Translate>
+            <h2 className="event-page-title" id="clubmanagementApp.event.home.createOrEditLabel">
+              <Translate contentKey="clubmanagementApp.event.home.createOrEditLabel">Create New or Edit an Event</Translate>
             </h2>
           </Col>
         </Row>
-        <Row className="justify-content-center">
+        <Row className="justify-content-center event-horizontal-padding event-bottom-padding">
           <Col md="8">
             {loading ? (
               <p>Loading...</p>
@@ -160,7 +161,12 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
                 </AvGroup>
                 <AvGroup>
                   <Label id="requiredTransportLabel" check>
-                    <AvInput id="event-requiredTransport" type="checkbox" className="form-control" name="requiredTransport" />
+                    <AvInput
+                      id="event-requiredTransport"
+                      type="checkbox"
+                      className="form-control event-checkbox"
+                      name="requiredTransport"
+                    />
                     <Translate contentKey="clubmanagementApp.event.requiredTransport">Required Transport</Translate>
                   </Label>
                 </AvGroup>
@@ -182,35 +188,29 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
                 </AvGroup>
                 <AvGroup>
                   <Label id="imageUrlLabel" for="event-imageUrl">
-                    <Translate contentKey="clubmanagementApp.event.imageUrl">Image Url</Translate>
+                    <Translate contentKey="clubmanagementApp.event.image">Image</Translate>
                   </Label>
                   <AvField id="event-imageUrl" type="text" name="imageUrl" />
                 </AvGroup>
                 <AvGroup>
-                  <Label id="fileNameLabel" for="event-fileName">
-                    <Translate contentKey="clubmanagementApp.event.fileName">File Name</Translate>
+                  <Label id="imageUrlLabel" for="event-imageUrl">
+                    <Translate contentKey="clubmanagementApp.event.image">Image</Translate>
                   </Label>
-                  <AvField id="event-fileName" type="text" name="fileName" />
+                  <input type="file" accept="image/*" />
                 </AvGroup>
-                <AvGroup>
-                  <Label id="fileTypeLabel" for="event-fileType">
-                    <Translate contentKey="clubmanagementApp.event.fileType">File Type</Translate>
-                  </Label>
-                  <AvField id="event-fileType" type="text" name="fileType" />
-                </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/event" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
+                <div className="button-container">
+                  <Button className="event-button" tag={Link} id="cancel-save" to="/entity/event" replace color="cancel">
+                    {/* <FontAwesomeIcon icon="arrow-left" />
+                    &nbsp; */}
+                    <Translate contentKey="entity.action.cancel">Cancel</Translate>
+                  </Button>
                   &nbsp;
-                  <span className="d-none d-md-inline">
-                    <Translate contentKey="entity.action.back">Back</Translate>
-                  </span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp;
-                  <Translate contentKey="entity.action.save">Save</Translate>
-                </Button>
+                  <Button className="event-button" color="action" id="save-entity" type="submit" disabled={updating}>
+                    {/* <FontAwesomeIcon icon="save" />
+                    &nbsp; */}
+                    <Translate contentKey="entity.action.save">Save</Translate>
+                  </Button>
+                </div>
               </AvForm>
             )}
           </Col>
