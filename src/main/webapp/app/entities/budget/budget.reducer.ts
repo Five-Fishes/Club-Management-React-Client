@@ -4,7 +4,7 @@ import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
-import { IBudget, defaultValue } from 'app/shared/model/budget.model';
+import { IBudget, defaultValue, IEventBudgetTotal, defaultEventBudgetTotal } from 'app/shared/model/budget.model';
 import { IGetAllByEventId } from 'app/shared/type/event-custom-action';
 
 export const ACTION_TYPES = {
@@ -16,7 +16,9 @@ export const ACTION_TYPES = {
   SET_BLOB: 'budget/SET_BLOB',
   RESET: 'budget/RESET',
   SET_EVENT_BUDGET_ID: 'eventChecklist/SET_EVENT_BUDGET_ID',
-  SET_SHOW_ACTION_OPTIONS: 'eventChecklist/SET_SHOW_ACTION_OPTIONS'
+  SET_SHOW_ACTION_OPTIONS: 'eventChecklist/SET_SHOW_ACTION_OPTIONS',
+  FETCH_TOTAL_BUDGET_AMOUNT: 'budget/FETCH_TOTAL_BUDGET_AMOUNT',
+  FETCH_TOTAL_REAL_AMOUNT: 'budget/FETCH_TOTAL_REAL_AMOUNT'
 };
 
 const initialState = {
@@ -28,7 +30,9 @@ const initialState = {
   totalItems: 0,
   updateSuccess: false,
   selectedEventBudgetId: 0,
-  showActionOptions: false
+  showActionOptions: false,
+  eventBudgetTotal: defaultEventBudgetTotal,
+  eventRealTotal: defaultEventBudgetTotal
 };
 
 export type BudgetState = Readonly<typeof initialState>;
@@ -120,6 +124,16 @@ export default (state: BudgetState = initialState, action): BudgetState => {
         ...state,
         showActionOptions: show
       };
+    case SUCCESS(ACTION_TYPES.FETCH_TOTAL_BUDGET_AMOUNT):
+      return {
+        ...state,
+        eventBudgetTotal: action.payload.data
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_TOTAL_REAL_AMOUNT):
+      return {
+        ...state,
+        eventRealTotal: action.payload.data
+      };
     default:
       return state;
   }
@@ -204,3 +218,19 @@ export const setShowActionOptions = show => ({
     show
   }
 });
+
+export const getEventBudgetTotal: ICrudGetAction<IEventBudgetTotal> = eventId => {
+  const requestUrl = `${apiUrl}/event/${eventId}/total`;
+  return {
+    type: ACTION_TYPES.FETCH_TOTAL_BUDGET_AMOUNT,
+    payload: axios.get<IEventBudgetTotal>(requestUrl)
+  };
+};
+
+export const getEventRealTotal: ICrudGetAction<IEventBudgetTotal> = eventId => {
+  const requestUrl = `api/transactions/event/${eventId}/total`;
+  return {
+    type: ACTION_TYPES.FETCH_TOTAL_REAL_AMOUNT,
+    payload: axios.get<IEventBudgetTotal>(requestUrl)
+  };
+};

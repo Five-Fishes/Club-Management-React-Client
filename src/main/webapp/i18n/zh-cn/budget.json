@@ -17,10 +17,14 @@
         "title": "活动预算"
       },
       "eventId": "Event Id",
-      "amount": "Amount",
-      "type": "Type",
-      "name": "Name",
-      "details": "Details"
+      "amount": "数额",
+      "type": "种类",
+      "name": "名",
+      "details": "详情",
+      "budget": "预算",
+      "realAmount": "实数",
+      "income": "收入",
+      "expense": "消费"
     }
   }
 }

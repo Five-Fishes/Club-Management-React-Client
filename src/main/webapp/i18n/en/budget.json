@@ -20,7 +20,11 @@
       "amount": "Amount",
       "type": "Type",
       "name": "Name",
-      "details": "Details"
+      "details": "Details",
+      "budget": "Budget",
+      "realAmount": "Real Amount",
+      "income": "Income",
+      "expense": "Expense"
     }
   }
 }

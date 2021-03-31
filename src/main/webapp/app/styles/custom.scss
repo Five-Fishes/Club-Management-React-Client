@@ -25,6 +25,14 @@
   color: white;
 }
 
+.text-expense {
+  color: var(--expense) !important;
+}
+
+.text-income {
+  color: var(--income) !important;
+}
+
 .mobile-fullWidth {
   width: 80%;
 }
