@@ -38,13 +38,13 @@ export class EventCrewDeleteDialog extends React.Component<IEventCrewDeleteDialo
             Are you sure you want to delete this EventCrew?
           </Translate>
         </ModalBody>
-        <ModalFooter>
+        <ModalFooter className="justify-content-around mx-3">
           <Button color="secondary" onClick={this.handleClose}>
             <FontAwesomeIcon icon="ban" />
             &nbsp;
             <Translate contentKey="entity.action.cancel">Cancel</Translate>
           </Button>
-          <Button id="jhi-confirm-delete-eventCrew" color="danger" onClick={this.confirmDelete}>
+          <Button id="jhi-confirm-delete-eventCrew" color="cancel" onClick={this.confirmDelete}>
             <FontAwesomeIcon icon="trash" />
             &nbsp;
             <Translate contentKey="entity.action.delete">Delete</Translate>

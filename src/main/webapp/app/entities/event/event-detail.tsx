@@ -39,12 +39,14 @@ export class EventDetail extends React.Component<IEventDetailProps> {
             <div className="event-details-info my-3">
               <FontAwesomeIcon icon={'calendar-alt'} size="sm" />
               <h6>
-                Date: <TextFormat value={eventEntity.startDate} type="date" format={APP_LOCAL_DATE_FORMAT} />{' '}
+                <Translate contentKey="clubmanagementApp.event.date">Date</Translate>:{' '}
+                <TextFormat value={eventEntity.startDate} type="date" format={APP_LOCAL_DATE_FORMAT} />{' '}
               </h6>
 
               <FontAwesomeIcon icon={'clock'} size="sm" />
               <h6>
-                Time: <TextFormat value={eventEntity.startDate} type="date" format={APP_LOCAL_TIME_FORMAT} />{' '}
+                <Translate contentKey="clubmanagementApp.event.time">Time</Translate>:{' '}
+                <TextFormat value={eventEntity.startDate} type="date" format={APP_LOCAL_TIME_FORMAT} />{' '}
               </h6>
 
               <FontAwesomeIcon icon={'map-marker-alt'} size="sm" />

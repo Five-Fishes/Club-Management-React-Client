@@ -36,8 +36,9 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
   }
 
   getUsersAndEvent = async () => {
-    const users = await axios.get<IUser[]>(`/api/users/`);
-    const event = await axios.get<IEvent>(`api/events/${this.props.match.params.eventId}`);
+    const eventId = this.props.match.params.eventId;
+    const users = await axios.get<IUser[]>(`/api/users/event-crews/${eventId}`);
+    const event = await axios.get<IEvent>(`api/events/${eventId}`);
     this.setState({ users: users.data, event: event.data });
   };
 
