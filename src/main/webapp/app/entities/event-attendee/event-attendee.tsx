@@ -12,7 +12,8 @@ import { getEventAttendeeEntities } from './event-attendee.reducer';
 // tslint:disable-next-line:no-unused-variable
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { CustomTab } from 'app/shared/components/customTab/custom-tab';
-import './event-attendee.scss';
+import { EventAttendeeRow } from 'app/entities/event-attendee/event-attendee-row';
+import { EventAttendeeSortModalModal } from 'app/entities/event-attendee/event-attendee-sort-modal';
 
 export interface IEventAttendeeProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string; eventId: string }> {}
 
@@ -75,30 +76,7 @@ export class EventAttendee extends React.Component<IEventAttendeeProps> {
     const { eventAttendeeList, totalItems } = this.props;
     return (
       <div>
-        <Modal isOpen={this.state.modalIsOpen} toggle={this.closeModal}>
-          <ModalHeader toggle={this.closeModal}>
-            <Translate contentKey="clubmanagementApp.eventAttendee.sortBy.title">Sort By</Translate>
-          </ModalHeader>
-          <ModalBody id="clubmanagementApp.eventAttendee.sortBy.options">
-            <Button color="secondary" size="lg" block onClick={this.sort.bind(this, '', '')}>
-              <Translate contentKey="clubmanagementApp.eventAttendee.sortBy.sortById">Sort By Id</Translate>
-            </Button>
-            <Button color="secondary" size="lg" block onClick={this.sort.bind(this, 'yearSession', 'asc')}>
-              <Translate contentKey="clubmanagementApp.eventAttendee.sortBy.sortByYearSessionAsc">Older Year Session First</Translate>
-            </Button>
-            <Button color="secondary" size="lg" block onClick={this.sort.bind(this, 'yearSession', 'asc')}>
-              <Translate contentKey="clubmanagementApp.eventAttendee.sortBy.sortByYearSessionDesc">Newer Year Session First</Translate>
-            </Button>
-            <Button color="secondary" size="lg" block onClick={this.sort.bind(this, 'provideTransport', 'desc')}>
-              <Translate contentKey="clubmanagementApp.eventAttendee.sortBy.provideTransportFirst">Provide Transport First</Translate>
-            </Button>
-            <Button color="secondary" size="lg" block onClick={this.sort.bind(this, 'provideTransport', 'asc')}>
-              <Translate contentKey="clubmanagementApp.eventAttendee.sortBy.noProvideTransportFirst">
-                Does Not Provide Transport First
-              </Translate>
-            </Button>
-          </ModalBody>
-        </Modal>
+        <EventAttendeeSortModalModal sort={this.sort} isOpen={this.state.modalIsOpen} toggleModal={this.closeModal} />
         <div className="my-4">
           <CustomTab currentTab="Attendees" tabList={eventTabList(this.state.eventId)} />
         </div>
@@ -129,18 +107,8 @@ export class EventAttendee extends React.Component<IEventAttendeeProps> {
                 </tr>
               </thead>
               <tbody>
-                {eventAttendeeList.map((eventAttendee, i) => (
-                  <tr key={`entity-${i + 1}`}>
-                    <td>{i + 1}</td>
-                    <td>{eventAttendee.userName}</td>
-                    <td>{eventAttendee.year}</td>
-                    <td>{eventAttendee.provideTransport ? <FontAwesomeIcon icon="car" /> : null}</td>
-                    <td>
-                      <Button color="Link" className="icon-btn" onClick={this.contactUser.bind(eventAttendee.contactNumber)}>
-                        <FontAwesomeIcon icon={['fab', 'whatsapp-square']} color="#25D366" size="lg" />
-                      </Button>
-                    </td>
-                  </tr>
+                {eventAttendeeList.map((eventAttendee, index) => (
+                  <EventAttendeeRow user={eventAttendee} index={index} />
                 ))}
               </tbody>
             </Table>
