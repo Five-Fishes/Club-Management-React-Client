@@ -33,4 +33,5 @@ export class EventAttendeeSortModalModal extends React.Component<IEventAttendeeS
   }
 }
 
-const ButtonItems = ({ buttonList, sort }) => buttonList.map(button => <EventAttendeeSortButton buttonInfo={button} sort={sort} />);
+const ButtonItems = ({ buttonList, sort }) =>
+  buttonList.map(button => <EventAttendeeSortButton buttonInfo={button} sort={sort} key={button.buttonName} />);
