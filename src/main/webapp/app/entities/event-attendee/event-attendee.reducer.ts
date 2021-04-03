@@ -5,6 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IEventAttendee, defaultValue } from 'app/shared/model/event-attendee.model';
+import { IGetAllByEventId } from 'app/shared/type/event-custom-action';
 
 export const ACTION_TYPES = {
   FETCH_EVENTATTENDEE_LIST: 'eventAttendee/FETCH_EVENTATTENDEE_LIST',
@@ -100,6 +101,14 @@ export default (state: EventAttendeeState = initialState, action): EventAttendee
 const apiUrl = 'api/event-attendees';
 
 // Actions
+
+export const getEventAttendeeEntities: IGetAllByEventId<IEventAttendee> = (eventId, page, size, sort) => {
+  const requestUrl = `${apiUrl}/event/${eventId}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_EVENTATTENDEE_LIST,
+    payload: axios.get<IEventAttendee>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
 
 export const getEntities: ICrudGetAllAction<IEventAttendee> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;

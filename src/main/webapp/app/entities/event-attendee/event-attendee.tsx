@@ -1,118 +1,144 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row, Table } from 'reactstrap';
+import { RouteComponentProps } from 'react-router-dom';
+import { Button, Row, Table, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 // tslint:disable-next-line:no-unused-variable
-import { Translate, ICrudGetAllAction, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
+import { Translate, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { eventTabList } from 'app/shared/util/tab.constants';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntities } from './event-attendee.reducer';
-import { IEventAttendee } from 'app/shared/model/event-attendee.model';
+import { getEventAttendeeEntities } from './event-attendee.reducer';
 // tslint:disable-next-line:no-unused-variable
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
+import { CustomTab } from 'app/shared/components/customTab/custom-tab';
+import './event-attendee.scss';
 
-export interface IEventAttendeeProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+export interface IEventAttendeeProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string; eventId: string }> {}
 
 export type IEventAttendeeState = IPaginationBaseState;
 
-export class EventAttendee extends React.Component<IEventAttendeeProps, IEventAttendeeState> {
-  state: IEventAttendeeState = {
-    ...getSortState(this.props.location, ITEMS_PER_PAGE)
+export class EventAttendee extends React.Component<IEventAttendeeProps> {
+  state = {
+    ...getSortState(this.props.location, ITEMS_PER_PAGE),
+    modalIsOpen: false,
+    eventId: this.props.match.params.eventId
   };
 
   componentDidMount() {
     this.getEntities();
   }
 
-  sort = prop => () => {
+  openModal = () => {
+    this.setState({ ...this.state, modalIsOpen: true });
+  };
+
+  closeModal = () => {
+    this.setState({ ...this.state, modalIsOpen: false });
+  };
+
+  contactUser = contactNumber => {
+    window.open(`https://wa.me/${contactNumber}`, '_blank');
+  };
+
+  sort = (sortProp, orderProp) => {
     this.setState(
       {
-        order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
+        order: orderProp,
+        sort: sortProp
       },
-      () => this.sortEntities()
+      () => {
+        this.sortEntities();
+        this.closeModal();
+      }
     );
   };
 
   sortEntities() {
     this.getEntities();
-    this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
+    this.props.history.push(
+      `${this.props.location.pathname}?page=${this.state.activePage}` +
+        (this.state.sort ? `&sort=${this.state.sort},${this.state.order}` : '')
+    );
   }
 
-  handlePagination = activePage => this.setState({ activePage }, () => this.sortEntities());
+  handlePagination = activePage => {
+    this.setState({ activePage }, () => this.sortEntities());
+  };
 
   getEntities = () => {
-    const { activePage, itemsPerPage, sort, order } = this.state;
-    this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
+    const { eventId, activePage, itemsPerPage, sort, order } = this.state;
+    this.props.getEventAttendeeEntities(eventId, activePage - 1, itemsPerPage, `${sort},${order}`);
   };
 
   render() {
-    const { eventAttendeeList, match, totalItems } = this.props;
+    const { eventAttendeeList, totalItems } = this.props;
     return (
       <div>
+        <Modal isOpen={this.state.modalIsOpen} toggle={this.closeModal}>
+          <ModalHeader toggle={this.closeModal}>
+            <Translate contentKey="clubmanagementApp.eventAttendee.sortBy.title">Sort By</Translate>
+          </ModalHeader>
+          <ModalBody id="clubmanagementApp.eventAttendee.sortBy.options">
+            <Button color="secondary" size="lg" block onClick={this.sort.bind(this, '', '')}>
+              <Translate contentKey="clubmanagementApp.eventAttendee.sortBy.sortById">Sort By Id</Translate>
+            </Button>
+            <Button color="secondary" size="lg" block onClick={this.sort.bind(this, 'yearSession', 'asc')}>
+              <Translate contentKey="clubmanagementApp.eventAttendee.sortBy.sortByYearSessionAsc">Older Year Session First</Translate>
+            </Button>
+            <Button color="secondary" size="lg" block onClick={this.sort.bind(this, 'yearSession', 'asc')}>
+              <Translate contentKey="clubmanagementApp.eventAttendee.sortBy.sortByYearSessionDesc">Newer Year Session First</Translate>
+            </Button>
+            <Button color="secondary" size="lg" block onClick={this.sort.bind(this, 'provideTransport', 'desc')}>
+              <Translate contentKey="clubmanagementApp.eventAttendee.sortBy.provideTransportFirst">Provide Transport First</Translate>
+            </Button>
+            <Button color="secondary" size="lg" block onClick={this.sort.bind(this, 'provideTransport', 'asc')}>
+              <Translate contentKey="clubmanagementApp.eventAttendee.sortBy.noProvideTransportFirst">
+                Does Not Provide Transport First
+              </Translate>
+            </Button>
+          </ModalBody>
+        </Modal>
+        <div className="my-4">
+          <CustomTab currentTab="Attendees" tabList={eventTabList(this.state.eventId)} />
+        </div>
         <h2 id="event-attendee-heading">
           <Translate contentKey="clubmanagementApp.eventAttendee.home.title">Event Attendees</Translate>
-          <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-            <FontAwesomeIcon icon="plus" />
-            &nbsp;
-            <Translate contentKey="clubmanagementApp.eventAttendee.home.createLabel">Create new Event Attendee</Translate>
-          </Link>
         </h2>
+        <Button className="btn btn-primary float-right" id="event-attendee-sort-by-button" onClick={this.openModal}>
+          <FontAwesomeIcon icon="sort-amount-up" />
+          &nbsp;
+          <Translate contentKey="clubmanagementApp.eventAttendee.home.sortBy">Sort By</Translate>
+        </Button>
         <div className="table-responsive">
           {eventAttendeeList && eventAttendeeList.length > 0 ? (
             <Table responsive>
               <thead>
                 <tr>
-                  <th className="hand" onClick={this.sort('id')}>
-                    <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
+                  <th>
+                    <Translate contentKey="global.field.id">ID</Translate>
                   </th>
-                  <th className="hand" onClick={this.sort('userId')}>
-                    <Translate contentKey="clubmanagementApp.eventAttendee.userId">User Id</Translate> <FontAwesomeIcon icon="sort" />
+                  <th>
+                    <Translate contentKey="clubmanagementApp.eventAttendee.userName">User Name</Translate>
                   </th>
-                  <th className="hand" onClick={this.sort('eventId')}>
-                    <Translate contentKey="clubmanagementApp.eventAttendee.eventId">Event Id</Translate> <FontAwesomeIcon icon="sort" />
+                  <th>
+                    <Translate contentKey="clubmanagementApp.eventAttendee.session">Session</Translate>
                   </th>
-                  <th className="hand" onClick={this.sort('provideTransport')}>
-                    <Translate contentKey="clubmanagementApp.eventAttendee.provideTransport">Provide Transport</Translate>{' '}
-                    <FontAwesomeIcon icon="sort" />
-                  </th>
+                  <th />
                   <th />
                 </tr>
               </thead>
               <tbody>
                 {eventAttendeeList.map((eventAttendee, i) => (
-                  <tr key={`entity-${i}`}>
+                  <tr key={`entity-${i + 1}`}>
+                    <td>{i + 1}</td>
+                    <td>{eventAttendee.userName}</td>
+                    <td>{eventAttendee.year}</td>
+                    <td>{eventAttendee.provideTransport ? <FontAwesomeIcon icon="car" /> : null}</td>
                     <td>
-                      <Button tag={Link} to={`${match.url}/${eventAttendee.id}`} color="link" size="sm">
-                        {eventAttendee.id}
+                      <Button color="Link" className="icon-btn" onClick={this.contactUser.bind(eventAttendee.contactNumber)}>
+                        <FontAwesomeIcon icon={['fab', 'whatsapp-square']} color="#25D366" size="lg" />
                       </Button>
-                    </td>
-                    <td>{eventAttendee.userId}</td>
-                    <td>{eventAttendee.eventId}</td>
-                    <td>{eventAttendee.provideTransport ? 'true' : 'false'}</td>
-                    <td className="text-right">
-                      <div className="btn-group flex-btn-group-container">
-                        <Button tag={Link} to={`${match.url}/${eventAttendee.id}`} color="info" size="sm">
-                          <FontAwesomeIcon icon="eye" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.view">View</Translate>
-                          </span>
-                        </Button>
-                        <Button tag={Link} to={`${match.url}/${eventAttendee.id}/edit`} color="primary" size="sm">
-                          <FontAwesomeIcon icon="pencil-alt" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.edit">Edit</Translate>
-                          </span>
-                        </Button>
-                        <Button tag={Link} to={`${match.url}/${eventAttendee.id}/delete`} color="danger" size="sm">
-                          <FontAwesomeIcon icon="trash" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.delete">Delete</Translate>
-                          </span>
-                        </Button>
-                      </div>
                     </td>
                   </tr>
                 ))}
@@ -149,7 +175,7 @@ const mapStateToProps = ({ eventAttendee }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEventAttendeeEntities
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

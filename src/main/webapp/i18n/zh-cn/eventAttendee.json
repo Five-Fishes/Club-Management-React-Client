@@ -2,24 +2,34 @@
   "clubmanagementApp": {
     "eventAttendee": {
       "home": {
-        "title": "Event Attendees",
-        "createLabel": "创建新 Event Attendee",
-        "createOrEditLabel": "创建或编辑 Event Attendee",
-        "notFound": "No Event Attendee found"
+        "title": "活动参与者",
+        "createLabel": "创建新活动参与者",
+        "createOrEditLabel": "创建或编辑活动参与者",
+        "notFound": "无活动参与者",
+        "sortBy": "排序方式"
       },
-      "created": "Event Attendee {{ param }} 创建成功",
-      "updated": "Event Attendee {{ param }} 更新成功",
-      "deleted": "Event Attendee {{ param }} 删除成功",
+      "sortBy": {
+        "title": "排序方式",
+        "sortById": "按编号排序",
+        "sortByYearSessionAsc": "旧学年度优先",
+        "sortByYearSessionDesc": "新学年度优先",
+        "provideTransportFirst": "有提供交通工具者优先",
+        "noProvideTransportFirst": "无提供交通工具者优先"
+      },
+      "created": "活动参与者 {{ param }} 创建成功",
+      "updated": "活动参与者 {{ param }} 更新成功",
+      "deleted": "活动参与者 {{ param }} 删除成功",
       "delete": {
-        "question": "你确定要删除 Event Attendee {{ id }} 吗？"
+        "question": "你确定要删除 活动参与者 {{ id }} 吗？"
       },
       "detail": {
-        "title": "Event Attendee"
+        "title": "活动参与者"
       },
-      "userId": "User Id",
-      "eventId": "Event Id",
-      "provideTransport": "Provide Transport",
-      "tab": "Attendees"
+      "userId": "用户编号",
+      "eventId": "活动编号",
+      "tab": "活动参与者",
+      "userName": "用户名",
+      "session": "学年度"
     }
   }
 }
