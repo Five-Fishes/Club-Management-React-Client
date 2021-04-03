@@ -156,8 +156,8 @@ export const getEventBudgetByEventId: IGetAllByEventId<IBudget> = (eventId, page
   };
 };
 
-export const getEntity: ICrudGetAction<IBudget> = id => {
-  const requestUrl = `${apiUrl}/${id}`;
+export const getEntity: ICrudGetAction<IBudget> = (id, eventId) => {
+  const requestUrl = `${apiUrl}/${id}/event/${eventId}`;
   return {
     type: ACTION_TYPES.FETCH_BUDGET,
     payload: axios.get<IBudget>(requestUrl)
@@ -182,13 +182,13 @@ export const updateEntity: ICrudPutAction<IBudget> = entity => async dispatch =>
   return result;
 };
 
-export const deleteEntity: ICrudDeleteAction<IBudget> = id => async dispatch => {
-  const requestUrl = `${apiUrl}/${id}`;
+export const deleteEntity: ICrudDeleteAction<IBudget> = (id, eventId) => async dispatch => {
+  const requestUrl = `${apiUrl}/${id}/event/${eventId}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_BUDGET,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
+  dispatch(getEventBudgetByEventId(eventId.toString()));
   return result;
 };
 
