@@ -13,3 +13,10 @@ export interface IBudget {
 }
 
 export const defaultValue: Readonly<IBudget> = {};
+
+export interface IEventBudgetTotal {
+  totalExpense?: number;
+  totalIncome?: number;
+}
+
+export const defaultEventBudgetTotal: Readonly<IEventBudgetTotal> = {};
