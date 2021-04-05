@@ -20,7 +20,7 @@ export class EventCrewDetail extends React.Component<IEventCrewDetailProps> {
   }
 
   render() {
-    const { eventCrewEntity } = this.props;
+    const { eventCrewEntity, match } = this.props;
     return (
       <Row>
         <Col md="8">
@@ -47,14 +47,14 @@ export class EventCrewDetail extends React.Component<IEventCrewDetailProps> {
             </dt>
             <dd>{eventCrewEntity.role}</dd>
           </dl>
-          <Button tag={Link} to="/entity/event-crew" replace color="info">
+          <Button tag={Link} to={`/entity/event-crew/event/${eventCrewEntity.eventId}`} replace color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/event-crew/${eventCrewEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/entity/event-crew/event/${eventCrewEntity.eventId}/${eventCrewEntity.id}/edit`} replace color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit">Edit</Translate>
