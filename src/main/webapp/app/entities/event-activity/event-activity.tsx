@@ -62,12 +62,13 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
 
   render() {
     const { eventActivityList, match, totalItems, selectedEventActivityId } = this.props;
+    const { eventId } = this.props.match.params;
     return (
       <div>
         <h2 id="event-activity-heading">
           <Translate contentKey="clubmanagementApp.eventActivity.home.title">Event Activities</Translate>
         </h2>
-        <CustomTab tabList={eventTabList} currentTab="Activities" />
+        <CustomTab tabList={eventTabList(eventId)} currentTab="Activities" />
         <div className="text-center">
           <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
             <FontAwesomeIcon icon="plus" />

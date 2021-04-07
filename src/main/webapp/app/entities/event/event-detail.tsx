@@ -25,11 +25,12 @@ export class EventDetail extends React.Component<IEventDetailProps> {
 
   render() {
     const { eventEntity } = this.props;
+    const { id } = this.props.match.params;
     return (
       <Container>
         <h1>Event Details</h1>
         <div className="my-4">
-          <CustomTab currentTab="Details" tabList={eventTabList} />
+          <CustomTab currentTab="Details" tabList={eventTabList(id)} />
         </div>
         <div className="pt-3">
           <img className="event-img" src={eventEntity.imageUrl} alt={eventEntity.fileName} />
