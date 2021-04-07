@@ -14,6 +14,7 @@ import { CustomTab } from 'app/shared/components/customTab/custom-tab';
 import { eventTabList } from 'app/shared/util/tab.constants';
 import { ListingCard } from 'app/shared/components/listing-card/listing-card';
 import { convertDateTimeFromServerToLocaleDate } from 'app/shared/util/date-utils';
+import { convertDaysDurationToTimeFormat, timeFormatDurationToString } from 'app/shared/util/duration-utils';
 
 export interface IEventActivityProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string; eventId: string }> {}
 
@@ -62,12 +63,13 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
 
   render() {
     const { eventActivityList, match, totalItems, selectedEventActivityId } = this.props;
+    const { eventId } = this.props.match.params;
     return (
       <div>
         <h2 id="event-activity-heading">
           <Translate contentKey="clubmanagementApp.eventActivity.home.title">Event Activities</Translate>
         </h2>
-        <CustomTab tabList={eventTabList} currentTab="Activities" />
+        <CustomTab tabList={eventTabList(eventId)} currentTab="Activities" />
         <div className="text-center">
           <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
             <FontAwesomeIcon icon="plus" />
@@ -94,7 +96,7 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
                 <span className="card-item d-block mb-2">
                   <span>
                     <Translate contentKey="clubmanagementApp.eventActivity.durationInDay">Duration (In Day)</Translate>:{' '}
-                    <span className="font-weight-bolder text-dark">{eventActivity.durationInDay}</span>
+                    <span>{timeFormatDurationToString(convertDaysDurationToTimeFormat(eventActivity.durationInDay))}</span>
                   </span>
                 </span>
                 <span className="card-item d-block">

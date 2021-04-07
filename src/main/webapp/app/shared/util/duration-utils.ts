@@ -12,3 +12,17 @@ export const convertTimeFormatToDaysDuration = ({ days, hours, minutes }) => {
   let duration = (days ? days : 0) + (hours ? hours / 24.0 : 0) + (minutes ? minutes / 60.0 / 24.0 : 0);
   return Number.parseFloat(duration).toFixed(5);
 };
+
+export const timeFormatDurationToString = ({ days, hours, minutes }) => {
+  let stringDuration = '';
+  if (days) {
+    stringDuration += days + ' days ';
+  }
+  if (hours) {
+    stringDuration += hours + ' hours ';
+  }
+  if (minutes) {
+    stringDuration += minutes + ' minutes';
+  }
+  return stringDuration;
+};
