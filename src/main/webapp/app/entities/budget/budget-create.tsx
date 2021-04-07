@@ -73,7 +73,7 @@ export class EventBudgetCreate extends React.Component<IBudgetCreateProps> {
                     type="number"
                     name="amount"
                     validate={{
-                      required: { value: true, errorMessage: 'Please Enter an amount for this budget' },
+                      required: { value: true, errorMessage: 'Please enter an amount for this budget' },
                       min: { value: 0, errorMessage: 'Amount cannot be less than 0' },
                       pattern: { value: '^([0-9]*.?[0-9]{1,2})$', errorMessage: 'Please enter a valid amount with max of 2 decimal values' }
                     }}
@@ -89,7 +89,7 @@ export class EventBudgetCreate extends React.Component<IBudgetCreateProps> {
                     name="name"
                     required
                     validate={{
-                      required: { value: true, errorMessage: 'Please Enter a name for this budget' },
+                      required: { value: true, errorMessage: 'Please enter a name for this budget' },
                       maxLength: { value: 100, errorMessage: 'Name cannot be more than 100 characters' }
                     }}
                   />

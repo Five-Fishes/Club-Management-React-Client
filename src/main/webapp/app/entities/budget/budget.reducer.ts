@@ -5,7 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IBudget, defaultValue, IEventBudgetTotal, defaultEventBudgetTotal } from 'app/shared/model/budget.model';
-import { IGetAllByEventId } from 'app/shared/type/event-custom-action';
+import { IGetAllByEventId, IDeleteEvent, IPutEvent, IGetEvent } from 'app/shared/type/event-custom-action';
 
 export const ACTION_TYPES = {
   FETCH_BUDGET_LIST: 'budget/FETCH_BUDGET_LIST',
@@ -156,7 +156,7 @@ export const getEventBudgetByEventId: IGetAllByEventId<IBudget> = (eventId, page
   };
 };
 
-export const getEntity: ICrudGetAction<IBudget> = (id, eventId) => {
+export const getEntity: IGetEvent<IBudget> = (id, eventId) => {
   const requestUrl = `${apiUrl}/${id}/event/${eventId}`;
   return {
     type: ACTION_TYPES.FETCH_BUDGET,
@@ -182,7 +182,7 @@ export const updateEntity: ICrudPutAction<IBudget> = entity => async dispatch =>
   return result;
 };
 
-export const deleteEntity: ICrudDeleteAction<IBudget> = (id, eventId) => async dispatch => {
+export const deleteEntity: IDeleteEvent<IBudget> = (id, eventId) => async dispatch => {
   const requestUrl = `${apiUrl}/${id}/event/${eventId}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_BUDGET,
