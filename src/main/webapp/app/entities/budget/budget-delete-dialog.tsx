@@ -2,22 +2,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
-import { Translate, ICrudGetAction, ICrudDeleteAction } from 'react-jhipster';
+import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { IBudget } from 'app/shared/model/budget.model';
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './budget.reducer';
 
-export interface IBudgetDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IBudgetDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
 export class BudgetDeleteDialog extends React.Component<IBudgetDeleteDialogProps> {
   componentDidMount() {
-    this.props.getEntity(this.props.match.params.id);
+    this.props.getEntity(this.props.match.params.id, this.props.match.params.eventId);
   }
 
   confirmDelete = event => {
-    this.props.deleteEntity(this.props.budgetEntity.id);
+    this.props.deleteEntity(this.props.budgetEntity.id, this.props.budgetEntity.eventId);
     this.handleClose(event);
   };
 
@@ -33,8 +32,8 @@ export class BudgetDeleteDialog extends React.Component<IBudgetDeleteDialogProps
         <ModalHeader toggle={this.handleClose}>
           <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
         </ModalHeader>
-        <ModalBody id="clubmanagementApp.budget.delete.question">
-          <Translate contentKey="clubmanagementApp.budget.delete.question" interpolate={{ id: budgetEntity.id }}>
+        <ModalBody id="clubmanagementApp.eventBudget.delete.question">
+          <Translate contentKey="clubmanagementApp.eventBudget.delete.question" interpolate={{ id: budgetEntity.id }}>
             Are you sure you want to delete this Budget?
           </Translate>
         </ModalBody>

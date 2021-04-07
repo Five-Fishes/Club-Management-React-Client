@@ -15,8 +15,8 @@ export const ACTION_TYPES = {
   DELETE_BUDGET: 'budget/DELETE_BUDGET',
   SET_BLOB: 'budget/SET_BLOB',
   RESET: 'budget/RESET',
-  SET_EVENT_BUDGET_ID: 'eventChecklist/SET_EVENT_BUDGET_ID',
-  SET_SHOW_ACTION_OPTIONS: 'eventChecklist/SET_SHOW_ACTION_OPTIONS',
+  SET_EVENT_BUDGET_ID: 'budget/SET_EVENT_BUDGET_ID',
+  SET_SHOW_ACTION_OPTIONS: 'budget/SET_SHOW_ACTION_OPTIONS',
   FETCH_TOTAL_BUDGET_AMOUNT: 'budget/FETCH_TOTAL_BUDGET_AMOUNT',
   FETCH_TOTAL_REAL_AMOUNT: 'budget/FETCH_TOTAL_REAL_AMOUNT'
 };
@@ -156,8 +156,8 @@ export const getEventBudgetByEventId: IGetAllByEventId<IBudget> = (eventId, page
   };
 };
 
-export const getEntity: ICrudGetAction<IBudget> = id => {
-  const requestUrl = `${apiUrl}/${id}`;
+export const getEntity: ICrudGetAction<IBudget> = (id, eventId) => {
+  const requestUrl = `${apiUrl}/${id}/event/${eventId}`;
   return {
     type: ACTION_TYPES.FETCH_BUDGET,
     payload: axios.get<IBudget>(requestUrl)
@@ -169,7 +169,7 @@ export const createEntity: ICrudPutAction<IBudget> = entity => async dispatch =>
     type: ACTION_TYPES.CREATE_BUDGET,
     payload: axios.post(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  dispatch(getEventBudgetByEventId(entity.eventId.toString()));
   return result;
 };
 
@@ -182,13 +182,13 @@ export const updateEntity: ICrudPutAction<IBudget> = entity => async dispatch =>
   return result;
 };
 
-export const deleteEntity: ICrudDeleteAction<IBudget> = id => async dispatch => {
-  const requestUrl = `${apiUrl}/${id}`;
+export const deleteEntity: ICrudDeleteAction<IBudget> = (id, eventId) => async dispatch => {
+  const requestUrl = `${apiUrl}/${id}/event/${eventId}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_BUDGET,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
+  dispatch(getEventBudgetByEventId(eventId.toString()));
   return result;
 };
 

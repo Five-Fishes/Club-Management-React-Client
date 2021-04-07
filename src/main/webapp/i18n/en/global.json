@@ -99,6 +99,9 @@
     "field": {
       "id": "ID"
     },
+    "select": {
+      "selectOne": "Select One"
+    },
     "ribbon": {
       "dev": "Development"
     },

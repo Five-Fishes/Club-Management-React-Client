@@ -3,7 +3,7 @@
     "eventBudget": {
       "home": {
         "title": "Event Budget",
-        "createLabel": "Create a new Event Budget",
+        "createLabel": "Create Event Budget",
         "createOrEditLabel": "Create or edit a Event Budget",
         "notFound": "No Event Budget found"
       },
@@ -21,7 +21,11 @@
       "name": "Name",
       "details": "Details",
       "type": "Type",
-      "tab": "Budget"
+      "budget": "Budget",
+      "tab": "Budget",
+      "realAmount": "Real Amount",
+      "income": "Income",
+      "expense": "Expense"
     }
   }
 }
