@@ -9,8 +9,8 @@ export const convertDaysDurationToTimeFormat = duration => {
 };
 
 export const convertTimeFormatToDaysDuration = ({ days, hours, minutes }) => {
-  let duration = (days ? days : 0) + (hours ? hours / 24.0 : 0) + (minutes ? minutes / 60.0 / 24.0 : 0);
-  return Number.parseFloat(duration).toFixed(5);
+  const duration = (days ? days / 1.0 : 0) + (hours ? hours / 24.0 : 0) + (minutes ? minutes / 60.0 / 24.0 : 0);
+  return duration.toFixed(5);
 };
 
 export const timeFormatDurationToString = ({ days, hours, minutes }) => {

@@ -95,7 +95,7 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
                 </span>
                 <span className="card-item d-block mb-2">
                   <span>
-                    <Translate contentKey="clubmanagementApp.eventActivity.durationInDay">Duration (In Day)</Translate>:{' '}
+                    <Translate contentKey="clubmanagementApp.eventActivity.duration">Duration (In Day)</Translate>:{' '}
                     <span>{timeFormatDurationToString(convertDaysDurationToTimeFormat(eventActivity.durationInDay))}</span>
                   </span>
                 </span>
