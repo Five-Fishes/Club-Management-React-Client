@@ -10,25 +10,25 @@ export const eventAttendeeSortButtonList: IEventAttendeeSortButtonInfo[] = [
   {
     buttonName: 'Older Year Session First',
     buttonTranslateKey: 'clubmanagementApp.eventAttendee.sortBy.sortByYearSessionAsc',
-    buttonSortProp: 'yearSession',
+    buttonSortProp: 'year_session',
     buttonOrderProp: 'asc'
   },
   {
     buttonName: 'Newer Year Session First',
     buttonTranslateKey: 'clubmanagementApp.eventAttendee.sortBy.sortByYearSessionDesc',
-    buttonSortProp: 'yearSession',
+    buttonSortProp: 'year_session',
     buttonOrderProp: 'desc'
   },
   {
     buttonName: 'Provide Transport First',
     buttonTranslateKey: 'clubmanagementApp.eventAttendee.sortBy.provideTransportFirst',
-    buttonSortProp: 'provideTransport',
+    buttonSortProp: 'provide_transport',
     buttonOrderProp: 'desc'
   },
   {
     buttonName: 'Does Not Provide Transport First',
     buttonTranslateKey: 'clubmanagementApp.eventAttendee.sortBy.noProvideTransportFirst',
-    buttonSortProp: 'provideTransport',
+    buttonSortProp: 'provide_transport',
     buttonOrderProp: 'asc'
   }
 ];
