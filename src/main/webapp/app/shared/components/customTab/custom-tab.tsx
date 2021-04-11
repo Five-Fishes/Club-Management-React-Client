@@ -35,7 +35,12 @@ export class CustomTab extends React.Component<ITabProps, {}> {
 
 const TabItems = ({ itemsList, activeTab }) =>
   itemsList.map(item => (
-    <Button id="tab-btn" color="#07ADE1" className={classnames('tab-item', item.tabName === activeTab ? 'active-tab' : '')}>
+    <Button
+      id="tab-btn"
+      key={item.tabName}
+      color="#07ADE1"
+      className={classnames('tab-item', item.tabName === activeTab ? 'active-tab' : '')}
+    >
       <Link to={item.tabRoute} className="link-unstyled">
         <Translate contentKey={item.tabTranslateKey}>{item.tabName}</Translate>
       </Link>
