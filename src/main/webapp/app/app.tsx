@@ -53,7 +53,9 @@ export class App extends React.Component<IAppProps> {
 
           <div className="flex-grow-1">
             <ErrorBoundary>
-              <AppRoutes />
+              <Container>
+                <AppRoutes />
+              </Container>
             </ErrorBoundary>
           </div>
 

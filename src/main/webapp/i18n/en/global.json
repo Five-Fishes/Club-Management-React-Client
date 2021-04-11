@@ -100,6 +100,9 @@
     "field": {
       "id": "ID"
     },
+    "select": {
+      "selectOne": "Select One"
+    },
     "ribbon": {
       "dev": "Development"
     },
@@ -114,6 +117,7 @@
       "cancel": "Cancel",
       "delete": "Delete",
       "edit": "Edit",
+      "create": "Create",
       "update": "Update",
       "open": "Open",
       "save": "Save",
