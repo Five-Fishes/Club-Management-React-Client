@@ -11,12 +11,12 @@ import BudgetDeleteDialog from './budget-delete-dialog';
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/new`} component={BudgetUpdate} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={BudgetUpdate} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={BudgetDetail} />
-      <ErrorBoundaryRoute path={match.url} component={Budget} />
+      <ErrorBoundaryRoute exact path={`${match.url}/event/:eventId/new`} component={BudgetUpdate} />
+      <ErrorBoundaryRoute exact path={`${match.url}/event/:eventId/:id/edit`} component={BudgetUpdate} />
+      <ErrorBoundaryRoute exact path={`${match.url}/event/:eventId/:id`} component={BudgetDetail} />
+      <ErrorBoundaryRoute path={`${match.url}/event/:eventId`} component={Budget} />
     </Switch>
-    <ErrorBoundaryRoute path={`${match.url}/:id/delete`} component={BudgetDeleteDialog} />
+    <ErrorBoundaryRoute path={`${match.url}/event/:eventId/:id/delete`} component={BudgetDeleteDialog} />
   </>
 );
 

@@ -13,18 +13,21 @@ import { IEventChecklist } from 'app/shared/model/event-checklist.model';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
+import './eventChecklist.scss';
 
-export interface IEventChecklistUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IEventChecklistUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
 export interface IEventChecklistUpdateState {
   isNew: boolean;
+  eventId: string;
 }
 
 export class EventChecklistUpdate extends React.Component<IEventChecklistUpdateProps, IEventChecklistUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
-      isNew: !this.props.match.params || !this.props.match.params.id
+      isNew: !this.props.match.params || !this.props.match.params.id,
+      eventId: this.props.match.params.eventId
     };
   }
 
@@ -63,11 +66,12 @@ export class EventChecklistUpdate extends React.Component<IEventChecklistUpdateP
       } else {
         this.props.updateEntity(entity);
       }
+      this.props.history.push(`/entity/event-checklists/event/${this.state.eventId}`);
     }
   };
 
   handleClose = () => {
-    this.props.history.push('/entity/event-checklist');
+    this.props.history.push(`/entity/event-checklists/event/${this.state.eventId}`);
   };
 
   render() {
@@ -77,7 +81,7 @@ export class EventChecklistUpdate extends React.Component<IEventChecklistUpdateP
     const { description } = eventChecklistEntity;
 
     return (
-      <div>
+      <div className="eventChecklist-form">
         <Row className="justify-content-center">
           <Col md="8">
             <h2 id="clubmanagementApp.eventChecklist.home.createOrEditLabel">
@@ -90,16 +94,8 @@ export class EventChecklistUpdate extends React.Component<IEventChecklistUpdateP
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <AvForm model={isNew ? {} : eventChecklistEntity} onSubmit={this.saveEntity}>
-                {!isNew ? (
-                  <AvGroup>
-                    <Label for="event-checklist-id">
-                      <Translate contentKey="global.field.id">ID</Translate>
-                    </Label>
-                    <AvInput id="event-checklist-id" type="text" className="form-control" name="id" required readOnly />
-                  </AvGroup>
-                ) : null}
-                <AvGroup>
+              <AvForm model={isNew ? { eventId: this.state.eventId } : eventChecklistEntity} onSubmit={this.saveEntity}>
+                <AvGroup style={{ display: 'none' }}>
                   <Label id="eventIdLabel" for="event-checklist-eventId">
                     <Translate contentKey="clubmanagementApp.eventChecklist.eventId">Event Id</Translate>
                   </Label>
@@ -148,7 +144,7 @@ export class EventChecklistUpdate extends React.Component<IEventChecklistUpdateP
                     <option value="PURCHASE">{translate('clubmanagementApp.EventChecklistType.PURCHASE')}</option>
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/event-checklist" replace color="info">
+                <Button tag={Link} id="cancel-save" to={`/entity/event-checklists/event/${this.state.eventId}`} replace color="info">
                   <FontAwesomeIcon icon="arrow-left" />
                   &nbsp;
                   <span className="d-none d-md-inline">

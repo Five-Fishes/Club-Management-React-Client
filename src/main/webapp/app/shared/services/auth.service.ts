@@ -11,9 +11,7 @@ export async function getAuthToken(firebaseToken: string): Promise<void> {
   const headers = {
     [FIREBASE_AUTH_HEADER_NAME]: firebaseToken
   };
-  const response = await axios.post('/api/authenticate/firebase', null, {
-    headers
-  });
+  const response = await axios.post('/api/authenticate/firebase', null, { headers });
   const responseBody: IAuthToken = response.data;
   Storage.local.set(ACCESS_TOKEN_KEY, responseBody.accessToken);
   Storage.local.set(REFRESH_TOKEN_KEY, responseBody.refreshToken);
@@ -49,26 +47,17 @@ const SocialProvider = {
   google: firebaseGoogleAuthProvider
 };
 
-export function socialLogin(providerType: keyof typeof SocialProvider): Promise<string> {
-  return new Promise(async (resolve, reject) => {
-    const provider = SocialProvider[providerType];
-    firebaseAuth
-      .signInWithPopup(provider)
-      .then(userCredentials => {
-        return userCredentials.user.getIdToken();
-      })
-      .then(firebaseToken => {
-        Storage.local.set(FIREBASE_TOKEN_KEY, firebaseToken);
-        resolve(firebaseToken);
-      })
-      .catch(err => {
-        reject(err);
-      });
-  });
+export async function socialLogin(providerType: keyof typeof SocialProvider): Promise<string> {
+  const provider = SocialProvider[providerType];
+  const userCredentials = await firebaseAuth.signInWithPopup(provider);
+  const firebaseToken = await userCredentials.user.getIdToken();
+  Storage.local.set(FIREBASE_TOKEN_KEY, firebaseToken);
+  return firebaseToken;
 }
 
 export async function emailRegister(logincredential: ILogin): Promise<void> {
-  if (!(logincredential.email && logincredential.password)) {
+  const isValidCredential = Boolean(logincredential.email) && Boolean(logincredential.password);
+  if (!isValidCredential) {
     throw new Error('Please enter your email and password');
   }
   await firebaseAuth.createUserWithEmailAndPassword(logincredential.email, logincredential.password);
@@ -79,7 +68,8 @@ export async function emailRegister(logincredential: ILogin): Promise<void> {
 }
 
 export async function emailLogin(logincredential: ILogin): Promise<string> {
-  if (!(logincredential.email && logincredential.password)) {
+  const isValidCredential = Boolean(logincredential.email) && Boolean(logincredential.password);
+  if (!isValidCredential) {
     throw new Error('Please enter your email and password');
   }
   const userCredential = await firebaseAuth.signInWithEmailAndPassword(logincredential.email, logincredential.password);
@@ -101,16 +91,7 @@ export async function emailResetPassword(email: string): Promise<void> {
   await firebaseAuth.sendPasswordResetEmail(email);
 }
 
-export function fetchAccount(): Promise<void> {
-  return new Promise(async (resolve, reject) => {
-    axios
-      .get(`/api/account`)
-      .then(res => {
-        store.dispatch({ type: ACTION_TYPES.FETCH_ACCOUNT, payload: res.data });
-        resolve();
-      })
-      .catch(err => {
-        reject(err);
-      });
-  });
+export async function fetchAccount(): Promise<void> {
+  const res = await axios.get(`/api/account`);
+  store.dispatch({ type: ACTION_TYPES.FETCH_ACCOUNT, payload: res.data });
 }

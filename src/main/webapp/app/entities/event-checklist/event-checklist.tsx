@@ -16,6 +16,7 @@ import '../../styles/event-module.scss';
 import { CustomTab } from 'app/shared/components/customTab/custom-tab';
 import { eventTabList } from 'app/shared/util/tab.constants';
 import { ListingCard } from 'app/shared/components/listing-card/listing-card';
+import './eventChecklist.scss';
 
 export interface IEventChecklistProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string; eventId: string }> {}
 
@@ -81,7 +82,7 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
           </Link>
         </div>
 
-        <div>
+        <div className="eventChecklist-list">
           {eventChecklistList && eventChecklistList.length > 0 ? (
             eventChecklistList.map((eventChecklist, i) => (
               // tslint:disable
@@ -119,13 +120,25 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
           <ModalHeader toggle={this.toggleShowOptions} />
           <ModalBody>
             <h2 className="text-center">Options</h2>
-            <Button tag={Link} to={`${match.url}/${selectedEventChecklistId}/edit`} color="primary" className="d-block mx-auto my-3 w-75">
+            <Button
+              tag={Link}
+              to={`${match.url}/${selectedEventChecklistId}/edit`}
+              color="primary"
+              className="d-block mx-auto my-3 w-75"
+              onClick={this.toggleShowOptions}
+            >
               <FontAwesomeIcon icon="pencil-alt" />{' '}
               <span>
                 <Translate contentKey="entity.action.update">Update</Translate>
               </span>
             </Button>
-            <Button tag={Link} to={`${match.url}/${selectedEventChecklistId}/delete`} color="cancel" className="d-block mx-auto my-3 w-75">
+            <Button
+              tag={Link}
+              to={`${match.url}/${selectedEventChecklistId}/delete`}
+              color="cancel"
+              className="d-block mx-auto my-3 w-75"
+              onClick={this.toggleShowOptions}
+            >
               <FontAwesomeIcon icon="trash" />{' '}
               <span>
                 <Translate contentKey="entity.action.delete">Delete</Translate>
