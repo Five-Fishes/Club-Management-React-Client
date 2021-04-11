@@ -12,7 +12,7 @@ import AuthLogin from 'app/modules/auth/login/auth-login';
 import AuthEmailLogin from 'app/modules/auth/email-login/auth-email-login';
 import AuthEmailRegister from './modules/auth/email-register/auth-email-register';
 import AuthEmailReset from './modules/auth/email-reset/auth-email-reset';
-import UserProfile from './modules/user-profile/user-profile';
+import UserProfile from './modules/user-profile';
 
 // tslint:disable:space-in-parens
 
@@ -29,7 +29,7 @@ const Routes = () => (
       <ErrorBoundaryRoute exact path="/auth/email/login" component={AuthEmailLogin} />
       <ErrorBoundaryRoute exact path="/auth/email/register" component={AuthEmailRegister} />
       <ErrorBoundaryRoute exact path="/auth/email/reset" component={AuthEmailReset} />
-      <PrivateRoute exact path="/profile" component={UserProfile} />
+      <PrivateRoute path="/profile" component={UserProfile} />
       <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
       <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.USER]} />
       <ErrorBoundaryRoute path="/" exact component={Home} />

@@ -55,3 +55,21 @@ export const eventTabList = (eventId: string): ITabInfo[] => [
     tabRoute: `/entity/event-crew/event/${eventId}`
   }
 ];
+
+export const profileTab: ITabInfo[] = [
+  {
+    tabName: 'Stats',
+    tabTranslateKey: 'userProfile.stats',
+    tabRoute: '/profile/stats'
+  },
+  {
+    tabName: 'Evolution',
+    tabTranslateKey: 'userProfile.evolution',
+    tabRoute: '/profile/evolution'
+  },
+  {
+    tabName: 'Roles',
+    tabTranslateKey: 'userProfile.roles',
+    tabRoute: '/profile/roles'
+  }
+];
