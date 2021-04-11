@@ -40,25 +40,14 @@ export class EventCrew extends React.Component<IEventCrewProps> {
     this.props.getEventCrewByEventId(Number.parseInt(eventId, 10));
   }
 
-  //   sort = prop => () => {
-  //     this.setState(
-  //       {
-  //         order: this.state.order === 'asc' ? 'desc' : 'asc',
-  //         sort: prop
-  //       },
-  //       () => this.sortEntities()
-  //     );
-  //   };
-
-  //   sortEntities() {
-  //     this.getEntities();
-  //     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
-  //   }
+  sortEntities() {
+    this.getEntities();
+    this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
+  }
 
   getEntities = () => {
     const { eventId } = this.props.match.params;
     const { activePage, itemsPerPage, sort, order } = this.state;
-    // this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
     this.props.getEventCrewByEventId(Number.parseInt(eventId, 10), activePage - 1, itemsPerPage, `${sort},${order}`);
   };
 
