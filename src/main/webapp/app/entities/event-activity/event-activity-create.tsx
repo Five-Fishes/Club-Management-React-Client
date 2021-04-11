@@ -3,21 +3,18 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-// tslint:disable-next-line:no-unused-variable
 import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
-
-import { getEntity, updateEntity } from './event-activity.reducer';
+import { createEntity, reset } from './event-activity.reducer';
 import { getEntity as getEventEntity } from '../event/event.reducer';
-
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
-import { APP_LOCAL_DATETIME_FORMAT } from 'app/config/constants';
+import { convertDateTimeToServer } from 'app/shared/util/date-utils';
 import moment from 'moment';
+import { APP_LOCAL_DATETIME_FORMAT } from 'app/config/constants';
 
-export interface IEventActivityUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
+export interface IEventActivityCreateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
-export class EventActivityUpdate extends React.Component<IEventActivityUpdateProps> {
+export class EventActivityCreate extends React.Component<IEventActivityCreateProps> {
   constructor(props) {
     super(props);
   }
@@ -29,7 +26,7 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
   }
 
   componentDidMount() {
-    this.props.getEntity(this.props.match.params.id, this.props.match.params.eventId);
+    this.props.reset();
     this.props.getEventEntity(this.props.match.params.eventId);
   }
 
@@ -42,7 +39,8 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
         ...eventActivityEntity,
         ...values
       };
-      this.props.updateEntity(entity);
+
+      this.props.createEntity(entity);
     }
   };
 
@@ -51,15 +49,17 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
   };
 
   render() {
-    const { eventActivityEntity, loading, updating, errorMessage, eventEntity } = this.props;
     const { eventId } = this.props.match.params;
+    const { eventActivityEntity, loading, updating, errorMessage, eventEntity } = this.props;
+
+    const { description } = eventActivityEntity;
 
     return (
-      <div>
+      <div className="container">
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.eventActivity.home.createOrEditLabel">
-              <Translate contentKey="clubmanagementApp.eventActivity.home.updateTitle">Update Event Activity</Translate>
+            <h2 id="clubmanagementApp.eventActivity.home.createTitle">
+              <Translate contentKey="clubmanagementApp.eventActivity.home.createTitle">Create Event Activity</Translate>
             </h2>
           </Col>
         </Row>
@@ -68,12 +68,14 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <AvForm model={eventActivityEntity} onSubmit={this.saveEntity}>
+              <AvForm model={{}} onSubmit={this.saveEntity}>
+                <AvField hidden id="event-activity-eventId" type="string" className="form-control" name="eventId" value={eventId} />
+
                 <AvGroup>
                   <Label id="nameLabel" for="event-activity-name">
                     <Translate contentKey="clubmanagementApp.eventActivity.name">Name</Translate>
                   </Label>
-                  <AvField id="event-activity-name" type="text" name="name" />
+                  <AvField id="event-activity-name" type="text" name="name" required />
                 </AvGroup>
                 <AvGroup>
                   <Label id="startDateLabel" for="event-activity-startDate">
@@ -96,14 +98,14 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
                         }
                       }
                     }}
-                    value={convertDateTimeFromServer(this.props.eventActivityEntity.startDate)}
+                    value={null}
                   />
                 </AvGroup>
                 <AvGroup>
                   <Label id="durationInDayLabel" for="event-activity-durationInDay">
                     <Translate contentKey="clubmanagementApp.eventActivity.durationInDay">Duration In Day</Translate>
                   </Label>
-                  <AvField id="event-activity-durationInDay" type="text" name="durationInDay" />
+                  <AvField id="event-activity-durationInDay" type="number" min="0" name="durationInDay" />
                 </AvGroup>
                 <AvGroup>
                   <Label id="descriptionLabel" for="event-activity-description">
@@ -116,13 +118,13 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
                   <Button tag={Link} id="cancel-save" to={`/entity/event-activity/event/${eventId}`} replace color="cancel">
                     <FontAwesomeIcon icon="arrow-left" />
                     &nbsp;
-                    <Translate contentKey="entity.action.back">Back</Translate>
+                    <Translate contentKey="entity.action.cancel">Cancel</Translate>
                   </Button>
                   &nbsp;
                   <Button color="action" id="save-entity" type="submit" disabled={updating}>
                     <FontAwesomeIcon icon="save" />
                     &nbsp;
-                    <Translate contentKey="entity.action.update">Update</Translate>
+                    <Translate contentKey="entity.action.create">Create</Translate>
                   </Button>
                 </div>
               </AvForm>
@@ -144,9 +146,9 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getEntity,
-  updateEntity,
-  getEventEntity
+  createEntity,
+  getEventEntity,
+  reset
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
@@ -155,4 +157,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(EventActivityUpdate);
+)(EventActivityCreate);

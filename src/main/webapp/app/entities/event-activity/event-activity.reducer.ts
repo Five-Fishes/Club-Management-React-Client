@@ -5,6 +5,8 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IEventActivity, defaultValue } from 'app/shared/model/event-activity.model';
+import { IGetActionWithEventId, IGetAllByEventId, IDeleteActionWithEventId } from 'app/shared/type/event-custom-action';
+import { deprecate } from 'util';
 
 export const ACTION_TYPES = {
   FETCH_EVENTACTIVITY_LIST: 'eventActivity/FETCH_EVENTACTIVITY_LIST',
@@ -13,7 +15,9 @@ export const ACTION_TYPES = {
   UPDATE_EVENTACTIVITY: 'eventActivity/UPDATE_EVENTACTIVITY',
   DELETE_EVENTACTIVITY: 'eventActivity/DELETE_EVENTACTIVITY',
   SET_BLOB: 'eventActivity/SET_BLOB',
-  RESET: 'eventActivity/RESET'
+  RESET: 'eventActivity/RESET',
+  SET_EVENT_ACTIVITY_ID: 'SET_EVENT_ACTIVITY_ID',
+  SET_SHOW_ACTION_OPTIONS: 'SET_SHOW_ACTION_OPTIONS'
 };
 
 const initialState = {
@@ -23,7 +27,9 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
+  selectedEventActivityId: 0,
+  showActionOptions: false
 };
 
 export type EventActivityState = Readonly<typeof initialState>;
@@ -99,6 +105,18 @@ export default (state: EventActivityState = initialState, action): EventActivity
           [name + 'ContentType']: contentType
         }
       };
+    case ACTION_TYPES.SET_EVENT_ACTIVITY_ID:
+      const { eventActivityId } = action.payload;
+      return {
+        ...state,
+        selectedEventActivityId: eventActivityId
+      };
+    case ACTION_TYPES.SET_SHOW_ACTION_OPTIONS:
+      const { show } = action.payload;
+      return {
+        ...state,
+        showActionOptions: show
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState
@@ -120,8 +138,16 @@ export const getEntities: ICrudGetAllAction<IEventActivity> = (page, size, sort)
   };
 };
 
-export const getEntity: ICrudGetAction<IEventActivity> = id => {
-  const requestUrl = `${apiUrl}/${id}`;
+export const getEventActivitiesByEventId: IGetAllByEventId<IEventActivity> = (eventId, page, size, sort) => {
+  const requestUrl = `${apiUrl}/event/${eventId}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_EVENTACTIVITY_LIST,
+    payload: axios.get<IEventActivity>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
+
+export const getEntity: IGetActionWithEventId<IEventActivity> = (id, eventId) => {
+  const requestUrl = `${apiUrl}/${id}/event/${eventId}`;
   return {
     type: ACTION_TYPES.FETCH_EVENTACTIVITY,
     payload: axios.get<IEventActivity>(requestUrl)
@@ -133,7 +159,7 @@ export const createEntity: ICrudPutAction<IEventActivity> = entity => async disp
     type: ACTION_TYPES.CREATE_EVENTACTIVITY,
     payload: axios.post(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  dispatch(getEventActivitiesByEventId(entity.eventId));
   return result;
 };
 
@@ -142,17 +168,17 @@ export const updateEntity: ICrudPutAction<IEventActivity> = entity => async disp
     type: ACTION_TYPES.UPDATE_EVENTACTIVITY,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  dispatch(getEventActivitiesByEventId(entity.eventId));
   return result;
 };
 
-export const deleteEntity: ICrudDeleteAction<IEventActivity> = id => async dispatch => {
+export const deleteEntity: IDeleteActionWithEventId<IEventActivity> = (id, eventId) => async dispatch => {
   const requestUrl = `${apiUrl}/${id}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_EVENTACTIVITY,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
+  dispatch(getEventActivitiesByEventId(eventId as number));
   return result;
 };
 
@@ -162,6 +188,20 @@ export const setBlob = (name, data, contentType?) => ({
     name,
     data,
     contentType
+  }
+});
+
+export const setSelectedEventActivityId = eventActivityId => ({
+  type: ACTION_TYPES.SET_EVENT_ACTIVITY_ID,
+  payload: {
+    eventActivityId
+  }
+});
+
+export const setShowActionOptions = show => ({
+  type: ACTION_TYPES.SET_SHOW_ACTION_OPTIONS,
+  payload: {
+    show
   }
 });
 
