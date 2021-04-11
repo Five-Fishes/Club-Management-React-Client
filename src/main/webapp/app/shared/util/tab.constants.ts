@@ -22,7 +22,7 @@ export const eventTabList = (eventId: string): ITabInfo[] => [
   {
     tabName: 'Activities',
     tabTranslateKey: 'clubmanagementApp.eventActivity.tab',
-    tabRoute: '/activites'
+    tabRoute: `/entity/event-activity/event/${eventId}`
   },
   {
     tabName: 'Checklist',
