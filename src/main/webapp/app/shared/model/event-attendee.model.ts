@@ -1,6 +1,6 @@
 export interface IEventAttendee {
   id?: number;
-  year?: string;
+  yearSession?: string;
   userName?: string;
   provideTransport?: boolean;
   contactNumber?: string;

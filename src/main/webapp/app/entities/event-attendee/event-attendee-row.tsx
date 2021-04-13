@@ -22,8 +22,8 @@ export class EventAttendeeRow extends React.Component<IEventAttendeeTableRowProp
       <tr key={`event-attendee-${index + 1}`}>
         <td scope="row">{index + 1}</td>
         <td>{user.userName}</td>
-        <td>{user.year}</td>
-        <td>{'provideTransport' in user ? <FontAwesomeIcon icon="car" /> : null}</td>
+        <td>{user.yearSession}</td>
+        <td>{!!user.provideTransport ? <FontAwesomeIcon icon="car" /> : null}</td>
         <td>
           <Button color="Link" className="icon-btn" onClick={this.contactUser}>
             <FontAwesomeIcon icon={['fab', 'whatsapp-square']} color="#25D366" size="lg" />

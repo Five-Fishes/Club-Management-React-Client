@@ -12,9 +12,9 @@ export interface IEventAttendeeSortButtonInfo {
 }
 
 export interface IEventAttendeeSortModalProps {
-  isOpen: Boolean;
-  toggleModal: Function;
-  sort: Function;
+  isOpen: boolean;
+  toggleModal: () => void;
+  sort: (sortProp, orderProp) => void;
 }
 
 export class EventAttendeeSortModalModal extends React.Component<IEventAttendeeSortModalProps> {
