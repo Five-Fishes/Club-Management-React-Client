@@ -11,12 +11,12 @@ import EventCrewDeleteDialog from './event-crew-delete-dialog';
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/new`} component={EventCrewUpdate} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={EventCrewUpdate} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={EventCrewDetail} />
-      <ErrorBoundaryRoute path={match.url} component={EventCrew} />
+      <ErrorBoundaryRoute exact path={`${match.url}/event/:eventId/new`} component={EventCrewUpdate} />
+      <ErrorBoundaryRoute exact path={`${match.url}/event/:eventId/:id/edit`} component={EventCrewUpdate} />
+      {/* <ErrorBoundaryRoute exact path={`${match.url}/event/:eventId/:id`} component={EventCrewDetail} /> */}
+      <ErrorBoundaryRoute path={`${match.url}/event/:eventId/`} component={EventCrew} />
     </Switch>
-    <ErrorBoundaryRoute path={`${match.url}/:id/delete`} component={EventCrewDeleteDialog} />
+    <ErrorBoundaryRoute path={`${match.url}/event/:eventId/:id/delete`} component={EventCrewDeleteDialog} />
   </>
 );
 

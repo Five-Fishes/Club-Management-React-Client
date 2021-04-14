@@ -7,17 +7,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IEventCrew } from 'app/shared/model/event-crew.model';
 import { IRootState } from 'app/shared/reducers';
-import { getEntity, deleteEntity } from './event-crew.reducer';
+import { getEntity, deleteEntity, deleteEntityWithEventId } from './event-crew.reducer';
 
-export interface IEventCrewDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IEventCrewDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
 export class EventCrewDeleteDialog extends React.Component<IEventCrewDeleteDialogProps> {
   componentDidMount() {
-    this.props.getEntity(this.props.match.params.id);
+    this.props.getEntity(this.props.match.params.id, this.props.match.params.eventId);
   }
 
   confirmDelete = event => {
-    this.props.deleteEntity(this.props.eventCrewEntity.id);
+    this.props.deleteEntityWithEventId(this.props.eventCrewEntity.id, this.props.match.params.eventId);
     this.handleClose(event);
   };
 
@@ -38,13 +38,13 @@ export class EventCrewDeleteDialog extends React.Component<IEventCrewDeleteDialo
             Are you sure you want to delete this EventCrew?
           </Translate>
         </ModalBody>
-        <ModalFooter>
+        <ModalFooter className="justify-content-around mx-3">
           <Button color="secondary" onClick={this.handleClose}>
             <FontAwesomeIcon icon="ban" />
             &nbsp;
             <Translate contentKey="entity.action.cancel">Cancel</Translate>
           </Button>
-          <Button id="jhi-confirm-delete-eventCrew" color="danger" onClick={this.confirmDelete}>
+          <Button id="jhi-confirm-delete-eventCrew" color="cancel" onClick={this.confirmDelete}>
             <FontAwesomeIcon icon="trash" />
             &nbsp;
             <Translate contentKey="entity.action.delete">Delete</Translate>
@@ -59,7 +59,7 @@ const mapStateToProps = ({ eventCrew }: IRootState) => ({
   eventCrewEntity: eventCrew.entity
 });
 
-const mapDispatchToProps = { getEntity, deleteEntity };
+const mapDispatchToProps = { getEntity, deleteEntity, deleteEntityWithEventId };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

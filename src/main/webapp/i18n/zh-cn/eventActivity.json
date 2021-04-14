@@ -20,6 +20,7 @@
       },
       "eventId": "Event Id",
       "startDate": "开始日期",
+      "duration": "为期",
       "durationInDay": "为期（天数）",
       "name": "名称",
       "description": "描述",

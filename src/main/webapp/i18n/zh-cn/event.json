@@ -13,6 +13,8 @@
       "delete": {
         "question": "你确定要删除 Event {{ id }} 吗？"
       },
+      "upcoming": "来临",
+      "previous": "往期",
       "detail": {
         "title": "Event"
       },
@@ -20,6 +22,8 @@
       "description": "详情",
       "remarks": "备注",
       "venue": "地点",
+      "date": "日期",
+      "time": "时间",
       "startDate": "开始日期",
       "endDate": "结束日期",
       "fee": "费用",
