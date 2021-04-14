@@ -35,6 +35,12 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
     this.getEventRealTotal();
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.totalItems !== this.props.totalItems) {
+      this.getEventBudgetTotal();
+    }
+  }
+
   sort = prop => () => {
     this.setState(
       {
