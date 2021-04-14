@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity } from './event.reducer';
+import { getEntityByEventIdAndUserId } from '../event-attendee/event-attendee.reducer';
 
 // tslint:disable-next-line:no-unused-variable
 import { APP_LOCAL_TIME_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
@@ -23,8 +24,14 @@ export class EventDetail extends React.Component<IEventDetailProps> {
     this.props.getEntity(this.props.match.params.id);
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.userId !== this.props.userId && !isNaN(this.props.userId)) {
+      this.props.getEntityByEventIdAndUserId(this.props.match.params.id, this.props.userId);
+    }
+  }
+
   render() {
-    const { eventEntity } = this.props;
+    const { eventEntity, eventAttendeeEntity } = this.props;
     const eventId = this.props.match.params.id;
     return (
       <Container>
@@ -70,9 +77,20 @@ export class EventDetail extends React.Component<IEventDetailProps> {
               <Button tag={Link} to={`/entity/event/${eventEntity.id}/edit`} replace className="my-1" color="secondary">
                 Update
               </Button>
-              <Button className="my-1" color="action">
-                Register
-              </Button>
+              {eventAttendeeEntity.userId ? (
+                <Button
+                  tag={Link}
+                  to={`/entity/event/${eventEntity.id}/eventAttendee/${eventAttendeeEntity.id}/delete`}
+                  className="my-1"
+                  color="cancel"
+                >
+                  Deregister
+                </Button>
+              ) : (
+                <Button tag={Link} to={`/entity/event-attendee/event/${eventEntity.id}/new`} className="my-1" color="action">
+                  Register
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -81,11 +99,13 @@ export class EventDetail extends React.Component<IEventDetailProps> {
   }
 }
 
-const mapStateToProps = ({ event }: IRootState) => ({
-  eventEntity: event.entity
+const mapStateToProps = ({ event, authentication, eventAttendee }: IRootState) => ({
+  eventEntity: event.entity,
+  userId: authentication.id,
+  eventAttendeeEntity: eventAttendee.entity
 });
 
-const mapDispatchToProps = { getEntity };
+const mapDispatchToProps = { getEntity, getEntityByEventIdAndUserId };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;

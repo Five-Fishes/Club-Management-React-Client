@@ -5,6 +5,7 @@
         "title": "Event Attendees",
         "createLabel": "Create a new Event Attendee",
         "createOrEditLabel": "Create or edit a Event Attendee",
+        "registerLabel": "Register as Event Attendee",
         "notFound": "No Event Attendee found",
         "sortBy": "Sort By"
       },
@@ -20,7 +21,7 @@
       "updated": "A Event Attendee is updated with identifier {{ param }}",
       "deleted": "A Event Attendee is deleted with identifier {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Event Attendee {{ id }}?"
+        "question": "Are you sure you want to deregister?"
       },
       "detail": {
         "title": "Event Attendee"

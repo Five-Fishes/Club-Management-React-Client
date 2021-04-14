@@ -122,7 +122,9 @@
       "open": "Open",
       "save": "Save",
       "view": "View",
-      "create": "Create"
+      "yes": "Yes",
+      "no": "No",
+      "register": "Register"
     },
     "detail": {
       "field": "Field",
