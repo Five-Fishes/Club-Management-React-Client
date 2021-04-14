@@ -5,13 +5,14 @@
         "title": "Event Attendees",
         "createLabel": "创建新 Event Attendee",
         "createOrEditLabel": "创建或编辑 Event Attendee",
+        "registerLabel": "注册为参与者",
         "notFound": "No Event Attendee found"
       },
       "created": "Event Attendee {{ param }} 创建成功",
       "updated": "Event Attendee {{ param }} 更新成功",
       "deleted": "Event Attendee {{ param }} 删除成功",
       "delete": {
-        "question": "你确定要删除 Event Attendee {{ id }} 吗？"
+        "question": "你确定要注销吗？"
       },
       "detail": {
         "title": "Event Attendee"

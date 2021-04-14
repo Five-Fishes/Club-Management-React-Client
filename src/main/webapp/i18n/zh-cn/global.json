@@ -123,7 +123,9 @@
       "open": "Open",
       "save": "保存",
       "view": "查看",
-      "create": "创建"
+      "yes": "是",
+      "no": "否",
+      "register": "注册"
     },
     "detail": {
       "field": "字段",
