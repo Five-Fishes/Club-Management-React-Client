@@ -9,11 +9,11 @@ import { IEventAttendee } from 'app/shared/model/event-attendee.model';
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './event-attendee.reducer';
 
-export interface IEventAttendeeDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IEventAttendeeDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ attendeeId: string }> {}
 
 export class EventAttendeeDeleteDialog extends React.Component<IEventAttendeeDeleteDialogProps> {
   componentDidMount() {
-    this.props.getEntity(this.props.match.params.id);
+    this.props.getEntity(this.props.match.params.attendeeId);
   }
 
   confirmDelete = event => {
@@ -34,20 +34,18 @@ export class EventAttendeeDeleteDialog extends React.Component<IEventAttendeeDel
           <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
         </ModalHeader>
         <ModalBody id="clubmanagementApp.eventAttendee.delete.question">
-          <Translate contentKey="clubmanagementApp.eventAttendee.delete.question" interpolate={{ id: eventAttendeeEntity.id }}>
-            Are you sure you want to delete this EventAttendee?
-          </Translate>
+          <Translate contentKey="clubmanagementApp.eventAttendee.delete.question">Are you sure you want to unregister?</Translate>
         </ModalBody>
         <ModalFooter>
           <Button color="secondary" onClick={this.handleClose}>
             <FontAwesomeIcon icon="ban" />
             &nbsp;
-            <Translate contentKey="entity.action.cancel">Cancel</Translate>
+            <Translate contentKey="entity.action.no">No</Translate>
           </Button>
-          <Button id="jhi-confirm-delete-eventAttendee" color="danger" onClick={this.confirmDelete}>
+          <Button id="jhi-confirm-delete-eventAttendee" color="cancel" onClick={this.confirmDelete}>
             <FontAwesomeIcon icon="trash" />
             &nbsp;
-            <Translate contentKey="entity.action.delete">Delete</Translate>
+            <Translate contentKey="entity.action.yes">Yes</Translate>
           </Button>
         </ModalFooter>
       </Modal>

@@ -117,6 +117,14 @@ export const getEntity: ICrudGetAction<IEventAttendee> = id => {
   };
 };
 
+export const getEntityByEventIdAndUserId = (eventId, userId) => {
+  const requestUrl = `${apiUrl}/event/${eventId}/user/${userId}`;
+  return {
+    type: ACTION_TYPES.FETCH_EVENTATTENDEE,
+    payload: axios.get<IEventAttendee>(requestUrl)
+  };
+};
+
 export const createEntity: ICrudPutAction<IEventAttendee> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_EVENTATTENDEE,

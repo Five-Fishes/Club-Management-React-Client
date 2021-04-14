@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
@@ -11,34 +12,37 @@ import { IRootState } from 'app/shared/reducers';
 import { getEntity, updateEntity, createEntity, reset } from './event-attendee.reducer';
 import { IEventAttendee } from 'app/shared/model/event-attendee.model';
 // tslint:disable-next-line:no-unused-variable
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
+import { IEvent } from 'app/shared/model/event.model';
 
-export interface IEventAttendeeUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+import './event-attendee-create.scss';
+
+export interface IEventAttendeeUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
 export interface IEventAttendeeUpdateState {
-  isNew: boolean;
+  event: IEvent;
 }
 
 export class EventAttendeeUpdate extends React.Component<IEventAttendeeUpdateProps, IEventAttendeeUpdateState> {
   constructor(props) {
     super(props);
     this.state = {
-      isNew: !this.props.match.params || !this.props.match.params.id
+      event: null
     };
+  }
+
+  getEvent = async () => {
+    const event = await axios.get<IEvent>(`api/events/${this.props.match.params.eventId}`);
+    this.setState({ event: event.data });
+  };
+
+  componentDidMount() {
+    console.log('Hi');
+    this.getEvent();
   }
 
   componentWillUpdate(nextProps, nextState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
       this.handleClose();
-    }
-  }
-
-  componentDidMount() {
-    if (this.state.isNew) {
-      this.props.reset();
-    } else {
-      this.props.getEntity(this.props.match.params.id);
     }
   }
 
@@ -50,28 +54,23 @@ export class EventAttendeeUpdate extends React.Component<IEventAttendeeUpdatePro
         ...values
       };
 
-      if (this.state.isNew) {
-        this.props.createEntity(entity);
-      } else {
-        this.props.updateEntity(entity);
-      }
+      this.props.createEntity(entity);
     }
   };
 
   handleClose = () => {
-    this.props.history.push('/entity/event-attendee');
+    this.props.history.push(`/entity/event/${this.props.match.params.eventId}`);
   };
 
   render() {
-    const { eventAttendeeEntity, loading, updating } = this.props;
-    const { isNew } = this.state;
+    const { eventAttendeeEntity, userId, loading, updating, match } = this.props;
 
     return (
       <div>
         <Row className="justify-content-center">
           <Col md="8">
             <h2 id="clubmanagementApp.eventAttendee.home.createOrEditLabel">
-              <Translate contentKey="clubmanagementApp.eventAttendee.home.createOrEditLabel">Create or edit a EventAttendee</Translate>
+              <Translate contentKey="clubmanagementApp.eventAttendee.home.registerLabel">Register as EventAttendee</Translate>
             </h2>
           </Col>
         </Row>
@@ -80,46 +79,58 @@ export class EventAttendeeUpdate extends React.Component<IEventAttendeeUpdatePro
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <AvForm model={isNew ? {} : eventAttendeeEntity} onSubmit={this.saveEntity}>
-                {!isNew ? (
-                  <AvGroup>
-                    <Label for="event-attendee-id">
-                      <Translate contentKey="global.field.id">ID</Translate>
-                    </Label>
-                    <AvInput id="event-attendee-id" type="text" className="form-control" name="id" required readOnly />
-                  </AvGroup>
-                ) : null}
-                <AvGroup>
+              <AvForm onSubmit={this.saveEntity}>
+                <AvGroup hidden>
                   <Label id="userIdLabel" for="event-attendee-userId">
-                    <Translate contentKey="clubmanagementApp.eventAttendee.userId">User Id</Translate>
+                    <Translate contentKey="clubmanagementApp.eventAttendee.userId">User</Translate>
                   </Label>
-                  <AvField id="event-attendee-userId" type="string" className="form-control" name="userId" />
+                  <AvField id="event-attendee-userId" type="string" className="form-control" name="userId" value={userId} disabled />
                 </AvGroup>
                 <AvGroup>
                   <Label id="eventIdLabel" for="event-attendee-eventId">
-                    <Translate contentKey="clubmanagementApp.eventAttendee.eventId">Event Id</Translate>
+                    <Translate contentKey="clubmanagementApp.event.detail.title">Event</Translate>
                   </Label>
-                  <AvField id="event-attendee-eventId" type="string" className="form-control" name="eventId" />
+                  <AvField
+                    type="string"
+                    className="form-control"
+                    name="event"
+                    value={this.state.event ? this.state.event.name : null}
+                    disabled
+                  />
+                  <AvField
+                    id="event-attendee-eventId"
+                    type="string"
+                    className="form-control"
+                    name="eventId"
+                    value={match.params.eventId}
+                    disabled
+                    hidden
+                  />
                 </AvGroup>
                 <AvGroup>
                   <Label id="provideTransportLabel" check>
-                    <AvInput id="event-attendee-provideTransport" type="checkbox" className="form-control" name="provideTransport" />
+                    <AvInput
+                      id="event-attendee-provideTransport"
+                      type="checkbox"
+                      className="form-control transport-checkbox"
+                      name="provideTransport"
+                    />
                     <Translate contentKey="clubmanagementApp.eventAttendee.provideTransport">Provide Transport</Translate>
                   </Label>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/event-attendee" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
+                <div className="text-center mx-4 d-flex justify-content-between justify-content-md-center mb-2">
+                  <Button tag={Link} id="cancel-save" to={`/entity/event/${match.params.eventId}`} replace color="cancel">
+                    <FontAwesomeIcon icon="arrow-left" />
+                    &nbsp;
+                    <Translate contentKey="entity.action.cancel">Cancel</Translate>
+                  </Button>
                   &nbsp;
-                  <span className="d-none d-md-inline">
-                    <Translate contentKey="entity.action.back">Back</Translate>
-                  </span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp;
-                  <Translate contentKey="entity.action.save">Save</Translate>
-                </Button>
+                  <Button color="action" id="save-entity" type="submit" disabled={updating}>
+                    <FontAwesomeIcon icon="save" />
+                    &nbsp;
+                    <Translate contentKey="entity.action.register">Register</Translate>
+                  </Button>
+                </div>
               </AvForm>
             )}
           </Col>
@@ -130,6 +141,7 @@ export class EventAttendeeUpdate extends React.Component<IEventAttendeeUpdatePro
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
+  userId: storeState.authentication.id,
   eventAttendeeEntity: storeState.eventAttendee.entity,
   loading: storeState.eventAttendee.loading,
   updating: storeState.eventAttendee.updating,

@@ -121,7 +121,10 @@
       "update": "更新",
       "open": "Open",
       "save": "保存",
-      "view": "查看"
+      "view": "查看",
+      "yes": "是",
+      "no": "否",
+      "register": "注册"
     },
     "detail": {
       "field": "字段",
