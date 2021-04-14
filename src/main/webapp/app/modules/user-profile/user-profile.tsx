@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { RouteComponentProps, Switch } from 'react-router-dom';
 
 import { IRootState } from 'app/shared/reducers';
+import { getCurrentUserProfile } from './user-profile.reducer';
 import { Button } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { Translate } from 'react-jhipster';
@@ -15,8 +16,9 @@ import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import { UserProfileStats } from './user-profile-stats';
 import { UserProfileEvolution } from './user-profile-evolution';
 import { UserProfileRole } from './user-profile-role';
+import { concatFullName } from 'app/shared/util/string-util';
 
-export interface IUserProfileProps extends StateProps, RouteComponentProps<{}> {}
+export interface IUserProfileProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
 const UserProfileTabContent = ({ match }) => (
   <>
@@ -33,6 +35,10 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  componentDidMount() {
+    this.props.getCurrentUserProfile();
+  }
+
   handleClick() {
     logout();
     toast.info('Logout Successfully');
@@ -40,7 +46,7 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
   }
 
   render() {
-    const { match } = this.props;
+    const { userEntity, match } = this.props;
     return (
       <>
         <div className="d-block text-center my-3">
@@ -51,7 +57,7 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
           />
         </div>
         <div className="text-center">
-          <h1>User Full Name</h1>
+          <h2>{concatFullName(userEntity.firstName, userEntity.lastName)}</h2>
           <span className="d-block mx-auto mb-3 family-label py-2 px-3">Family</span>
           <p>Description</p>
         </div>
@@ -69,10 +75,20 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
   }
 }
 
-const mapStateToProps = ({ authentication }: IRootState) => ({
-  isAuthenticated: authentication.isAuthenticated
+const mapStateToProps = ({ authentication, user }: IRootState) => ({
+  isAuthenticated: authentication.isAuthenticated,
+  userId: authentication.id,
+  userEntity: user.entity
 });
 
-type StateProps = ReturnType<typeof mapStateToProps>;
+const mapDispatchToProps = {
+  getCurrentUserProfile
+};
 
-export default connect(mapStateToProps)(UserProfile);
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UserProfile);

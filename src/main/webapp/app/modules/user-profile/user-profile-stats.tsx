@@ -6,6 +6,7 @@ import '../../shared/components/listing-card/listing-card.scss';
 import { IRootState } from 'app/shared/reducers';
 import { Row, Col, Button } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { convertDateTimeFromServerToLocaleDate } from 'app/shared/util/date-utils';
 
 export interface IUserProfileStatsProps extends StateProps, RouteComponentProps<{}> {}
 
@@ -15,15 +16,17 @@ export class UserProfileStats extends React.Component<IUserProfileStatsProps, {}
   }
 
   render() {
+    const { userEntity } = this.props;
+    // TODO: userEntity appear to be undefined
     return (
       <>
         <div className="card-container container my-3">
           <Row className="justify-content-center">
             <Col xs="9">
-              <span className="d-block mb-1">Gender</span>
-              <span className="d-block mb-1">Date of Birth</span>
-              <span className="d-block mb-1">Contact Number</span>
-              <span className="d-block mb-1">Email</span>
+              <span className="d-block mb-1">{userEntity.gender}</span>
+              <span className="d-block mb-1">{convertDateTimeFromServerToLocaleDate(userEntity.dateOfBirth)}</span>
+              <span className="d-block mb-1">{userEntity.contactNo}</span>
+              <span className="d-block mb-1">{userEntity.email}</span>
             </Col>
             <Col xs="2">
               <Button tag={Link} id="update-profile-btn" to="/profile/update" replace>
@@ -37,7 +40,9 @@ export class UserProfileStats extends React.Component<IUserProfileStatsProps, {}
   }
 }
 
-const mapStateToProps = ({  }: IRootState) => ({});
+const mapStateToProps = ({ user }: IRootState) => ({
+  userEntity: user.entity
+});
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 
