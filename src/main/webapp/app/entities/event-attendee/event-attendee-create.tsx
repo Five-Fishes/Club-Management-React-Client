@@ -1,3 +1,4 @@
+import 'app/styles/event-module.scss';
 import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
@@ -13,8 +14,6 @@ import { getEntity, updateEntity, createEntity, reset } from './event-attendee.r
 import { IEventAttendee } from 'app/shared/model/event-attendee.model';
 // tslint:disable-next-line:no-unused-variable
 import { IEvent } from 'app/shared/model/event.model';
-
-import './event-attendee-create.scss';
 
 export interface IEventAttendeeUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
