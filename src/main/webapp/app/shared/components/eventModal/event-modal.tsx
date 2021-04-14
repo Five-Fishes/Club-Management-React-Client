@@ -1,31 +1,33 @@
 import React from 'react';
 import { Modal, ModalBody, ModalHeader, Button } from 'reactstrap';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { Translate } from 'react-jhipster';
 
 import './event-modal.scss';
 export interface IEventModalProps extends RouteComponentProps {
   isOpen: Boolean;
   toggleModal: Function;
-  eventId: number;
+  updatePath: String;
+  deletePath: String;
 }
 
 class EventModal extends React.Component<IEventModalProps> {
-  onButtonClick = () => {
-    this.props.history.push(`/update/${this.props.eventId}`);
-  };
-
   render() {
     return (
       <Modal size="sm" centered isOpen={this.props.isOpen}>
         <ModalHeader toggle={this.props.toggleModal} className="event-modal-header" />
         <ModalBody className="event-modal-body">
-          <h2 className="text-center">Options</h2>
+          <h2 className="text-center">
+            <Translate contentKey="global.menu.entities.options">Options</Translate>{' '}
+          </h2>
           <div className="d-flex flex-column mt-4">
-            <Button onClick={this.onButtonClick} color="secondary">
-              Update
+            <Button tag={Link} to={this.props.updatePath} color="secondary">
+              <Translate contentKey="entity.action.update">Update</Translate>
             </Button>
             <br />
-            <Button color="cancel"> Delete </Button>
+            <Button tag={Link} to={this.props.deletePath} color="cancel">
+              <Translate contentKey="entity.action.delete">Delete</Translate>
+            </Button>
           </div>
         </ModalBody>
       </Modal>

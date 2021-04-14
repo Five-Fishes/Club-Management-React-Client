@@ -20,7 +20,8 @@
         "userCcInfo": "User CC Info",
         "userUniInfo": "User Uni Info",
         "faculty": "Faculty",
-        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
+        "options": "Options"
       },
       "account": {
         "main": "Account",

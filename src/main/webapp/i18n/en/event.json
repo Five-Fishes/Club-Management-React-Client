@@ -21,6 +21,8 @@
       "name": "Name",
       "description": "Description",
       "remarks": "Remarks",
+      "date": "Date",
+      "time": "Time",
       "venue": "Venue",
       "startDate": "Start Date",
       "endDate": "End Date",

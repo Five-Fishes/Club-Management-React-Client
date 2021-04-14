@@ -5,6 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IEventCrew, defaultValue } from 'app/shared/model/event-crew.model';
+import { IGetAllByEventId, IDeleteEvent, IPutEvent, IGetEvent } from 'app/shared/type/event-custom-action';
 
 export const ACTION_TYPES = {
   FETCH_EVENTCREW_LIST: 'eventCrew/FETCH_EVENTCREW_LIST',
@@ -104,29 +105,37 @@ export const getEntities: ICrudGetAllAction<IEventCrew> = (page, size, sort) => 
   payload: axios.get<IEventCrew>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
 });
 
-export const getEntity: ICrudGetAction<IEventCrew> = id => {
-  const requestUrl = `${apiUrl}/${id}`;
+export const getEventCrewByEventId: IGetAllByEventId<IEventCrew> = (eventId, page, size, sort) => {
+  const requestUrl = `${apiUrl}/event/${eventId}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_EVENTCREW_LIST,
+    payload: axios.get<IEventCrew>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
+
+export const getEntity: IGetEvent<IEventCrew> = (id, eventId) => {
+  const requestUrl = `${apiUrl}/${id}?eventId=${eventId}`;
   return {
     type: ACTION_TYPES.FETCH_EVENTCREW,
     payload: axios.get<IEventCrew>(requestUrl)
   };
 };
 
-export const createEntity: ICrudPutAction<IEventCrew> = entity => async dispatch => {
+export const createEntity: IPutEvent<IEventCrew> = (entity, eventId) => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_EVENTCREW,
     payload: axios.post(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  dispatch(getEventCrewByEventId(eventId));
   return result;
 };
 
-export const updateEntity: ICrudPutAction<IEventCrew> = entity => async dispatch => {
+export const updateEntity: IPutEvent<IEventCrew> = (entity, eventId) => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_EVENTCREW,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  dispatch(getEventCrewByEventId(eventId));
   return result;
 };
 
@@ -137,6 +146,16 @@ export const deleteEntity: ICrudDeleteAction<IEventCrew> = id => async dispatch 
     payload: axios.delete(requestUrl)
   });
   dispatch(getEntities());
+  return result;
+};
+
+export const deleteEntityWithEventId: IDeleteEvent<IEventCrew> = (id, eventId) => async dispatch => {
+  const requestUrl = `${apiUrl}/${id}?eventId=${eventId}`;
+  const result = await dispatch({
+    type: ACTION_TYPES.DELETE_EVENTCREW,
+    payload: axios.delete(requestUrl)
+  });
+  dispatch(getEventCrewByEventId(eventId));
   return result;
 };
 

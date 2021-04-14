@@ -11,6 +11,7 @@ import { getEntity as getEventEntity } from '../event/event.reducer';
 import { convertDateTimeToServer } from 'app/shared/util/date-utils';
 import moment from 'moment';
 import { APP_LOCAL_DATETIME_FORMAT } from 'app/config/constants';
+import { convertTimeFormatToDaysDuration } from 'app/shared/util/duration-utils';
 
 export interface IEventActivityCreateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
@@ -32,6 +33,12 @@ export class EventActivityCreate extends React.Component<IEventActivityCreatePro
 
   saveEntity = (event, errors, values) => {
     values.startDate = convertDateTimeToServer(values.startDate);
+
+    values['durationInDay'] = convertTimeFormatToDaysDuration({
+      days: values.durationDay,
+      hours: values.durationHour,
+      minutes: values.durationMinute
+    });
 
     if (errors.length === 0) {
       const { eventActivityEntity } = this.props;
@@ -102,10 +109,19 @@ export class EventActivityCreate extends React.Component<IEventActivityCreatePro
                   />
                 </AvGroup>
                 <AvGroup>
-                  <Label id="durationInDayLabel" for="event-activity-durationInDay">
-                    <Translate contentKey="clubmanagementApp.eventActivity.durationInDay">Duration In Day</Translate>
+                  <Label id="durationInDayLabel" for="event-activity-durationInDay" className="font-weight-bold">
+                    <Translate contentKey="clubmanagementApp.eventActivity.duration">Duration</Translate>
                   </Label>
-                  <AvField id="event-activity-durationInDay" type="number" min="0" name="durationInDay" />
+                  <AvField id="event-activity-duration-day" type="number" min="0" name="durationDay" label="Days" grid={{ xs: 9 }} />
+                  <AvField id="event-activity-duration-hour" type="number" min="0" name="durationHour" label="Hours" grid={{ xs: 9 }} />
+                  <AvField
+                    id="event-activity-duration-minute"
+                    type="number"
+                    min="0"
+                    name="durationMinute"
+                    label="Minutes"
+                    grid={{ xs: 9 }}
+                  />
                 </AvGroup>
                 <AvGroup>
                   <Label id="descriptionLabel" for="event-activity-description">

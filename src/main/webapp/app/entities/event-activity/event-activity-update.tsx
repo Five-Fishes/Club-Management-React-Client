@@ -14,6 +14,7 @@ import { getEntity as getEventEntity } from '../event/event.reducer';
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { APP_LOCAL_DATETIME_FORMAT } from 'app/config/constants';
 import moment from 'moment';
+import { convertDaysDurationToTimeFormat, convertTimeFormatToDaysDuration } from 'app/shared/util/duration-utils';
 
 export interface IEventActivityUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
@@ -33,8 +34,23 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
     this.props.getEventEntity(this.props.match.params.eventId);
   }
 
+  setDurationInTimeFormat() {
+    const duration = convertDaysDurationToTimeFormat(this.props.eventActivityEntity.durationInDay);
+    return {
+      durationDay: duration.days,
+      durationHour: duration.hours,
+      durationMinute: duration.minutes
+    };
+  }
+
   saveEntity = (event, errors, values) => {
     values.startDate = convertDateTimeToServer(values.startDate);
+
+    values['durationInDay'] = convertTimeFormatToDaysDuration({
+      days: values.durationDay,
+      hours: values.durationHour,
+      minutes: values.durationMinute
+    });
 
     if (errors.length === 0) {
       const { eventActivityEntity } = this.props;
@@ -53,6 +69,7 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
   render() {
     const { eventActivityEntity, loading, updating, errorMessage, eventEntity } = this.props;
     const { eventId } = this.props.match.params;
+    const timeFormatDuration = this.setDurationInTimeFormat();
 
     return (
       <div>
@@ -68,7 +85,13 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <AvForm model={eventActivityEntity} onSubmit={this.saveEntity}>
+              <AvForm
+                model={{
+                  ...eventActivityEntity,
+                  ...timeFormatDuration
+                }}
+                onSubmit={this.saveEntity}
+              >
                 <AvGroup>
                   <Label id="nameLabel" for="event-activity-name">
                     <Translate contentKey="clubmanagementApp.eventActivity.name">Name</Translate>
@@ -100,10 +123,19 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
                   />
                 </AvGroup>
                 <AvGroup>
-                  <Label id="durationInDayLabel" for="event-activity-durationInDay">
-                    <Translate contentKey="clubmanagementApp.eventActivity.durationInDay">Duration In Day</Translate>
+                  <Label id="durationInDayLabel" for="event-activity-durationInDay" className="font-weight-bold">
+                    <Translate contentKey="clubmanagementApp.eventActivity.duration">Duration</Translate>
                   </Label>
-                  <AvField id="event-activity-durationInDay" type="text" name="durationInDay" />
+                  <AvField id="event-activity-duration-day" type="number" min="0" name="durationDay" label="Days" grid={{ xs: 9 }} />
+                  <AvField id="event-activity-duration-hour" type="number" min="0" name="durationHour" label="Hours" grid={{ xs: 9 }} />
+                  <AvField
+                    id="event-activity-duration-minute"
+                    type="number"
+                    min="0"
+                    name="durationMinute"
+                    label="Minutes"
+                    grid={{ xs: 9 }}
+                  />
                 </AvGroup>
                 <AvGroup>
                   <Label id="descriptionLabel" for="event-activity-description">
