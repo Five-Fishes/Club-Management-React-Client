@@ -1,28 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row, Table } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody } from 'reactstrap';
 // tslint:disable-next-line:no-unused-variable
-import {
-  byteSize,
-  Translate,
-  ICrudGetAllAction,
-  TextFormat,
-  getSortState,
-  IPaginationBaseState,
-  JhiPagination,
-  JhiItemCount
-} from 'react-jhipster';
+import { Translate, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntities } from './event-activity.reducer';
-import { IEventActivity } from 'app/shared/model/event-activity.model';
-// tslint:disable-next-line:no-unused-variable
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { getEventActivitiesByEventId, setSelectedEventActivityId, setShowActionOptions } from './event-activity.reducer';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
+import '../../styles/event-module.scss';
+import { CustomTab } from 'app/shared/components/customTab/custom-tab';
+import { eventTabList } from 'app/shared/util/tab.constants';
+import { ListingCard } from 'app/shared/components/listing-card/listing-card';
+import { convertDateTimeFromServerToLocaleDate } from 'app/shared/util/date-utils';
+import { convertDaysDurationToTimeFormat, timeFormatDurationToString } from 'app/shared/util/duration-utils';
 
-export interface IEventActivityProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+export interface IEventActivityProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string; eventId: string }> {}
 
 export type IEventActivityState = IPaginationBaseState;
 
@@ -53,98 +47,105 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
   handlePagination = activePage => this.setState({ activePage }, () => this.sortEntities());
 
   getEntities = () => {
+    const { eventId } = this.props.match.params;
     const { activePage, itemsPerPage, sort, order } = this.state;
-    this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
+    this.props.getEventActivitiesByEventId(Number.parseInt(eventId, 10), activePage - 1, itemsPerPage, `${sort},${order}`);
+  };
+
+  showCardAction = (eventActivityId: number) => {
+    this.props.setSelectedEventActivityId(eventActivityId);
+    this.props.setShowActionOptions(true);
+  };
+
+  toggleShowOptions = () => {
+    this.props.setShowActionOptions(!this.props.showActionOptions);
   };
 
   render() {
-    const { eventActivityList, match, totalItems } = this.props;
+    const { eventActivityList, match, totalItems, selectedEventActivityId } = this.props;
+    const { eventId } = this.props.match.params;
     return (
       <div>
         <h2 id="event-activity-heading">
           <Translate contentKey="clubmanagementApp.eventActivity.home.title">Event Activities</Translate>
-          <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
+        </h2>
+        <CustomTab tabList={eventTabList(eventId)} currentTab="Activities" />
+        <div className="text-center">
+          <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
             <FontAwesomeIcon icon="plus" />
             &nbsp;
-            <Translate contentKey="clubmanagementApp.eventActivity.home.createLabel">Create new Event Activity</Translate>
+            <Translate contentKey="entity.action.add">Add</Translate>
           </Link>
-        </h2>
-        <div className="table-responsive">
+        </div>
+
+        <div>
           {eventActivityList && eventActivityList.length > 0 ? (
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th className="hand" onClick={this.sort('id')}>
-                    <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('eventId')}>
-                    <Translate contentKey="clubmanagementApp.eventActivity.eventId">Event Id</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('startDate')}>
-                    <Translate contentKey="clubmanagementApp.eventActivity.startDate">Start Date</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('durationInDay')}>
-                    <Translate contentKey="clubmanagementApp.eventActivity.durationInDay">Duration In Day</Translate>{' '}
-                    <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('name')}>
-                    <Translate contentKey="clubmanagementApp.eventActivity.name">Name</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('description')}>
-                    <Translate contentKey="clubmanagementApp.eventActivity.description">Description</Translate>{' '}
-                    <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {eventActivityList.map((eventActivity, i) => (
-                  <tr key={`entity-${i}`}>
-                    <td>
-                      <Button tag={Link} to={`${match.url}/${eventActivity.id}`} color="link" size="sm">
-                        {eventActivity.id}
-                      </Button>
-                    </td>
-                    <td>{eventActivity.eventId}</td>
-                    <td>
-                      <TextFormat type="date" value={eventActivity.startDate} format={APP_DATE_FORMAT} />
-                    </td>
-                    <td>{eventActivity.durationInDay}</td>
-                    <td>{eventActivity.name}</td>
-                    <td>{eventActivity.description}</td>
-                    <td className="text-right">
-                      <div className="btn-group flex-btn-group-container">
-                        <Button tag={Link} to={`${match.url}/${eventActivity.id}`} color="info" size="sm">
-                          <FontAwesomeIcon icon="eye" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.view">View</Translate>
-                          </span>
-                        </Button>
-                        <Button tag={Link} to={`${match.url}/${eventActivity.id}/edit`} color="primary" size="sm">
-                          <FontAwesomeIcon icon="pencil-alt" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.edit">Edit</Translate>
-                          </span>
-                        </Button>
-                        <Button tag={Link} to={`${match.url}/${eventActivity.id}/delete`} color="danger" size="sm">
-                          <FontAwesomeIcon icon="trash" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.delete">Delete</Translate>
-                          </span>
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+            eventActivityList.map((eventActivity, i) => (
+              <ListingCard
+                key={`event-activity-${eventActivity.id}`}
+                showActionMenu
+                title={eventActivity.name}
+                actionMenuHandler={this.showCardAction.bind(this, eventActivity.id)}
+              >
+                <span className="card-item d-block mb-2">
+                  <span>
+                    <Translate contentKey="clubmanagementApp.eventActivity.startDate">Start Date</Translate>:{' '}
+                    <span className="font-weight-bolder text-dark">{convertDateTimeFromServerToLocaleDate(eventActivity.startDate)}</span>
+                  </span>
+                </span>
+                <span className="card-item d-block mb-2">
+                  <span>
+                    <Translate contentKey="clubmanagementApp.eventActivity.duration">Duration (In Day)</Translate>:{' '}
+                    <span>{timeFormatDurationToString(convertDaysDurationToTimeFormat(eventActivity.durationInDay))}</span>
+                  </span>
+                </span>
+                <span className="card-item d-block">
+                  <span>
+                    <Translate contentKey="clubmanagementApp.eventActivity.description">Description</Translate>:{' '}
+                    <span className="font-weight-bolder text-dark">{eventActivity.description}</span>
+                  </span>
+                </span>
+              </ListingCard>
+            ))
           ) : (
             <div className="alert alert-warning">
               <Translate contentKey="clubmanagementApp.eventActivity.home.notFound">No Event Activities found</Translate>
             </div>
           )}
         </div>
-        <div className={eventActivityList && eventActivityList.length > 0 ? '' : 'd-none'}>
+
+        <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions}>
+          <ModalHeader toggle={this.toggleShowOptions} />
+          <ModalBody>
+            <h2 className="text-center">Options</h2>
+            <Button
+              tag={Link}
+              to={`${match.url}/${selectedEventActivityId}/edit`}
+              onClick={this.toggleShowOptions}
+              color="primary"
+              className="d-block mx-auto my-3 w-75"
+            >
+              <FontAwesomeIcon icon="pencil-alt" />{' '}
+              <span>
+                <Translate contentKey="entity.action.update">Update</Translate>
+              </span>
+            </Button>
+            <Button
+              tag={Link}
+              to={`${match.url}/${selectedEventActivityId}/delete`}
+              onClick={this.toggleShowOptions}
+              color="cancel"
+              className="d-block mx-auto my-3 w-75"
+            >
+              <FontAwesomeIcon icon="trash" />{' '}
+              <span>
+                <Translate contentKey="entity.action.delete">Delete</Translate>
+              </span>
+            </Button>
+          </ModalBody>
+        </Modal>
+
+        {/* <div className={eventActivityList && eventActivityList.length > 0 ? '' : 'd-none'}>
           <Row className="justify-content-center">
             <JhiItemCount page={this.state.activePage} total={totalItems} itemsPerPage={this.state.itemsPerPage} i18nEnabled />
           </Row>
@@ -157,7 +158,7 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
               totalItems={this.props.totalItems}
             />
           </Row>
-        </div>
+        </div> */}
       </div>
     );
   }
@@ -165,11 +166,15 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
 
 const mapStateToProps = ({ eventActivity }: IRootState) => ({
   eventActivityList: eventActivity.entities,
-  totalItems: eventActivity.totalItems
+  totalItems: eventActivity.totalItems,
+  selectedEventActivityId: eventActivity.selectedEventActivityId,
+  showActionOptions: eventActivity.showActionOptions
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEventActivitiesByEventId,
+  setSelectedEventActivityId,
+  setShowActionOptions
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

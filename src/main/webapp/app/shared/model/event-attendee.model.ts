@@ -1,9 +1,9 @@
 export interface IEventAttendee {
   id?: number;
-  yearSession?: string;
   userName?: string;
-  provideTransport?: boolean;
   contactNumber?: string;
+  yearSession?: string;
+  provideTransport?: boolean;
 }
 
 export const defaultValue: Readonly<IEventAttendee> = {

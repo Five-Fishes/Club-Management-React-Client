@@ -40,6 +40,9 @@ import { faFacebookF } from '@fortawesome/free-brands-svg-icons/faFacebookF';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons/faGoogle';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons/faEllipsisV';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons/faEllipsisH';
+import { faCar } from '@fortawesome/free-solid-svg-icons/faCar';
+import { faWhatsappSquare } from '@fortawesome/free-brands-svg-icons/faWhatsappSquare';
+
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCar } from '@fortawesome/free-solid-svg-icons/faCar';
 import { faWhatsappSquare } from '@fortawesome/free-brands-svg-icons/faWhatsappSquare';
@@ -84,6 +87,8 @@ export const loadIcons = () => {
     faGoogle,
     faEllipsisV,
     faEllipsisH,
+    faCar,
+    faWhatsappSquare,
     faCalendarAlt,
     faClock,
     faMapMarkerAlt,

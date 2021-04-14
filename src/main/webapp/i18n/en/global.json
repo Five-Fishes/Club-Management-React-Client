@@ -20,7 +20,8 @@
         "userCcInfo": "User CC Info",
         "userUniInfo": "User Uni Info",
         "faculty": "Faculty",
-        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
+        "options": "Options"
       },
       "account": {
         "main": "Account",
@@ -99,6 +100,9 @@
     "field": {
       "id": "ID"
     },
+    "select": {
+      "selectOne": "Select One"
+    },
     "ribbon": {
       "dev": "Development"
     },
@@ -113,10 +117,12 @@
       "cancel": "Cancel",
       "delete": "Delete",
       "edit": "Edit",
+      "create": "Create",
       "update": "Update",
       "open": "Open",
       "save": "Save",
-      "view": "View"
+      "view": "View",
+      "create": "Create"
     },
     "detail": {
       "field": "Field",
@@ -142,7 +148,7 @@
   "error": {
     "internalServerError": "Internal server error",
     "server.not.reachable": "Server not reachable",
-    "url.not.found": "Not found",
+    "urlNotFound": "URL Not found",
     "NotNull": "Field {{ fieldName }} cannot be empty!",
     "Size": "Field {{ fieldName }} does not meet min/max size requirements!",
     "userexists": "Login name already used!",

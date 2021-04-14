@@ -23,7 +23,7 @@ import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 
 import FloatButton from 'app/shared/components/floatButton/FloatButton';
-import EventModal from 'app/modules/events/event-modal';
+import EventModal from 'app/shared/components/eventModal/event-modal';
 import { CustomTab } from 'app/shared/components/customTab/custom-tab';
 import { eventMainTabList } from 'app/shared/util/tab.constants';
 import './events.scss';
@@ -80,7 +80,12 @@ export class Event extends React.Component<IEventProps, IEventState> {
     const { eventList, match, totalItems } = this.props;
     return (
       <Container>
-        <EventModal isOpen={this.state.modalIsOpen} eventId={this.state.eventId} toggleModal={this.closeModal} />
+        <EventModal
+          isOpen={this.state.modalIsOpen}
+          updatePath={`${match.url}/${this.state.eventId}/edit`}
+          deletePath={`${match.url}/${this.state.eventId}/delete`}
+          toggleModal={this.closeModal}
+        />
         <Link to="/entity/event/new">
           <FloatButton />
         </Link>
@@ -103,7 +108,6 @@ export class Event extends React.Component<IEventProps, IEventState> {
 
 const EventCard = ({ event, toggleModal }) => {
   const onToggleModal = () => toggleModal(event.id);
-
   return (
     <Card className="p-3 pt-4 event-card">
       <Row>
@@ -115,7 +119,7 @@ const EventCard = ({ event, toggleModal }) => {
             <FontAwesomeIcon icon={'ellipsis-h'} />
           </Button>
           <div className="my-auto">
-            <Link to={`/events/${event.id}/details`}>
+            <Link to={`/entity/event/${event.id}`}>
               <h4 className="event-title">{event.name}</h4>
             </Link>
             <p className="mb-0">

@@ -2,31 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
-import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
-// tslint:disable-next-line:no-unused-variable
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, setFileData, byteSize, ICrudPutAction } from 'react-jhipster';
+import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
+import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
+import '../../styles/event-module.scss';
 
-import { getEntity, updateEntity, createEntity, setBlob, reset } from './budget.reducer';
-import { IBudget } from 'app/shared/model/budget.model';
-// tslint:disable-next-line:no-unused-variable
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
-import budget from './budget';
+import { createEntity, reset } from './budget.reducer';
 
-export interface IBudgetUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
+export interface IBudgetCreateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
-export interface IBudgetUpdateState {
-  isNew: boolean;
-}
-
-export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpdateState> {
+export class EventBudgetCreate extends React.Component<IBudgetCreateProps> {
   constructor(props) {
     super(props);
-    this.state = {
-      isNew: !this.props.match.params || !this.props.match.params.id
-    };
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -36,20 +24,8 @@ export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpd
   }
 
   componentDidMount() {
-    if (this.state.isNew) {
-      this.props.reset();
-    } else {
-      this.props.getEntity(this.props.match.params.id, this.props.match.params.eventId);
-    }
+    this.props.reset();
   }
-
-  onBlobChange = (isAnImage, name) => event => {
-    setFileData(event, (contentType, data) => this.props.setBlob(name, data, contentType), isAnImage);
-  };
-
-  clearBlob = name => () => {
-    this.props.setBlob(name, undefined, undefined);
-  };
 
   saveEntity = (event, errors, values) => {
     if (errors.length === 0) {
@@ -59,11 +35,7 @@ export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpd
         ...values
       };
 
-      if (this.state.isNew) {
-        this.props.createEntity(entity);
-      } else {
-        this.props.updateEntity(entity);
-      }
+      this.props.createEntity(entity);
     }
   };
 
@@ -72,17 +44,15 @@ export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpd
   };
 
   render() {
-    const { budgetEntity, loading, updating, errorMessage } = this.props;
-    const { isNew } = this.state;
-
-    const { details } = budgetEntity;
+    const { loading, updating, errorMessage } = this.props;
+    const { eventId } = this.props.match.params;
 
     return (
       <div>
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.eventBudget.home.editLabel">
-              <Translate contentKey="clubmanagementApp.eventBudget.home.editLabel">Edit Event Budget</Translate>
+            <h2 id="clubmanagementApp.eventBudget.home.createLabel" className="event-module-heading">
+              <Translate contentKey="clubmanagementApp.eventBudget.home.createLabel">Create Event Budget</Translate>
             </h2>
           </Col>
         </Row>
@@ -91,16 +61,17 @@ export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpd
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <AvForm model={isNew ? {} : budgetEntity} onSubmit={this.saveEntity}>
+              <AvForm model={{}} onSubmit={this.saveEntity}>
+                <AvField hidden id="budget-eventId" type="string" className="form-control" name="eventId" value={eventId} />
+
                 <AvGroup>
                   <Label id="amountLabel" for="budget-amount">
                     <Translate contentKey="clubmanagementApp.eventBudget.amount">Amount</Translate>
                   </Label>
                   <AvField
                     id="budget-amount"
-                    type="text"
+                    type="number"
                     name="amount"
-                    value={budgetEntity.amount}
                     validate={{
                       required: { value: true, errorMessage: 'Please enter an amount for this budget' },
                       min: { value: 0, errorMessage: 'Amount cannot be less than 0' },
@@ -116,7 +87,7 @@ export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpd
                     id="budget-name"
                     type="text"
                     name="name"
-                    value={budgetEntity.name}
+                    required
                     validate={{
                       required: { value: true, errorMessage: 'Please enter a name for this budget' },
                       maxLength: { value: 100, errorMessage: 'Name cannot be more than 100 characters' }
@@ -127,13 +98,10 @@ export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpd
                   <Label id="typeLabel" for="budget-type">
                     <Translate contentKey="clubmanagementApp.eventBudget.type">Type</Translate>
                   </Label>
-                  <AvInput
-                    id="budget-type"
-                    type="select"
-                    className="form-control"
-                    name="type"
-                    value={(!isNew && budgetEntity.type) || 'INCOME'}
-                  >
+                  <AvInput id="budget-type" type="select" className="form-control" name="type">
+                    <option value="" selected disabled>
+                      {translate('global.select.selectOne')}
+                    </option>
                     <option value="INCOME">{translate('clubmanagementApp.TransactionType.INCOME')}</option>
                     <option value="EXPENSE">{translate('clubmanagementApp.TransactionType.EXPENSE')}</option>
                   </AvInput>
@@ -149,13 +117,11 @@ export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpd
                     validate={{
                       maxLength: { value: 200, errorMessage: 'Details cannot be more than 200 characters' }
                     }}
-                  >
-                    {budgetEntity.details}
-                  </AvInput>
+                  />
                 </AvGroup>
-                <div className="text-danger">{errorMessage ? errorMessage.response.data.detail : ''}</div>
-                <div className="text-center mt-3 mx-4 d-flex justify-content-between justify-content-md-center mb-2">
-                  <Button tag={Link} id="cancel-save" to={`/entity/event-budget/event/${budgetEntity.eventId}`} replace color="cancel">
+                <span className="text-error">{errorMessage ? errorMessage.response.data.detail : ''}</span>
+                <div className="text-center mx-4 d-flex justify-content-between justify-content-md-center mb-2">
+                  <Button tag={Link} id="cancel-save" to={`/entity/event-budget/event/${eventId}`} replace color="cancel">
                     <FontAwesomeIcon icon="arrow-left" />
                     &nbsp;
                     <Translate contentKey="entity.action.cancel">Cancel</Translate>
@@ -164,7 +130,7 @@ export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpd
                   <Button color="action" id="save-entity" type="submit" disabled={updating}>
                     <FontAwesomeIcon icon="save" />
                     &nbsp;
-                    <Translate contentKey="entity.action.update">Update</Translate>
+                    <Translate contentKey="entity.action.create">Create</Translate>
                   </Button>
                 </div>
               </AvForm>
@@ -185,9 +151,6 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getEntity,
-  updateEntity,
-  setBlob,
   createEntity,
   reset
 };
@@ -198,4 +161,4 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(BudgetUpdate);
+)(EventBudgetCreate);
