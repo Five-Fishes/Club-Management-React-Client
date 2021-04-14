@@ -17,7 +17,9 @@
         "title": "Event Crew"
       },
       "userId": "User Id",
+      "crew": "Crew",
       "eventId": "Event Id",
+      "eventName": "Event",
       "role": "Role",
       "tab": "Crews"
     }
