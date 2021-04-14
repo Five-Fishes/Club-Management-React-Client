@@ -122,7 +122,8 @@
       "update": "更新",
       "open": "Open",
       "save": "保存",
-      "view": "查看"
+      "view": "查看",
+      "create": "创建"
     },
     "detail": {
       "field": "字段",
@@ -147,7 +148,7 @@
   "error": {
     "internalServerError": "Internal server error",
     "server.not.reachable": "服务器无法访问",
-    "url.not.found": "Not found",
+    "urlNotFound": "Not found",
     "NotNull": "域 {{fieldName}} 不能为空!",
     "Size": "域 {{fieldName}} 不满足最大/最小值限制!",
     "userexists": "该用户名已存在!",

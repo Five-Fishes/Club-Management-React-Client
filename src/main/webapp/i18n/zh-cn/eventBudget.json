@@ -4,6 +4,7 @@
       "home": {
         "title": "活动预算",
         "createLabel": "创建活动预算",
+        "editLabel": "编辑活动预算",
         "createOrEditLabel": "创建或编辑活动预算",
         "notFound": "无活动预算"
       },
