@@ -36,7 +36,6 @@ export class EventAttendeeUpdate extends React.Component<IEventAttendeeUpdatePro
   };
 
   componentDidMount() {
-    console.log('Hi');
     this.getEvent();
   }
 
@@ -63,7 +62,7 @@ export class EventAttendeeUpdate extends React.Component<IEventAttendeeUpdatePro
   };
 
   render() {
-    const { eventAttendeeEntity, userId, loading, updating, match } = this.props;
+    const { userId, loading, updating, match } = this.props;
 
     return (
       <div>
