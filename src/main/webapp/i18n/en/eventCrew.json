@@ -3,7 +3,7 @@
     "eventCrew": {
       "home": {
         "title": "Event Crews",
-        "createLabel": "Create a new Event Crew",
+        "createLabel": "Add",
         "createOrEditLabel": "Create or edit a Event Crew",
         "notFound": "No Event Crew found"
       },

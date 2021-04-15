@@ -15,6 +15,7 @@ import { eventTabList } from 'app/shared/util/tab.constants';
 import { ListingCard } from 'app/shared/components/listing-card/listing-card';
 import { convertDateTimeFromServerToLocaleDate } from 'app/shared/util/date-utils';
 import { convertDaysDurationToTimeFormat, timeFormatDurationToString } from 'app/shared/util/duration-utils';
+import '../../styles/event-module.scss';
 
 export interface IEventActivityProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string; eventId: string }> {}
 
@@ -66,52 +67,56 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
     const { eventId } = this.props.match.params;
     return (
       <div>
-        <h2 id="event-activity-heading">
+        <h2 id="event-activity-heading" className="event-module-heading">
           <Translate contentKey="clubmanagementApp.eventActivity.home.title">Event Activities</Translate>
         </h2>
-        <CustomTab tabList={eventTabList(eventId)} currentTab="Activities" />
-        <div className="text-center">
-          <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
-            <FontAwesomeIcon icon="plus" />
-            &nbsp;
-            <Translate contentKey="entity.action.add">Add</Translate>
-          </Link>
+        <div className="my-3">
+          <CustomTab tabList={eventTabList(eventId)} currentTab="Activities" />
         </div>
+        <div className="mx-4">
+          <div className="text-center">
+            <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
+              <FontAwesomeIcon icon="plus" />
+              &nbsp;
+              <Translate contentKey="entity.action.add">Add</Translate>
+            </Link>
+          </div>
 
-        <div>
-          {eventActivityList && eventActivityList.length > 0 ? (
-            eventActivityList.map((eventActivity, i) => (
-              <ListingCard
-                key={`event-activity-${eventActivity.id}`}
-                showActionMenu
-                title={eventActivity.name}
-                actionMenuHandler={this.showCardAction.bind(this, eventActivity.id)}
-              >
-                <span className="card-item d-block mb-2">
-                  <span>
-                    <Translate contentKey="clubmanagementApp.eventActivity.startDate">Start Date</Translate>:{' '}
-                    <span className="font-weight-bolder text-dark">{convertDateTimeFromServerToLocaleDate(eventActivity.startDate)}</span>
+          <div>
+            {eventActivityList && eventActivityList.length > 0 ? (
+              eventActivityList.map((eventActivity, i) => (
+                <ListingCard
+                  key={`event-activity-${eventActivity.id}`}
+                  showActionMenu
+                  title={eventActivity.name}
+                  actionMenuHandler={this.showCardAction.bind(this, eventActivity.id)}
+                >
+                  <span className="card-item d-block mb-2">
+                    <span>
+                      <Translate contentKey="clubmanagementApp.eventActivity.startDate">Start Date</Translate>:{' '}
+                      <span className="font-weight-bolder text-dark">{convertDateTimeFromServerToLocaleDate(eventActivity.startDate)}</span>
+                    </span>
                   </span>
-                </span>
-                <span className="card-item d-block mb-2">
-                  <span>
-                    <Translate contentKey="clubmanagementApp.eventActivity.duration">Duration (In Day)</Translate>:{' '}
-                    <span>{timeFormatDurationToString(convertDaysDurationToTimeFormat(eventActivity.durationInDay))}</span>
+                  <span className="card-item d-block mb-2">
+                    <span>
+                      <Translate contentKey="clubmanagementApp.eventActivity.duration">Duration (In Day)</Translate>:{' '}
+                      <span>{timeFormatDurationToString(convertDaysDurationToTimeFormat(eventActivity.durationInDay))}</span>
+                    </span>
                   </span>
-                </span>
-                <span className="card-item d-block">
-                  <span>
-                    <Translate contentKey="clubmanagementApp.eventActivity.description">Description</Translate>:{' '}
-                    <span className="font-weight-bolder text-dark">{eventActivity.description}</span>
+                  <span className="card-item d-block">
+                    <span>
+                      <Translate contentKey="clubmanagementApp.eventActivity.description">Description</Translate>:{' '}
+                      <span className="font-weight-bolder text-dark">{eventActivity.description}</span>
+                    </span>
                   </span>
-                </span>
-              </ListingCard>
-            ))
-          ) : (
-            <div className="alert alert-warning">
-              <Translate contentKey="clubmanagementApp.eventActivity.home.notFound">No Event Activities found</Translate>
-            </div>
-          )}
+                </ListingCard>
+              ))
+            ) : (
+              <div className="alert alert-warning">
+                <Translate contentKey="clubmanagementApp.eventActivity.home.notFound">No Event Activities found</Translate>
+              </div>
+            )}
+          </div>
         </div>
 
         <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions}>
