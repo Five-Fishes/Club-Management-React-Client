@@ -9,7 +9,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 import { getEventActivitiesByEventId, setSelectedEventActivityId, setShowActionOptions } from './event-activity.reducer';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import '../../styles/event-module.scss';
 import { CustomTab } from 'app/shared/components/customTab/custom-tab';
 import { eventTabList } from 'app/shared/util/tab.constants';
 import { ListingCard } from 'app/shared/components/listing-card/listing-card';
