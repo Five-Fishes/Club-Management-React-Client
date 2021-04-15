@@ -6,7 +6,16 @@
         "createLabel": "Create a new Event Attendee",
         "createOrEditLabel": "Create or edit a Event Attendee",
         "registerLabel": "Register as Event Attendee",
-        "notFound": "No Event Attendee found"
+        "notFound": "No Event Attendee found",
+        "sortBy": "Sort By"
+      },
+      "sortBy": {
+        "title": "Sort By",
+        "sortById": "Sort By Id",
+        "sortByYearSessionAsc": "Older Year Session First",
+        "sortByYearSessionDesc": "Newer Year Session First",
+        "provideTransportFirst": "Provide Transport First",
+        "noProvideTransportFirst": "Does Not Provide Transport First"
       },
       "created": "A new Event Attendee is created with identifier {{ param }}",
       "updated": "A Event Attendee is updated with identifier {{ param }}",
@@ -19,8 +28,9 @@
       },
       "userId": "User Id",
       "eventId": "Event Id",
-      "provideTransport": "Provide Transport",
-      "tab": "Attendees"
+      "tab": "Attendees",
+      "userName": "User Name",
+      "session": "Session"
     }
   }
 }

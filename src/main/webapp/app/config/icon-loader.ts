@@ -42,8 +42,8 @@ import { faEllipsisV } from '@fortawesome/free-solid-svg-icons/faEllipsisV';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons/faEllipsisH';
 import { faCar } from '@fortawesome/free-solid-svg-icons/faCar';
 import { faWhatsappSquare } from '@fortawesome/free-brands-svg-icons/faWhatsappSquare';
-
 import { library } from '@fortawesome/fontawesome-svg-core';
+import { faSortAmountUp } from '@fortawesome/free-solid-svg-icons/faSortAmountUp';
 
 export const loadIcons = () => {
   library.add(
@@ -89,6 +89,7 @@ export const loadIcons = () => {
     faCalendarAlt,
     faClock,
     faMapMarkerAlt,
-    faMoneyBillAlt
+    faMoneyBillAlt,
+    faSortAmountUp
   );
 };

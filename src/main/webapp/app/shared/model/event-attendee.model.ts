@@ -1,10 +1,8 @@
 export interface IEventAttendee {
   id?: number;
-  userName?: String;
-  userId?: number;
-  eventId?: number;
-  year?: number;
-  contactNumber?: String;
+  userName?: string;
+  contactNumber?: string;
+  yearSession?: string;
   provideTransport?: boolean;
 }
 
