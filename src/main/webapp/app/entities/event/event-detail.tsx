@@ -1,4 +1,5 @@
 import './event-details.scss';
+import '../../styles/event-module.scss';
 
 import React from 'react';
 import { connect } from 'react-redux';
@@ -34,12 +35,12 @@ export class EventDetail extends React.Component<IEventDetailProps> {
     const { eventEntity, eventAttendeeEntity } = this.props;
     const eventId = this.props.match.params.id;
     return (
-      <Container>
-        <h1>Event Details</h1>
-        <div className="my-4">
+      <div>
+        <h1 className="event-module-heading">Event Details</h1>
+        <div className="my-3">
           <CustomTab currentTab="Details" tabList={eventTabList(eventId)} />
         </div>
-        <div className="pt-3">
+        <div className="pt-3 mx-4">
           <img className="event-img" src={eventEntity.imageUrl} alt={eventEntity.fileName} />
           <div className="mt-4">
             <h2>{eventEntity.name}</h2>
@@ -94,7 +95,7 @@ export class EventDetail extends React.Component<IEventDetailProps> {
             </div>
           </div>
         </div>
-      </Container>
+      </div>
     );
   }
 }

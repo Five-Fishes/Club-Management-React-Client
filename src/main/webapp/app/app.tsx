@@ -20,8 +20,6 @@ import { AUTHORITIES } from 'app/config/constants';
 import AppRoutes from 'app/routes';
 import { fetchAccount } from './shared/services/auth.service';
 
-import Frame from 'app/entities/event-crew/frame';
-
 const baseHref = document
   .querySelector('base')
   .getAttribute('href')
@@ -53,9 +51,9 @@ export class App extends React.Component<IAppProps> {
 
           <div className="flex-grow-1">
             <ErrorBoundary>
-              <Container>
+              <div>
                 <AppRoutes />
-              </Container>
+              </div>
             </ErrorBoundary>
           </div>
 

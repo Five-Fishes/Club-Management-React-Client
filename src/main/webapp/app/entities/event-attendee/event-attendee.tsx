@@ -76,61 +76,63 @@ export class EventAttendee extends React.Component<IEventAttendeeProps> {
     const { eventAttendeeList, totalItems } = this.props;
     return (
       <div>
-        <EventAttendeeSortModalModal sort={this.sort} isOpen={this.state.modalIsOpen} toggleModal={this.closeModal} />
-        <div className="my-4">
-          <CustomTab currentTab="Attendees" tabList={eventTabList(this.state.eventId)} />
-        </div>
-        <h2 id="event-attendee-heading">
+        <h2 id="event-attendee-heading" className="event-module-heading">
           <Translate contentKey="clubmanagementApp.eventAttendee.home.title">Event Attendees</Translate>
         </h2>
-        <Button className="btn btn-primary float-right" id="event-attendee-sort-by-button" onClick={this.openModal}>
-          <FontAwesomeIcon icon="sort-amount-up" />
-          &nbsp;
-          <Translate contentKey="clubmanagementApp.eventAttendee.home.sortBy">Sort By</Translate>
-        </Button>
-        <div className="table-responsive">
-          {eventAttendeeList && eventAttendeeList.length > 0 ? (
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th>
-                    <Translate contentKey="global.field.id">ID</Translate>
-                  </th>
-                  <th>
-                    <Translate contentKey="clubmanagementApp.eventAttendee.userName">User Name</Translate>
-                  </th>
-                  <th>
-                    <Translate contentKey="clubmanagementApp.eventAttendee.session">Session</Translate>
-                  </th>
-                  <th />
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {eventAttendeeList.map((eventAttendee, index) => (
-                  <EventAttendeeRow user={eventAttendee} index={index} />
-                ))}
-              </tbody>
-            </Table>
-          ) : (
-            <div className="alert alert-warning">
-              <Translate contentKey="clubmanagementApp.eventAttendee.home.notFound">No Event Attendees found</Translate>
-            </div>
-          )}
+        <EventAttendeeSortModalModal sort={this.sort} isOpen={this.state.modalIsOpen} toggleModal={this.closeModal} />
+        <div className="my-3">
+          <CustomTab currentTab="Attendees" tabList={eventTabList(this.state.eventId)} />
         </div>
-        <div className={eventAttendeeList && eventAttendeeList.length > 0 ? '' : 'd-none'}>
-          <Row className="justify-content-center">
-            <JhiItemCount page={this.state.activePage} total={totalItems} itemsPerPage={this.state.itemsPerPage} i18nEnabled />
-          </Row>
-          <Row className="justify-content-center">
-            <JhiPagination
-              activePage={this.state.activePage}
-              onSelect={this.handlePagination}
-              maxButtons={5}
-              itemsPerPage={this.state.itemsPerPage}
-              totalItems={this.props.totalItems}
-            />
-          </Row>
+        <div className="mx-4">
+          <Button className="btn btn-primary float-right" id="event-attendee-sort-by-button" onClick={this.openModal}>
+            <FontAwesomeIcon icon="sort-amount-up" />
+            &nbsp;
+            <Translate contentKey="clubmanagementApp.eventAttendee.home.sortBy">Sort By</Translate>
+          </Button>
+          <div className="table-responsive">
+            {eventAttendeeList && eventAttendeeList.length > 0 ? (
+              <Table responsive>
+                <thead>
+                  <tr>
+                    <th>
+                      <Translate contentKey="global.field.id">ID</Translate>
+                    </th>
+                    <th>
+                      <Translate contentKey="clubmanagementApp.eventAttendee.userName">User Name</Translate>
+                    </th>
+                    <th>
+                      <Translate contentKey="clubmanagementApp.eventAttendee.session">Session</Translate>
+                    </th>
+                    <th />
+                    <th />
+                  </tr>
+                </thead>
+                <tbody>
+                  {eventAttendeeList.map((eventAttendee, index) => (
+                    <EventAttendeeRow user={eventAttendee} index={index} />
+                  ))}
+                </tbody>
+              </Table>
+            ) : (
+              <div className="alert alert-warning">
+                <Translate contentKey="clubmanagementApp.eventAttendee.home.notFound">No Event Attendees found</Translate>
+              </div>
+            )}
+          </div>
+          <div className={eventAttendeeList && eventAttendeeList.length > 0 ? '' : 'd-none'}>
+            <Row className="justify-content-center">
+              <JhiItemCount page={this.state.activePage} total={totalItems} itemsPerPage={this.state.itemsPerPage} i18nEnabled />
+            </Row>
+            <Row className="justify-content-center">
+              <JhiPagination
+                activePage={this.state.activePage}
+                onSelect={this.handlePagination}
+                maxButtons={5}
+                itemsPerPage={this.state.itemsPerPage}
+                totalItems={this.props.totalItems}
+              />
+            </Row>
+          </div>
         </div>
       </div>
     );

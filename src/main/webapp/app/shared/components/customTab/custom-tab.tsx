@@ -24,10 +24,12 @@ export class CustomTab extends React.Component<ITabProps, {}> {
 
   render() {
     return (
-      <div className="overflow-x-scroll tab-container my-2 text-center">
-        <ButtonGroup className="w-100">
-          <TabItems itemsList={this.props.tabList} activeTab={this.props.currentTab} />
-        </ButtonGroup>
+      <div className="overflow-x-scroll tab-x-space">
+        <div className="tab-container my-2 text-center">
+          <ButtonGroup className="w-100 px-3">
+            <TabItems itemsList={this.props.tabList} activeTab={this.props.currentTab} />
+          </ButtonGroup>
+        </div>
       </div>
     );
   }
