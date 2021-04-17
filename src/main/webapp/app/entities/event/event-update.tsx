@@ -79,15 +79,15 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
     const { description } = eventEntity;
 
     return (
-      <div>
-        <Row className="justify-content-center event-horizontal-padding">
+      <div className="mx-3">
+        <Row className="justify-content-center">
           <Col md="8">
-            <h2 className="event-page-title" id="clubmanagementApp.event.home.createOrEditLabel">
+            <h2 id="clubmanagementApp.event.home.createOrEditLabel">
               <Translate contentKey="clubmanagementApp.event.home.createOrEditLabel">Create New or Edit an Event</Translate>
             </h2>
           </Col>
         </Row>
-        <Row className="justify-content-center event-horizontal-padding event-bottom-padding">
+        <Row className="justify-content-center event-bottom-padding">
           <Col md="8">
             {loading ? (
               <p>Loading...</p>

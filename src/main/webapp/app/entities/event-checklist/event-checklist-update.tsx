@@ -83,7 +83,7 @@ export class EventChecklistUpdate extends React.Component<IEventChecklistUpdateP
     const { description } = eventChecklistEntity;
 
     return (
-      <div className="eventChecklist-form">
+      <div className="mx-3">
         <Row className="justify-content-center">
           <Col md="8">
             <h2 id="clubmanagementApp.eventChecklist.home.createOrEditLabel">
