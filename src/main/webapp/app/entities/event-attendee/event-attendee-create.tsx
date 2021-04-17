@@ -64,10 +64,10 @@ export class EventAttendeeUpdate extends React.Component<IEventAttendeeUpdatePro
     const { userId, loading, updating, match } = this.props;
 
     return (
-      <div>
+      <div className="mx-3">
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.eventAttendee.home.createOrEditLabel">
+            <h2 id="clubmanagementApp.eventAttendee.home.createOrEditLabel" className="event-module-form-heading">
               <Translate contentKey="clubmanagementApp.eventAttendee.home.registerLabel">Register as EventAttendee</Translate>
             </h2>
           </Col>

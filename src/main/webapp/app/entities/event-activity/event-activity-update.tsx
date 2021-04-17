@@ -74,7 +74,7 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
       <div className="mx-3">
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.eventActivity.home.createOrEditLabel">
+            <h2 id="clubmanagementApp.eventActivity.home.createOrEditLabel" className="event-module-form-heading">
               <Translate contentKey="clubmanagementApp.eventActivity.home.updateTitle">Update Event Activity</Translate>
             </h2>
           </Col>

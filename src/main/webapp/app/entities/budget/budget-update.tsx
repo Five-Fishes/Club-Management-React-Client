@@ -82,7 +82,7 @@ export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpd
       <div className="mx-3">
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.eventBudget.home.editLabel">
+            <h2 id="clubmanagementApp.eventBudget.home.editLabel" className="event-module-form-heading">
               <Translate contentKey="clubmanagementApp.eventBudget.home.editLabel">Edit Event Budget</Translate>
             </h2>
           </Col>

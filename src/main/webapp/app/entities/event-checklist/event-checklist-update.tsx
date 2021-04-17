@@ -86,7 +86,7 @@ export class EventChecklistUpdate extends React.Component<IEventChecklistUpdateP
       <div className="mx-3">
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.eventChecklist.home.createOrEditLabel">
+            <h2 id="clubmanagementApp.eventChecklist.home.createOrEditLabel" className="event-module-form-heading">
               <Translate contentKey="clubmanagementApp.eventChecklist.home.createOrEditLabel">Create or edit a EventChecklist</Translate>
             </h2>
           </Col>

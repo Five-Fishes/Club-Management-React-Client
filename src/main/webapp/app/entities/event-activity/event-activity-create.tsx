@@ -66,7 +66,7 @@ export class EventActivityCreate extends React.Component<IEventActivityCreatePro
       <div className="mx-3">
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.eventActivity.home.createTitle">
+            <h2 id="clubmanagementApp.eventActivity.home.createTitle" className="event-module-form-heading">
               <Translate contentKey="clubmanagementApp.eventActivity.home.createTitle">Create Event Activity</Translate>
             </h2>
           </Col>

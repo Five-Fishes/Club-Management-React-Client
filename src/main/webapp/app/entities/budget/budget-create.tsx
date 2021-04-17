@@ -51,7 +51,7 @@ export class EventBudgetCreate extends React.Component<IBudgetCreateProps> {
       <div className="mx-3">
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.eventBudget.home.createLabel">
+            <h2 id="clubmanagementApp.eventBudget.home.createLabel" className="event-module-form-heading">
               <Translate contentKey="clubmanagementApp.eventBudget.home.createLabel">Create Event Budget</Translate>
             </h2>
           </Col>
