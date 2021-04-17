@@ -189,12 +189,16 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
                   <input type="file" accept="image/*" />
                 </AvGroup>
                 <div className="general-buttonContainer--flexContainer">
-                  <Button className="event-button" tag={Link} id="cancel-save" to="/entity/event" replace color="cancel">
+                  <Button className="general-button--width" tag={Link} id="cancel-save" to="/entity/event" replace color="cancel">
                     <Translate contentKey="entity.action.cancel">Cancel</Translate>
                   </Button>
                   &nbsp;
-                  <Button className="event-button" color="action" id="save-entity" type="submit" disabled={updating}>
-                    <Translate contentKey="entity.action.save">Save</Translate>
+                  <Button className="general-button--width" color="action" id="save-entity" type="submit" disabled={updating}>
+                    {isNew ? (
+                      <Translate contentKey="entity.action.create">Create</Translate>
+                    ) : (
+                      <Translate contentKey="entity.action.update">Update</Translate>
+                    )}
                   </Button>
                 </div>
               </AvForm>
