@@ -65,14 +65,14 @@ export class EventAttendeeUpdate extends React.Component<IEventAttendeeUpdatePro
 
     return (
       <div>
-        <Row className="justify-content-center">
+        <Row className="justify-content-center event-horizontal-padding">
           <Col md="8">
             <h2 id="clubmanagementApp.eventAttendee.home.createOrEditLabel">
               <Translate contentKey="clubmanagementApp.eventAttendee.home.registerLabel">Register as EventAttendee</Translate>
             </h2>
           </Col>
         </Row>
-        <Row className="justify-content-center">
+        <Row className="justify-content-center event-horizontal-padding">
           <Col md="8">
             {loading ? (
               <p>Loading...</p>
