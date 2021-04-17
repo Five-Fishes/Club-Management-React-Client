@@ -6,7 +6,7 @@ import './modules.scss';
 export const Module = ({ moduleName, iconName, path, sideNavToggler }) => (
   <Link to={path} onClick={sideNavToggler}>
     <div className="module">
-      <FontAwesomeIcon icon={iconName} />
+      <FontAwesomeIcon icon={iconName} className="module-icon" />
       {moduleName}
     </div>
   </Link>
@@ -23,7 +23,7 @@ export const ModuleMenu = ({ button }) => {
         <div style={{ display: 'flex' }}>{button}</div>
 
         <div style={{ paddingTop: 30, paddingBottom: 30 }}>
-          <Module moduleName="Event" iconName="user" path="/entity/event" sideNavToggler={handler} />
+          <Module moduleName="Event" iconName="plane-departure" path="/entity/event" sideNavToggler={handler} />
         </div>
       </div>
     </div>
