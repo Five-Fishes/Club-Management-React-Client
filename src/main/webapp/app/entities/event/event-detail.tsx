@@ -75,7 +75,7 @@ export class EventDetail extends React.Component<IEventDetailProps> {
               <p>{eventEntity.description}</p>
             </div>
             <div className="d-flex flex-column">
-              <Button tag={Link} to={`/entity/event/${eventEntity.id}/edit`} replace className="my-1" color="secondary">
+              <Button tag={Link} to={`/entity/event/${eventEntity.id}/edit`} className="my-1" color="secondary">
                 Update
               </Button>
               {eventAttendeeEntity.userId ? (
