@@ -112,7 +112,13 @@ const EventCard = ({ event, toggleModal }) => {
     <Card className="p-3 pt-4 event-card">
       <Row>
         <Col xs="4" lg="5" className="pr-0">
-          <CardImg height="100%" width="100%" className="rounded-0" src={event.imageUrl} alt={event.fileName} />
+          <CardImg
+            height="100%"
+            width="100%"
+            className="rounded-0"
+            src={event.imageUrl ? event.imageUrl : 'content/images/placeholder.png'}
+            alt={event.fileName}
+          />
         </Col>
         <Col xs="8" lg="7">
           <Button color="link" className="option-icon p-0" onClick={onToggleModal}>

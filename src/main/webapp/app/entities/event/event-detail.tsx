@@ -41,7 +41,11 @@ export class EventDetail extends React.Component<IEventDetailProps> {
           <CustomTab currentTab="Details" tabList={eventTabList(eventId)} />
         </div>
         <div className="pt-3 mx-4">
-          <img className="event-img" src={eventEntity.imageUrl} alt={eventEntity.fileName} />
+          <img
+            className="event-img"
+            src={eventEntity.imageUrl ? eventEntity.imageUrl : 'content/images/placeholder.png'}
+            alt={eventEntity.fileName}
+          />
           <div className="mt-4">
             <h2>{eventEntity.name}</h2>
             <div className="event-details-info my-3">
