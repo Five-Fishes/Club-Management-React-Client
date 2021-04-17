@@ -49,7 +49,7 @@ export const eventTabList = (eventId: string): ITabInfo[] => [
 export const financeTabList: ITabInfo[] = [
   {
     tabName: 'Report',
-    tabTranslateKey: 'clubmanagementApp.event.upcoming',
+    tabTranslateKey: 'clubmanagementApp.financeReport.tab',
     tabRoute: '/entity/finance-report'
   },
   {

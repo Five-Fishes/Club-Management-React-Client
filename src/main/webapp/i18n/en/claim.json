@@ -22,7 +22,8 @@
       "status": "Status",
       "receiptUrl": "Receipt Url",
       "fileName": "File Name",
-      "fileType": "File Type"
+      "fileType": "File Type",
+      "tab": "CC Debt"
     }
   }
 }
