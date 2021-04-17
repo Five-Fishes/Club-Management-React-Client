@@ -6,7 +6,7 @@
         "registerLabel": "注册为参与者",
         "createLabel": "创建新活动参与者",
         "createOrEditLabel": "创建或编辑活动参与者",
-        "notFound": "无活动参与者",
+        "notFound": "无此活动参与者",
         "sortBy": "排序方式"
       },
       "sortBy": {
@@ -28,7 +28,7 @@
       },
       "userId": "用户编号",
       "eventId": "活动编号",
-      "tab": "活动参与者",
+      "tab": "参与者",
       "userName": "用户名",
       "session": "学年度"
     }

@@ -17,7 +17,7 @@
       "detail": {
         "title": "活动预算"
       },
-      "eventId": "Event Id",
+      "eventId": "活动 ID",
       "amount": "数额",
       "type": "种类",
       "name": "名称",

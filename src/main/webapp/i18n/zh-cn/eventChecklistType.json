@@ -2,8 +2,8 @@
   "clubmanagementApp": {
     "EventChecklistType": {
       "null": "",
-      "PREPARATION": "PREPARATION",
-      "PURCHASE": "PURCHASE"
+      "PREPARATION": "准备",
+      "PURCHASE": "购物"
     }
   }
 }

@@ -2,7 +2,8 @@
   "clubmanagementApp": {
     "EventCrewRole": {
       "null": "",
-      "HEAD": "HEAD"
+      "HEAD": "头目",
+      "MEMBER": "成员"
     }
   }
 }
