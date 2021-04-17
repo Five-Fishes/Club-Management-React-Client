@@ -57,7 +57,7 @@ export class EventChecklistUpdate extends React.Component<IEventChecklistUpdateP
   saveEntity = (event, errors, values) => {
     if (errors.length === 0) {
       const { eventChecklistEntity } = this.props;
-      let entity = {
+      const entity = {
         ...eventChecklistEntity,
         ...values
       };
