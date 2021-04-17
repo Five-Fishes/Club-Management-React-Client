@@ -42,9 +42,9 @@ const TabItems = ({ itemsList, activeTab }) =>
       id="tab-btn"
       color="#07ADE1"
       className={classnames('tab-item', item.tabName === activeTab ? 'active-tab' : '')}
+      tag={Link}
+      to={item.tabRoute}
     >
-      <Link to={item.tabRoute} className="link-unstyled">
-        <Translate contentKey={item.tabTranslateKey}>{item.tabName}</Translate>
-      </Link>
+      <Translate contentKey={item.tabTranslateKey}>{item.tabName}</Translate>
     </Button>
   ));
