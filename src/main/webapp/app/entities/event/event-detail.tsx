@@ -72,7 +72,7 @@ export class EventDetail extends React.Component<IEventDetailProps> {
               </h6>
             </div>
             <hr />
-            <div className="desc-box">
+            <div className="desc-box mb-5">
               <h5>
                 <Translate contentKey="clubmanagementApp.event.description">Description</Translate>
               </h5>
