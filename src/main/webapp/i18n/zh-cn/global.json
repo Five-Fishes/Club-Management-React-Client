@@ -125,7 +125,8 @@
       "view": "查看",
       "yes": "是",
       "no": "否",
-      "register": "注册"
+      "register": "注册",
+      "complete": "完成"
     },
     "detail": {
       "field": "字段",

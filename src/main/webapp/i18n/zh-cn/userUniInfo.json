@@ -2,28 +2,35 @@
   "clubmanagementApp": {
     "userUniInfo": {
       "home": {
-        "title": "User Uni Infos",
-        "createLabel": "创建新 User Uni Info",
+        "title": "个人大学资料",
+        "createLabel": "创建新个人大学资料",
+        "editLabel": "更新新个人大学资料",
         "createOrEditLabel": "创建或编辑 User Uni Info",
-        "notFound": "No User Uni Info found"
+        "notFound": "无个人大学资料"
       },
-      "created": "User Uni Info {{ param }} 创建成功",
-      "updated": "User Uni Info {{ param }} 更新成功",
-      "deleted": "User Uni Info {{ param }} 删除成功",
+      "created": "个人大学资料 {{ param }} 创建成功",
+      "updated": "个人大学资料 {{ param }} 更新成功",
+      "deleted": "个人大学资料 {{ param }} 删除成功",
       "delete": {
-        "question": "你确定要删除 User Uni Info {{ id }} 吗？"
+        "question": "你确定要删除个人大学资料 {{ id }} 吗？"
       },
       "detail": {
-        "title": "User Uni Info"
+        "title": "个人大学资料"
       },
       "userId": "User Id",
-      "faculty": "Faculty",
-      "program": "Program",
-      "yearSession": "Year Session",
-      "intakeSemester": "Intake Semester",
-      "yearOfStudy": "Year Of Study",
-      "stayIn": "Stay In",
-      "status": "Status"
+      "faculty": "院系",
+      "courseProgram": "学术课程",
+      "program": "课程",
+      "yearSession": "学年",
+      "intakeYearSession": "录取学年",
+      "intakeSemester": "录取学期",
+      "yearOfStudy": "学习年份",
+      "stayIn": "住处",
+      "status": "大学状况",
+      "semesterValue": {
+        "semOne": "第一学期",
+        "semTwo": "第二学期"
+      }
     }
   }
 }

@@ -124,7 +124,8 @@
       "view": "View",
       "yes": "Yes",
       "no": "No",
-      "register": "Register"
+      "register": "Register",
+      "complete": "Complete"
     },
     "detail": {
       "field": "Field",
