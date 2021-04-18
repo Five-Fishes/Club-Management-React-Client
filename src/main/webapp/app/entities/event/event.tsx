@@ -123,12 +123,16 @@ const EventCard = ({ event, toggleModal }) => {
               <h4 className="event-title">{event.name}</h4>
             </Link>
             <p className="mb-0">
-              Start Date: <TextFormat type="date" value={event.startDate} format={APP_DATE_FORMAT} />
+              <Translate contentKey="clubmanagementApp.event.startDate">Start Date</Translate>:{' '}
+              <TextFormat type="date" value={event.startDate} format={APP_DATE_FORMAT} />
             </p>
             <p className="mb-0">
-              End Date: <TextFormat type="date" value={event.endDate} format={APP_DATE_FORMAT} />
+              <Translate contentKey="clubmanagementApp.event.endDate">End Date</Translate>:{' '}
+              <TextFormat type="date" value={event.endDate} format={APP_DATE_FORMAT} />
             </p>
-            <p className="mb-0">Venue: {event.venue}</p>
+            <p className="mb-0">
+              <Translate contentKey="clubmanagementApp.event.venue">Venue</Translate>: {event.venue}
+            </p>
           </div>
         </Col>
       </Row>
