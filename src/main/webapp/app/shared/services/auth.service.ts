@@ -16,6 +16,7 @@ export async function getAuthToken(firebaseToken: string): Promise<void> {
   Storage.local.set(ACCESS_TOKEN_KEY, responseBody.accessToken);
   Storage.local.set(REFRESH_TOKEN_KEY, responseBody.refreshToken);
   await fetchAccount();
+  // await checkUserProfileCompleted();
 }
 
 export function logout(): void {
@@ -39,6 +40,7 @@ export async function handleUnauthenticated(): Promise<void> {
     Storage.local.set(ACCESS_TOKEN_KEY, responseBody.accessToken);
     Storage.local.set(REFRESH_TOKEN_KEY, responseBody.refreshToken);
     await fetchAccount();
+    // await checkUserProfileCompleted();
   }
 }
 
@@ -94,4 +96,11 @@ export async function emailResetPassword(email: string): Promise<void> {
 export async function fetchAccount(): Promise<void> {
   const res = await axios.get(`/api/account`);
   store.dispatch({ type: ACTION_TYPES.FETCH_ACCOUNT, payload: res.data });
+  await checkUserProfileCompleted();
+}
+
+export async function checkUserProfileCompleted(): Promise<void> {
+  const res = await axios.get(`/api/account/is-profile-completed`);
+  window.console.log('COMPLETED PROFILE: ' + res.data.isProfileCompleted);
+  store.dispatch({ type: ACTION_TYPES.CHECK_USERPROFILE_COMPLETE, payload: res.data });
 }

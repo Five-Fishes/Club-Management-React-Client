@@ -4,6 +4,7 @@ import { Route, Redirect, RouteProps } from 'react-router-dom';
 import { Translate } from 'react-jhipster';
 import { IRootState } from 'app/shared/reducers';
 import ErrorBoundary from 'app/shared/error/error-boundary';
+import CompleteUserProfile from 'app/modules/auth/complete-profile/complete-user-profile';
 
 interface IOwnProps extends RouteProps {
   hasAnyAuthorities?: string[];
@@ -14,12 +15,17 @@ export interface IPrivateRouteProps extends IOwnProps, StateProps {}
 export const PrivateRouteComponent = ({
   component: Component,
   isAuthenticated,
+  isProfileCompleted,
   hasAnyAuthorities = [],
   isAuthorized,
   ...rest
 }: IPrivateRouteProps) => {
   const checkAuthorities = props =>
-    isAuthorized ? (
+    isAuthenticated && !isProfileCompleted ? (
+      <ErrorBoundary>
+        <CompleteUserProfile />
+      </ErrorBoundary>
+    ) : isAuthorized ? (
       <ErrorBoundary>
         <Component {...props} />
       </ErrorBoundary>
@@ -60,9 +66,13 @@ export function hasAnyAuthority(authorities: string[], hasAnyAuthorities: string
   return hasAnyAuthorities.some(auth => authorities.includes(auth));
 }
 
-const mapStateToProps = ({ authentication: { isAuthenticated, authorities } }: IRootState, { hasAnyAuthorities = [] }: IOwnProps) => ({
+const mapStateToProps = (
+  { authentication: { isAuthenticated, authorities, isProfileCompleted } }: IRootState,
+  { hasAnyAuthorities = [] }: IOwnProps
+) => ({
   isAuthenticated,
-  isAuthorized: hasAnyAuthority(authorities, hasAnyAuthorities)
+  isAuthorized: hasAnyAuthority(authorities, hasAnyAuthorities),
+  isProfileCompleted
 });
 
 type StateProps = ReturnType<typeof mapStateToProps>;
