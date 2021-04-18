@@ -7,7 +7,7 @@
         "updateTitle": "更新活动项目",
         "createLabel": "创建新活动项目",
         "createOrEditLabel": "创建或编辑活动项目",
-        "notFound": "无此活动项目"
+        "notFound": "未发现任何活动项目"
       },
       "created": "活动项目 {{ param }} 创建成功",
       "updated": "活动项目 {{ param }} 更新成功",

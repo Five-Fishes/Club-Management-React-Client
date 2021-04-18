@@ -5,7 +5,7 @@
         "title": "活动筹备清单",
         "createLabel": "创建新筹备清单",
         "createOrEditLabel": "创建或编辑筹备清单",
-        "notFound": "无此筹备清单"
+        "notFound": "未发现任何筹备清单"
       },
       "created": "筹备清单 {{ param }} 创建成功",
       "updated": "筹备清单 {{ param }} 更新成功",
