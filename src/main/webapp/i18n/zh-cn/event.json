@@ -5,7 +5,7 @@
         "title": "活动",
         "createLabel": "创建新活动",
         "createOrEditLabel": "新活动或活动更新",
-        "notFound": "无此活动"
+        "notFound": "未发现任何活动"
       },
       "created": "活动 {{ param }} 创建成功",
       "updated": "活动 {{ param }} 更新成功",
