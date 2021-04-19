@@ -23,6 +23,7 @@ export interface IEventDetailProps extends StateProps, DispatchProps, RouteCompo
 export class EventDetail extends React.Component<IEventDetailProps> {
   componentDidMount() {
     this.props.getEntity(this.props.match.params.id);
+    this.props.getEntityByEventIdAndUserId(this.props.match.params.id, this.props.userId);
   }
 
   componentDidUpdate(prevProps) {
@@ -36,7 +37,9 @@ export class EventDetail extends React.Component<IEventDetailProps> {
     const eventId = this.props.match.params.id;
     return (
       <div>
-        <h1 className="event-module-heading">Event Details</h1>
+        <h1 className="event-module-heading">
+          <Translate contentKey="clubmanagementApp.event.detail.title"> Event Details </Translate>
+        </h1>
         <div className="my-3">
           <CustomTab currentTab="Details" tabList={eventTabList(eventId)} />
         </div>
@@ -85,11 +88,11 @@ export class EventDetail extends React.Component<IEventDetailProps> {
                   className="my-1"
                   color="cancel"
                 >
-                  Deregister
+                  <Translate contentKey="entity.action.deregister"> Deregister </Translate>
                 </Button>
               ) : (
                 <Button tag={Link} to={`/entity/event-attendee/event/${eventEntity.id}/new`} className="my-1" color="action">
-                  Register
+                  <Translate contentKey="entity.action.register"> Register </Translate>
                 </Button>
               )}
             </div>

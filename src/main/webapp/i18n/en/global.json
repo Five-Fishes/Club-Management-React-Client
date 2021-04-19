@@ -101,7 +101,8 @@
       "id": "ID"
     },
     "select": {
-      "selectOne": "Select One"
+      "selectOne": "Select One",
+      "selectUser": "Select a User"
     },
     "ribbon": {
       "dev": "Development"
@@ -124,7 +125,8 @@
       "view": "View",
       "yes": "Yes",
       "no": "No",
-      "register": "Register"
+      "register": "Register",
+      "deregister": "Deregister"
     },
     "detail": {
       "field": "Field",

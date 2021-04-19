@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, Button } from 'reactstrap';
-import { getSortState, IPaginationBaseState, Translate } from 'react-jhipster';
+import { getSortState, IPaginationBaseState, Translate, translate } from 'react-jhipster';
 
 import { IRootState } from 'app/shared/reducers';
 import {
@@ -165,7 +165,9 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
                   <span className="card-item d-block mb-2">
                     <span>
                       <Translate contentKey="clubmanagementApp.eventBudget.type">Type</Translate>:{' '}
-                      <span className="font-weight-bolder text-dark">{eventBudget.type}</span>
+                      <span className="font-weight-bolder text-dark">
+                        {translate(`clubmanagementApp.TransactionType.${eventBudget.type}`)}
+                      </span>
                     </span>
                   </span>
                   <span className="card-item d-block mb-2">

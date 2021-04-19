@@ -2,26 +2,26 @@
   "clubmanagementApp": {
     "eventCrew": {
       "home": {
-        "title": "Event Crews",
-        "createLabel": "创建新 Event Crew",
-        "createOrEditLabel": "创建或编辑 Event Crew",
-        "notFound": "No Event Crew found"
+        "title": "活动工委",
+        "createLabel": "创建新活动工委",
+        "createOrEditLabel": "创建或编辑活动工委",
+        "notFound": "未发现任何活动工委"
       },
-      "created": "Event Crew {{ param }} 创建成功",
-      "updated": "Event Crew {{ param }} 更新成功",
-      "deleted": "Event Crew {{ param }} 删除成功",
+      "created": "活动工委 {{ param }} 创建成功",
+      "updated": "活动工委 {{ param }} 更新成功",
+      "deleted": "活动工委 {{ param }} 删除成功",
       "delete": {
-        "question": "你确定要删除 Event Crew {{ id }} 吗？"
+        "question": "你确定要删除 活动工委 {{ id }} 吗？"
       },
       "detail": {
-        "title": "Event Crew"
+        "title": "活动工委"
       },
-      "userId": "User Id",
-      "crew": "委员",
-      "eventId": "Event Id",
-      "eventName": "Event",
+      "userId": "用户 ID",
+      "crew": "工委",
+      "eventId": "活动 ID",
+      "eventName": "活动",
       "role": "职务",
-      "tab": "Crews"
+      "tab": "工委"
     }
   }
 }
