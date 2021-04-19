@@ -25,6 +25,9 @@ export const ModuleMenu = ({ button }) => {
         <div style={{ paddingTop: 30, paddingBottom: 30 }}>
           <Module moduleName="Event" iconName="user" path="/entity/event" sideNavToggler={handler} />
         </div>
+        <div style={{ paddingTop: 30, paddingBottom: 30 }}>
+          <Module moduleName="CompleteProfile" iconName="user" path="/complete-profile/user-profile" sideNavToggler={handler} />
+        </div>
       </div>
     </div>
   );

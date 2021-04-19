@@ -5,9 +5,15 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 import { ICrudPutAction } from 'react-jhipster';
 
 import { IUserUniInfo, defaultValue } from 'app/shared/model/user-uni-info.model';
+import { IFaculty } from 'app/shared/model/faculty.model';
+import { ICourseProgram } from 'app/shared/model/course-program.model';
+import { IYearSession } from 'app/shared/model/year-session.model';
 
 export const ACTION_TYPES = {
   COMPLETE_USERPROFILE: 'completeProfile/COMPLETE_USERPROFILE',
+  FETCH_COURSEPROGRAM_LIST: 'completeProfile/FETCH_COURSEPROGRAM_LIST',
+  FETCH_FACULTY_LIST: 'completeProfile/FETCH_FECULTY_LIST',
+  FETCH_YEARSESSION_LIST: 'completeProfile/FETCH_YEARSESSION_LIST',
   RESET: 'completeProfile/RESET'
 };
 
@@ -15,18 +21,24 @@ const initialState = {
   loading: false,
   errorMessage: null,
   userProfile: defaultValue,
+  facultyList: [] as ReadonlyArray<IFaculty>,
+  courseProgramList: [] as ReadonlyArray<ICourseProgram>,
+  yearSessionList: [] as ReadonlyArray<IYearSession>,
   isProfileCompleted: false,
   updating: false,
   updateSuccess: false
 };
 
-export type UserState = Readonly<typeof initialState>;
+export type CompleteProfileState = Readonly<typeof initialState>;
 
 // Reducers
 
-export default (state: UserState = initialState, action): UserState => {
+export default (state: CompleteProfileState = initialState, action): CompleteProfileState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.COMPLETE_USERPROFILE):
+    case REQUEST(ACTION_TYPES.FETCH_FACULTY_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_COURSEPROGRAM_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_YEARSESSION_LIST):
       return {
         ...state,
         errorMessage: null,
@@ -34,6 +46,9 @@ export default (state: UserState = initialState, action): UserState => {
         loading: true
       };
     case FAILURE(ACTION_TYPES.COMPLETE_USERPROFILE):
+    case FAILURE(ACTION_TYPES.FETCH_FACULTY_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_COURSEPROGRAM_LIST):
+    case FAILURE(ACTION_TYPES.FETCH_YEARSESSION_LIST):
       return {
         ...state,
         updating: false,
@@ -46,6 +61,24 @@ export default (state: UserState = initialState, action): UserState => {
         ...state,
         loading: false,
         userProfile: action.payload.data
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_FACULTY_LIST):
+      return {
+        ...state,
+        loading: false,
+        facultyList: action.payload.data
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_COURSEPROGRAM_LIST):
+      return {
+        ...state,
+        loading: false,
+        courseProgramList: action.payload.data
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_YEARSESSION_LIST):
+      return {
+        ...state,
+        loading: false,
+        yearSessionList: action.payload.data
       };
     case ACTION_TYPES.RESET:
       return {
