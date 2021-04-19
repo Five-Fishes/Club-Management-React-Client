@@ -71,79 +71,83 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
         <h2 id="event-checklist-heading" className="event-module-heading">
           <Translate contentKey="clubmanagementApp.eventChecklist.home.title">Event Checklists</Translate>
         </h2>
-        <CustomTab tabList={eventTabList(eventId)} currentTab="Checklist" />
-        <div className="text-center">
-          <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
-            <FontAwesomeIcon icon="plus" />
-            &nbsp;
-            <Translate contentKey="entity.action.add">Add</Translate>
-          </Link>
+        <div className="my-3">
+          <CustomTab tabList={eventTabList(eventId)} currentTab="Checklist" />
         </div>
+        <div className="mx-4">
+          <div className="text-center">
+            <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
+              <FontAwesomeIcon icon="plus" />
+              &nbsp;
+              <Translate contentKey="entity.action.add">Add</Translate>
+            </Link>
+          </div>
 
-        <div className="eventChecklist-list">
-          {eventChecklistList && eventChecklistList.length > 0 ? (
-            eventChecklistList.map((eventChecklist, i) => (
-              // tslint:disable
-              <ListingCard
-                key={`event-checklist-${eventChecklist.id}`}
-                showActionMenu
-                title={eventChecklist.name}
-                actionMenuHandler={this.showCardAction.bind(this, eventChecklist.id)}
+          <div>
+            {eventChecklistList && eventChecklistList.length > 0 ? (
+              eventChecklistList.map((eventChecklist, i) => (
+                // tslint:disable
+                <ListingCard
+                  key={`event-checklist-${eventChecklist.id}`}
+                  showActionMenu
+                  title={eventChecklist.name}
+                  actionMenuHandler={this.showCardAction.bind(this, eventChecklist.id)}
+                >
+                  <span className="card-item d-block mb-2">
+                    <span>
+                      <Translate contentKey="clubmanagementApp.eventChecklist.type">Type</Translate>:
+                      <span className="font-weight-bolder text-dark">{eventChecklist.type}</span>
+                    </span>
+                    <span className="float-right">
+                      <Translate contentKey="clubmanagementApp.eventChecklist.status">Status</Translate>:
+                      <span className="font-weight-bolder text-dark">{eventChecklist.status}</span>
+                    </span>
+                  </span>
+                  <span className="card-item d-block">
+                    <span>
+                      <Translate contentKey="clubmanagementApp.eventChecklist.description">Description</Translate>:
+                      <span className="font-weight-bolder text-dark">{eventChecklist.description}</span>
+                    </span>
+                  </span>
+                </ListingCard>
+              ))
+            ) : (
+              <div className="alert alert-warning">
+                <Translate contentKey="clubmanagementApp.eventChecklist.home.notFound">No Event Checklists found</Translate>
+              </div>
+            )}
+          </div>
+          <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions}>
+            <ModalHeader toggle={this.toggleShowOptions} />
+            <ModalBody>
+              <h2 className="text-center">Options</h2>
+              <Button
+                tag={Link}
+                to={`${match.url}/${selectedEventChecklistId}/edit`}
+                color="primary"
+                className="d-block mx-auto my-3 w-75"
+                onClick={this.toggleShowOptions}
               >
-                <span className="card-item d-block mb-2">
-                  <span>
-                    <Translate contentKey="clubmanagementApp.eventChecklist.type">Type</Translate>:
-                    <span className="font-weight-bolder text-dark">{eventChecklist.type}</span>
-                  </span>
-                  <span className="float-right">
-                    <Translate contentKey="clubmanagementApp.eventChecklist.status">Status</Translate>:
-                    <span className="font-weight-bolder text-dark">{eventChecklist.status}</span>
-                  </span>
+                <FontAwesomeIcon icon="pencil-alt" />{' '}
+                <span>
+                  <Translate contentKey="entity.action.update">Update</Translate>
                 </span>
-                <span className="card-item d-block">
-                  <span>
-                    <Translate contentKey="clubmanagementApp.eventChecklist.description">Description</Translate>:
-                    <span className="font-weight-bolder text-dark">{eventChecklist.description}</span>
-                  </span>
+              </Button>
+              <Button
+                tag={Link}
+                to={`${match.url}/${selectedEventChecklistId}/delete`}
+                color="cancel"
+                className="d-block mx-auto my-3 w-75"
+                onClick={this.toggleShowOptions}
+              >
+                <FontAwesomeIcon icon="trash" />{' '}
+                <span>
+                  <Translate contentKey="entity.action.delete">Delete</Translate>
                 </span>
-              </ListingCard>
-            ))
-          ) : (
-            <div className="alert alert-warning">
-              <Translate contentKey="clubmanagementApp.eventChecklist.home.notFound">No Event Checklists found</Translate>
-            </div>
-          )}
+              </Button>
+            </ModalBody>
+          </Modal>
         </div>
-        <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions}>
-          <ModalHeader toggle={this.toggleShowOptions} />
-          <ModalBody>
-            <h2 className="text-center">Options</h2>
-            <Button
-              tag={Link}
-              to={`${match.url}/${selectedEventChecklistId}/edit`}
-              color="primary"
-              className="d-block mx-auto my-3 w-75"
-              onClick={this.toggleShowOptions}
-            >
-              <FontAwesomeIcon icon="pencil-alt" />{' '}
-              <span>
-                <Translate contentKey="entity.action.update">Update</Translate>
-              </span>
-            </Button>
-            <Button
-              tag={Link}
-              to={`${match.url}/${selectedEventChecklistId}/delete`}
-              color="cancel"
-              className="d-block mx-auto my-3 w-75"
-              onClick={this.toggleShowOptions}
-            >
-              <FontAwesomeIcon icon="trash" />{' '}
-              <span>
-                <Translate contentKey="entity.action.delete">Delete</Translate>
-              </span>
-            </Button>
-          </ModalBody>
-        </Modal>
       </div>
     );
   }

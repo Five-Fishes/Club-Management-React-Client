@@ -89,95 +89,99 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
 
     return (
       <div>
-        <h2 id="event-budget-heading">
+        <h2 id="event-budget-heading" className="event-module-heading">
           <Translate contentKey="clubmanagementApp.eventBudget.home.title">Event Budgets</Translate>
         </h2>
-        <CustomTab tabList={eventTabList(eventId)} currentTab="Budget" />
+        <div className="my-3">
+          <CustomTab tabList={eventTabList(eventId)} currentTab="Budget" />
+        </div>
         {/* Stats of Budget */}
-        <div className="mx-3">
-          {eventBudgetTotal.hasOwnProperty('totalExpense') && (
-            <div className="my-4">
-              <h3 className="text-income">
-                <Translate contentKey="clubmanagementApp.eventBudget.budget">Budget</Translate>:
-              </h3>
-              <span>
-                <span className="text-income">
-                  <Translate contentKey="clubmanagementApp.eventBudget.income">Income</Translate>: &nbsp;
-                  <span className="small">RM {eventBudgetTotal.totalIncome.toFixed(2)}</span>
+        <div className="mx-4">
+          <div>
+            {eventBudgetTotal.hasOwnProperty('totalExpense') && (
+              <div className="my-4">
+                <h3 className="text-income">
+                  <Translate contentKey="clubmanagementApp.eventBudget.budget">Budget</Translate>:
+                </h3>
+                <span>
+                  <span className="text-income">
+                    <Translate contentKey="clubmanagementApp.eventBudget.income">Income</Translate>: &nbsp;
+                    <span className="small">RM {eventBudgetTotal.totalIncome.toFixed(2)}</span>
+                  </span>
+                  <span className="float-right text-expense">
+                    <Translate contentKey="clubmanagementApp.eventBudget.expense">Expense</Translate>: &nbsp;
+                    <span className="small">RM {eventBudgetTotal.totalExpense.toFixed(2)}</span>
+                  </span>
                 </span>
-                <span className="float-right text-expense">
-                  <Translate contentKey="clubmanagementApp.eventBudget.expense">Expense</Translate>: &nbsp;
-                  <span className="small">RM {eventBudgetTotal.totalExpense.toFixed(2)}</span>
+              </div>
+            )}
+            {eventRealTotal.hasOwnProperty('totalExpense') && (
+              <div className="my-4">
+                <h3 className="text-income">
+                  <Translate contentKey="clubmanagementApp.eventBudget.realAmount">Real Amount</Translate>:
+                </h3>
+                <span>
+                  <span className="text-income">
+                    <Translate contentKey="clubmanagementApp.eventBudget.income">Income</Translate>: &nbsp;
+                    <span className="small">RM {eventRealTotal.totalIncome.toFixed(2)}</span>
+                  </span>
+                  <span className="float-right text-expense">
+                    <Translate contentKey="clubmanagementApp.eventBudget.expense">Expense</Translate>: &nbsp;
+                    <span className="small">RM {eventRealTotal.totalExpense.toFixed(2)}</span>
+                  </span>
                 </span>
-              </span>
-            </div>
-          )}
-          {eventRealTotal.hasOwnProperty('totalExpense') && (
-            <div className="my-4">
-              <h3 className="text-income">
-                <Translate contentKey="clubmanagementApp.eventBudget.realAmount">Real Amount</Translate>:
-              </h3>
-              <span>
-                <span className="text-income">
-                  <Translate contentKey="clubmanagementApp.eventBudget.income">Income</Translate>: &nbsp;
-                  <span className="small">RM {eventRealTotal.totalIncome.toFixed(2)}</span>
-                </span>
-                <span className="float-right text-expense">
-                  <Translate contentKey="clubmanagementApp.eventBudget.expense">Expense</Translate>: &nbsp;
-                  <span className="small">RM {eventRealTotal.totalExpense.toFixed(2)}</span>
-                </span>
-              </span>
-            </div>
-          )}
-        </div>
-        <div className="text-center">
-          <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
-            <FontAwesomeIcon icon="plus" />
-            &nbsp;
-            <Translate contentKey="entity.action.add">Add</Translate>
-          </Link>
-        </div>
-        <div>
-          {budgetList && budgetList.length > 0 ? (
-            budgetList.map((eventBudget, i) => (
-              <ListingCard
-                key={`event-budget-${eventBudget.id}`}
-                showActionMenu
-                actionMenuHandler={this.showCardAction.bind(this, eventBudget.id)}
-              >
-                <span
-                  className={classnames(
-                    'font-weight-bold text-dark d-block mb-1',
-                    eventBudget.type === 'INCOME' ? 'text-income' : 'text-expense'
-                  )}
+              </div>
+            )}
+          </div>
+          <div className="text-center">
+            <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
+              <FontAwesomeIcon icon="plus" />
+              &nbsp;
+              <Translate contentKey="entity.action.add">Add</Translate>
+            </Link>
+          </div>
+          <div>
+            {budgetList && budgetList.length > 0 ? (
+              budgetList.map((eventBudget, i) => (
+                <ListingCard
+                  key={`event-budget-${eventBudget.id}`}
+                  showActionMenu
+                  actionMenuHandler={this.showCardAction.bind(this, eventBudget.id)}
                 >
-                  {'RM ' + eventBudget.amount.toFixed(2).toString()}
-                </span>
-                <span className="card-item d-block mb-2">
-                  <span>
-                    <Translate contentKey="clubmanagementApp.eventBudget.name">Name</Translate>:{' '}
-                    <span className="font-weight-bolder text-dark">{eventBudget.name}</span>
+                  <span
+                    className={classnames(
+                      'font-weight-bold text-dark d-block mb-1',
+                      eventBudget.type === 'INCOME' ? 'text-income' : 'text-expense'
+                    )}
+                  >
+                    {'RM ' + eventBudget.amount.toFixed(2).toString()}
                   </span>
-                </span>
-                <span className="card-item d-block mb-2">
-                  <span>
-                    <Translate contentKey="clubmanagementApp.eventBudget.type">Type</Translate>:{' '}
-                    <span className="font-weight-bolder text-dark">{eventBudget.type}</span>
+                  <span className="card-item d-block mb-2">
+                    <span>
+                      <Translate contentKey="clubmanagementApp.eventBudget.name">Name</Translate>:{' '}
+                      <span className="font-weight-bolder text-dark">{eventBudget.name}</span>
+                    </span>
                   </span>
-                </span>
-                <span className="card-item d-block mb-2">
-                  <span>
-                    <Translate contentKey="clubmanagementApp.eventBudget.details">Details</Translate>:{' '}
-                    <span className="font-weight-bolder text-dark">{eventBudget.details}</span>
+                  <span className="card-item d-block mb-2">
+                    <span>
+                      <Translate contentKey="clubmanagementApp.eventBudget.type">Type</Translate>:{' '}
+                      <span className="font-weight-bolder text-dark">{eventBudget.type}</span>
+                    </span>
                   </span>
-                </span>
-              </ListingCard>
-            ))
-          ) : (
-            <div className="alert alert-warning">
-              <Translate contentKey="clubmanagementApp.eventBudget.home.notFound">No Event Budgets found</Translate>
-            </div>
-          )}
+                  <span className="card-item d-block mb-2">
+                    <span>
+                      <Translate contentKey="clubmanagementApp.eventBudget.details">Details</Translate>:{' '}
+                      <span className="font-weight-bolder text-dark">{eventBudget.details}</span>
+                    </span>
+                  </span>
+                </ListingCard>
+              ))
+            ) : (
+              <div className="alert alert-warning">
+                <Translate contentKey="clubmanagementApp.eventBudget.home.notFound">No Event Budgets found</Translate>
+              </div>
+            )}
+          </div>
         </div>
 
         <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions}>
