@@ -2,6 +2,7 @@ import './event-details.scss';
 import '../../styles/event-module.scss';
 
 import React from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Container } from 'reactstrap';
@@ -17,6 +18,7 @@ import { getEntityByEventIdAndUserId } from '../event-attendee/event-attendee.re
 import { APP_LOCAL_TIME_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { CustomTab } from 'app/shared/components/customTab/custom-tab';
 import { eventTabList } from 'app/shared/util/tab.constants';
+import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 
 export interface IEventDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -79,7 +81,14 @@ export class EventDetail extends React.Component<IEventDetailProps> {
               <p>{eventEntity.description}</p>
             </div>
             <div className="d-flex flex-column">
-              <Button tag={Link} to={`/entity/event/${eventEntity.id}/edit`} replace className="my-1" color="secondary">
+              <Button
+                tag={Link}
+                to={`/entity/event/${eventEntity.id}/edit`}
+                replace
+                className="my-1"
+                color="secondary"
+                disabled={moment().isAfter(eventEntity.endDate)}
+              >
                 Update
               </Button>
               {eventAttendeeEntity.userId ? (
@@ -92,7 +101,13 @@ export class EventDetail extends React.Component<IEventDetailProps> {
                   Deregister
                 </Button>
               ) : (
-                <Button tag={Link} to={`/entity/event-attendee/event/${eventEntity.id}/new`} className="my-1" color="action">
+                <Button
+                  tag={Link}
+                  to={`/entity/event-attendee/event/${eventEntity.id}/new`}
+                  className="my-1"
+                  color="action"
+                  disabled={moment().isAfter(eventEntity.endDate) || eventEntity.status === 'CANCELLED'}
+                >
                   Register
                 </Button>
               )}
