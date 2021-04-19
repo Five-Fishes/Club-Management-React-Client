@@ -22,7 +22,10 @@
       "status": "Status",
       "receiptUrl": "Receipt Url",
       "fileName": "File Name",
-      "fileType": "File Type"
+      "fileType": "File Type",
+      "income": "INCOME",
+      "participationFee": "Participation Fee",
+      "tab": "Members Debt"
     }
   }
 }
