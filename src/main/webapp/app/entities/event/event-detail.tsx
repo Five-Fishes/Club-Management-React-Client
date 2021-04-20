@@ -92,13 +92,17 @@ export class EventDetail extends React.Component<IEventDetailProps> {
               </h5>
               <p>{eventEntity.description}</p>
             </div>
+
             {eventEntity.remarks ? (
-              <div className="desc-box mb-5">
-                <h5>
-                  <Translate contentKey="clubmanagementApp.event.remarks">Remarks</Translate>
-                </h5>
-                <p>{eventEntity.remarks}</p>
-              </div>
+              <>
+                <hr />
+                <div className="desc-box mb-5">
+                  <h5>
+                    <Translate contentKey="clubmanagementApp.event.remarks">Remarks</Translate>
+                  </h5>
+                  <p>{eventEntity.remarks}</p>
+                </div>
+              </>
             ) : null}
             <div className="d-flex flex-column">
               <Button
