@@ -19,7 +19,7 @@ import { IRootState } from 'app/shared/reducers';
 import { getEntities } from './event.reducer';
 import { IEvent } from 'app/shared/model/event.model';
 // tslint:disable-next-line:no-unused-variable
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_12_ABR_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 
 import FloatButton from 'app/shared/components/floatButton/FloatButton';
@@ -129,10 +129,10 @@ const EventCard = ({ event, toggleModal }) => {
               <h4 className="event-title">{event.name}</h4>
             </Link>
             <p className="mb-0">
-              Start Date: <TextFormat type="date" value={event.startDate} format={APP_DATE_FORMAT} />
+              Start Date: <TextFormat type="date" value={event.startDate} format={APP_DATE_12_ABR_FORMAT} />
             </p>
             <p className="mb-0">
-              End Date: <TextFormat type="date" value={event.endDate} format={APP_DATE_FORMAT} />
+              End Date: <TextFormat type="date" value={event.endDate} format={APP_DATE_12_ABR_FORMAT} />
             </p>
             <p className="mb-0">Venue: {event.venue}</p>
           </div>

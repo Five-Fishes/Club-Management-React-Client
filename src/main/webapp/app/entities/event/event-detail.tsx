@@ -15,7 +15,7 @@ import { getEntity } from './event.reducer';
 import { getEntityByEventIdAndUserId } from '../event-attendee/event-attendee.reducer';
 
 // tslint:disable-next-line:no-unused-variable
-import { APP_LOCAL_DATETIME_12_FORMAT } from 'app/config/constants';
+import { APP_DATE_12_FORMAT } from 'app/config/constants';
 import { CustomTab } from 'app/shared/components/customTab/custom-tab';
 import { eventTabList } from 'app/shared/util/tab.constants';
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
@@ -54,13 +54,13 @@ export class EventDetail extends React.Component<IEventDetailProps> {
               <FontAwesomeIcon icon={['far', 'calendar-alt']} size="sm" />
               <h6>
                 <Translate contentKey="clubmanagementApp.event.startDate">Start Date</Translate>:{' '}
-                <TextFormat value={eventEntity.startDate} type="date" format={APP_LOCAL_DATETIME_12_FORMAT} />{' '}
+                <TextFormat value={eventEntity.startDate} type="date" format={APP_DATE_12_FORMAT} />{' '}
               </h6>
 
               <FontAwesomeIcon icon={'calendar-alt'} size="sm" />
               <h6>
                 <Translate contentKey="clubmanagementApp.event.endDate">End Date</Translate>:{' '}
-                <TextFormat value={eventEntity.endDate} type="date" format={APP_LOCAL_DATETIME_12_FORMAT} />{' '}
+                <TextFormat value={eventEntity.endDate} type="date" format={APP_DATE_12_FORMAT} />{' '}
               </h6>
 
               <FontAwesomeIcon icon={'map-marker-alt'} size="sm" />
