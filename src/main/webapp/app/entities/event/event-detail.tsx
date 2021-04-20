@@ -15,7 +15,7 @@ import { getEntity } from './event.reducer';
 import { getEntityByEventIdAndUserId } from '../event-attendee/event-attendee.reducer';
 
 // tslint:disable-next-line:no-unused-variable
-import { APP_LOCAL_TIME_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { APP_LOCAL_DATETIME_12_FORMAT } from 'app/config/constants';
 import { CustomTab } from 'app/shared/components/customTab/custom-tab';
 import { eventTabList } from 'app/shared/util/tab.constants';
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
@@ -50,17 +50,17 @@ export class EventDetail extends React.Component<IEventDetailProps> {
           />
           <div className="mt-4">
             <h2>{eventEntity.name}</h2>
-            <div className="event-details-info my-3">
-              <FontAwesomeIcon icon={'calendar-alt'} size="sm" />
+            <div className="event-details-info my-4">
+              <FontAwesomeIcon icon={['far', 'calendar-alt']} size="sm" />
               <h6>
-                <Translate contentKey="clubmanagementApp.event.date">Date</Translate>:{' '}
-                <TextFormat value={eventEntity.startDate} type="date" format={APP_LOCAL_DATE_FORMAT} />{' '}
+                <Translate contentKey="clubmanagementApp.event.startDate">Start Date</Translate>:{' '}
+                <TextFormat value={eventEntity.startDate} type="date" format={APP_LOCAL_DATETIME_12_FORMAT} />{' '}
               </h6>
 
-              <FontAwesomeIcon icon={'clock'} size="sm" />
+              <FontAwesomeIcon icon={'calendar-alt'} size="sm" />
               <h6>
-                <Translate contentKey="clubmanagementApp.event.time">Time</Translate>:{' '}
-                <TextFormat value={eventEntity.startDate} type="date" format={APP_LOCAL_TIME_FORMAT} />{' '}
+                <Translate contentKey="clubmanagementApp.event.endDate">End Date</Translate>:{' '}
+                <TextFormat value={eventEntity.endDate} type="date" format={APP_LOCAL_DATETIME_12_FORMAT} />{' '}
               </h6>
 
               <FontAwesomeIcon icon={'map-marker-alt'} size="sm" />
@@ -72,14 +72,31 @@ export class EventDetail extends React.Component<IEventDetailProps> {
               <h6>
                 <Translate contentKey="clubmanagementApp.event.fee">Fee</Translate>: RM{eventEntity.fee}
               </h6>
+
+              <FontAwesomeIcon icon={'car'} size="sm" />
+              <h6>
+                {eventEntity.requiredTransport ? (
+                  <Translate contentKey="clubmanagementApp.event.requiredTransport"> Required Transport </Translate>
+                ) : (
+                  <Translate contentKey="clubmanagementApp.event.noRequiredTransport"> No Required Transport </Translate>
+                )}
+              </h6>
             </div>
             <hr />
-            <div className="desc-box mb-5">
+            <div className="desc-box mb-4">
               <h5>
                 <Translate contentKey="clubmanagementApp.event.description">Description</Translate>
               </h5>
               <p>{eventEntity.description}</p>
             </div>
+            {eventEntity.remarks ? (
+              <div className="desc-box mb-5">
+                <h5>
+                  <Translate contentKey="clubmanagementApp.event.remarks">Remarks</Translate>
+                </h5>
+                <p>{eventEntity.remarks}</p>
+              </div>
+            ) : null}
             <div className="d-flex flex-column">
               <Button
                 tag={Link}

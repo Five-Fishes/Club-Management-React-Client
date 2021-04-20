@@ -28,6 +28,7 @@
       "endDate": "End Date",
       "fee": "Fee",
       "requiredTransport": "Required Transport",
+      "noRequiredTransport": "No Required Transport",
       "status": "Status",
       "image": "Image",
       "fileName": "File Name",
