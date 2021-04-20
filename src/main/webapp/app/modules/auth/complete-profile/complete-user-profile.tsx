@@ -10,27 +10,44 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import moment from 'moment';
 import { getCourseProgramByFacultyId, getFacultyList, getYearSessionList } from 'app/shared/services/uni-academic-info.service';
+import { completeUserProfile } from './complete-profile.reducer';
 
-export interface ICompleteUserProfileProps extends StateProps, RouteComponentProps<{}> {}
+export interface ICompleteUserProfileProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
 export class CompleteUserProfile extends React.Component<ICompleteUserProfileProps, {}> {
   constructor(props) {
     super(props);
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
+      this.handleClose();
+    }
+  }
+
   componentDidMount() {
-    getFacultyList(1, 40, 'name');
-    getYearSessionList(1, 10, 'value');
+    getFacultyList(0, 40, 'shortName');
+    getYearSessionList(0, 10, 'value');
   }
 
-  fetchCourseProgramByFaculty(event) {
-    const facultyId = event.target.value;
-    getCourseProgramByFacultyId(facultyId, 1, 20, 'name');
+  fetchCourseProgramByFaculty(e) {
+    const facultyId = e.target.value;
+    getCourseProgramByFacultyId(facultyId, 0, 20, 'name');
   }
 
-  completeProfile() {
-    // TODO: Call to complete profile
+  handleClose() {
+    // TODO: Refresh Page
+    this.props.history.go(0);
   }
+
+  completeProfile = (event, errors, values) => {
+    if (errors.length === 0) {
+      const entity = {
+        ...values
+      };
+      this.props.completeUserProfile(entity);
+    }
+  };
 
   render() {
     const { loading, updating, updateSuccess, errorMessage, facultyList, courseProgramList, yearSessionList } = this.props;
@@ -44,8 +61,7 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <AvForm model={{}}>
-                {/* onSubmit={this.updateProfile} */}
+              <AvForm model={{}} onSubmit={this.completeProfile}>
                 <AvGroup>
                   <AvField
                     id="first-name"
@@ -76,8 +92,16 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                   <Label id="gender" for="gender">
                     <Translate contentKey="clubmanagementApp.userProfile.gender">Gender</Translate>
                   </Label>
-                  <AvInput id="gender" type="select" className="form-control" name="gender">
-                    <option value="" selected disabled>
+                  <AvInput
+                    id="gender"
+                    type="select"
+                    className="form-control"
+                    name="gender"
+                    validate={{
+                      required: { value: true, errorMessage: 'Please select your gender' }
+                    }}
+                  >
+                    <option value="" disabled>
                       {translate('global.select.selectOne')}
                     </option>
                     <option value="FEMALE">{translate('clubmanagementApp.userProfile.genderValue.FEMALE')}</option>
@@ -91,9 +115,10 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                     label={translate('clubmanagementApp.userProfile.phoneNumber')}
                     type="text"
                     name="phoneNumber"
+                    placeholder="E.g 123857221"
                     validate={{
                       required: { value: true, errorMessage: 'Please enter your Phone Number' },
-                      pattern: { value: '^([0-9]{6,20})$', errorMessage: 'Please enter a valid Phone Number' }
+                      pattern: { value: '^([1-9][0-9]{6,20})$', errorMessage: 'Please enter a valid Phone Number without Country Code' }
                     }}
                   />
                 </AvGroup>
@@ -123,56 +148,100 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                   />
                 </AvGroup>
 
-                <AvGroup>
-                  <Label id="faculty" for="faculty">
-                    <Translate contentKey="clubmanagementApp.userUniInfo.faculty">Faculty</Translate>
-                  </Label>
-                  <AvInput id="faculty" type="select" className="form-control" name="faculty" onChange="fetchCourseProgramByFaculty">
-                    <option value="" selected disabled>
-                      {translate('global.select.selectOne')}
-                    </option>
-                    {facultyList &&
-                      facultyList.length > 0 &&
-                      facultyList.map((faculty, i) => <option value={faculty.id}>{faculty.shortName}</option>)}
-                  </AvInput>
-                </AvGroup>
-
-                {courseProgramList && courseProgramList.length > 0 && (
+                {facultyList && facultyList.length > 0 && (
                   <AvGroup>
-                    <Label id="courseProgram" for="courseProgram">
-                      <Translate contentKey="clubmanagementApp.userUniInfo.courseProgram">Faculty</Translate>
+                    <Label id="faculty" for="faculty">
+                      <Translate contentKey="clubmanagementApp.userUniInfo.faculty">Faculty</Translate>
                     </Label>
-                    <AvInput id="courseProgram" type="select" className="form-control" name="courseProgram">
-                      <option value="" selected disabled>
+                    <AvInput
+                      id="faculty"
+                      type="select"
+                      className="form-control"
+                      name="faculty"
+                      onChange={this.fetchCourseProgramByFaculty}
+                      validate={{
+                        required: { value: true, errorMessage: 'Please select your Faculty' }
+                      }}
+                    >
+                      <option value="" disabled>
                         {translate('global.select.selectOne')}
                       </option>
-                      {courseProgramList.map((courseProgram, i) => (
-                        <option value={courseProgram.id}>{courseProgram.name}</option>
+                      {facultyList.map((faculty, i) => (
+                        <option key={`faculty-${faculty.id}`} value={faculty.id}>
+                          {faculty.shortName}
+                        </option>
                       ))}
                     </AvInput>
                   </AvGroup>
                 )}
 
-                <AvGroup>
-                  <Label id="intakeYearSession" for="intakeYearSession">
-                    <Translate contentKey="clubmanagementApp.userUniInfo.intakeYearSession">Intake Year Session</Translate>
-                  </Label>
-                  <AvInput id="intakeYearSession" type="select" className="form-control" name="yearSession">
-                    <option value="" selected disabled>
-                      {translate('global.select.selectOne')}
-                    </option>
-                    {yearSessionList &&
-                      yearSessionList.length > 0 &&
-                      yearSessionList.map((yearSession, i) => <option value={yearSession.id}>{yearSession.value}</option>)}
-                  </AvInput>
-                </AvGroup>
+                {courseProgramList && courseProgramList.length > 0 && (
+                  <AvGroup>
+                    <Label id="courseProgram" for="courseProgram">
+                      <Translate contentKey="clubmanagementApp.userUniInfo.courseProgram">Course Program</Translate>
+                    </Label>
+                    <AvInput
+                      id="courseProgram"
+                      type="select"
+                      className="form-control"
+                      name="courseProgram"
+                      validate={{
+                        required: { value: true, errorMessage: 'Please select your Course Program' }
+                      }}
+                    >
+                      <option value="" disabled>
+                        {translate('global.select.selectOne')}
+                      </option>
+                      {courseProgramList.map((courseProgram, i) => (
+                        <option key={`courseProgram-${courseProgram.id}`} value={courseProgram.id}>
+                          {courseProgram.name}
+                        </option>
+                      ))}
+                    </AvInput>
+                  </AvGroup>
+                )}
+
+                {yearSessionList.length > 0 && (
+                  <AvGroup>
+                    <Label id="intakeYearSession" for="intakeYearSession">
+                      <Translate contentKey="clubmanagementApp.userUniInfo.intakeYearSession">Intake Year Session</Translate>
+                    </Label>
+                    <AvInput
+                      id="intakeYearSession"
+                      type="select"
+                      className="form-control"
+                      name="yearSession"
+                      validate={{
+                        required: { value: true, errorMessage: 'Please select your Intake Year Session' }
+                      }}
+                    >
+                      <option value="" disabled>
+                        {translate('global.select.selectOne')}
+                      </option>
+                      {yearSessionList.length > 0 &&
+                        yearSessionList.map((yearSession, i) => (
+                          <option key={`yearSession-${yearSession.id}`} value={yearSession.id}>
+                            {yearSession.value}
+                          </option>
+                        ))}
+                    </AvInput>
+                  </AvGroup>
+                )}
 
                 <AvGroup>
                   <Label id="intakeSemester" for="intakeSemester">
                     <Translate contentKey="clubmanagementApp.userUniInfo.intakeSemester">Intake Semster</Translate>
                   </Label>
-                  <AvInput id="intakeSemester" type="select" className="form-control" name="intakeSemester">
-                    <option value="" selected disabled>
+                  <AvInput
+                    id="intakeSemester"
+                    type="select"
+                    className="form-control"
+                    name="intakeSemester"
+                    validate={{
+                      required: { value: true, errorMessage: 'Please select your Intake Semster' }
+                    }}
+                  >
+                    <option value="" disabled>
                       {translate('global.select.selectOne')}
                     </option>
                     <option value="1">{translate('clubmanagementApp.userUniInfo.semesterValue.semOne')}</option>
@@ -215,6 +284,14 @@ const mapStateToProps = ({ authentication, completeProfile }: IRootState) => ({
   ...completeProfile
 });
 
-type StateProps = ReturnType<typeof mapStateToProps>;
+const mapDispatchToProps = {
+  completeUserProfile
+};
 
-export default connect(mapStateToProps)(CompleteUserProfile);
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CompleteUserProfile);

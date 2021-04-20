@@ -8,6 +8,7 @@ import { IUserUniInfo, defaultValue } from 'app/shared/model/user-uni-info.model
 import { IFaculty } from 'app/shared/model/faculty.model';
 import { ICourseProgram } from 'app/shared/model/course-program.model';
 import { IYearSession } from 'app/shared/model/year-session.model';
+import { checkUserProfileCompleted } from 'app/shared/services/auth.service';
 
 export const ACTION_TYPES = {
   COMPLETE_USERPROFILE: 'completeProfile/COMPLETE_USERPROFILE',
@@ -46,9 +47,6 @@ export default (state: CompleteProfileState = initialState, action): CompletePro
         loading: true
       };
     case FAILURE(ACTION_TYPES.COMPLETE_USERPROFILE):
-    case FAILURE(ACTION_TYPES.FETCH_FACULTY_LIST):
-    case FAILURE(ACTION_TYPES.FETCH_COURSEPROGRAM_LIST):
-    case FAILURE(ACTION_TYPES.FETCH_YEARSESSION_LIST):
       return {
         ...state,
         updating: false,
@@ -59,22 +57,25 @@ export default (state: CompleteProfileState = initialState, action): CompletePro
     case SUCCESS(ACTION_TYPES.COMPLETE_USERPROFILE):
       return {
         ...state,
+        updating: false,
+        updateSuccess: true,
         loading: false,
+        errorMessage: null,
         userProfile: action.payload.data
       };
-    case SUCCESS(ACTION_TYPES.FETCH_FACULTY_LIST):
+    case ACTION_TYPES.FETCH_FACULTY_LIST:
       return {
         ...state,
         loading: false,
         facultyList: action.payload.data
       };
-    case SUCCESS(ACTION_TYPES.FETCH_COURSEPROGRAM_LIST):
+    case ACTION_TYPES.FETCH_COURSEPROGRAM_LIST:
       return {
         ...state,
         loading: false,
         courseProgramList: action.payload.data
       };
-    case SUCCESS(ACTION_TYPES.FETCH_YEARSESSION_LIST):
+    case ACTION_TYPES.FETCH_YEARSESSION_LIST:
       return {
         ...state,
         loading: false,
@@ -100,5 +101,6 @@ export const completeUserProfile: ICrudPutAction<IUserUniInfo> = entity => async
     payload: axios.post(requestUrl, cleanEntity(entity))
   });
   // TODO: refresh user complete profile status
+  await checkUserProfileCompleted();
   return result;
 };

@@ -4,18 +4,19 @@ import { ACTION_TYPES as COMPLETE_PROFILE_ACTION } from '../../modules/auth/comp
 
 export async function getFacultyList(page?: number, size?: number, sort?: string): Promise<void> {
   const requestUrl = `api/faculties${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
-  const res = await axios.get(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`);
-  store.dispatch({ type: COMPLETE_PROFILE_ACTION.FETCH_FACULTY_LIST, payload: res.data });
+  const res = await axios.get(`${requestUrl}`);
+  window.console.log(res.data);
+  store.dispatch({ type: COMPLETE_PROFILE_ACTION.FETCH_FACULTY_LIST, payload: res });
 }
 
-export async function getCourseProgramByFacultyId(facultyId: number | string, page?: number, size?: number, sort: string): Promise<void> {
+export async function getCourseProgramByFacultyId(facultyId: number | string, page?: number, size?: number, sort?: string): Promise<void> {
   const requestUrl = `api/course-programs/faculty/${facultyId}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
-  const res = await axios.get(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`);
-  store.dispatch({ type: COMPLETE_PROFILE_ACTION.FETCH_COURSEPROGRAM_LIST, payload: res.data });
+  const res = await axios.get(`${requestUrl}`);
+  store.dispatch({ type: COMPLETE_PROFILE_ACTION.FETCH_COURSEPROGRAM_LIST, payload: res });
 }
 
 export async function getYearSessionList(page?: number, size?: number, sort?: string): Promise<void> {
   const requestUrl = `api/year-sessions${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
-  const res = await axios.get(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`);
-  store.dispatch({ type: COMPLETE_PROFILE_ACTION.FETCH_YEARSESSION_LIST, payload: res.data });
+  const res = await axios.get(`${requestUrl}`);
+  store.dispatch({ type: COMPLETE_PROFILE_ACTION.FETCH_YEARSESSION_LIST, payload: res });
 }
