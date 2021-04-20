@@ -2,18 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
-import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
+import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
-import { Translate, translate, ICrudGetAction, ICrudGetAllAction, setFileData, byteSize, ICrudPutAction } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Translate, translate, setFileData } from 'react-jhipster';
 import { IRootState } from 'app/shared/reducers';
 
 import { getEntity, updateEntity, createEntity, setBlob, reset } from './event.reducer';
-import { IEvent } from 'app/shared/model/event.model';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
 import './events.scss';
+import '../../styles/event-module.scss';
 
 export interface IEventUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -81,28 +79,20 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
     const { description } = eventEntity;
 
     return (
-      <div>
-        <Row className="justify-content-center event-horizontal-padding">
+      <div className="mx-3">
+        <Row className="justify-content-center">
           <Col md="8">
-            <h2 className="event-page-title" id="clubmanagementApp.event.home.createOrEditLabel">
+            <h2 id="clubmanagementApp.event.home.createOrEditLabel" className="event-module-form-heading">
               <Translate contentKey="clubmanagementApp.event.home.createOrEditLabel">Create New or Edit an Event</Translate>
             </h2>
           </Col>
         </Row>
-        <Row className="justify-content-center event-horizontal-padding event-bottom-padding">
+        <Row className="justify-content-center event-bottom-padding">
           <Col md="8">
             {loading ? (
               <p>Loading...</p>
             ) : (
               <AvForm model={isNew ? {} : eventEntity} onSubmit={this.saveEntity}>
-                {!isNew ? (
-                  <AvGroup>
-                    <Label for="event-id">
-                      <Translate contentKey="global.field.id">ID</Translate>
-                    </Label>
-                    <AvInput id="event-id" type="text" className="form-control" name="id" required readOnly />
-                  </AvGroup>
-                ) : null}
                 <AvGroup>
                   <Label id="nameLabel" for="event-name">
                     <Translate contentKey="clubmanagementApp.event.name">Name</Translate>
@@ -188,27 +178,27 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
                 </AvGroup>
                 <AvGroup>
                   <Label id="imageUrlLabel" for="event-imageUrl">
-                    <Translate contentKey="clubmanagementApp.event.image">Image</Translate>
+                    <Translate contentKey="clubmanagementApp.event.imageUrl">Image</Translate>
                   </Label>
                   <AvField id="event-imageUrl" type="text" name="imageUrl" />
                 </AvGroup>
                 <AvGroup>
                   <Label id="imageUrlLabel" for="event-imageUrl">
-                    <Translate contentKey="clubmanagementApp.event.image">Image</Translate>
+                    <Translate contentKey="clubmanagementApp.event.imageFile">Image</Translate>
                   </Label>
                   <input type="file" accept="image/*" />
                 </AvGroup>
-                <div className="button-container">
-                  <Button className="event-button" tag={Link} id="cancel-save" to="/entity/event" replace color="cancel">
-                    {/* <FontAwesomeIcon icon="arrow-left" />
-                    &nbsp; */}
+                <div className="general-buttonContainer--flexContainer">
+                  <Button className="general-button--width" tag={Link} id="cancel-save" to="/entity/event" replace color="cancel">
                     <Translate contentKey="entity.action.cancel">Cancel</Translate>
                   </Button>
                   &nbsp;
-                  <Button className="event-button" color="action" id="save-entity" type="submit" disabled={updating}>
-                    {/* <FontAwesomeIcon icon="save" />
-                    &nbsp; */}
-                    <Translate contentKey="entity.action.save">Save</Translate>
+                  <Button className="general-button--width" color="action" id="save-entity" type="submit" disabled={updating}>
+                    {isNew ? (
+                      <Translate contentKey="entity.action.create">Create</Translate>
+                    ) : (
+                      <Translate contentKey="entity.action.update">Update</Translate>
+                    )}
                   </Button>
                 </div>
               </AvForm>

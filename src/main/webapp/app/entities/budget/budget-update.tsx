@@ -14,6 +14,7 @@ import { IBudget } from 'app/shared/model/budget.model';
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import budget from './budget';
+import '../../styles/event-module.scss';
 
 export interface IBudgetUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
@@ -78,10 +79,10 @@ export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpd
     const { details } = budgetEntity;
 
     return (
-      <div>
+      <div className="mx-3">
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.eventBudget.home.editLabel">
+            <h2 id="clubmanagementApp.eventBudget.home.editLabel" className="event-module-form-heading">
               <Translate contentKey="clubmanagementApp.eventBudget.home.editLabel">Edit Event Budget</Translate>
             </h2>
           </Col>
@@ -154,16 +155,19 @@ export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpd
                   </AvInput>
                 </AvGroup>
                 <div className="text-danger">{errorMessage ? errorMessage.response.data.detail : ''}</div>
-                <div className="text-center mt-3 mx-4 d-flex justify-content-between justify-content-md-center mb-2">
-                  <Button tag={Link} id="cancel-save" to={`/entity/event-budget/event/${budgetEntity.eventId}`} replace color="cancel">
-                    <FontAwesomeIcon icon="arrow-left" />
-                    &nbsp;
+                <div className="general-buttonContainer--flexContainer">
+                  <Button
+                    className="general-button--width"
+                    tag={Link}
+                    id="cancel-save"
+                    to={`/entity/event-budget/event/${budgetEntity.eventId}`}
+                    replace
+                    color="cancel"
+                  >
                     <Translate contentKey="entity.action.cancel">Cancel</Translate>
                   </Button>
                   &nbsp;
-                  <Button color="action" id="save-entity" type="submit" disabled={updating}>
-                    <FontAwesomeIcon icon="save" />
-                    &nbsp;
+                  <Button className="general-button--width" color="action" id="save-entity" type="submit" disabled={updating}>
                     <Translate contentKey="entity.action.update">Update</Translate>
                   </Button>
                 </div>

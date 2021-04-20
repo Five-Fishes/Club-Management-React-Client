@@ -7,14 +7,13 @@ import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validatio
 import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
-
 import { getEntity, updateEntity } from './event-activity.reducer';
 import { getEntity as getEventEntity } from '../event/event.reducer';
-
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { APP_LOCAL_DATETIME_FORMAT } from 'app/config/constants';
 import moment from 'moment';
 import { convertDaysDurationToTimeFormat, convertTimeFormatToDaysDuration } from 'app/shared/util/duration-utils';
+import '../../styles/event-module.scss';
 
 export interface IEventActivityUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
@@ -72,10 +71,10 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
     const timeFormatDuration = this.setDurationInTimeFormat();
 
     return (
-      <div>
+      <div className="mx-3">
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.eventActivity.home.createOrEditLabel">
+            <h2 id="clubmanagementApp.eventActivity.home.createOrEditLabel" className="event-module-form-heading">
               <Translate contentKey="clubmanagementApp.eventActivity.home.updateTitle">Update Event Activity</Translate>
             </h2>
           </Col>
@@ -112,7 +111,10 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
                     validate={{
                       dateRange: {
                         format: APP_LOCAL_DATETIME_FORMAT,
-                        start: { value: moment().format(APP_LOCAL_DATETIME_FORMAT), errorMessage: 'Activity Date cannot early than today' },
+                        start: {
+                          value: moment().format(APP_LOCAL_DATETIME_FORMAT),
+                          errorMessage: 'Activity Date cannot early than today'
+                        },
                         end: {
                           value: eventEntity.hasOwnProperty('endDate') ? eventEntity.endDate : '2030-12-30T10:00',
                           errorMessage: 'Activity Date cannot later than Event Date'
@@ -144,16 +146,19 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
                   <AvInput id="event-activity-description" type="textarea" name="description" />
                 </AvGroup>
                 <span className="text-error">{errorMessage ? errorMessage.response.data.detail : ''}</span>
-                <div className="text-center mx-4 d-flex justify-content-between justify-content-md-center mb-2">
-                  <Button tag={Link} id="cancel-save" to={`/entity/event-activity/event/${eventId}`} replace color="cancel">
-                    <FontAwesomeIcon icon="arrow-left" />
-                    &nbsp;
+                <div className="text-center general-buttonContainer--flexContainer">
+                  <Button
+                    className="general-button--width"
+                    tag={Link}
+                    id="cancel-save"
+                    to={`/entity/event-activity/event/${eventId}`}
+                    replace
+                    color="cancel"
+                  >
                     <Translate contentKey="entity.action.back">Back</Translate>
                   </Button>
                   &nbsp;
-                  <Button color="action" id="save-entity" type="submit" disabled={updating}>
-                    <FontAwesomeIcon icon="save" />
-                    &nbsp;
+                  <Button className="general-button--width" color="action" id="save-entity" type="submit" disabled={updating}>
                     <Translate contentKey="entity.action.update">Update</Translate>
                   </Button>
                 </div>
