@@ -97,7 +97,9 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
       <Container>
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.eventCrew.home.createOrEditLabel">{isNew ? 'Create Event Crew' : 'Edit Event Crew'}</h2>
+            <h2 id="clubmanagementApp.eventCrew.home.createOrEditLabel" className="event-module-form-heading">
+              {isNew ? 'Create Event Crew' : 'Edit Event Crew'}
+            </h2>
           </Col>
         </Row>
         <Row className="justify-content-center">
@@ -167,19 +169,24 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
                   </AvInput>
                 </AvGroup>
                 <br />
-                <div className="d-flex justify-content-around">
+                <div className="general-buttonContainer--flexContainer">
                   <Button
+                    className="general-button--width"
                     tag={Link}
                     id="cancel-save"
                     to={`/entity/event-crew/event/${this.props.match.params.eventId}`}
                     replace
                     color="cancel"
-                    className="px-5"
                   >
                     <Translate contentKey="entity.action.cancel">Cancel</Translate>
                   </Button>
-                  <Button color="action" id="save-entity" type="submit" disabled={updating} className="px-5">
-                    <Translate contentKey="entity.action.save">Save</Translate>
+                  &nbsp;
+                  <Button className="general-button--width" color="action" id="save-entity" type="submit" disabled={updating}>
+                    {isNew ? (
+                      <Translate contentKey="entity.action.create">Create</Translate>
+                    ) : (
+                      <Translate contentKey="entity.action.update">Update</Translate>
+                    )}
                   </Button>
                 </div>
               </AvForm>

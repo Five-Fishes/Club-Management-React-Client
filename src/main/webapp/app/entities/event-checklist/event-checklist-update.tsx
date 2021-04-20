@@ -14,6 +14,7 @@ import { IEventChecklist } from 'app/shared/model/event-checklist.model';
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
 import './eventChecklist.scss';
+import '../../styles/event-module.scss';
 
 export interface IEventChecklistUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
@@ -60,18 +61,19 @@ export class EventChecklistUpdate extends React.Component<IEventChecklistUpdateP
         ...eventChecklistEntity,
         ...values
       };
+      entity.eventId = this.state.eventId;
 
       if (this.state.isNew) {
         this.props.createEntity(entity);
       } else {
         this.props.updateEntity(entity);
       }
-      this.props.history.push(`/entity/event-checklists/event/${this.state.eventId}`);
+      this.props.history.push(`/entity/event-checklist/event/${this.state.eventId}`);
     }
   };
 
   handleClose = () => {
-    this.props.history.push(`/entity/event-checklists/event/${this.state.eventId}`);
+    this.props.history.push(`/entity/event-checklist/event/${this.state.eventId}`);
   };
 
   render() {
@@ -81,10 +83,10 @@ export class EventChecklistUpdate extends React.Component<IEventChecklistUpdateP
     const { description } = eventChecklistEntity;
 
     return (
-      <div className="eventChecklist-form">
+      <div className="mx-3">
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.eventChecklist.home.createOrEditLabel">
+            <h2 id="clubmanagementApp.eventChecklist.home.createOrEditLabel" className="event-module-form-heading">
               <Translate contentKey="clubmanagementApp.eventChecklist.home.createOrEditLabel">Create or edit a EventChecklist</Translate>
             </h2>
           </Col>
@@ -94,13 +96,7 @@ export class EventChecklistUpdate extends React.Component<IEventChecklistUpdateP
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <AvForm model={isNew ? { eventId: this.state.eventId } : eventChecklistEntity} onSubmit={this.saveEntity}>
-                <AvGroup style={{ display: 'none' }}>
-                  <Label id="eventIdLabel" for="event-checklist-eventId">
-                    <Translate contentKey="clubmanagementApp.eventChecklist.eventId">Event Id</Translate>
-                  </Label>
-                  <AvField id="event-checklist-eventId" type="string" className="form-control" name="eventId" />
-                </AvGroup>
+              <AvForm model={isNew ? {} : eventChecklistEntity} onSubmit={this.saveEntity}>
                 <AvGroup>
                   <Label id="nameLabel" for="event-checklist-name">
                     <Translate contentKey="clubmanagementApp.eventChecklist.name">Name</Translate>
@@ -144,19 +140,25 @@ export class EventChecklistUpdate extends React.Component<IEventChecklistUpdateP
                     <option value="PURCHASE">{translate('clubmanagementApp.EventChecklistType.PURCHASE')}</option>
                   </AvInput>
                 </AvGroup>
-                <Button tag={Link} id="cancel-save" to={`/entity/event-checklists/event/${this.state.eventId}`} replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
-                  &nbsp;
-                  <span className="d-none d-md-inline">
-                    <Translate contentKey="entity.action.back">Back</Translate>
-                  </span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp;
-                  <Translate contentKey="entity.action.save">Save</Translate>
-                </Button>
+                <div className="general-buttonContainer--flexContainer">
+                  <Button
+                    className="general-button--width"
+                    tag={Link}
+                    id="cancel-save"
+                    to={`/entity/event-checklist/event/${this.state.eventId}`}
+                    replace
+                    color="cancel"
+                  >
+                    <Translate contentKey="entity.action.cancel">Cancel</Translate>
+                  </Button>
+                  <Button className="general-button--width" color="action" id="save-entity" type="submit" disabled={updating}>
+                    {isNew ? (
+                      <Translate contentKey="entity.action.create">Create</Translate>
+                    ) : (
+                      <Translate contentKey="entity.action.update">Update</Translate>
+                    )}
+                  </Button>
+                </div>
               </AvForm>
             )}
           </Col>

@@ -108,7 +108,6 @@ export class EventDetail extends React.Component<IEventDetailProps> {
               <Button
                 tag={Link}
                 to={`/entity/event/${eventEntity.id}/edit`}
-                replace
                 className="my-1"
                 color="secondary"
                 disabled={moment().isAfter(eventEntity.endDate)}

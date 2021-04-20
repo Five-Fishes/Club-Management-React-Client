@@ -30,7 +30,8 @@
       "requiredTransport": "Required Transport",
       "noRequiredTransport": "No Required Transport",
       "status": "Status",
-      "image": "Image",
+      "imageFile": "Image file",
+      "imageUrl": "Image link",
       "fileName": "File Name",
       "fileType": "File Type",
       "tab": "Details"
