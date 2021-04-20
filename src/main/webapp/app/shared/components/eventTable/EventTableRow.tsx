@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from 'reactstrap';
 import { IEventCrew } from 'app/shared/model/event-crew.model';
 import { IEventAttendee } from 'app/shared/model/event-attendee.model';
+import { translate } from 'react-jhipster';
 
 export interface IEventTableRowProps {
   user: IEventCrew | IEventAttendee;
@@ -23,7 +24,7 @@ export class EventTableRow extends React.Component<IEventTableRowProps> {
 
     let thirdColumn;
     if ('role' in user) {
-      thirdColumn = user.role;
+      thirdColumn = translate(`clubmanagementApp.EventCrewRole.${user.role}`);
     } else if ('year' in user) {
       thirdColumn = user.year;
     }

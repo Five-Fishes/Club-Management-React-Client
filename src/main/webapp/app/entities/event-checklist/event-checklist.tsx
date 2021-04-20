@@ -3,7 +3,16 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 // tslint:disable-next-line:no-unused-variable
-import { byteSize, Translate, ICrudGetAllAction, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
+import {
+  byteSize,
+  Translate,
+  translate,
+  ICrudGetAllAction,
+  getSortState,
+  IPaginationBaseState,
+  JhiPagination,
+  JhiItemCount
+} from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -95,17 +104,21 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
                 >
                   <span className="card-item d-block mb-2">
                     <span>
-                      <Translate contentKey="clubmanagementApp.eventChecklist.type">Type</Translate>:
-                      <span className="font-weight-bolder text-dark">{eventChecklist.type}</span>
+                      <Translate contentKey="clubmanagementApp.eventChecklist.type">Type</Translate>:{' '}
+                      <span className="font-weight-bolder text-dark">
+                        {translate(`clubmanagementApp.EventChecklistType.${eventChecklist.type}`)}
+                      </span>
                     </span>
                     <span className="float-right">
-                      <Translate contentKey="clubmanagementApp.eventChecklist.status">Status</Translate>:
-                      <span className="font-weight-bolder text-dark">{eventChecklist.status}</span>
+                      <Translate contentKey="clubmanagementApp.eventChecklist.status">Status</Translate>:{' '}
+                      <span className="font-weight-bolder text-dark">
+                        {translate(`clubmanagementApp.EventChecklistStatus.${eventChecklist.status}`)}
+                      </span>
                     </span>
                   </span>
                   <span className="card-item d-block">
                     <span>
-                      <Translate contentKey="clubmanagementApp.eventChecklist.description">Description</Translate>:
+                      <Translate contentKey="clubmanagementApp.eventChecklist.description">Description</Translate>:{' '}
                       <span className="font-weight-bolder text-dark">{eventChecklist.description}</span>
                     </span>
                   </span>
