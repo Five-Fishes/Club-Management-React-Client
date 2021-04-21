@@ -19,7 +19,7 @@ import { IRootState } from 'app/shared/reducers';
 import { getEntities } from './event.reducer';
 import { IEvent } from 'app/shared/model/event.model';
 // tslint:disable-next-line:no-unused-variable
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_12_ABR_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 
 import FloatButton from 'app/shared/components/floatButton/FloatButton';
@@ -112,7 +112,13 @@ const EventCard = ({ event, toggleModal }) => {
     <Card className="p-3 pt-4 event-card">
       <Row>
         <Col xs="4" lg="5" className="pr-0">
-          <CardImg height="100%" width="100%" className="rounded-0" src={event.imageUrl} alt={event.fileName} />
+          <CardImg
+            height="100%"
+            width="100%"
+            className="rounded-0"
+            src={event.imageUrl ? event.imageUrl : 'content/images/placeholder.png'}
+            alt={event.fileName}
+          />
         </Col>
         <Col xs="8" lg="7">
           <Button color="link" className="option-icon p-0" onClick={onToggleModal}>
@@ -124,11 +130,11 @@ const EventCard = ({ event, toggleModal }) => {
             </Link>
             <p className="mb-0">
               <Translate contentKey="clubmanagementApp.event.startDate">Start Date</Translate>:{' '}
-              <TextFormat type="date" value={event.startDate} format={APP_DATE_FORMAT} />
+              <TextFormat type="date" value={event.startDate} format={APP_DATE_12_ABR_FORMAT} />
             </p>
             <p className="mb-0">
               <Translate contentKey="clubmanagementApp.event.endDate">End Date</Translate>:{' '}
-              <TextFormat type="date" value={event.endDate} format={APP_DATE_FORMAT} />
+              <TextFormat type="date" value={event.endDate} format={APP_DATE_12_ABR_FORMAT} />
             </p>
             <p className="mb-0">
               <Translate contentKey="clubmanagementApp.event.venue">Venue</Translate>: {event.venue}

@@ -18,13 +18,20 @@ export interface ITabInfo {
 }
 
 export class CustomTab extends React.Component<ITabProps, {}> {
+  private scrollerRef;
+
   constructor(props) {
     super(props);
+    this.scrollerRef = React.createRef();
+  }
+
+  componentDidMount() {
+    this.scrollerRef.current.scrollTo();
   }
 
   render() {
     return (
-      <div className="overflow-x-scroll tab-x-space">
+      <div className="overflow-x-scroll tab-x-space" ref={this.scrollerRef}>
         <div className="tab-container my-2 text-center">
           <ButtonGroup className="w-100 px-3">
             <TabItems itemsList={this.props.tabList} activeTab={this.props.currentTab} />
@@ -42,9 +49,9 @@ const TabItems = ({ itemsList, activeTab }) =>
       id="tab-btn"
       color="#07ADE1"
       className={classnames('tab-item', item.tabName === activeTab ? 'active-tab' : '')}
+      tag={Link}
+      to={item.tabRoute}
     >
-      <Link to={item.tabRoute} className="link-unstyled">
-        <Translate contentKey={item.tabTranslateKey}>{item.tabName}</Translate>
-      </Link>
+      <Translate contentKey={item.tabTranslateKey}>{item.tabName}</Translate>
     </Button>
   ));
