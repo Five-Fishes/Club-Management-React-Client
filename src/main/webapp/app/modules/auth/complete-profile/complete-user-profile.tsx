@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import moment from 'moment';
 import { getCourseProgramByFacultyId, getFacultyList, getYearSessionList } from 'app/shared/services/uni-academic-info.service';
-import { completeUserProfile } from './complete-profile.reducer';
+import { completeUserProfile, fetchUserProfileWithUniInfo } from './complete-profile.reducer';
 
 export interface ICompleteUserProfileProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
@@ -19,13 +19,8 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
     super(props);
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
-      this.handleClose();
-    }
-  }
-
   componentDidMount() {
+    this.props.fetchUserProfileWithUniInfo();
     getFacultyList(0, 40, 'shortName');
     getYearSessionList(0, 10, 'value');
   }
@@ -35,22 +30,21 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
     getCourseProgramByFacultyId(facultyId, 0, 20, 'name');
   }
 
-  handleClose() {
-    // TODO: Refresh Page
-    this.props.history.go(0);
-  }
-
   completeProfile = (event, errors, values) => {
     if (errors.length === 0) {
       const entity = {
-        ...values
+        ...values,
+        courseProgramId: values.courseProgram,
+        intakeSemester: values.intakeSemesterValue,
+        yearSession: values.yearSessionValue
       };
+      window.console.log(entity);
       this.props.completeUserProfile(entity);
     }
   };
 
   render() {
-    const { loading, updating, updateSuccess, errorMessage, facultyList, courseProgramList, yearSessionList } = this.props;
+    const { loading, updating, errorMessage, facultyList, courseProgramList, yearSessionList, userProfile } = this.props;
     return (
       <div>
         <h2 id="complete-profile-heading">
@@ -61,7 +55,7 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <AvForm model={{}} onSubmit={this.completeProfile}>
+              <AvForm model={userProfile} onSubmit={this.completeProfile}>
                 <AvGroup>
                   <AvField
                     id="first-name"
@@ -157,13 +151,13 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                       id="faculty"
                       type="select"
                       className="form-control"
-                      name="faculty"
+                      name="facultyId"
                       onChange={this.fetchCourseProgramByFaculty}
                       validate={{
                         required: { value: true, errorMessage: 'Please select your Faculty' }
                       }}
                     >
-                      <option value="" disabled>
+                      <option value={''} disabled>
                         {translate('global.select.selectOne')}
                       </option>
                       {facultyList.map((faculty, i) => (
@@ -189,7 +183,7 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                         required: { value: true, errorMessage: 'Please select your Course Program' }
                       }}
                     >
-                      <option value="" disabled>
+                      <option value={''} disabled>
                         {translate('global.select.selectOne')}
                       </option>
                       {courseProgramList.map((courseProgram, i) => (
@@ -210,17 +204,17 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                       id="intakeYearSession"
                       type="select"
                       className="form-control"
-                      name="yearSession"
+                      name="yearSessionValue"
                       validate={{
                         required: { value: true, errorMessage: 'Please select your Intake Year Session' }
                       }}
                     >
-                      <option value="" disabled>
+                      <option value={''} disabled>
                         {translate('global.select.selectOne')}
                       </option>
                       {yearSessionList.length > 0 &&
                         yearSessionList.map((yearSession, i) => (
-                          <option key={`yearSession-${yearSession.id}`} value={yearSession.id}>
+                          <option key={`yearSession-${yearSession.id}`} value={yearSession.value}>
                             {yearSession.value}
                           </option>
                         ))}
@@ -236,12 +230,12 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                     id="intakeSemester"
                     type="select"
                     className="form-control"
-                    name="intakeSemester"
+                    name="intakeSemesterValue"
                     validate={{
                       required: { value: true, errorMessage: 'Please select your Intake Semster' }
                     }}
                   >
-                    <option value="" disabled>
+                    <option value={''} disabled>
                       {translate('global.select.selectOne')}
                     </option>
                     <option value="1">{translate('clubmanagementApp.userUniInfo.semesterValue.semOne')}</option>
@@ -285,7 +279,8 @@ const mapStateToProps = ({ authentication, completeProfile }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  completeUserProfile
+  completeUserProfile,
+  fetchUserProfileWithUniInfo
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

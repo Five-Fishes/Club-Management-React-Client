@@ -2,19 +2,21 @@ import axios from 'axios';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { ICrudPutAction } from 'react-jhipster';
+import { ICrudGetAction, ICrudPutAction } from 'react-jhipster';
 
 import { IUserUniInfo, defaultValue } from 'app/shared/model/user-uni-info.model';
 import { IFaculty } from 'app/shared/model/faculty.model';
 import { ICourseProgram } from 'app/shared/model/course-program.model';
 import { IYearSession } from 'app/shared/model/year-session.model';
 import { checkUserProfileCompleted } from 'app/shared/services/auth.service';
+import { IGetActionWithoutParam } from 'app/shared/type/general-custom-action';
 
 export const ACTION_TYPES = {
   COMPLETE_USERPROFILE: 'completeProfile/COMPLETE_USERPROFILE',
   FETCH_COURSEPROGRAM_LIST: 'completeProfile/FETCH_COURSEPROGRAM_LIST',
   FETCH_FACULTY_LIST: 'completeProfile/FETCH_FECULTY_LIST',
   FETCH_YEARSESSION_LIST: 'completeProfile/FETCH_YEARSESSION_LIST',
+  FETCH_USERPROFILE_UNIINFO: 'completeProfile/FETCH_USERPROFILE_UNIINFO',
   RESET: 'completeProfile/RESET'
 };
 
@@ -40,6 +42,7 @@ export default (state: CompleteProfileState = initialState, action): CompletePro
     case REQUEST(ACTION_TYPES.FETCH_FACULTY_LIST):
     case REQUEST(ACTION_TYPES.FETCH_COURSEPROGRAM_LIST):
     case REQUEST(ACTION_TYPES.FETCH_YEARSESSION_LIST):
+    case REQUEST(ACTION_TYPES.FETCH_USERPROFILE_UNIINFO):
       return {
         ...state,
         errorMessage: null,
@@ -47,6 +50,7 @@ export default (state: CompleteProfileState = initialState, action): CompletePro
         loading: true
       };
     case FAILURE(ACTION_TYPES.COMPLETE_USERPROFILE):
+    case FAILURE(ACTION_TYPES.FETCH_USERPROFILE_UNIINFO):
       return {
         ...state,
         updating: false,
@@ -59,6 +63,13 @@ export default (state: CompleteProfileState = initialState, action): CompletePro
         ...state,
         updating: false,
         updateSuccess: true,
+        loading: false,
+        errorMessage: null,
+        userProfile: action.payload.data
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_USERPROFILE_UNIINFO):
+      return {
+        ...state,
         loading: false,
         errorMessage: null,
         userProfile: action.payload.data
@@ -100,7 +111,14 @@ export const completeUserProfile: ICrudPutAction<IUserUniInfo> = entity => async
     type: ACTION_TYPES.COMPLETE_USERPROFILE,
     payload: axios.post(requestUrl, cleanEntity(entity))
   });
-  // TODO: refresh user complete profile status
   await checkUserProfileCompleted();
   return result;
+};
+
+export const fetchUserProfileWithUniInfo: IGetActionWithoutParam<IUserUniInfo> = () => {
+  const requestUrl = `api/user-uni-infos/current`;
+  return {
+    type: ACTION_TYPES.FETCH_USERPROFILE_UNIINFO,
+    payload: axios.get<IUserUniInfo>(`${requestUrl}`)
+  };
 };

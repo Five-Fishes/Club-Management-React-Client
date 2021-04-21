@@ -101,6 +101,5 @@ export async function fetchAccount(): Promise<void> {
 
 export async function checkUserProfileCompleted(): Promise<void> {
   const res = await axios.get(`/api/account/is-profile-completed`);
-  window.console.log('COMPLETED PROFILE: ' + res.data.isProfileCompleted);
   store.dispatch({ type: ACTION_TYPES.CHECK_USERPROFILE_COMPLETE, payload: res.data });
 }
