@@ -89,7 +89,7 @@ export class Event extends React.Component<IEventProps, IEventState> {
         <Link to="/entity/event/new">
           <FloatButton />
         </Link>
-        <h1>Events</h1>
+        <h1>Events {this.props.location.query}</h1>
         <div className="my-3">
           <CustomTab currentTab="Upcoming" tabList={eventMainTabList} />
         </div>
