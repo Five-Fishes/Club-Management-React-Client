@@ -13,6 +13,7 @@ import AuthEmailLogin from 'app/modules/auth/email-login/auth-email-login';
 import AuthEmailRegister from './modules/auth/email-register/auth-email-register';
 import AuthEmailReset from './modules/auth/email-reset/auth-email-reset';
 import UserProfile from './modules/user-profile/user-profile';
+import Testing from './shared/components/testing/testing';
 
 // tslint:disable:space-in-parens
 
@@ -25,6 +26,7 @@ const Admin = Loadable({
 const Routes = () => (
   <div className="h-100">
     <Switch>
+      <ErrorBoundaryRoute path="/testing" component={Testing} />
       <ErrorBoundaryRoute exact path="/auth/login" component={AuthLogin} />
       <ErrorBoundaryRoute exact path="/auth/email/login" component={AuthEmailLogin} />
       <ErrorBoundaryRoute exact path="/auth/email/register" component={AuthEmailRegister} />
