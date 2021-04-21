@@ -26,7 +26,9 @@ export class CustomTab extends React.Component<ITabProps, {}> {
   }
 
   componentDidMount() {
-    this.scrollerRef.current.scrollTo();
+    const tabPos = this.props.tabList.findIndex(tabItem => tabItem.tabName === this.props.currentTab);
+    this.scrollerRef.current.scrollLeft = tabPos * 100;
+    console.log(this.scrollerRef);
   }
 
   render() {
