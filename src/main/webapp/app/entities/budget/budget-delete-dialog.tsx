@@ -37,7 +37,7 @@ export class BudgetDeleteDialog extends React.Component<IBudgetDeleteDialogProps
             Are you sure you want to delete this Budget?
           </Translate>
         </ModalBody>
-        <ModalFooter>
+        <ModalFooter clasName="justify-content-between mx-3">
           <Button color="secondary" onClick={this.handleClose}>
             <FontAwesomeIcon icon="ban" />
             &nbsp;
