@@ -7,6 +7,9 @@ function Testing() {
   return (
     <div>
       <h1>Testing Admin</h1>
+      <AuthorizationChecker>
+        <div>No Role specified, no one can ever view</div>
+      </AuthorizationChecker>
       <AuthorizationChecker ccRole={CCRole.HEAD}>
         <div>Seeing CCRole Head</div>
       </AuthorizationChecker>
@@ -14,7 +17,7 @@ function Testing() {
         <div>Seeing CCRole Admin</div>
       </AuthorizationChecker>
       <AuthorizationChecker ccRole={CCRole.ADMIN} eventId={1} eventRole={EventRole.HEAD}>
-        <div>Testing CC Role will not check Event role</div>
+        <div>if Pass CC Role Admin will not check Event role</div>
       </AuthorizationChecker>
     </div>
   );
