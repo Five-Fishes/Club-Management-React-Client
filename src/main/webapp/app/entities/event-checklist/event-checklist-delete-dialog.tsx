@@ -33,12 +33,12 @@ export class EventChecklistDeleteDialog extends React.Component<IEventChecklistD
         <ModalHeader toggle={this.handleClose}>
           <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
         </ModalHeader>
-        <ModalBody id="clubmanagementApp.eventChecklist.delete.question">
+        <ModalBody id="clubmanagementApp.eventChecklist.delete.question" className="text-center">
           <Translate contentKey="clubmanagementApp.eventChecklist.delete.question" interpolate={{ id: eventChecklistEntity.id }}>
             Are you sure you want to delete this EventChecklist?
           </Translate>
         </ModalBody>
-        <ModalFooter>
+        <ModalFooter clasName="justify-content-between mx-3">
           <Button color="secondary" onClick={this.handleClose}>
             <FontAwesomeIcon icon="ban" />
             &nbsp;

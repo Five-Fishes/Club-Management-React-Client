@@ -30,7 +30,8 @@
       "eventId": "活动 ID",
       "tab": "参与者",
       "userName": "用户名",
-      "session": "学年度"
+      "session": "学年度",
+      "provideTransport": "提供交通"
     }
   }
 }

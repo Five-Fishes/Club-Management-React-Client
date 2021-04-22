@@ -32,6 +32,7 @@ import { faGlobe } from '@fortawesome/free-solid-svg-icons/faGlobe';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons/faEnvelope';
 import { faBars } from '@fortawesome/free-solid-svg-icons/faBars';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons/faCalendarAlt';
+import { faCalendarAlt as farCalendarAlt } from '@fortawesome/free-regular-svg-icons/faCalendarAlt';
 import { faClock } from '@fortawesome/free-solid-svg-icons/faClock';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons/faMapMarkerAlt';
 import { faMoneyBillAlt } from '@fortawesome/free-solid-svg-icons/faMoneyBillAlt';
@@ -89,6 +90,7 @@ export const loadIcons = () => {
     faCar,
     faWhatsappSquare,
     faCalendarAlt,
+    farCalendarAlt,
     faCalendar,
     faClock,
     faMapMarkerAlt,

@@ -36,7 +36,7 @@ export class EventAttendeeDeleteDialog extends React.Component<IEventAttendeeDel
         <ModalBody id="clubmanagementApp.eventAttendee.delete.question">
           <Translate contentKey="clubmanagementApp.eventAttendee.delete.question">Are you sure you want to unregister?</Translate>
         </ModalBody>
-        <ModalFooter>
+        <ModalFooter clasName="justify-content-between mx-3">
           <Button color="secondary" onClick={this.handleClose}>
             <FontAwesomeIcon icon="ban" />
             &nbsp;
