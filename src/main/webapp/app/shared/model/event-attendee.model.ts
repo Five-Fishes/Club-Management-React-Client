@@ -1,5 +1,7 @@
 export interface IEventAttendee {
   id?: number;
+  userId?: number;
+  eventId?: number;
   userName?: string;
   contactNumber?: string;
   yearSession?: string;

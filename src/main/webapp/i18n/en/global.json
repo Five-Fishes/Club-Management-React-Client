@@ -158,6 +158,7 @@
     "userexists": "Login name already used!",
     "emailexists": "Email is already in use!",
     "idexists": "A new {{ entityName }} cannot already have an ID",
+    "noname": "A new {{ entityName }} cannot be created without a name",
     "idnull": "Invalid ID"
   },
   "footer": "ThirdCC @ 2020"

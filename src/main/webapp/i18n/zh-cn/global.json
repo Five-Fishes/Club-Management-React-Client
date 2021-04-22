@@ -158,6 +158,7 @@
     "userexists": "该用户名已存在!",
     "emailexists": "该邮箱已被使用!",
     "idexists": "新建的 {{entityName}} 不能包含ID",
+    "noname": "新建的 {{entityName}} 不能没有名字",
     "idnull": "Invalid ID"
   },
   "footer": "马大叁舍 ~ 鱼之家 @ 2020"

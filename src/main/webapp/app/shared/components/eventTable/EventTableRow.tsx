@@ -16,7 +16,7 @@ export class EventTableRow extends React.Component<IEventTableRowProps> {
   onToggleModal = () => this.props.openModal(this.props.user.id);
 
   contactUser = () => {
-    window.open(`https://wa.me/${this.props.user.contactNumber}`, '_blank');
+    window.open(`https://wa.me/+60${this.props.user.contactNumber}`, '_blank');
   };
 
   render() {

@@ -28,8 +28,11 @@
       "endDate": "结束日期",
       "fee": "费用",
       "requiredTransport": "需要交通",
+      "noRequiredTransport": "无需交通",
       "status": "活动状态",
       "image": "活动照片",
+      "imageFile": "照片文件",
+      "imageUrl": "照片链接",
       "fileName": "文件名称",
       "fileType": "文件格式",
       "tab": "详情"
