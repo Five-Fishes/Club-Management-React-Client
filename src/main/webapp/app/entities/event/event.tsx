@@ -32,9 +32,13 @@ export class Event extends React.Component<IEventProps, IEventState> {
     eventId: null
   };
 
-  componentDidMount() {
+  getTab = () => {
     const path = this.props.location.search;
-    const tab = path.substring(path.lastIndexOf('?') + 1);
+    return path.substring(path.lastIndexOf('?') + 1);
+  };
+
+  componentDidMount() {
+    const tab = this.getTab();
     if (tab === 'previous') {
       this.getPreviousEntities();
     } else {
@@ -74,8 +78,7 @@ export class Event extends React.Component<IEventProps, IEventState> {
 
   render() {
     const { eventList, match, totalItems } = this.props;
-    const path = this.props.location.search;
-    const tab = path.substring(path.lastIndexOf('?') + 1);
+    const tab = this.getTab();
     return (
       <Container>
         <EventModal
@@ -144,7 +147,6 @@ const mapStateToProps = ({ event }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getEntities,
   getUpcomingEntities,
   getPreviousEntities
 };
