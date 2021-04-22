@@ -178,7 +178,7 @@ export const updateEntity: ICrudPutAction<IBudget> = entity => async dispatch =>
     type: ACTION_TYPES.UPDATE_BUDGET,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  dispatch(getEventBudgetByEventId(entity.eventId.toString()));
   return result;
 };
 
