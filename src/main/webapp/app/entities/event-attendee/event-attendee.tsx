@@ -81,7 +81,7 @@ export class EventAttendee extends React.Component<IEventAttendeeProps> {
         </h2>
         <EventAttendeeSortModalModal sort={this.sort} isOpen={this.state.modalIsOpen} toggleModal={this.closeModal} />
         <div className="my-3">
-          <CustomTab currentTab="Attendees" tabList={eventTabList(this.state.eventId)} />
+          <CustomTab currentTab="Attendees" tabList={eventTabList(this.state.eventId)} xPosition={300} />
         </div>
         <div className="mx-4">
           <Button className="btn btn-primary float-right" id="event-attendee-sort-by-button" onClick={this.openModal}>

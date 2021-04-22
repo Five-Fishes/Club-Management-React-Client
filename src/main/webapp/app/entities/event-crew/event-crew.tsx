@@ -66,7 +66,7 @@ export class EventCrew extends React.Component<IEventCrewProps> {
           <Translate contentKey="clubmanagementApp.eventCrew.home.title">Event Crews</Translate>
         </h1>
         <div className="my-3">
-          <CustomTab currentTab="Crews" tabList={eventTabList(eventId)} />
+          <CustomTab currentTab="Crews" tabList={eventTabList(eventId)} xPosition={300} />
         </div>
 
         <div className="mx-4">

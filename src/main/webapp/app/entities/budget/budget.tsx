@@ -93,7 +93,7 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
           <Translate contentKey="clubmanagementApp.eventBudget.home.title">Event Budgets</Translate>
         </h2>
         <div className="my-3">
-          <CustomTab tabList={eventTabList(eventId)} currentTab="Budget" />
+          <CustomTab tabList={eventTabList(eventId)} currentTab="Budget" xPosition={300} />
         </div>
         {/* Stats of Budget */}
         <div className="mx-4">

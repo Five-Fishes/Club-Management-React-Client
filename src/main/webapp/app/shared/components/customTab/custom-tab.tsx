@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 export interface ITabProps {
   currentTab: string;
   tabList: ITabInfo[];
+  xPosition: number;
 }
 
 export interface ITabInfo {
@@ -20,13 +21,18 @@ export interface ITabInfo {
 export class CustomTab extends React.Component<ITabProps, {}> {
   private scrollerRef;
 
+  //Set default xPosition
+  static defaultProps: Partial<ITabProps> = {
+    xPosition: 0
+  };
+
   constructor(props) {
     super(props);
     this.scrollerRef = React.createRef();
   }
 
   componentDidMount() {
-    this.scrollerRef.current.scrollTo();
+    this.scrollerRef.current.scrollTo(this.props.xPosition, 0);
   }
 
   render() {
