@@ -3,23 +3,13 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Container, Row, Col, Card, CardImg, Button } from 'reactstrap';
 // tslint:disable-next-line:no-unused-variable
-import {
-  byteSize,
-  Translate,
-  ICrudGetAllAction,
-  TextFormat,
-  getSortState,
-  IPaginationBaseState,
-  JhiPagination,
-  JhiItemCount
-} from 'react-jhipster';
+import { Translate, TextFormat, getSortState, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntities } from './event.reducer';
-import { IEvent } from 'app/shared/model/event.model';
+import { getUpcomingEntities, getPreviousEntities } from './event.reducer';
 // tslint:disable-next-line:no-unused-variable
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { APP_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 
 import FloatButton from 'app/shared/components/floatButton/FloatButton';
@@ -43,29 +33,35 @@ export class Event extends React.Component<IEventProps, IEventState> {
   };
 
   componentDidMount() {
-    this.getEntities();
+    const path = this.props.location.search;
+    const tab = path.substring(path.lastIndexOf('?') + 1);
+    if (tab === 'previous') {
+      this.getPreviousEntities();
+    } else {
+      this.getUpcomingEntities();
+    }
   }
 
-  sort = prop => () => {
-    this.setState(
-      {
-        order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
-      },
-      () => this.sortEntities()
-    );
+  componentDidUpdate(prevProps) {
+    const path = this.props.location.search;
+    if (prevProps.location.search !== path) {
+      const tab = path.substring(path.lastIndexOf('?') + 1);
+      if (tab === 'previous') {
+        this.getPreviousEntities();
+      } else {
+        this.getUpcomingEntities();
+      }
+    }
+  }
+
+  getUpcomingEntities = () => {
+    const { activePage, itemsPerPage } = this.state;
+    this.props.getUpcomingEntities(activePage - 1, itemsPerPage, `startDate,desc`);
   };
 
-  sortEntities() {
-    this.getEntities();
-    this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
-  }
-
-  handlePagination = activePage => this.setState({ activePage }, () => this.sortEntities());
-
-  getEntities = () => {
-    const { activePage, itemsPerPage, sort, order } = this.state;
-    this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
+  getPreviousEntities = () => {
+    const { activePage, itemsPerPage } = this.state;
+    this.props.getPreviousEntities(activePage - 1, itemsPerPage, `startDate,desc`);
   };
 
   openModal = eventId => {
@@ -78,6 +74,8 @@ export class Event extends React.Component<IEventProps, IEventState> {
 
   render() {
     const { eventList, match, totalItems } = this.props;
+    const path = this.props.location.search;
+    const tab = path.substring(path.lastIndexOf('?') + 1);
     return (
       <Container>
         <EventModal
@@ -89,9 +87,9 @@ export class Event extends React.Component<IEventProps, IEventState> {
         <Link to="/entity/event/new">
           <FloatButton />
         </Link>
-        <h1>Events {this.props.location.query}</h1>
+        <h1>Events</h1>
         <div className="my-3">
-          <CustomTab currentTab="Upcoming" tabList={eventMainTabList} />
+          <CustomTab currentTab={tab === 'previous' ? 'Previous' : 'Upcoming'} tabList={eventMainTabList} />
         </div>
         <div className="d-flex justify-content-center">{/* <CustomTab tabList={sampleTabList} currentTab="Upcoming" /> */}</div>
         <div>
@@ -146,7 +144,9 @@ const mapStateToProps = ({ event }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEntities,
+  getUpcomingEntities,
+  getPreviousEntities
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
