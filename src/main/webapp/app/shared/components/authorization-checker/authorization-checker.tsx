@@ -8,6 +8,7 @@ interface IAuthorizationCheckerOwnProps {
   ccRole?: CCRole;
   eventRole?: EventRole;
   eventId?: number;
+  fallbackEl?: React.ReactElement;
 }
 
 interface IAuthorizationCheckerProps extends IAuthorizationCheckerOwnProps, StateProps {}
@@ -22,6 +23,7 @@ class AuthorizationChecker extends React.Component<IAuthorizationCheckerProps, {
       children,
       ccRole,
       eventRole,
+      fallbackEl,
       eventId,
       isAuthenticated,
       isCurrentCCHead,
@@ -29,9 +31,10 @@ class AuthorizationChecker extends React.Component<IAuthorizationCheckerProps, {
       isEventHead,
       isEventCrew
     } = this.props;
-    if (!isAuthenticated) return null;
-    let hasPassCCRoleChecking,
-      hasPassEventRoleChecking = false;
+    const fallbackElement: React.ReactElement | null = fallbackEl ? fallbackEl : null;
+    if (!isAuthenticated) return fallbackElement;
+    let hasPassCCRoleChecking = false;
+    let hasPassEventRoleChecking = false;
     const hasCCRole = typeof ccRole !== 'undefined';
     const hasEventRole = typeof eventRole !== 'undefined';
     const hasEventId = typeof eventId !== 'undefined';
@@ -50,7 +53,7 @@ class AuthorizationChecker extends React.Component<IAuthorizationCheckerProps, {
       hasPassEventRoleChecking = hasPassEventHeadCheck || hasPassEventCrewCheck;
     }
     const canRender = hasPassCCRoleChecking || hasPassEventRoleChecking;
-    if (!canRender) return null;
+    if (!canRender) return fallbackElement;
     return children;
   }
 }
