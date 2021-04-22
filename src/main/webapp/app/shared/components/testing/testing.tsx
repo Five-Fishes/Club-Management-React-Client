@@ -13,17 +13,8 @@ function Testing() {
       <AuthorizationChecker ccRole={CCRole.ADMIN}>
         <div>Seeing CCRole Admin</div>
       </AuthorizationChecker>
-      <AuthorizationChecker ccRole={CCRole.ANY}>
-        <div>Seeing CCRole Any</div>
-      </AuthorizationChecker>
       <AuthorizationChecker ccRole={CCRole.ADMIN} eventId={1} eventRole={EventRole.HEAD}>
         <div>Testing CC Role will not check Event role</div>
-      </AuthorizationChecker>
-      <AuthorizationChecker ccRole={CCRole.ANY} eventId={1} eventRole={EventRole.HEAD}>
-        <div>As long as is event head</div>
-      </AuthorizationChecker>
-      <AuthorizationChecker ccRole={CCRole.ANY} eventId={1} eventRole={EventRole.CREW}>
-        <div>As long as is Event crew</div>
       </AuthorizationChecker>
     </div>
   );

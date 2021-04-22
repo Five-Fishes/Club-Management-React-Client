@@ -1,7 +1,6 @@
 enum CCRole {
   HEAD,
-  ADMIN,
-  ANY
+  ADMIN
 }
 
 export default CCRole;

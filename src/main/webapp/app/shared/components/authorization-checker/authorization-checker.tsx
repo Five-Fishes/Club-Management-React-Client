@@ -5,7 +5,7 @@ import CCRole from 'app/shared/model/enum/cc-role.enum';
 import EventRole from 'app/shared/model/enum/event-role.enum';
 
 interface IAuthorizationCheckerOwnProps {
-  ccRole: CCRole;
+  ccRole?: CCRole;
   eventRole?: EventRole;
   eventId?: number;
 }
@@ -18,22 +18,39 @@ class AuthorizationChecker extends React.Component<IAuthorizationCheckerProps, {
   }
 
   render() {
-    const { children, ccRole, eventRole, isAuthenticated, isCurrentCCHead, isCurrentAdministrator, isEventHead, isEventCrew } = this.props;
+    const {
+      children,
+      ccRole,
+      eventRole,
+      eventId,
+      isAuthenticated,
+      isCurrentCCHead,
+      isCurrentAdministrator,
+      isEventHead,
+      isEventCrew
+    } = this.props;
     if (!isAuthenticated) return null;
-    const isOnlyCCHeadCanView = ccRole === CCRole.HEAD;
-    if (isOnlyCCHeadCanView && !isCurrentCCHead) return null;
-    const isOnlyCCAdminCanView = ccRole === CCRole.ADMIN;
-    if (isOnlyCCAdminCanView && !isCurrentAdministrator) return null;
-    const isPassCCHeadCheck = isOnlyCCHeadCanView && isCurrentCCHead;
-    const isPassCCAdminCheck = isOnlyCCAdminCanView && isCurrentAdministrator;
+    let hasPassCCRoleChecking,
+      hasPassEventRoleChecking = false;
+    const hasCCRole = typeof ccRole !== 'undefined';
     const hasEventRole = typeof eventRole !== 'undefined';
-    const shouldCheckEventRole = !isPassCCHeadCheck && !isPassCCAdminCheck && hasEventRole;
-    if (shouldCheckEventRole) {
-      const isOnlyEventHeadCanView = eventRole === EventRole.HEAD;
-      if (isOnlyEventHeadCanView && !isEventHead) return null;
-      const isOnlyEventCrewCanView = eventRole === EventRole.CREW;
-      if (isOnlyEventCrewCanView && !isEventCrew) return null;
+    const hasEventId = typeof eventId !== 'undefined';
+    if (hasCCRole) {
+      const isOnlyCCHeadCanView = ccRole === CCRole.HEAD;
+      const isOnlyCCAdminCanView = ccRole === CCRole.ADMIN;
+      const hasPassCCHeadCheck = isOnlyCCHeadCanView && isCurrentCCHead;
+      const hasPassCCAdminCheck = isOnlyCCAdminCanView && isCurrentAdministrator;
+      hasPassCCRoleChecking = hasPassCCHeadCheck || hasPassCCAdminCheck;
     }
+    if (hasEventRole && hasEventId) {
+      const isOnlyEventHeadCanView = eventRole === EventRole.HEAD;
+      const isOnlyEventCrewCanView = eventRole === EventRole.CREW;
+      const hasPassEventHeadCheck = isOnlyEventHeadCanView && isEventHead;
+      const hasPassEventCrewCheck = isOnlyEventCrewCanView && isEventCrew;
+      hasPassEventRoleChecking = hasPassEventHeadCheck || hasPassEventCrewCheck;
+    }
+    const canRender = hasPassCCRoleChecking || hasPassEventRoleChecking;
+    if (!canRender) return null;
     return children;
   }
 }
