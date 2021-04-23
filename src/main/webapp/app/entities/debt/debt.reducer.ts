@@ -12,7 +12,9 @@ export const ACTION_TYPES = {
   CREATE_DEBT: 'debt/CREATE_DEBT',
   UPDATE_DEBT: 'debt/UPDATE_DEBT',
   DELETE_DEBT: 'debt/DELETE_DEBT',
-  RESET: 'debt/RESET'
+  RESET: 'debt/RESET',
+  SET_DEBT_ID: 'debt/SET_DEBT_ID',
+  SET_SHOW_ACTION_OPTIONS: 'debt/SET_SHOW_ACTION_OPTIONS'
 };
 
 const initialState = {
@@ -22,7 +24,9 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
+  selectedDebtId: 0,
+  showActionOptions: false
 };
 
 export type DebtState = Readonly<typeof initialState>;
@@ -92,6 +96,18 @@ export default (state: DebtState = initialState, action): DebtState => {
       return {
         ...initialState
       };
+    case ACTION_TYPES.SET_DEBT_ID:
+      const { debtId } = action.payload;
+      return {
+        ...state,
+        selectedDebtId: debtId
+      };
+    case ACTION_TYPES.SET_SHOW_ACTION_OPTIONS:
+      const { show } = action.payload;
+      return {
+        ...state,
+        showActionOptions: show
+      };
     default:
       return state;
   }
@@ -115,6 +131,16 @@ export const getEntity: ICrudGetAction<IDebt> = id => {
     type: ACTION_TYPES.FETCH_DEBT,
     payload: axios.get<IDebt>(requestUrl)
   };
+};
+
+export const updateEntityStatus = (id, status) => async dispatch => {
+  const requestUrl = `${apiUrl}/${id}/status/${status}`;
+  const result = await dispatch({
+    type: ACTION_TYPES.UPDATE_DEBT,
+    payload: axios.put(requestUrl)
+  });
+  dispatch(getEntities());
+  return result;
 };
 
 export const createEntity: ICrudPutAction<IDebt> = entity => async dispatch => {
@@ -147,4 +173,18 @@ export const deleteEntity: ICrudDeleteAction<IDebt> = id => async dispatch => {
 
 export const reset = () => ({
   type: ACTION_TYPES.RESET
+});
+
+export const setSelectedDebtId = debtId => ({
+  type: ACTION_TYPES.SET_DEBT_ID,
+  payload: {
+    debtId
+  }
+});
+
+export const setShowActionOptions = show => ({
+  type: ACTION_TYPES.SET_SHOW_ACTION_OPTIONS,
+  payload: {
+    show
+  }
 });
