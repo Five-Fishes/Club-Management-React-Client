@@ -124,7 +124,9 @@
       "view": "View",
       "yes": "Yes",
       "no": "No",
-      "register": "Register"
+      "register": "Register",
+      "collect": "Collect",
+      "badDebt": "Bad Debt"
     },
     "detail": {
       "field": "Field",
