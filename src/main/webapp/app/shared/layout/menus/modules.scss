@@ -28,6 +28,19 @@
 .module {
   height: 50;
   width: 100%;
-  padding: 0px 18px;
+  padding: 13px 18px;
   color: #ffffff;
+}
+
+.module:hover {
+  height: 50;
+  width: 100%;
+  padding: 13px 18px;
+  color: #ffffff;
+  background-color: rgba(38, 38, 38, 0.2);
+}
+
+.module-icon {
+  margin-right: 12px;
+  width: 24px;
 }

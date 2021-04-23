@@ -125,7 +125,9 @@
       "yes": "Yes",
       "no": "No",
       "register": "Register",
-      "complete": "Complete"
+      "complete": "Complete",
+      "collect": "Collect",
+      "badDebt": "Bad Debt"
     },
     "detail": {
       "field": "Field",

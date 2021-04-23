@@ -55,36 +55,40 @@ export class EventCrew extends React.Component<IEventCrewProps> {
     const { eventCrewList, match } = this.props;
     const { eventId } = this.props.match.params;
     return (
-      <Container>
+      <div>
         <EventModal
           isOpen={this.state.modalIsOpen}
           updatePath={`${match.url}/${this.state.eventCrewId}/edit`}
           deletePath={`${match.url}/${this.state.eventCrewId}/delete`}
           toggleModal={this.closeModal}
         />
-        <h1 id="event-crew-heading">
+        <h1 id="event-crew-heading" className="event-module-heading">
           <Translate contentKey="clubmanagementApp.eventCrew.home.title">Event Crews</Translate>
         </h1>
-        <div className="my-4">
+        <div className="my-3">
           <CustomTab currentTab="Crews" tabList={eventTabList(eventId)} />
         </div>
 
-        <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity w-100" id="jh-create-entity">
-          <FontAwesomeIcon icon="plus" />
-          &nbsp;
-          <Translate contentKey="clubmanagementApp.eventCrew.home.createLabel">Add Event Crew</Translate>
-        </Link>
+        <div className="mx-4">
+          <div className="text-center">
+            <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
+              <FontAwesomeIcon icon="plus" />
+              &nbsp;
+              <Translate contentKey="clubmanagementApp.eventCrew.home.createLabel">Add Event Crew</Translate>
+            </Link>
+          </div>
 
-        <div className="table-responsive mt-4">
-          {eventCrewList && eventCrewList.length > 0 ? (
-            <EventTable users={eventCrewList} openModal={this.openModal} />
-          ) : (
-            <div className="alert alert-warning">
-              <Translate contentKey="clubmanagementApp.eventCrew.home.notFound">No Event Crews found {}</Translate>
-            </div>
-          )}
+          <div className="table-responsive mt-4">
+            {eventCrewList && eventCrewList.length > 0 ? (
+              <EventTable users={eventCrewList} openModal={this.openModal} />
+            ) : (
+              <div className="alert alert-warning">
+                <Translate contentKey="clubmanagementApp.eventCrew.home.notFound">No Event Crews found {}</Translate>
+              </div>
+            )}
+          </div>
         </div>
-      </Container>
+      </div>
     );
   }
 }

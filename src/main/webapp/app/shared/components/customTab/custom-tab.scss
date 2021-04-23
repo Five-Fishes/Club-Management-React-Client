@@ -1,12 +1,14 @@
 .tab-container {
   border-radius: 5px;
+}
+
+.tab-x-space {
   &::-webkit-scrollbar {
     display: none;
   }
 }
 
 .tab-item {
-  width: 100px;
   min-height: 35px;
   font-family: 'Roboto';
   line-height: 19px;

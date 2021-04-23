@@ -64,10 +64,10 @@ export class EventAttendeeUpdate extends React.Component<IEventAttendeeUpdatePro
     const { userId, loading, updating, match } = this.props;
 
     return (
-      <div>
+      <div className="mx-3">
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.eventAttendee.home.createOrEditLabel">
+            <h2 id="clubmanagementApp.eventAttendee.home.createOrEditLabel" className="event-module-form-heading">
               <Translate contentKey="clubmanagementApp.eventAttendee.home.registerLabel">Register as EventAttendee</Translate>
             </h2>
           </Col>
@@ -116,16 +116,19 @@ export class EventAttendeeUpdate extends React.Component<IEventAttendeeUpdatePro
                     <Translate contentKey="clubmanagementApp.eventAttendee.provideTransport">Provide Transport</Translate>
                   </Label>
                 </AvGroup>
-                <div className="text-center mx-4 d-flex justify-content-between justify-content-md-center mb-2">
-                  <Button tag={Link} id="cancel-save" to={`/entity/event/${match.params.eventId}`} replace color="cancel">
-                    <FontAwesomeIcon icon="arrow-left" />
-                    &nbsp;
+                <div className="general-buttonContainer--flexContainer">
+                  <Button
+                    className="general-button--width"
+                    tag={Link}
+                    id="cancel-save"
+                    to={`/entity/event/${match.params.eventId}`}
+                    replace
+                    color="cancel"
+                  >
                     <Translate contentKey="entity.action.cancel">Cancel</Translate>
                   </Button>
                   &nbsp;
-                  <Button color="action" id="save-entity" type="submit" disabled={updating}>
-                    <FontAwesomeIcon icon="save" />
-                    &nbsp;
+                  <Button className="general-button--width" color="action" id="save-entity" type="submit" disabled={updating}>
                     <Translate contentKey="entity.action.register">Register</Translate>
                   </Button>
                 </div>
