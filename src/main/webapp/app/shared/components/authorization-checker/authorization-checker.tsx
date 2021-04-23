@@ -31,8 +31,6 @@ class AuthorizationChecker extends React.Component<IAuthorizationCheckerProps, {
       isEventHead,
       isEventCrew
     } = this.props;
-    const fallbackElement: React.ReactElement | null = fallbackEl ? fallbackEl : null;
-    if (!isAuthenticated) return fallbackElement;
     let hasPassCCRoleChecking = false;
     let hasPassEventRoleChecking = false;
     const hasCCRole = typeof ccRole !== 'undefined';
@@ -52,8 +50,9 @@ class AuthorizationChecker extends React.Component<IAuthorizationCheckerProps, {
       const hasPassEventCrewCheck = isOnlyEventCrewCanView && isEventCrew;
       hasPassEventRoleChecking = hasPassEventHeadCheck || hasPassEventCrewCheck;
     }
-    const canRender = hasPassCCRoleChecking || hasPassEventRoleChecking;
-    if (!canRender) return fallbackElement;
+    const hasPassChecking = hasPassCCRoleChecking || hasPassEventRoleChecking;
+    const canRender = isAuthenticated && hasPassChecking;
+    if (!canRender) return fallbackEl || null;
     return children;
   }
 }
