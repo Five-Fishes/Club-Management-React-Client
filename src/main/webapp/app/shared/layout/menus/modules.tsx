@@ -24,6 +24,7 @@ export const ModuleMenu = ({ button }) => {
 
         <div style={{ paddingTop: 30, paddingBottom: 30 }}>
           <Module moduleName="Event" iconName="plane-departure" path="/entity/event" sideNavToggler={handler} />
+          <Module moduleName="Finance" iconName="euro-sign" path="/entity/debt" sideNavToggler={handler} />
         </div>
       </div>
     </div>
