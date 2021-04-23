@@ -112,7 +112,7 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                     placeholder="E.g 123857221"
                     validate={{
                       required: { value: true, errorMessage: 'Please enter your Phone Number' },
-                      pattern: { value: '^([1-9][0-9]{6,20})$', errorMessage: 'Please enter a valid Phone Number without Country Code' }
+                      pattern: { value: '^([1-9][0-9]{6,11})$', errorMessage: 'Please enter a valid Phone Number without Country Code' }
                     }}
                   />
                 </AvGroup>

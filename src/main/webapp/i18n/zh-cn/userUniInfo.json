@@ -4,7 +4,7 @@
       "home": {
         "title": "个人大学资料",
         "createLabel": "创建新个人大学资料",
-        "editLabel": "更新新个人大学资料",
+        "editLabel": "更新个人大学资料",
         "createOrEditLabel": "创建或编辑 User Uni Info",
         "notFound": "无个人大学资料"
       },
