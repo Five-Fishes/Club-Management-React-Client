@@ -139,7 +139,6 @@ export const createEntity: ICrudPutAction<IEventAttendee> = entity => async disp
     type: ACTION_TYPES.CREATE_EVENTATTENDEE,
     payload: axios.post(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
   return result;
 };
 
@@ -148,7 +147,6 @@ export const updateEntity: ICrudPutAction<IEventAttendee> = entity => async disp
     type: ACTION_TYPES.UPDATE_EVENTATTENDEE,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
   return result;
 };
 
@@ -158,7 +156,6 @@ export const deleteEntity: ICrudDeleteAction<IEventAttendee> = id => async dispa
     type: ACTION_TYPES.DELETE_EVENTATTENDEE,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
   return result;
 };
 
