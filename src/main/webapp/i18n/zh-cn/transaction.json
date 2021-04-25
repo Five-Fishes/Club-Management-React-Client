@@ -19,6 +19,7 @@
       "event": "活动",
       "eventId": "活动ID",
       "receiptId": "收据ID",
+      "receiptFile": "收据文件",
       "type": "类型",
       "amount": "总额",
       "details": "详情",

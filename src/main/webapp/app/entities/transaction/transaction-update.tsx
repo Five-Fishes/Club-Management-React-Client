@@ -68,7 +68,7 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
   };
 
   render() {
-    const { transactionEntity, loading, updating } = this.props;
+    const { transactionEntity, loading, updating, events, userId } = this.props;
     const { isNew } = this.state;
 
     return (
@@ -102,23 +102,33 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
                   <Label id="eventIdLabel" for="transaction-eventId">
                     <Translate contentKey="clubmanagementApp.transaction.event">Event</Translate>
                   </Label>
-                  <AvField id="transaction-eventId" type="select" className="form-control" name="eventId">
-                    <option value="" selected disabled>
+                  <AvField
+                    id="transaction-eventId"
+                    type="select"
+                    className="form-control"
+                    name="eventId"
+                    validate={{
+                      required: { value: true, errorMessage: 'Please select an event' }
+                    }}
+                  >
+                    <option value="" disabled hidden>
                       {translate('global.select.selectOne')}
                     </option>
-                    {this.props.events.map(event => {
-                      <option value={event.id} key={event.id}>
-                        {event.name}
-                      </option>;
-                    })}
+                    {events
+                      ? events.map(event => (
+                          <option value={event.id} key={event.id}>
+                            {event.name}
+                          </option>
+                        ))
+                      : null}
                   </AvField>
                 </AvGroup>
-                <AvGroup>
+                {/* <AvGroup>
                   <Label id="receiptIdLabel" for="transaction-receiptId">
                     <Translate contentKey="clubmanagementApp.transaction.receiptId">Receipt Id</Translate>
                   </Label>
                   <AvField id="transaction-receiptId" type="string" className="form-control" name="receiptId" />
-                </AvGroup>
+                </AvGroup> */}
                 <AvGroup>
                   <Label id="typeLabel" for="transaction-type">
                     <Translate contentKey="clubmanagementApp.transaction.type">Type</Translate>
@@ -138,21 +148,38 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
                   <Label id="amountLabel" for="transaction-amount">
                     <Translate contentKey="clubmanagementApp.transaction.amount">Amount</Translate>
                   </Label>
-                  <AvField id="transaction-amount" type="text" name="amount" />
+                  <AvField
+                    id="transaction-amount"
+                    type="number"
+                    name="amount"
+                    validate={{
+                      required: { value: true, errorMessage: 'Please enter an amount for this budget' },
+                      min: { value: 0, errorMessage: 'Amount cannot be less than 0' },
+                      pattern: { value: '^([0-9]*.?[0-9]{1,2})$', errorMessage: 'Please enter a valid amount with max of 2 decimal values' }
+                    }}
+                  />
                 </AvGroup>
                 <AvGroup>
                   <Label id="detailsLabel" for="transaction-details">
                     <Translate contentKey="clubmanagementApp.transaction.details">Details</Translate>
                   </Label>
-                  <AvField id="transaction-details" type="text" name="details" />
+                  <AvField id="transaction-details" rows="3" type="textarea" name="details" />
                 </AvGroup>
                 <AvGroup>
                   <Label id="receiptUrlLabel" for="transaction-receiptUrl">
-                    <Translate contentKey="clubmanagementApp.transaction.receiptUrl">Receipt Url</Translate>
+                    <Translate contentKey="clubmanagementApp.transaction.receiptFile">Receipt</Translate>
                   </Label>
-                  <AvField id="transaction-receiptUrl" type="text" name="receiptUrl" />
+                  <AvField
+                    id="transaction-receiptUrl"
+                    type="file"
+                    accept="image/*"
+                    name="receiptUrl"
+                    validate={{
+                      required: { value: true, errorMessage: 'Please upload an receipt' }
+                    }}
+                  />
                 </AvGroup>
-                <AvGroup>
+                {/* <AvGroup>
                   <Label id="fileNameLabel" for="transaction-fileName">
                     <Translate contentKey="clubmanagementApp.transaction.fileName">File Name</Translate>
                   </Label>
@@ -163,14 +190,14 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
                     <Translate contentKey="clubmanagementApp.transaction.fileType">File Type</Translate>
                   </Label>
                   <AvField id="transaction-fileType" type="text" name="fileType" />
-                </AvGroup>
-                <AvGroup>
+                </AvGroup> */}
+                <AvGroup hidden>
                   <Label id="createdByLabel" for="transaction-createdBy">
                     <Translate contentKey="clubmanagementApp.transaction.createdBy">Created By</Translate>
                   </Label>
-                  <AvField id="transaction-createdBy" type="text" name="createdBy" />
+                  <AvField id="transaction-createdBy" type="text" name="createdBy" value={userId} />
                 </AvGroup>
-                <AvGroup>
+                {/* <AvGroup>
                   <Label id="createdDateLabel" for="transaction-createdDate">
                     <Translate contentKey="clubmanagementApp.transaction.createdDate">Created Date</Translate>
                   </Label>
@@ -182,20 +209,22 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
                     placeholder={'YYYY-MM-DD HH:mm'}
                     value={isNew ? null : convertDateTimeFromServer(this.props.transactionEntity.createdDate)}
                   />
-                </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/transaction" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
+                </AvGroup> */}
+                <div className="general-buttonContainer--flexContainer">
+                  <Button className="general-button--width" tag={Link} id="cancel-save" to="/entity/transaction" replace color="cancel">
+                    <Translate contentKey="entity.action.cancel">Cancel</Translate>
+                  </Button>
                   &nbsp;
-                  <span className="d-none d-md-inline">
-                    <Translate contentKey="entity.action.back">Back</Translate>
-                  </span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp;
-                  <Translate contentKey="entity.action.save">Save</Translate>
-                </Button>
+                  {isNew ? (
+                    <Button className="general-button--width" color="action" id="save-entity" type="submit" disabled={updating}>
+                      <Translate contentKey="entity.action.create">Create</Translate>
+                    </Button>
+                  ) : (
+                    <Button className="general-button--width" color="action" id="save-entity" type="submit" disabled={updating}>
+                      <Translate contentKey="entity.action.update">Update</Translate>
+                    </Button>
+                  )}
+                </div>
               </AvForm>
             )}
           </Col>
@@ -210,7 +239,8 @@ const mapStateToProps = (storeState: IRootState) => ({
   transactionEntity: storeState.transaction.entity,
   loading: storeState.transaction.loading,
   updating: storeState.transaction.updating,
-  updateSuccess: storeState.transaction.updateSuccess
+  updateSuccess: storeState.transaction.updateSuccess,
+  userId: storeState.authentication.id
 });
 
 const mapDispatchToProps = {

@@ -20,6 +20,7 @@
       "event": "Event",
       "eventId": "Event Id",
       "receiptId": "Receipt Id",
+      "receiptFile": "Receipt File",
       "type": "Type",
       "amount": "Amount",
       "details": "Details",
