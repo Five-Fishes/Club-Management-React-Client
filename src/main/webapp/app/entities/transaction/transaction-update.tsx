@@ -9,10 +9,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
 import { getEntity, updateEntity, createEntity, reset } from './transaction.reducer';
+import { getEntities as getEvents } from 'app/entities/event/event.reducer';
 import { ITransaction } from 'app/shared/model/transaction.model';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
+import eventModal from 'app/shared/components/eventModal/event-modal';
 
 export interface ITransactionUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -37,6 +39,7 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
   componentDidMount() {
     if (this.state.isNew) {
       this.props.reset();
+      this.props.getEvents();
     } else {
       this.props.getEntity(this.props.match.params.id);
     }
@@ -97,9 +100,18 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
                 ) : null}
                 <AvGroup>
                   <Label id="eventIdLabel" for="transaction-eventId">
-                    <Translate contentKey="clubmanagementApp.transaction.eventId">Event</Translate>
+                    <Translate contentKey="clubmanagementApp.transaction.event">Event</Translate>
                   </Label>
-                  <AvField id="transaction-eventId" type="select" className="form-control" name="eventId" />
+                  <AvField id="transaction-eventId" type="select" className="form-control" name="eventId">
+                    <option value="" selected disabled>
+                      {translate('global.select.selectOne')}
+                    </option>
+                    {this.props.events.map(event => {
+                      <option value={event.id} key={event.id}>
+                        {event.name}
+                      </option>;
+                    })}
+                  </AvField>
                 </AvGroup>
                 <AvGroup>
                   <Label id="receiptIdLabel" for="transaction-receiptId">
@@ -194,6 +206,7 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
+  events: storeState.event.entities,
   transactionEntity: storeState.transaction.entity,
   loading: storeState.transaction.loading,
   updating: storeState.transaction.updating,
@@ -201,6 +214,7 @@ const mapStateToProps = (storeState: IRootState) => ({
 });
 
 const mapDispatchToProps = {
+  getEvents,
   getEntity,
   updateEntity,
   createEntity,
