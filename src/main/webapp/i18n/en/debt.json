@@ -13,6 +13,14 @@
       "delete": {
         "question": "Are you sure you want to delete Debt {{ id }}?"
       },
+      "badDebt": {
+        "title": "Confirm bad debt operation",
+        "question": "Are you sure you want to change status of Debt {{ id }} as bad debt?"
+      },
+      "collect": {
+        "title": "Confirm collect operation",
+        "question": "Are you sure you want to change status of Debt {{ id }} as collected?"
+      },
       "detail": {
         "title": "Debt"
       },

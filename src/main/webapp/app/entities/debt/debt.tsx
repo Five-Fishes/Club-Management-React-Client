@@ -57,22 +57,12 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
     this.props.setShowActionOptions(true);
   };
 
-  collect = () => {
-    this.props.updateEntityStatus(this.props.selectedDebtId, DebtStatus.COLLECTED);
-    this.toggleShowOptions();
-  };
-
-  badDebt = () => {
-    this.props.updateEntityStatus(this.props.selectedDebtId, DebtStatus.UNREACHABLE);
-    this.toggleShowOptions();
-  };
-
   toggleShowOptions = () => {
     this.props.setShowActionOptions(!this.props.showActionOptions);
   };
 
   render() {
-    const { debtList } = this.props;
+    const { debtList, match, selectedDebtId } = this.props;
     return (
       <div>
         <h2 id="debt-heading" className="finance-module-heading">
@@ -115,12 +105,24 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
             <ModalHeader toggle={this.toggleShowOptions} />
             <ModalBody>
               <h2 className="text-center">Options</h2>
-              <Button color="primary" className="d-block mx-auto my-3 w-75" onClick={this.collect}>
+              <Button
+                tag={Link}
+                to={`${match.url}/${selectedDebtId}/collect`}
+                color="primary"
+                className="d-block mx-auto my-3 w-75"
+                onClick={this.toggleShowOptions}
+              >
                 <span>
                   <Translate contentKey="entity.action.collect">Collect</Translate>
                 </span>
               </Button>
-              <Button color="cancel" className="d-block mx-auto my-3 w-75" onClick={this.badDebt}>
+              <Button
+                tag={Link}
+                to={`${match.url}/${selectedDebtId}/badDebt`}
+                color="cancel"
+                className="d-block mx-auto my-3 w-75"
+                onClick={this.toggleShowOptions}
+              >
                 <span>
                   <Translate contentKey="entity.action.badDebt">Bad Debt</Translate>
                 </span>
@@ -142,7 +144,6 @@ const mapStateToProps = ({ debt }: IRootState) => ({
 
 const mapDispatchToProps = {
   getEntities,
-  updateEntityStatus,
   setSelectedDebtId,
   setShowActionOptions
 };
