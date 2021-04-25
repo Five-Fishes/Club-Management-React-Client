@@ -64,6 +64,7 @@ import faculty, {
   FacultyState
 } from 'app/entities/faculty/faculty.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
+import completeProfile, { CompleteProfileState } from 'app/modules/auth/complete-profile/complete-profile.reducer';
 
 export interface IRootState {
   readonly authentication: IAuthenticationInitialState;
@@ -87,6 +88,7 @@ export interface IRootState {
   readonly faculty: FacultyState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
+  readonly completeProfile: CompleteProfileState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -110,7 +112,8 @@ const rootReducer = combineReducers<IRootState>({
   userUniInfo,
   faculty,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
-  loadingBar
+  loadingBar,
+  completeProfile
 });
 
 export default rootReducer;

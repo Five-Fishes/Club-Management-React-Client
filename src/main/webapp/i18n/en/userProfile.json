@@ -1,0 +1,19 @@
+{
+  "clubmanagementApp": {
+    "userProfile": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "gender": "Gender",
+      "phoneNumber": "Phone Number",
+      "dateOfBirth": "Date of Birth",
+      "profileImage": "Profile Image",
+      "genderValue": {
+        "MALE": "Male",
+        "FEMALE": "Female"
+      }
+    },
+    "completeProfile": {
+      "title": "Complete Profile"
+    }
+  }
+}

@@ -4,6 +4,7 @@
       "home": {
         "title": "User Uni Infos",
         "createLabel": "Create a new User Uni Info",
+        "editLabel": " Edit User Uni Info",
         "createOrEditLabel": "Create or edit a User Uni Info",
         "notFound": "No User Uni Info found"
       },
@@ -18,12 +19,18 @@
       },
       "userId": "User Id",
       "faculty": "Faculty",
+      "courseProgram": "Course Program",
       "program": "Program",
       "yearSession": "Year Session",
+      "intakeYearSession": "Intake Year Session",
       "intakeSemester": "Intake Semester",
       "yearOfStudy": "Year Of Study",
       "stayIn": "Stay In",
-      "status": "Status"
+      "status": "Status",
+      "semesterValue": {
+        "semOne": "Sem 1",
+        "semTwo": "Sem 2"
+      }
     }
   }
 }
