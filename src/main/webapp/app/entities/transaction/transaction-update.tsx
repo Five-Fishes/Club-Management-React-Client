@@ -73,7 +73,11 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
         <Row className="justify-content-center">
           <Col md="8">
             <h2 id="clubmanagementApp.transaction.home.createOrEditLabel">
-              <Translate contentKey="clubmanagementApp.transaction.home.createOrEditLabel">Create or edit a Transaction</Translate>
+              {isNew ? (
+                <Translate contentKey="clubmanagementApp.transaction.home.createLabel">Create a Transaction</Translate>
+              ) : (
+                <Translate contentKey="clubmanagementApp.transaction.home.editLabel">Update Transaction</Translate>
+              )}
             </h2>
           </Col>
         </Row>
@@ -93,9 +97,9 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
                 ) : null}
                 <AvGroup>
                   <Label id="eventIdLabel" for="transaction-eventId">
-                    <Translate contentKey="clubmanagementApp.transaction.eventId">Event Id</Translate>
+                    <Translate contentKey="clubmanagementApp.transaction.eventId">Event</Translate>
                   </Label>
-                  <AvField id="transaction-eventId" type="string" className="form-control" name="eventId" />
+                  <AvField id="transaction-eventId" type="select" className="form-control" name="eventId" />
                 </AvGroup>
                 <AvGroup>
                   <Label id="receiptIdLabel" for="transaction-receiptId">

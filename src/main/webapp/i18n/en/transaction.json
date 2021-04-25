@@ -3,7 +3,8 @@
     "transaction": {
       "home": {
         "title": "Transactions",
-        "createLabel": "Create a new Transaction",
+        "createLabel": "Create Transaction",
+        "editLabel": "Update Transaction",
         "createOrEditLabel": "Create or edit a Transaction",
         "notFound": "No Transaction found"
       },
@@ -16,6 +17,7 @@
       "detail": {
         "title": "Transaction"
       },
+      "event": "Event",
       "eventId": "Event Id",
       "receiptId": "Receipt Id",
       "type": "Type",

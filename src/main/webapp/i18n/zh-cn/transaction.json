@@ -2,30 +2,31 @@
   "clubmanagementApp": {
     "transaction": {
       "home": {
-        "title": "Transactions",
-        "createLabel": "创建新 Transaction",
-        "createOrEditLabel": "创建或编辑 Transaction",
+        "title": "交易",
+        "createLabel": "创建新交易",
+        "createOrEditLabel": "创建或编辑交易",
         "notFound": "No Transaction found"
       },
-      "created": "Transaction {{ param }} 创建成功",
-      "updated": "Transaction {{ param }} 更新成功",
-      "deleted": "Transaction {{ param }} 删除成功",
+      "created": "交易 {{ param }} 创建成功",
+      "updated": "交易 {{ param }} 更新成功",
+      "deleted": "交易 {{ param }} 删除成功",
       "delete": {
         "question": "你确定要删除 Transaction {{ id }} 吗？"
       },
       "detail": {
-        "title": "Transaction"
+        "title": "交易"
       },
-      "eventId": "Event Id",
-      "receiptId": "Receipt Id",
-      "type": "Type",
-      "amount": "Amount",
-      "details": "Details",
-      "receiptUrl": "Receipt Url",
-      "fileName": "File Name",
-      "fileType": "File Type",
-      "createdBy": "Created By",
-      "createdDate": "Created Date",
+      "event": "活动",
+      "eventId": "活动ID",
+      "receiptId": "收据ID",
+      "type": "类型",
+      "amount": "总额",
+      "details": "详情",
+      "receiptUrl": "收据链接",
+      "fileName": "文件名字",
+      "fileType": "文件类型",
+      "createdBy": "创建者",
+      "createdDate": "创建日期",
       "tab": "全部收支"
     }
   }
