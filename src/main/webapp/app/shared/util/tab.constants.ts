@@ -4,7 +4,7 @@ export const eventMainTabList: ITabInfo[] = [
   {
     tabName: 'Upcoming',
     tabTranslateKey: 'clubmanagementApp.event.upcoming',
-    tabRoute: '/entity/event/'
+    tabRoute: '/entity/event'
   },
   {
     tabName: 'Previous',
