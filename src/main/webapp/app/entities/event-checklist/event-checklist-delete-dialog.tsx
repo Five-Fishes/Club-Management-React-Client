@@ -38,7 +38,7 @@ export class EventChecklistDeleteDialog extends React.Component<IEventChecklistD
             Are you sure you want to delete this EventChecklist?
           </Translate>
         </ModalBody>
-        <ModalFooter clasName="justify-content-between mx-3">
+        <ModalFooter clasName="d-flex justify-content-between mx-3">
           <Button color="secondary" onClick={this.handleClose}>
             <FontAwesomeIcon icon="ban" />
             &nbsp;

@@ -38,7 +38,7 @@ export class EventCrewDeleteDialog extends React.Component<IEventCrewDeleteDialo
             Are you sure you want to delete this EventCrew?
           </Translate>
         </ModalBody>
-        <ModalFooter className="justify-content-around mx-3">
+        <ModalFooter className="justify-content-between mx-3">
           <Button color="secondary" onClick={this.handleClose}>
             <FontAwesomeIcon icon="ban" />
             &nbsp;
