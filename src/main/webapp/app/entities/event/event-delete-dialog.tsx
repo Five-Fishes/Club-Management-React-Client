@@ -38,8 +38,8 @@ export class EventDeleteDialog extends React.Component<IEventDeleteDialogProps> 
             Are you sure you want to delete this Event?
           </Translate>
         </ModalBody>
-        <ModalFooter clasName="d-flex justify-content-between mx-3">
-          <Button color="secondary" onClick={this.handleClose}>
+        <ModalFooter clasName="mx-3">
+          <Button className="mr-auto" color="secondary" onClick={this.handleClose}>
             <FontAwesomeIcon icon="ban" />
             &nbsp;
             <Translate contentKey="entity.action.cancel">Cancel</Translate>
