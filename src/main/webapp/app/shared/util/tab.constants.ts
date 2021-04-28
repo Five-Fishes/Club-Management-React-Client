@@ -13,7 +13,7 @@ export const eventMainTabList: ITabInfo[] = [
   }
 ];
 
-export const eventTabList = (eventId: string): ITabInfo[] => [
+export const eventTabList = (eventId: number): ITabInfo[] => [
   {
     tabName: 'Details',
     tabTranslateKey: 'clubmanagementApp.event.tab',
