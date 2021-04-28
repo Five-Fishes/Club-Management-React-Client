@@ -8,6 +8,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IEventChecklist } from 'app/shared/model/event-checklist.model';
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './event-checklist.reducer';
+import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
+import EventRole from 'app/shared/model/enum/event-role.enum';
 
 export interface IEventChecklistDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -44,11 +47,13 @@ export class EventChecklistDeleteDialog extends React.Component<IEventChecklistD
             &nbsp;
             <Translate contentKey="entity.action.cancel">Cancel</Translate>
           </Button>
-          <Button id="jhi-confirm-delete-eventChecklist" color="danger" onClick={this.confirmDelete}>
-            <FontAwesomeIcon icon="trash" />
-            &nbsp;
-            <Translate contentKey="entity.action.delete">Delete</Translate>
-          </Button>
+          <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.CREW} eventId={eventChecklistEntity.eventId}>
+            <Button id="jhi-confirm-delete-eventChecklist" color="danger" onClick={this.confirmDelete}>
+              <FontAwesomeIcon icon="trash" />
+              &nbsp;
+              <Translate contentKey="entity.action.delete">Delete</Translate>
+            </Button>
+          </AuthorizationChecker>
         </ModalFooter>
       </Modal>
     );

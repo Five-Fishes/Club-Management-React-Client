@@ -7,6 +7,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './budget.reducer';
+import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
+import EventRole from 'app/shared/model/enum/event-role.enum';
 
 export interface IBudgetDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
@@ -43,11 +46,13 @@ export class BudgetDeleteDialog extends React.Component<IBudgetDeleteDialogProps
             &nbsp;
             <Translate contentKey="entity.action.cancel">Cancel</Translate>
           </Button>
-          <Button id="jhi-confirm-delete-budget" color="danger" onClick={this.confirmDelete}>
-            <FontAwesomeIcon icon="trash" />
-            &nbsp;
-            <Translate contentKey="entity.action.delete">Delete</Translate>
-          </Button>
+          <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={budgetEntity.eventId}>
+            <Button id="jhi-confirm-delete-budget" color="danger" onClick={this.confirmDelete}>
+              <FontAwesomeIcon icon="trash" />
+              &nbsp;
+              <Translate contentKey="entity.action.delete">Delete</Translate>
+            </Button>
+          </AuthorizationChecker>
         </ModalFooter>
       </Modal>
     );
