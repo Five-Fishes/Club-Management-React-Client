@@ -74,6 +74,7 @@ export class EventAttendee extends React.Component<IEventAttendeeProps> {
 
   render() {
     const { eventAttendeeList, totalItems } = this.props;
+    const eventId: number = parseInt(this.props.match.params.eventId, 10);
     return (
       <div>
         <h2 id="event-attendee-heading" className="event-module-heading">
@@ -81,7 +82,7 @@ export class EventAttendee extends React.Component<IEventAttendeeProps> {
         </h2>
         <EventAttendeeSortModalModal sort={this.sort} isOpen={this.state.modalIsOpen} toggleModal={this.closeModal} />
         <div className="my-3">
-          <CustomTab currentTab="Attendees" tabList={eventTabList(this.state.eventId)} />
+          <CustomTab currentTab="Attendees" tabList={eventTabList(eventId)} />
         </div>
         <div className="mx-4">
           <Button className="btn btn-primary float-right" id="event-attendee-sort-by-button" onClick={this.openModal}>

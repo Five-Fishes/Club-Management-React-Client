@@ -27,6 +27,9 @@ import EventModal from 'app/shared/components/eventModal/event-modal';
 import { CustomTab } from 'app/shared/components/customTab/custom-tab';
 import { eventMainTabList } from 'app/shared/util/tab.constants';
 import './events.scss';
+import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
+import EventRole from 'app/shared/model/enum/event-role.enum';
 
 export interface IEventProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -86,9 +89,11 @@ export class Event extends React.Component<IEventProps, IEventState> {
           deletePath={`${match.url}/${this.state.eventId}/delete`}
           toggleModal={this.closeModal}
         />
-        <Link to="/entity/event/new">
-          <FloatButton />
-        </Link>
+        <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={this.state.eventId}>
+          <Link to="/entity/event/new">
+            <FloatButton />
+          </Link>
+        </AuthorizationChecker>
         <h1>Events</h1>
         <div className="my-3">
           <CustomTab currentTab="Upcoming" tabList={eventMainTabList} />

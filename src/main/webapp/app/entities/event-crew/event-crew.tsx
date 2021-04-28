@@ -16,6 +16,9 @@ import { CustomTab } from 'app/shared/components/customTab/custom-tab';
 import EventModal from 'app/shared/components/eventModal/event-modal';
 import { eventTabList } from 'app/shared/util/tab.constants';
 import { EventTable } from 'app/shared/components/eventTable/EventTable';
+import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
+import EventRole from 'app/shared/model/enum/event-role.enum';
 
 export interface IEventCrewProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string; eventId: string }> {}
 
@@ -53,7 +56,7 @@ export class EventCrew extends React.Component<IEventCrewProps> {
 
   render() {
     const { eventCrewList, match } = this.props;
-    const { eventId } = this.props.match.params;
+    const eventId: number = parseInt(this.props.match.params.eventId, 10);
     return (
       <div>
         <EventModal
@@ -70,14 +73,15 @@ export class EventCrew extends React.Component<IEventCrewProps> {
         </div>
 
         <div className="mx-4">
-          <div className="text-center">
-            <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
-              <FontAwesomeIcon icon="plus" />
-              &nbsp;
-              <Translate contentKey="clubmanagementApp.eventCrew.home.createLabel">Add Event Crew</Translate>
-            </Link>
-          </div>
-
+          <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={eventId}>
+            <div className="text-center">
+              <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
+                <FontAwesomeIcon icon="plus" />
+                &nbsp;
+                <Translate contentKey="clubmanagementApp.eventCrew.home.createLabel">Add Event Crew</Translate>
+              </Link>
+            </div>
+          </AuthorizationChecker>
           <div className="table-responsive mt-4">
             {eventCrewList && eventCrewList.length > 0 ? (
               <EventTable users={eventCrewList} openModal={this.openModal} />

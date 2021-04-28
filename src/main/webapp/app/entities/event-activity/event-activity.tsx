@@ -15,6 +15,9 @@ import { ListingCard } from 'app/shared/components/listing-card/listing-card';
 import { convertDateTimeFromServerToLocaleDate } from 'app/shared/util/date-utils';
 import { convertDaysDurationToTimeFormat, timeFormatDurationToString } from 'app/shared/util/duration-utils';
 import '../../styles/event-module.scss';
+import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
+import EventRole from 'app/shared/model/enum/event-role.enum';
 
 export interface IEventActivityProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string; eventId: string }> {}
 
@@ -63,7 +66,7 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
 
   render() {
     const { eventActivityList, match, totalItems, selectedEventActivityId } = this.props;
-    const { eventId } = this.props.match.params;
+    const eventId: number = parseInt(this.props.match.params.eventId, 10);
     return (
       <div>
         <h2 id="event-activity-heading" className="event-module-heading">
@@ -73,14 +76,15 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
           <CustomTab tabList={eventTabList(eventId)} currentTab="Activities" />
         </div>
         <div className="mx-4">
-          <div className="text-center">
-            <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
-              <FontAwesomeIcon icon="plus" />
-              &nbsp;
-              <Translate contentKey="entity.action.add">Add</Translate>
-            </Link>
-          </div>
-
+          <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.CREW} eventId={eventId}>
+            <div className="text-center">
+              <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
+                <FontAwesomeIcon icon="plus" />
+                &nbsp;
+                <Translate contentKey="entity.action.add">Add</Translate>
+              </Link>
+            </div>
+          </AuthorizationChecker>
           <div>
             {eventActivityList && eventActivityList.length > 0 ? (
               eventActivityList.map((eventActivity, i) => (
