@@ -188,16 +188,15 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
 
         <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions} centered>
           <ModalHeader toggle={this.toggleShowOptions} />
-          <ModalBody>
+          <ModalBody className="px-4">
             <h2 className="text-center">Options</h2>
             <Button
               tag={Link}
               to={`${match.url}/${selectedEventBudgetId}/edit`}
               onClick={this.toggleShowOptions}
-              color="primary"
-              className="d-block mx-auto my-3 w-75"
+              color="secondary"
+              className="d-block mx-auto my-3 w-100"
             >
-              <FontAwesomeIcon icon="pencil-alt" />{' '}
               <span>
                 <Translate contentKey="entity.action.update">Update</Translate>
               </span>
@@ -207,9 +206,8 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
               to={`${match.url}/${selectedEventBudgetId}/delete`}
               onClick={this.toggleShowOptions}
               color="cancel"
-              className="d-block mx-auto my-3 w-75"
+              className="d-block mx-auto my-3 w-100"
             >
-              <FontAwesomeIcon icon="trash" />{' '}
               <span>
                 <Translate contentKey="entity.action.delete">Delete</Translate>
               </span>

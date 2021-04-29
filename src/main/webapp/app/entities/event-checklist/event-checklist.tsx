@@ -132,16 +132,15 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
           </div>
           <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions} centered>
             <ModalHeader toggle={this.toggleShowOptions} />
-            <ModalBody>
+            <ModalBody className="px-4">
               <h2 className="text-center">Options</h2>
               <Button
                 tag={Link}
                 to={`${match.url}/${selectedEventChecklistId}/edit`}
-                color="primary"
-                className="d-block mx-auto my-3 w-75"
+                color="secondary"
+                className="d-block mx-auto my-3 w-100"
                 onClick={this.toggleShowOptions}
               >
-                <FontAwesomeIcon icon="pencil-alt" />{' '}
                 <span>
                   <Translate contentKey="entity.action.update">Update</Translate>
                 </span>
@@ -150,10 +149,9 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
                 tag={Link}
                 to={`${match.url}/${selectedEventChecklistId}/delete`}
                 color="cancel"
-                className="d-block mx-auto my-3 w-75"
+                className="d-block mx-auto my-3 w-100"
                 onClick={this.toggleShowOptions}
               >
-                <FontAwesomeIcon icon="trash" />{' '}
                 <span>
                   <Translate contentKey="entity.action.delete">Delete</Translate>
                 </span>
