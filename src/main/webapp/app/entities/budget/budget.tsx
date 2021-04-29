@@ -186,7 +186,7 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
           </div>
         </div>
 
-        <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions}>
+        <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions} centered>
           <ModalHeader toggle={this.toggleShowOptions} />
           <ModalBody>
             <h2 className="text-center">Options</h2>

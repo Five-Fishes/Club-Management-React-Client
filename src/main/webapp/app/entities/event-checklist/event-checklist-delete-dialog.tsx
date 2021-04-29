@@ -29,7 +29,7 @@ export class EventChecklistDeleteDialog extends React.Component<IEventChecklistD
   render() {
     const { eventChecklistEntity } = this.props;
     return (
-      <Modal isOpen toggle={this.handleClose}>
+      <Modal isOpen toggle={this.handleClose} centered>
         <ModalHeader toggle={this.handleClose}>
           <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
         </ModalHeader>

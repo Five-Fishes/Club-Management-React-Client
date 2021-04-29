@@ -130,7 +130,7 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
               </div>
             )}
           </div>
-          <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions}>
+          <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions} centered>
             <ModalHeader toggle={this.toggleShowOptions} />
             <ModalBody>
               <h2 className="text-center">Options</h2>

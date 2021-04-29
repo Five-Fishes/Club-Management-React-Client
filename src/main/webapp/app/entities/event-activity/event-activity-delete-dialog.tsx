@@ -29,7 +29,7 @@ export class EventActivityDeleteDialog extends React.Component<IEventActivityDel
   render() {
     const { eventActivityEntity } = this.props;
     return (
-      <Modal isOpen toggle={this.handleClose}>
+      <Modal isOpen toggle={this.handleClose} centered>
         <ModalHeader toggle={this.handleClose}>
           <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
         </ModalHeader>

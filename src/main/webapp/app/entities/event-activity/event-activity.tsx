@@ -120,7 +120,7 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
           </div>
         </div>
 
-        <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions}>
+        <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions} centered>
           <ModalHeader toggle={this.toggleShowOptions} />
           <ModalBody>
             <h2 className="text-center">Options</h2>
