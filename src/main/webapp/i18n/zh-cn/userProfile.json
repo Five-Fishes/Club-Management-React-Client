@@ -1,0 +1,19 @@
+{
+  "clubmanagementApp": {
+    "userProfile": {
+      "firstName": "名",
+      "lastName": "姓",
+      "gender": "性别",
+      "phoneNumber": "电话号码",
+      "dateOfBirth": "出生日期",
+      "profileImage": "个人头像",
+      "genderValue": {
+        "MALE": "男",
+        "FEMALE": "女"
+      }
+    },
+    "completeProfile": {
+      "title": "完成个人资料"
+    }
+  }
+}
