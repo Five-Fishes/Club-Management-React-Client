@@ -1,0 +1,28 @@
+.status-tag {
+  border-radius: 8px;
+  text-align: center;
+  color: white;
+  width: 70px;
+  height: 15px;
+  font-size: 11px;
+  font-weight: 500;
+  margin: 3px;
+}
+
+.transaction-card {
+  padding: 15px;
+}
+
+.transaction-card h5,
+.transaction-card p {
+  margin: 3px;
+  color: black;
+}
+
+.pending-tag {
+  background: #dd5959;
+}
+
+.collected-tag {
+  background: #7ec073;
+}

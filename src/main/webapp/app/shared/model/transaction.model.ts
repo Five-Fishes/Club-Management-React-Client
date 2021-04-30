@@ -5,6 +5,11 @@ export const enum TransactionType {
   EXPENSE = 'EXPENSE'
 }
 
+export const enum TransactionStatus {
+  COLLECTED = 'COLLECTED',
+  PENDING = 'PENDING'
+}
+
 export interface ITransaction {
   id?: number;
   eventId?: number;
@@ -17,6 +22,7 @@ export interface ITransaction {
   fileType?: string;
   createdBy?: string;
   createdDate?: Moment;
+  status?: TransactionStatus;
 }
 
 export const defaultValue: Readonly<ITransaction> = {};
