@@ -28,7 +28,7 @@ export class BudgetDeleteDialog extends React.Component<IBudgetDeleteDialogProps
   render() {
     const { budgetEntity } = this.props;
     return (
-      <Modal isOpen toggle={this.handleClose}>
+      <Modal isOpen toggle={this.handleClose} centered>
         <ModalHeader toggle={this.handleClose}>
           <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
         </ModalHeader>
@@ -37,8 +37,8 @@ export class BudgetDeleteDialog extends React.Component<IBudgetDeleteDialogProps
             Are you sure you want to delete this Budget?
           </Translate>
         </ModalBody>
-        <ModalFooter clasName="justify-content-between mx-3">
-          <Button color="secondary" onClick={this.handleClose}>
+        <ModalFooter clasName="mx-3">
+          <Button className="mr-auto" color="secondary" onClick={this.handleClose}>
             <FontAwesomeIcon icon="ban" />
             &nbsp;
             <Translate contentKey="entity.action.cancel">Cancel</Translate>
