@@ -17,6 +17,9 @@ import { getEntityByEventIdAndUserId } from '../event-attendee/event-attendee.re
 import { APP_LOCAL_TIME_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { CustomTab } from 'app/shared/components/customTab/custom-tab';
 import { eventTabList } from 'app/shared/util/tab.constants';
+import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
+import EventRole from 'app/shared/model/enum/event-role.enum';
 
 export interface IEventDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -33,12 +36,11 @@ export class EventDetail extends React.Component<IEventDetailProps> {
 
   render() {
     const { eventEntity, eventAttendeeEntity } = this.props;
-    const eventId = this.props.match.params.id;
     return (
       <div>
         <h1 className="event-module-heading">Event Details</h1>
         <div className="my-3">
-          <CustomTab currentTab="Details" tabList={eventTabList(eventId)} />
+          <CustomTab currentTab="Details" tabList={eventTabList(eventEntity.id)} />
         </div>
         <div className="pt-3 mx-4">
           <img className="event-img" src={eventEntity.imageUrl} alt={eventEntity.fileName} />
@@ -75,9 +77,11 @@ export class EventDetail extends React.Component<IEventDetailProps> {
               <p>{eventEntity.description}</p>
             </div>
             <div className="d-flex flex-column">
-              <Button tag={Link} to={`/entity/event/${eventEntity.id}/edit`} className="my-1" color="secondary">
-                Update
-              </Button>
+              <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={eventEntity.id}>
+                <Button tag={Link} to={`/entity/event/${eventEntity.id}/edit`} className="my-1" color="secondary">
+                  Update
+                </Button>
+              </AuthorizationChecker>
               {eventAttendeeEntity.userId ? (
                 <Button
                   tag={Link}

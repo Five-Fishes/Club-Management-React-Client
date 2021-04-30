@@ -192,30 +192,34 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
           <ModalHeader toggle={this.toggleShowOptions} />
           <ModalBody>
             <h2 className="text-center">Options</h2>
-            <Button
-              tag={Link}
-              to={`${match.url}/${selectedEventBudgetId}/edit`}
-              onClick={this.toggleShowOptions}
-              color="primary"
-              className="d-block mx-auto my-3 w-75"
-            >
-              <FontAwesomeIcon icon="pencil-alt" />{' '}
-              <span>
-                <Translate contentKey="entity.action.update">Update</Translate>
-              </span>
-            </Button>
-            <Button
-              tag={Link}
-              to={`${match.url}/${selectedEventBudgetId}/delete`}
-              onClick={this.toggleShowOptions}
-              color="cancel"
-              className="d-block mx-auto my-3 w-75"
-            >
-              <FontAwesomeIcon icon="trash" />{' '}
-              <span>
-                <Translate contentKey="entity.action.delete">Delete</Translate>
-              </span>
-            </Button>
+            <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={eventId}>
+              <Button
+                tag={Link}
+                to={`${match.url}/${selectedEventBudgetId}/edit`}
+                onClick={this.toggleShowOptions}
+                color="primary"
+                className="d-block mx-auto my-3 w-75"
+              >
+                <FontAwesomeIcon icon="pencil-alt" />{' '}
+                <span>
+                  <Translate contentKey="entity.action.update">Update</Translate>
+                </span>
+              </Button>
+            </AuthorizationChecker>
+            <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={eventId}>
+              <Button
+                tag={Link}
+                to={`${match.url}/${selectedEventBudgetId}/delete`}
+                onClick={this.toggleShowOptions}
+                color="cancel"
+                className="d-block mx-auto my-3 w-75"
+              >
+                <FontAwesomeIcon icon="trash" />{' '}
+                <span>
+                  <Translate contentKey="entity.action.delete">Delete</Translate>
+                </span>
+              </Button>
+            </AuthorizationChecker>
           </ModalBody>
         </Modal>
       </div>

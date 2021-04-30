@@ -64,6 +64,11 @@ export class EventCrew extends React.Component<IEventCrewProps> {
           updatePath={`${match.url}/${this.state.eventCrewId}/edit`}
           deletePath={`${match.url}/${this.state.eventCrewId}/delete`}
           toggleModal={this.closeModal}
+          eventId={eventId}
+          updateCCRole={CCRole.ADMIN}
+          updateEventRole={EventRole.HEAD}
+          deleteCCRole={CCRole.ADMIN}
+          deleteEventRole={EventRole.HEAD}
         />
         <h1 id="event-crew-heading" className="event-module-heading">
           <Translate contentKey="clubmanagementApp.eventCrew.home.title">Event Crews</Translate>

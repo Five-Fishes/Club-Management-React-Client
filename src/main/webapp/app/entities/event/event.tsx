@@ -88,6 +88,11 @@ export class Event extends React.Component<IEventProps, IEventState> {
           updatePath={`${match.url}/${this.state.eventId}/edit`}
           deletePath={`${match.url}/${this.state.eventId}/delete`}
           toggleModal={this.closeModal}
+          eventId={this.state.eventId}
+          updateCCRole={CCRole.ADMIN}
+          updateEventRole={EventRole.HEAD}
+          deleteCCRole={CCRole.ADMIN}
+          deleteEventRole={EventRole.HEAD}
         />
         <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={this.state.eventId}>
           <Link to="/entity/event/new">
