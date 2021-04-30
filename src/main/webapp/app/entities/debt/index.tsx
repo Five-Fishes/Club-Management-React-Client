@@ -6,8 +6,6 @@ import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 import Debt from './debt';
 import DebtDetail from './debt-detail';
 import DebtUpdate from './debt-update';
-import DebtBadDebtDialog from './debt-bad-debt-dialog';
-import DebtCollectDialog from './debt-collect-dialog';
 
 const Routes = ({ match }) => (
   <>
@@ -17,8 +15,6 @@ const Routes = ({ match }) => (
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={DebtDetail} />
       <ErrorBoundaryRoute path={match.url} component={Debt} />
     </Switch>
-    <ErrorBoundaryRoute path={`${match.url}/:id/collect`} component={DebtCollectDialog} />
-    <ErrorBoundaryRoute path={`${match.url}/:id/badDebt`} component={DebtBadDebtDialog} />
   </>
 );
 
