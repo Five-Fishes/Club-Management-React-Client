@@ -1,3 +1,5 @@
+import { Moment } from 'moment';
+
 export const enum UserUniStatus {
   GRADUATED = 'GRADUATED',
   STUDYING = 'STUDYING',
@@ -15,6 +17,12 @@ export interface IUserUniInfo {
   yearOfStudy?: number;
   stayIn?: string;
   status?: UserUniStatus;
+  firstName?: string;
+  lastName?: string;
+  gender?: string;
+  phoneNumber?: string;
+  imageUrl?: string;
+  dateOfBirth?: Moment;
 }
 
 export const defaultValue: Readonly<IUserUniInfo> = {};

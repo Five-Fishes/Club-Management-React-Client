@@ -126,7 +126,10 @@
       "yes": "Yes",
       "no": "No",
       "register": "Register",
-      "deregister": "Deregister"
+      "deregister": "Deregister",
+      "complete": "Complete",
+      "collect": "Collect",
+      "badDebt": "Bad Debt"
     },
     "detail": {
       "field": "Field",

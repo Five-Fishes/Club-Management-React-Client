@@ -25,7 +25,8 @@
       "fileName": "File Name",
       "fileType": "File Type",
       "createdBy": "Created By",
-      "createdDate": "Created Date"
+      "createdDate": "Created Date",
+      "tab": "All Transactions"
     }
   }
 }

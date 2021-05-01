@@ -47,6 +47,7 @@ import { faCar } from '@fortawesome/free-solid-svg-icons/faCar';
 import { faWhatsappSquare } from '@fortawesome/free-brands-svg-icons/faWhatsappSquare';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSortAmountUp } from '@fortawesome/free-solid-svg-icons/faSortAmountUp';
+import { faEuroSign } from '@fortawesome/free-solid-svg-icons/faEuroSign';
 
 export const loadIcons = () => {
   library.add(
@@ -96,6 +97,7 @@ export const loadIcons = () => {
     faMapMarkerAlt,
     faMoneyBillAlt,
     faSortAmountUp,
-    faPlaneDeparture
+    faPlaneDeparture,
+    faEuroSign
   );
 };

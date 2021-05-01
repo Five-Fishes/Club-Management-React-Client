@@ -127,7 +127,10 @@
       "yes": "是",
       "no": "否",
       "register": "注册",
-      "deregister": "注销"
+      "deregister": "注销",
+      "complete": "完成",
+      "collect": "收钱",
+      "badDebt": "坏账"
     },
     "detail": {
       "field": "字段",

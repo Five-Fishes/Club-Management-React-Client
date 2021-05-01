@@ -45,3 +45,26 @@ export const eventTabList = (eventId: string): ITabInfo[] => [
     tabRoute: `/entity/event-crew/event/${eventId}`
   }
 ];
+
+export const financeTabList: ITabInfo[] = [
+  {
+    tabName: 'Report',
+    tabTranslateKey: 'clubmanagementApp.financeReport.tab',
+    tabRoute: '/entity/finance-report'
+  },
+  {
+    tabName: 'All Transactions',
+    tabTranslateKey: 'clubmanagementApp.transaction.tab',
+    tabRoute: '/entity/transaction'
+  },
+  {
+    tabName: 'Members Debt',
+    tabTranslateKey: 'clubmanagementApp.debt.tab',
+    tabRoute: '/entity/debt'
+  },
+  {
+    tabName: 'CC Debt',
+    tabTranslateKey: 'clubmanagementApp.claim.tab',
+    tabRoute: '/entity/claim'
+  }
+];
