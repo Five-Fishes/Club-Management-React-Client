@@ -13,7 +13,7 @@ import { IEventChecklist } from 'app/shared/model/event-checklist.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import '../../styles/event-module.scss';
-import { CustomTab } from 'app/shared/components/customTab/custom-tab';
+import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { eventTabList } from 'app/shared/util/tab.constants';
 import { ListingCard } from 'app/shared/components/listing-card/listing-card';
 import './eventChecklist.scss';

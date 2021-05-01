@@ -15,7 +15,7 @@ import {
 import { eventTabList } from 'app/shared/util/tab.constants';
 import classnames from 'classnames';
 import '../../styles/event-module.scss';
-import { CustomTab } from 'app/shared/components/customTab/custom-tab';
+import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { ListingCard } from 'app/shared/components/listing-card/listing-card';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

@@ -12,7 +12,7 @@ import { getEntities, getEventCrewByEventId } from './event-crew.reducer';
 import { IEventCrew, EventCrewRole } from 'app/shared/model/event-crew.model';
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import { CustomTab } from 'app/shared/components/customTab/custom-tab';
+import CustomTab from 'app/shared/components/customTab/custom-tab';
 import EventModal from 'app/shared/components/eventModal/event-modal';
 import { eventTabList } from 'app/shared/util/tab.constants';
 import { EventTable } from 'app/shared/components/eventTable/EventTable';

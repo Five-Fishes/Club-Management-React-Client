@@ -13,7 +13,7 @@ import '../../styles/finance-module.scss';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { ListingCard } from 'app/shared/components/listing-card/listing-card';
-import { CustomTab } from 'app/shared/components/customTab/custom-tab';
+import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { financeTabList } from 'app/shared/util/tab.constants';
 import moment from 'moment';
 

@@ -24,7 +24,7 @@ import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 
 import FloatButton from 'app/shared/components/floatButton/FloatButton';
 import EventModal from 'app/shared/components/eventModal/event-modal';
-import { CustomTab } from 'app/shared/components/customTab/custom-tab';
+import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { eventMainTabList } from 'app/shared/util/tab.constants';
 import './events.scss';
 import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';

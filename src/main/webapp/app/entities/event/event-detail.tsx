@@ -15,7 +15,7 @@ import { getEntityByEventIdAndUserId } from '../event-attendee/event-attendee.re
 
 // tslint:disable-next-line:no-unused-variable
 import { APP_LOCAL_TIME_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
-import { CustomTab } from 'app/shared/components/customTab/custom-tab';
+import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { eventTabList } from 'app/shared/util/tab.constants';
 import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
 import CCRole from 'app/shared/model/enum/cc-role.enum';

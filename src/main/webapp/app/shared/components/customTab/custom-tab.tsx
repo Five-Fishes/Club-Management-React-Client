@@ -1,16 +1,23 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { IRootState } from 'app/shared/reducers';
 import { ButtonGroup, Button } from 'reactstrap';
 import classnames from 'classnames';
 
 import './custom-tab.scss';
 import { Translate } from 'react-jhipster';
 import { Link } from 'react-router-dom';
-import AuthorizationChecker, { IAuthorizationCheckerOwnProps } from 'app/shared/components/authorization-checker/authorization-checker';
+import AuthorizationChecker, {
+  IAuthorizationCheckerOwnProps,
+  authorizationCheck
+} from 'app/shared/components/authorization-checker/authorization-checker';
 
-export interface ITabProps {
+interface ICustomTabOwnProps {
   currentTab: string;
   tabList: ITabInfo[];
 }
+
+interface ICustomTabProps extends ICustomTabOwnProps, StateProps {}
 
 export interface ITabInfo extends IAuthorizationCheckerOwnProps {
   tabName: string;
@@ -18,13 +25,22 @@ export interface ITabInfo extends IAuthorizationCheckerOwnProps {
   tabRoute: string;
 }
 
-export class CustomTab extends React.Component<ITabProps, {}> {
+class CustomTab extends React.Component<ICustomTabProps, {}> {
   constructor(props) {
     super(props);
   }
 
   render() {
     const { tabList, currentTab } = this.props;
+    const tabsThatWillBeShow = tabList.filter(tabInfo => {
+      const { eventId } = tabInfo;
+      const { eventHeadEventIds, eventCrewEventIds } = this.props;
+      const isEventHead = eventId && eventHeadEventIds.includes(eventId);
+      const isEventCrew = eventId && eventCrewEventIds.includes(eventId);
+      const authorizationState = { ...this.props, isEventHead, isEventCrew };
+      return authorizationCheck(tabInfo, authorizationState);
+    });
+    if (tabsThatWillBeShow.length < 2) return null;
     return (
       <div className="overflow-x-scroll tab-x-space">
         <div className="tab-container my-2 text-center">
@@ -39,6 +55,12 @@ export class CustomTab extends React.Component<ITabProps, {}> {
   }
 }
 
+const mapStateToProps = ({ authentication }: IRootState) => authentication;
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+
+export default connect(mapStateToProps)(CustomTab);
+
 interface ITabItemProps {
   currentTab: string;
   tabInfo: ITabInfo;
@@ -46,9 +68,10 @@ interface ITabItemProps {
 
 const TabItem: React.FC<ITabItemProps> = ({ currentTab, tabInfo }) => {
   const isCurrentTab: boolean = tabInfo.tabName === currentTab;
+  const btnClassName = classnames('tab-item', isCurrentTab ? 'active-tab' : '');
   return (
     <AuthorizationChecker {...tabInfo}>
-      <Button id="tab-btn" color="#07ADE1" className={classnames('tab-item', isCurrentTab ? 'active-tab' : '')}>
+      <Button id="tab-btn" color="#07ADE1" className={btnClassName}>
         <Link to={tabInfo.tabRoute} className="link-unstyled">
           <Translate contentKey={tabInfo.tabTranslateKey}>{tabInfo.tabName}</Translate>
         </Link>
