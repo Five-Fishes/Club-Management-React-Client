@@ -12,8 +12,7 @@ export interface IListingCardOwnProps {
   actionMenuAuthorizationProps?: IAuthorizationCheckerOwnProps;
 }
 
-interface IListingCardProps extends StateProps, IListingCardOwnProps {}
-export class ListingCard extends React.Component<IListingCardProps> {
+export class ListingCard extends React.Component<IListingCardOwnProps> {
   constructor(props) {
     super(props);
   }
@@ -43,5 +42,4 @@ export class ListingCard extends React.Component<IListingCardProps> {
   }
 }
 
-interface StateProps {}
 export default ListingCard;

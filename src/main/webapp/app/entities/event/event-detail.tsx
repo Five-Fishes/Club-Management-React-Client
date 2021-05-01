@@ -15,14 +15,12 @@ import { getEntity } from './event.reducer';
 import { getEntityByEventIdAndUserId } from '../event-attendee/event-attendee.reducer';
 
 // tslint:disable-next-line:no-unused-variable
-import { APP_LOCAL_TIME_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { eventTabList } from 'app/shared/util/tab.constants';
 import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
 import CCRole from 'app/shared/model/enum/cc-role.enum';
 import EventRole from 'app/shared/model/enum/event-role.enum';
 import { APP_DATE_12_FORMAT } from 'app/config/constants';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 
 export interface IEventDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
