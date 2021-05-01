@@ -93,6 +93,11 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
                   showActionMenu
                   title={eventActivity.name}
                   actionMenuHandler={this.showCardAction.bind(this, eventActivity.id)}
+                  actionMenuAuthorizationProps={{
+                    ccRole: CCRole.ADMIN,
+                    eventRole: EventRole.CREW,
+                    eventId: eventActivity.eventId
+                  }}
                 >
                   <span className="card-item d-block mb-2">
                     <span>

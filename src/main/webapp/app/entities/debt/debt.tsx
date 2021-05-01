@@ -16,6 +16,7 @@ import { ListingCard } from 'app/shared/components/listing-card/listing-card';
 import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { financeTabList } from 'app/shared/util/tab.constants';
 import moment from 'moment';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
 
 export interface IDebtProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -90,6 +91,9 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
                   title={debt.eventName}
                   date={moment(debt.createdDate).format(APP_LOCAL_DATE_FORMAT)}
                   actionMenuHandler={this.showCardAction.bind(this, debt.id)}
+                  actionMenuAuthorizationProps={{
+                    ccRole: CCRole.ADMIN
+                  }}
                 >
                   <span className="card-item d-block mb-1">
                     <span>

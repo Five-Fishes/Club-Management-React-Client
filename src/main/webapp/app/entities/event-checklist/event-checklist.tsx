@@ -96,6 +96,11 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
                   showActionMenu
                   title={eventChecklist.name}
                   actionMenuHandler={this.showCardAction.bind(this, eventChecklist.id)}
+                  actionMenuAuthorizationProps={{
+                    ccRole: CCRole.ADMIN,
+                    eventRole: EventRole.CREW,
+                    eventId: eventChecklist.eventId
+                  }}
                 >
                   <span className="card-item d-block mb-2">
                     <span>

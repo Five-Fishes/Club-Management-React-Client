@@ -2,37 +2,46 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Row, Col } from 'reactstrap';
 import './listing-card.scss';
+import AuthorizationChecker, { IAuthorizationCheckerOwnProps } from '../authorization-checker/authorization-checker';
 
-export interface IListingCardProps {
+export interface IListingCardOwnProps {
   showActionMenu: boolean;
   actionMenuHandler?: (event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
   title?: string;
   date?: any;
+  actionMenuAuthorizationProps?: IAuthorizationCheckerOwnProps;
 }
 
+interface IListingCardProps extends StateProps, IListingCardOwnProps {}
 export class ListingCard extends React.Component<IListingCardProps> {
   constructor(props) {
     super(props);
   }
 
   render() {
+    const { showActionMenu, actionMenuHandler, title, date, actionMenuAuthorizationProps, children } = this.props;
     return (
       <div className="card-container container my-3">
         <Row className="align-items-center justify-content-center">
           <Col xs="10">
-            {Boolean(this.props.title) && <span className="font-weight-bold text-dark d-inline-block mb-1">{this.props.title}</span>}
-            {Boolean(this.props.date) && <span className="d-inline-block mb-1 float-right">{this.props.date}</span>}
-            {this.props.children}
+            {Boolean(title) && <span className="font-weight-bold text-dark d-inline-block mb-1">{title}</span>}
+            {Boolean(date) && <span className="d-inline-block mb-1 float-right">{date}</span>}
+            {children}
           </Col>
-          {this.props.showActionMenu && (
-            <Col xs="1">
-              <span onClick={this.props.actionMenuHandler} className="hand">
-                <FontAwesomeIcon icon="ellipsis-v" />
-              </span>
-            </Col>
+          {showActionMenu && (
+            <AuthorizationChecker {...actionMenuAuthorizationProps}>
+              <Col xs="1">
+                <span onClick={actionMenuHandler} className="hand">
+                  <FontAwesomeIcon icon="ellipsis-v" />
+                </span>
+              </Col>
+            </AuthorizationChecker>
           )}
         </Row>
       </div>
     );
   }
 }
+
+interface StateProps {}
+export default ListingCard;

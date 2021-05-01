@@ -151,6 +151,11 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
                   key={`event-budget-${eventBudget.id}`}
                   showActionMenu
                   actionMenuHandler={this.showCardAction.bind(this, eventBudget.id)}
+                  actionMenuAuthorizationProps={{
+                    ccRole: CCRole.ADMIN,
+                    eventRole: EventRole.HEAD,
+                    eventId: eventBudget.eventId
+                  }}
                 >
                   <span
                     className={classnames(
