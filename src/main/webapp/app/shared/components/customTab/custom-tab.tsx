@@ -5,13 +5,14 @@ import classnames from 'classnames';
 import './custom-tab.scss';
 import { Translate } from 'react-jhipster';
 import { Link } from 'react-router-dom';
+import AuthorizationChecker, { IAuthorizationCheckerOwnProps } from 'app/shared/components/authorization-checker/authorization-checker';
 
 export interface ITabProps {
   currentTab: string;
   tabList: ITabInfo[];
 }
 
-export interface ITabInfo {
+export interface ITabInfo extends IAuthorizationCheckerOwnProps {
   tabName: string;
   tabTranslateKey: string;
   tabRoute: string;
@@ -23,11 +24,14 @@ export class CustomTab extends React.Component<ITabProps, {}> {
   }
 
   render() {
+    const { tabList, currentTab } = this.props;
     return (
       <div className="overflow-x-scroll tab-x-space">
         <div className="tab-container my-2 text-center">
           <ButtonGroup className="w-100 px-3">
-            <TabItems itemsList={this.props.tabList} activeTab={this.props.currentTab} />
+            {tabList.map(tabInfo => (
+              <TabItem key={tabInfo.tabName} currentTab={currentTab} tabInfo={tabInfo} />
+            ))}
           </ButtonGroup>
         </div>
       </div>
@@ -35,16 +39,20 @@ export class CustomTab extends React.Component<ITabProps, {}> {
   }
 }
 
-const TabItems = ({ itemsList, activeTab }) =>
-  itemsList.map(item => (
-    <Button
-      key={item.tabName}
-      id="tab-btn"
-      color="#07ADE1"
-      className={classnames('tab-item', item.tabName === activeTab ? 'active-tab' : '')}
-    >
-      <Link to={item.tabRoute} className="link-unstyled">
-        <Translate contentKey={item.tabTranslateKey}>{item.tabName}</Translate>
-      </Link>
-    </Button>
-  ));
+interface ITabItemProps {
+  currentTab: string;
+  tabInfo: ITabInfo;
+}
+
+const TabItem: React.FC<ITabItemProps> = ({ currentTab, tabInfo }) => {
+  const isCurrentTab: boolean = tabInfo.tabName === currentTab;
+  return (
+    <AuthorizationChecker {...tabInfo}>
+      <Button id="tab-btn" color="#07ADE1" className={classnames('tab-item', isCurrentTab ? 'active-tab' : '')}>
+        <Link to={tabInfo.tabRoute} className="link-unstyled">
+          <Translate contentKey={tabInfo.tabTranslateKey}>{tabInfo.tabName}</Translate>
+        </Link>
+      </Button>
+    </AuthorizationChecker>
+  );
+};
