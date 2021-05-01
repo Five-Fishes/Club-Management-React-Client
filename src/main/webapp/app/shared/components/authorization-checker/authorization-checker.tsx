@@ -4,7 +4,9 @@ import { IRootState } from 'app/shared/reducers';
 import CCRole from 'app/shared/model/enum/cc-role.enum';
 import EventRole from 'app/shared/model/enum/event-role.enum';
 
-interface IAuthorizationCheckerOwnProps {
+export interface IAuthorizationCheckerOwnProps {
+  isPublic?: boolean;
+  asLongAsIsAuthenticated?: boolean;
   ccRole?: CCRole;
   eventRole?: EventRole;
   eventId?: number;
@@ -21,10 +23,12 @@ class AuthorizationChecker extends React.Component<IAuthorizationCheckerProps, {
   render() {
     const {
       children,
+      isPublic,
+      asLongAsIsAuthenticated,
       ccRole,
       eventRole,
-      fallbackEl,
       eventId,
+      fallbackEl,
       isAuthenticated,
       isCurrentCCHead,
       isCurrentAdministrator,
@@ -50,8 +54,9 @@ class AuthorizationChecker extends React.Component<IAuthorizationCheckerProps, {
       const hasPassEventCrewCheck = isOnlyEventCrewCanView && isEventCrew;
       hasPassEventRoleChecking = hasPassEventHeadCheck || hasPassEventCrewCheck;
     }
-    const hasPassChecking = hasPassCCRoleChecking || hasPassEventRoleChecking;
-    const canRender = isAuthenticated && hasPassChecking;
+    const hasPassRoleChecking = hasPassCCRoleChecking || hasPassEventRoleChecking;
+    const hasPassAuthenticatedChecking = asLongAsIsAuthenticated && isAuthenticated;
+    const canRender = isPublic || hasPassAuthenticatedChecking || hasPassRoleChecking;
     if (!canRender) return fallbackEl || null;
     return children;
   }
