@@ -110,10 +110,16 @@ export default (state: EventState = initialState, action): EventState => {
 
 const apiUrl = 'api/events';
 
-// Actions
+export const getUpcomingEntities: ICrudGetAllAction<IEvent> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}/upcoming${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_EVENT_LIST,
+    payload: axios.get<IEvent>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+  };
+};
 
-export const getEntities: ICrudGetAllAction<IEvent> = (page, size, sort) => {
-  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+export const getPreviousEntities: ICrudGetAllAction<IEvent> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}/past${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_EVENT_LIST,
     payload: axios.get<IEvent>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
@@ -133,7 +139,7 @@ export const createEntity: ICrudPutAction<IEvent> = entity => async dispatch => 
     type: ACTION_TYPES.CREATE_EVENT,
     payload: axios.post(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  dispatch(getUpcomingEntities());
   return result;
 };
 
@@ -142,7 +148,7 @@ export const updateEntity: ICrudPutAction<IEvent> = entity => async dispatch => 
     type: ACTION_TYPES.UPDATE_EVENT,
     payload: axios.put(apiUrl, cleanEntity(entity))
   });
-  dispatch(getEntities());
+  dispatch(getUpcomingEntities());
   return result;
 };
 
@@ -152,7 +158,7 @@ export const deleteEntity: ICrudDeleteAction<IEvent> = id => async dispatch => {
     type: ACTION_TYPES.DELETE_EVENT,
     payload: axios.delete(requestUrl)
   });
-  dispatch(getEntities());
+  dispatch(getUpcomingEntities());
   return result;
 };
 

@@ -98,8 +98,10 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
                   </span>
                   <span className="card-item d-block mb-2">
                     <span>
-                      <Translate contentKey="clubmanagementApp.eventActivity.duration">Duration (In Day)</Translate>:{' '}
-                      <span>{timeFormatDurationToString(convertDaysDurationToTimeFormat(eventActivity.durationInDay))}</span>
+                      <Translate contentKey="clubmanagementApp.eventActivity.duration">Duration</Translate>:{' '}
+                      <span className="font-weight-bolder text-dark">
+                        {timeFormatDurationToString(convertDaysDurationToTimeFormat(eventActivity.durationInDay))}
+                      </span>
                     </span>
                   </span>
                   <span className="card-item d-block">
@@ -118,18 +120,17 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
           </div>
         </div>
 
-        <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions}>
+        <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions} centered>
           <ModalHeader toggle={this.toggleShowOptions} />
-          <ModalBody>
+          <ModalBody className="px-4">
             <h2 className="text-center">Options</h2>
             <Button
               tag={Link}
               to={`${match.url}/${selectedEventActivityId}/edit`}
               onClick={this.toggleShowOptions}
-              color="primary"
-              className="d-block mx-auto my-3 w-75"
+              color="secondary"
+              className="d-block mx-auto my-3 w-100"
             >
-              <FontAwesomeIcon icon="pencil-alt" />{' '}
               <span>
                 <Translate contentKey="entity.action.update">Update</Translate>
               </span>
@@ -139,9 +140,8 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
               to={`${match.url}/${selectedEventActivityId}/delete`}
               onClick={this.toggleShowOptions}
               color="cancel"
-              className="d-block mx-auto my-3 w-75"
+              className="d-block mx-auto my-3 w-100"
             >
-              <FontAwesomeIcon icon="trash" />{' '}
               <span>
                 <Translate contentKey="entity.action.delete">Delete</Translate>
               </span>

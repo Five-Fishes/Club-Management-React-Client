@@ -3,7 +3,16 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 // tslint:disable-next-line:no-unused-variable
-import { byteSize, Translate, ICrudGetAllAction, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
+import {
+  byteSize,
+  Translate,
+  translate,
+  ICrudGetAllAction,
+  getSortState,
+  IPaginationBaseState,
+  JhiPagination,
+  JhiItemCount
+} from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -95,17 +104,21 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
                 >
                   <span className="card-item d-block mb-2">
                     <span>
-                      <Translate contentKey="clubmanagementApp.eventChecklist.type">Type</Translate>:
-                      <span className="font-weight-bolder text-dark">{eventChecklist.type}</span>
+                      <Translate contentKey="clubmanagementApp.eventChecklist.type">Type</Translate>:{' '}
+                      <span className="font-weight-bolder text-dark">
+                        {translate(`clubmanagementApp.EventChecklistType.${eventChecklist.type}`)}
+                      </span>
                     </span>
                     <span className="float-right">
-                      <Translate contentKey="clubmanagementApp.eventChecklist.status">Status</Translate>:
-                      <span className="font-weight-bolder text-dark">{eventChecklist.status}</span>
+                      <Translate contentKey="clubmanagementApp.eventChecklist.status">Status</Translate>:{' '}
+                      <span className="font-weight-bolder text-dark">
+                        {translate(`clubmanagementApp.EventChecklistStatus.${eventChecklist.status}`)}
+                      </span>
                     </span>
                   </span>
                   <span className="card-item d-block">
                     <span>
-                      <Translate contentKey="clubmanagementApp.eventChecklist.description">Description</Translate>:
+                      <Translate contentKey="clubmanagementApp.eventChecklist.description">Description</Translate>:{' '}
                       <span className="font-weight-bolder text-dark">{eventChecklist.description}</span>
                     </span>
                   </span>
@@ -117,18 +130,17 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
               </div>
             )}
           </div>
-          <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions}>
+          <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions} centered>
             <ModalHeader toggle={this.toggleShowOptions} />
-            <ModalBody>
+            <ModalBody className="px-4">
               <h2 className="text-center">Options</h2>
               <Button
                 tag={Link}
                 to={`${match.url}/${selectedEventChecklistId}/edit`}
-                color="primary"
-                className="d-block mx-auto my-3 w-75"
+                color="secondary"
+                className="d-block mx-auto my-3 w-100"
                 onClick={this.toggleShowOptions}
               >
-                <FontAwesomeIcon icon="pencil-alt" />{' '}
                 <span>
                   <Translate contentKey="entity.action.update">Update</Translate>
                 </span>
@@ -137,10 +149,9 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
                 tag={Link}
                 to={`${match.url}/${selectedEventChecklistId}/delete`}
                 color="cancel"
-                className="d-block mx-auto my-3 w-75"
+                className="d-block mx-auto my-3 w-100"
                 onClick={this.toggleShowOptions}
               >
-                <FontAwesomeIcon icon="trash" />{' '}
                 <span>
                   <Translate contentKey="entity.action.delete">Delete</Translate>
                 </span>

@@ -29,14 +29,14 @@ export class EventAttendeeDeleteDialog extends React.Component<IEventAttendeeDel
   render() {
     const { eventAttendeeEntity } = this.props;
     return (
-      <Modal isOpen toggle={this.handleClose}>
+      <Modal isOpen toggle={this.handleClose} centered>
         <ModalHeader toggle={this.handleClose}>
           <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
         </ModalHeader>
         <ModalBody id="clubmanagementApp.eventAttendee.delete.question">
           <Translate contentKey="clubmanagementApp.eventAttendee.delete.question">Are you sure you want to unregister?</Translate>
         </ModalBody>
-        <ModalFooter>
+        <ModalFooter clasName="justify-content-between mx-3">
           <Button color="secondary" onClick={this.handleClose}>
             <FontAwesomeIcon icon="ban" />
             &nbsp;

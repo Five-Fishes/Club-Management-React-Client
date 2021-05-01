@@ -29,7 +29,7 @@ export class EventActivityDeleteDialog extends React.Component<IEventActivityDel
   render() {
     const { eventActivityEntity } = this.props;
     return (
-      <Modal isOpen toggle={this.handleClose}>
+      <Modal isOpen toggle={this.handleClose} centered>
         <ModalHeader toggle={this.handleClose}>
           <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
         </ModalHeader>
@@ -38,8 +38,8 @@ export class EventActivityDeleteDialog extends React.Component<IEventActivityDel
             Are you sure you want to delete this EventActivity?
           </Translate>
         </ModalBody>
-        <ModalFooter className="justify-content-between mx-3">
-          <Button color="secondary" onClick={this.handleClose}>
+        <ModalFooter className="mx-3">
+          <Button className="mr-auto" color="secondary" onClick={this.handleClose}>
             <FontAwesomeIcon icon="ban" />
             &nbsp;
             <Translate contentKey="entity.action.cancel">Cancel</Translate>
