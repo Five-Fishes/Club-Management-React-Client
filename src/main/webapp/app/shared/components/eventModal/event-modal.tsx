@@ -2,9 +2,7 @@ import React from 'react';
 import { Modal, ModalBody, ModalHeader, Button } from 'reactstrap';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { Translate } from 'react-jhipster';
-import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
-import CCRole from 'app/shared/model/enum/cc-role.enum';
-import EventRole from 'app/shared/model/enum/event-role.enum';
+import AuthorizationChecker, { IAuthorizationCheckerOwnProps } from 'app/shared/components/authorization-checker/authorization-checker';
 
 import './event-modal.scss';
 export interface IEventModalProps extends RouteComponentProps {
@@ -12,26 +10,13 @@ export interface IEventModalProps extends RouteComponentProps {
   toggleModal: Function;
   updatePath: string;
   deletePath: string;
-  eventId: number;
-  updateCCRole?: CCRole;
-  updateEventRole?: EventRole;
-  deleteCCRole?: CCRole;
-  deleteEventRole?: EventRole;
+  updateBtnAuthorizationProps: IAuthorizationCheckerOwnProps;
+  deleteBtnAuthorizationProps: IAuthorizationCheckerOwnProps;
 }
 
 class EventModal extends React.Component<IEventModalProps> {
   render() {
-    const {
-      isOpen,
-      toggleModal,
-      updatePath,
-      deletePath,
-      eventId,
-      updateCCRole,
-      updateEventRole,
-      deleteCCRole,
-      deleteEventRole
-    } = this.props;
+    const { isOpen, toggleModal, updatePath, deletePath, updateBtnAuthorizationProps, deleteBtnAuthorizationProps } = this.props;
     return (
       <Modal size="sm" centered isOpen={isOpen}>
         <ModalHeader toggle={toggleModal} className="event-modal-header" />
@@ -40,13 +25,13 @@ class EventModal extends React.Component<IEventModalProps> {
             <Translate contentKey="global.menu.entities.options">Options</Translate>{' '}
           </h2>
           <div className="d-flex flex-column mt-4">
-            <AuthorizationChecker ccRole={updateCCRole} eventRole={updateEventRole} eventId={eventId}>
+            <AuthorizationChecker {...updateBtnAuthorizationProps}>
               <Button tag={Link} to={updatePath} color="secondary">
                 <Translate contentKey="entity.action.update">Update</Translate>
               </Button>
             </AuthorizationChecker>
             <br />
-            <AuthorizationChecker ccRole={deleteCCRole} eventRole={deleteEventRole} eventId={eventId}>
+            <AuthorizationChecker {...deleteBtnAuthorizationProps}>
               <Button tag={Link} to={deletePath} color="cancel">
                 <Translate contentKey="entity.action.delete">Delete</Translate>
               </Button>

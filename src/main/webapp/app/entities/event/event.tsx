@@ -81,21 +81,27 @@ export class Event extends React.Component<IEventProps, IEventState> {
 
   render() {
     const { eventList, match, totalItems } = this.props;
+    const { eventId } = this.state;
     const tab = this.getTab();
     return (
       <Container>
         <EventModal
           isOpen={this.state.modalIsOpen}
-          updatePath={`${match.url}/${this.state.eventId}/edit`}
-          deletePath={`${match.url}/${this.state.eventId}/delete`}
+          updatePath={`${match.url}/${eventId}/edit`}
+          deletePath={`${match.url}/${eventId}/delete`}
           toggleModal={this.closeModal}
-          eventId={this.state.eventId}
-          updateCCRole={CCRole.ADMIN}
-          updateEventRole={EventRole.HEAD}
-          deleteCCRole={CCRole.ADMIN}
-          deleteEventRole={EventRole.HEAD}
+          updateBtnAuthorizationProps={{
+            eventId,
+            ccRole: CCRole.ADMIN,
+            eventRole: EventRole.HEAD
+          }}
+          deleteBtnAuthorizationProps={{
+            eventId,
+            ccRole: CCRole.ADMIN,
+            eventRole: EventRole.HEAD
+          }}
         />
-        <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={this.state.eventId}>
+        <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={eventId}>
           <Link to="/entity/event/new">
             <FloatButton />
           </Link>
