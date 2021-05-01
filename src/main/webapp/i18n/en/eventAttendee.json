@@ -30,7 +30,8 @@
       "eventId": "Event Id",
       "tab": "Attendees",
       "userName": "User Name",
-      "session": "Session"
+      "session": "Session",
+      "provideTransport": "Provide Transport"
     }
   }
 }

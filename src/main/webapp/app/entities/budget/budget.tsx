@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, Button } from 'reactstrap';
-import { getSortState, IPaginationBaseState, Translate } from 'react-jhipster';
+import { getSortState, IPaginationBaseState, Translate, translate } from 'react-jhipster';
 
 import { IRootState } from 'app/shared/reducers';
 import {
@@ -174,7 +174,9 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
                   <span className="card-item d-block mb-2">
                     <span>
                       <Translate contentKey="clubmanagementApp.eventBudget.type">Type</Translate>:{' '}
-                      <span className="font-weight-bolder text-dark">{eventBudget.type}</span>
+                      <span className="font-weight-bolder text-dark">
+                        {translate(`clubmanagementApp.TransactionType.${eventBudget.type}`)}
+                      </span>
                     </span>
                   </span>
                   <span className="card-item d-block mb-2">
@@ -193,19 +195,18 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
           </div>
         </div>
 
-        <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions}>
+        <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions} centered>
           <ModalHeader toggle={this.toggleShowOptions} />
-          <ModalBody>
+          <ModalBody className="px-4">
             <h2 className="text-center">Options</h2>
             <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={eventId}>
               <Button
                 tag={Link}
                 to={`${match.url}/${selectedEventBudgetId}/edit`}
                 onClick={this.toggleShowOptions}
-                color="primary"
-                className="d-block mx-auto my-3 w-75"
+                color="secondary"
+                className="d-block mx-auto my-3 w-100"
               >
-                <FontAwesomeIcon icon="pencil-alt" />{' '}
                 <span>
                   <Translate contentKey="entity.action.update">Update</Translate>
                 </span>
@@ -217,9 +218,8 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
                 to={`${match.url}/${selectedEventBudgetId}/delete`}
                 onClick={this.toggleShowOptions}
                 color="cancel"
-                className="d-block mx-auto my-3 w-75"
+                className="d-block mx-auto my-3 w-100"
               >
-                <FontAwesomeIcon icon="trash" />{' '}
                 <span>
                   <Translate contentKey="entity.action.delete">Delete</Translate>
                 </span>

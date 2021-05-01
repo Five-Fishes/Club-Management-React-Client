@@ -102,7 +102,8 @@
       "id": "ID"
     },
     "select": {
-      "selectOne": "选择"
+      "selectOne": "选择",
+      "selectUser": "选择一个用户"
     },
     "ribbon": {
       "dev": "Development"
@@ -120,12 +121,13 @@
       "edit": "编辑",
       "create": "创建",
       "update": "更新",
-      "open": "Open",
+      "open": "打开",
       "save": "保存",
       "view": "查看",
       "yes": "是",
       "no": "否",
       "register": "注册",
+      "deregister": "注销",
       "complete": "完成",
       "collect": "收钱",
       "badDebt": "坏账"
@@ -159,6 +161,7 @@
     "userexists": "该用户名已存在!",
     "emailexists": "该邮箱已被使用!",
     "idexists": "新建的 {{entityName}} 不能包含ID",
+    "noname": "新建的 {{entityName}} 不能没有名字",
     "idnull": "Invalid ID"
   },
   "footer": "马大叁舍 ~ 鱼之家 @ 2020"

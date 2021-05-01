@@ -26,8 +26,16 @@ export interface ITabInfo extends IAuthorizationCheckerOwnProps {
 }
 
 class CustomTab extends React.Component<ICustomTabProps, {}> {
+  private scrollerRef;
+
   constructor(props) {
     super(props);
+    this.scrollerRef = React.createRef();
+  }
+
+  componentDidMount() {
+    const tabPos = this.props.tabList.findIndex(tabItem => tabItem.tabName === this.props.currentTab);
+    this.scrollerRef.current.scrollLeft = tabPos * 50;
   }
 
   render() {
@@ -42,7 +50,7 @@ class CustomTab extends React.Component<ICustomTabProps, {}> {
     });
     if (tabsThatWillBeShow.length < 2) return null;
     return (
-      <div className="overflow-x-scroll tab-x-space">
+      <div className="overflow-x-scroll tab-x-space" ref={this.scrollerRef}>
         <div className="tab-container my-2 text-center">
           <ButtonGroup className="w-100 px-3">
             {tabList.map(tabInfo => (
@@ -71,10 +79,8 @@ const TabItem: React.FC<ITabItemProps> = ({ currentTab, tabInfo }) => {
   const btnClassName = classnames('tab-item', isCurrentTab ? 'active-tab' : '');
   return (
     <AuthorizationChecker {...tabInfo}>
-      <Button id="tab-btn" color="#07ADE1" className={btnClassName}>
-        <Link to={tabInfo.tabRoute} className="link-unstyled">
-          <Translate contentKey={tabInfo.tabTranslateKey}>{tabInfo.tabName}</Translate>
-        </Link>
+      <Button key={tabInfo.tabName} id="tab-btn" color="#07ADE1" className={btnClassName} tag={Link} to={tabInfo.tabRoute}>
+        <Translate contentKey={tabInfo.tabTranslateKey}>{tabInfo.tabName}</Translate>
       </Button>
     </AuthorizationChecker>
   );
