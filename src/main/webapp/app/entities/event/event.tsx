@@ -20,6 +20,7 @@ import './events.scss';
 import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
 import CCRole from 'app/shared/model/enum/cc-role.enum';
 import EventRole from 'app/shared/model/enum/event-role.enum';
+import { IEvent } from 'app/shared/model/event.model';
 
 export interface IEventProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -123,7 +124,12 @@ export class Event extends React.Component<IEventProps, IEventState> {
   }
 }
 
-const EventCard = ({ event, toggleModal }) => {
+interface IEventCardProps {
+  event: IEvent;
+  toggleModal: (eventId: number) => void;
+}
+
+const EventCard: React.FC<IEventCardProps> = ({ event, toggleModal }) => {
   const onToggleModal = () => toggleModal(event.id);
   return (
     <Card className="p-3 pt-4 event-card">
@@ -138,9 +144,11 @@ const EventCard = ({ event, toggleModal }) => {
           />
         </Col>
         <Col xs="8" lg="7">
-          <Button color="link" className="option-icon p-0" onClick={onToggleModal}>
-            <FontAwesomeIcon icon={'ellipsis-h'} />
-          </Button>
+          <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={event.id}>
+            <Button color="link" className="option-icon p-0" onClick={onToggleModal}>
+              <FontAwesomeIcon icon={'ellipsis-h'} />
+            </Button>
+          </AuthorizationChecker>
           <div className="my-auto">
             <Link to={`/entity/event/${event.id}`}>
               <h4 className="event-title">{event.name}</h4>
