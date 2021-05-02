@@ -32,7 +32,7 @@ const AppRouteComponent: React.FC<IAppRouteProps> = (props: IAppRouteProps) => {
       />
     );
   }
-  if (!isProfileCompleted) {
+  if (!isPublic && !isProfileCompleted) {
     return (
       <ErrorBoundary>
         <CompleteUserProfile />
