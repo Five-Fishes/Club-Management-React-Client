@@ -60,7 +60,12 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
   };
 
   render() {
-    const { users, account, match, totalItems } = this.props;
+    const {
+      users,
+      authentication: { id: currentUserId },
+      match,
+      totalItems
+    } = this.props;
     return (
       <div>
         <h2 id="user-management-page-heading">
@@ -164,7 +169,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                       to={`${match.url}/${user.login}/delete`}
                       color="danger"
                       size="sm"
-                      disabled={account.login === user.login}
+                      disabled={currentUserId === user.id}
                     >
                       <FontAwesomeIcon icon="trash" />{' '}
                       <span className="d-none d-md-inline">
@@ -199,7 +204,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
 const mapStateToProps = (storeState: IRootState) => ({
   users: storeState.userManagement.users,
   totalItems: storeState.userManagement.totalItems,
-  account: storeState.authentication.account
+  authentication: storeState.authentication
 });
 
 const mapDispatchToProps = { getUsers, updateUser };
