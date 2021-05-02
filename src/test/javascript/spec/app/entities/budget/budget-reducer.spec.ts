@@ -15,7 +15,7 @@ import reducer, {
   reset
 } from 'app/entities/budget/budget.reducer';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { IBudget, defaultValue } from 'app/shared/model/budget.model';
+import { IBudget, defaultValue, defaultEventBudgetTotal } from 'app/shared/model/budget.model';
 
 // tslint:disable no-invalid-template-strings
 describe('Entities reducer tests', () => {
@@ -33,7 +33,12 @@ describe('Entities reducer tests', () => {
     entities: [] as ReadonlyArray<IBudget>,
     entity: defaultValue,
     updating: false,
-    updateSuccess: false
+    totalItems: 0,
+    updateSuccess: false,
+    selectedEventBudgetId: 0,
+    showActionOptions: false,
+    eventBudgetTotal: defaultEventBudgetTotal,
+    eventRealTotal: defaultEventBudgetTotal
   };
 
   function testInitialState(state) {
