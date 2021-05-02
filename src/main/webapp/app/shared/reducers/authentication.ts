@@ -37,11 +37,7 @@ const initialState: IAuthenticationInitialState = {
 export default (state: IAuthenticationInitialState = initialState, action): IAuthenticationInitialState => {
   switch (action.type) {
     case ACTION_TYPES.LOGOUT:
-      return {
-        ...state,
-        isAuthenticated: false,
-        isProfileCompleted: false
-      };
+      return initialState;
     case ACTION_TYPES.FETCH_ACCOUNT:
       return {
         ...state,
