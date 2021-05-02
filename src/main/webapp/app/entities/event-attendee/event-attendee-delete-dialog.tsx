@@ -8,6 +8,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IEventAttendee } from 'app/shared/model/event-attendee.model';
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './event-attendee.reducer';
+import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
+import EventRole from 'app/shared/model/enum/event-role.enum';
 
 export interface IEventAttendeeDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ attendeeId: string }> {}
 
@@ -42,11 +45,14 @@ export class EventAttendeeDeleteDialog extends React.Component<IEventAttendeeDel
             &nbsp;
             <Translate contentKey="entity.action.no">No</Translate>
           </Button>
-          <Button id="jhi-confirm-delete-eventAttendee" color="cancel" onClick={this.confirmDelete}>
-            <FontAwesomeIcon icon="trash" />
-            &nbsp;
-            <Translate contentKey="entity.action.yes">Yes</Translate>
-          </Button>
+          <AuthorizationChecker>
+            {/* no one can delete for now */}
+            <Button id="jhi-confirm-delete-eventAttendee" color="cancel" onClick={this.confirmDelete}>
+              <FontAwesomeIcon icon="trash" />
+              &nbsp;
+              <Translate contentKey="entity.action.yes">Yes</Translate>
+            </Button>
+          </AuthorizationChecker>
         </ModalFooter>
       </Modal>
     );
