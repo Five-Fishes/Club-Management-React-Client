@@ -1,46 +1,28 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Route, Redirect, RouteProps } from 'react-router-dom';
+import { Route, Redirect, RouteProps, RouteComponentProps } from 'react-router-dom';
 import { Translate } from 'react-jhipster';
 import { IRootState } from 'app/shared/reducers';
 import ErrorBoundary from 'app/shared/error/error-boundary';
 import CompleteUserProfile from 'app/modules/auth/complete-profile/complete-user-profile';
+import AuthorizationChecker, { IAuthorizationCheckerOwnProps } from 'app/shared/components/authorization-checker/authorization-checker';
 
-interface IOwnProps extends RouteProps {
-  hasAnyAuthorities?: string[];
-}
+const UnauthorizedBanner: React.ReactElement = (
+  <div className="insufficient-authority">
+    <div className="alert alert-danger">
+      <Translate contentKey="error.http.403">You are not authorized to access this page.</Translate>
+    </div>
+  </div>
+);
 
-export interface IPrivateRouteProps extends IOwnProps, StateProps {}
+interface IAppRouteOwnProps extends RouteProps, IAuthorizationCheckerOwnProps {}
 
-export const PrivateRouteComponent = ({
-  component: Component,
-  isAuthenticated,
-  isProfileCompleted,
-  hasAnyAuthorities = [],
-  isAuthorized,
-  ...rest
-}: IPrivateRouteProps) => {
-  const checkAuthorities = props =>
-    isAuthenticated && !isProfileCompleted ? (
-      <ErrorBoundary>
-        <CompleteUserProfile />
-      </ErrorBoundary>
-    ) : isAuthorized ? (
-      <ErrorBoundary>
-        <Component {...props} />
-      </ErrorBoundary>
-    ) : (
-      <div className="insufficient-authority">
-        <div className="alert alert-danger">
-          <Translate contentKey="error.http.403">You are not authorized to access this page.</Translate>
-        </div>
-      </div>
-    );
+export interface IAppRouteProps extends IAppRouteOwnProps, StateProps {}
 
-  const renderRedirect = props => {
-    return isAuthenticated ? (
-      checkAuthorities(props)
-    ) : (
+const AppRouteComponent: React.FC<IAppRouteProps> = (props: IAppRouteProps) => {
+  const { component: Component, isAuthenticated, isProfileCompleted, isPublic } = props;
+  if (!isPublic && !isAuthenticated) {
+    return (
       <Redirect
         to={{
           pathname: '/auth/login',
@@ -49,44 +31,42 @@ export const PrivateRouteComponent = ({
         }}
       />
     );
-  };
-
-  if (!Component) throw new Error(`A component needs to be specified for private route for path ${(rest as any).path}`);
-
-  return <Route {...rest} render={renderRedirect} />;
+  }
+  if (!isProfileCompleted) {
+    return (
+      <ErrorBoundary>
+        <CompleteUserProfile />
+      </ErrorBoundary>
+    );
+  }
+  if (!Component) throw new Error(`Missing Component in private route: ${props.path}`);
+  function renderFunc(routeProps: RouteComponentProps<any>): React.ReactNode {
+    return (
+      <AuthorizationChecker {...props} fallbackEl={props.fallbackEl || UnauthorizedBanner}>
+        <ErrorBoundary>
+          <Component {...routeProps} />
+        </ErrorBoundary>
+      </AuthorizationChecker>
+    );
+  }
+  return <Route {...props} render={renderFunc} />;
 };
 
-export function hasAnyAuthority(authorities: string[], hasAnyAuthorities: string[]): boolean {
-  if (authorities && authorities.length === 0) {
-    return false;
-  }
-  if (hasAnyAuthorities.length === 0) {
-    return true;
-  }
-  return hasAnyAuthorities.some(auth => authorities.includes(auth));
+function mapStateToProps({ authentication }: IRootState) {
+  const { isAuthenticated, isProfileCompleted } = authentication;
+  return {
+    isAuthenticated,
+    isProfileCompleted
+  };
 }
-
-const mapStateToProps = (
-  { authentication: { isAuthenticated, authorities, isProfileCompleted } }: IRootState,
-  { hasAnyAuthorities = [] }: IOwnProps
-) => ({
-  isAuthenticated,
-  isAuthorized: hasAnyAuthority(authorities, hasAnyAuthorities),
-  isProfileCompleted
-});
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 
-/**
- * A route wrapped in an authentication check so that routing happens only when you are authenticated.
- * Accepts same props as React router Route.
- * The route also checks for authorization if hasAnyAuthorities is specified.
- */
-export const PrivateRoute = connect<StateProps, undefined, IOwnProps>(
+const AppRoute = connect<StateProps, undefined, IAppRouteOwnProps>(
   mapStateToProps,
   null,
   null,
   { pure: false }
-)(PrivateRouteComponent);
+)(AppRouteComponent);
 
-export default PrivateRoute;
+export default AppRoute;
