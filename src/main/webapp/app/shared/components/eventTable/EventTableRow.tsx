@@ -26,6 +26,7 @@ export class EventTableRow extends React.Component<IEventTableRowProps> {
     if ('role' in user) {
       thirdColumn = translate(`clubmanagementApp.EventCrewRole.${user.role}`);
     } else if ('year' in user) {
+      // @ts-ignore
       thirdColumn = user.year;
     }
 
