@@ -15,10 +15,13 @@ import {
 import { eventTabList } from 'app/shared/util/tab.constants';
 import classnames from 'classnames';
 import '../../styles/event-module.scss';
-import { CustomTab } from 'app/shared/components/customTab/custom-tab';
+import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { ListingCard } from 'app/shared/components/listing-card/listing-card';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
+import EventRole from 'app/shared/model/enum/event-role.enum';
 
 export interface IBudgetProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string; eventId: string }> {}
 
@@ -85,8 +88,7 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
 
   render() {
     const { budgetList, match, totalItems, selectedEventBudgetId, eventBudgetTotal, eventRealTotal } = this.props;
-    const { eventId } = this.props.match.params;
-
+    const eventId: number = parseInt(this.props.match.params.eventId, 10);
     return (
       <div>
         <h2 id="event-budget-heading" className="event-module-heading">
@@ -134,11 +136,13 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
             )}
           </div>
           <div className="text-center">
-            <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
-              <FontAwesomeIcon icon="plus" />
-              &nbsp;
-              <Translate contentKey="entity.action.add">Add</Translate>
-            </Link>
+            <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={eventId}>
+              <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
+                <FontAwesomeIcon icon="plus" />
+                &nbsp;
+                <Translate contentKey="entity.action.add">Add</Translate>
+              </Link>
+            </AuthorizationChecker>
           </div>
           <div>
             {budgetList && budgetList.length > 0 ? (
@@ -147,6 +151,11 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
                   key={`event-budget-${eventBudget.id}`}
                   showActionMenu
                   actionMenuHandler={this.showCardAction.bind(this, eventBudget.id)}
+                  actionMenuAuthorizationProps={{
+                    ccRole: CCRole.ADMIN,
+                    eventRole: EventRole.HEAD,
+                    eventId: eventBudget.eventId
+                  }}
                 >
                   <span
                     className={classnames(
@@ -190,28 +199,32 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
           <ModalHeader toggle={this.toggleShowOptions} />
           <ModalBody className="px-4">
             <h2 className="text-center">Options</h2>
-            <Button
-              tag={Link}
-              to={`${match.url}/${selectedEventBudgetId}/edit`}
-              onClick={this.toggleShowOptions}
-              color="secondary"
-              className="d-block mx-auto my-3 w-100"
-            >
-              <span>
-                <Translate contentKey="entity.action.update">Update</Translate>
-              </span>
-            </Button>
-            <Button
-              tag={Link}
-              to={`${match.url}/${selectedEventBudgetId}/delete`}
-              onClick={this.toggleShowOptions}
-              color="cancel"
-              className="d-block mx-auto my-3 w-100"
-            >
-              <span>
-                <Translate contentKey="entity.action.delete">Delete</Translate>
-              </span>
-            </Button>
+            <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={eventId}>
+              <Button
+                tag={Link}
+                to={`${match.url}/${selectedEventBudgetId}/edit`}
+                onClick={this.toggleShowOptions}
+                color="secondary"
+                className="d-block mx-auto my-3 w-100"
+              >
+                <span>
+                  <Translate contentKey="entity.action.update">Update</Translate>
+                </span>
+              </Button>
+            </AuthorizationChecker>
+            <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={eventId}>
+              <Button
+                tag={Link}
+                to={`${match.url}/${selectedEventBudgetId}/delete`}
+                onClick={this.toggleShowOptions}
+                color="cancel"
+                className="d-block mx-auto my-3 w-100"
+              >
+                <span>
+                  <Translate contentKey="entity.action.delete">Delete</Translate>
+                </span>
+              </Button>
+            </AuthorizationChecker>
           </ModalBody>
         </Modal>
       </div>

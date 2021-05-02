@@ -15,10 +15,12 @@ import { getEntity } from './event.reducer';
 import { getEntityByEventIdAndUserId } from '../event-attendee/event-attendee.reducer';
 
 // tslint:disable-next-line:no-unused-variable
-import { APP_DATE_12_FORMAT } from 'app/config/constants';
-import { CustomTab } from 'app/shared/components/customTab/custom-tab';
+import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { eventTabList } from 'app/shared/util/tab.constants';
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
+import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
+import EventRole from 'app/shared/model/enum/event-role.enum';
+import { APP_DATE_12_FORMAT } from 'app/config/constants';
 
 export interface IEventDetailProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -36,14 +38,13 @@ export class EventDetail extends React.Component<IEventDetailProps> {
 
   render() {
     const { eventEntity, eventAttendeeEntity } = this.props;
-    const eventId = this.props.match.params.id;
     return (
       <div>
         <h1 className="event-module-heading">
           <Translate contentKey="clubmanagementApp.event.detail.title"> Event Details </Translate>
         </h1>
         <div className="my-3">
-          <CustomTab currentTab="Details" tabList={eventTabList(eventId)} />
+          <CustomTab currentTab="Details" tabList={eventTabList(eventEntity.id)} />
         </div>
         <div className="pt-3 mx-4">
           <img
@@ -105,15 +106,17 @@ export class EventDetail extends React.Component<IEventDetailProps> {
               </>
             ) : null}
             <div className="d-flex flex-column">
-              <Button
-                tag={Link}
-                to={`/entity/event/${eventEntity.id}/edit`}
-                className="my-1"
-                color="secondary"
-                disabled={moment().isAfter(eventEntity.endDate)}
-              >
-                <Translate contentKey="entity.action.update"> Update </Translate>
-              </Button>
+              <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={eventEntity.id}>
+                <Button
+                  tag={Link}
+                  to={`/entity/event/${eventEntity.id}/edit`}
+                  className="my-1"
+                  color="secondary"
+                  disabled={moment().isAfter(eventEntity.endDate)}
+                >
+                  <Translate contentKey="entity.action.update"> Update </Translate>
+                </Button>
+              </AuthorizationChecker>
               {eventAttendeeEntity.userId ? (
                 <Button
                   tag={Link}
