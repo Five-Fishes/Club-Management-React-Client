@@ -15,31 +15,24 @@ export interface IDebtCollectDialogProps extends RouteComponentProps<{ id: strin
 
 export class FinanceConfirmationDialog extends React.Component<IDebtCollectDialogProps> {
   render() {
+    const { isOpen, toggleModal, entityType, action, confirmQuestion, confirmButtonColor, confirmActionCallback } = this.props;
+    const { id } = this.props.match.params;
     return (
-      <Modal size="sm" centered isOpen={this.props.isOpen} toggle={this.props.toggleModal}>
-        <ModalHeader toggle={this.props.toggleModal}>
-          <Translate contentKey={`clubmanagementApp.${this.props.entityType}.${this.props.action}.title`}>
-            Confirm collect operation
-          </Translate>
+      <Modal size="sm" centered isOpen={isOpen} toggle={toggleModal}>
+        <ModalHeader toggle={toggleModal}>
+          <Translate contentKey={`clubmanagementApp.${entityType}.${action}.title`}>Confirm collect operation</Translate>
         </ModalHeader>
-        <ModalBody id={`clubmanagementApp.${this.props.entityType}.${this.props.action}.question`}>
-          <Translate
-            contentKey={`clubmanagementApp.${this.props.entityType}.${this.props.action}.question`}
-            interpolate={{ id: this.props.match.params.id }}
-          >
-            {this.props.confirmQuestion}
+        <ModalBody id={`clubmanagementApp.${entityType}.${action}.question`}>
+          <Translate contentKey={`clubmanagementApp.${entityType}.${action}.question`} interpolate={{ id: { id } }}>
+            {confirmQuestion}
           </Translate>
         </ModalBody>
         <ModalFooter className="justify-content-between mx-3">
-          <Button color="secondary" onClick={this.props.toggleModal}>
+          <Button color="secondary" onClick={toggleModal}>
             <Translate contentKey="entity.action.cancel">Cancel</Translate>
           </Button>
-          <Button
-            id={`jhi-confirm-${this.props.action}-${this.props.entityType}`}
-            color={this.props.confirmButtonColor}
-            onClick={this.props.confirmActionCallback}
-          >
-            <Translate contentKey={`entity.action.${this.props.action}`}>{this.props.action}</Translate>
+          <Button id={`jhi-confirm-${action}-${entityType}`} color={confirmButtonColor} onClick={confirmActionCallback}>
+            <Translate contentKey={`entity.action.${action}`}>{action}</Translate>
           </Button>
         </ModalFooter>
       </Modal>

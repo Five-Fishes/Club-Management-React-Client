@@ -34,63 +34,68 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
     ...getSortState(this.props.location, ITEMS_PER_PAGE)
   };
 
+  constructor(props) {
+    super(props);
+    this.sortEntities = this.sortEntities.bind(this);
+    this.handlePagination = this.handlePagination.bind(this);
+    this.getEntities = this.getEntities.bind(this);
+    this.collect = this.collect.bind(this);
+    this.badDebt = this.badDebt.bind(this);
+    this.toggleShowOptions = this.toggleShowOptions.bind(this);
+    this.toggleShowCollectDialog = this.toggleShowCollectDialog.bind(this);
+    this.toggleShowBadDebtDialog = this.toggleShowBadDebtDialog.bind(this);
+  }
+
   componentDidMount() {
     this.getEntities();
   }
 
-  sort = prop => () => {
-    this.setState(
-      {
-        order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
-      },
-      () => this.sortEntities()
-    );
+  sortEntities = (): void => {
+    this.getEntities();
+    this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}`);
   };
 
-  sortEntities() {
-    this.getEntities();
-    this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
-  }
+  handlePagination = (activePage: number): void => {
+    this.setState({ activePage }, () => this.sortEntities());
+  };
 
-  handlePagination = activePage => this.setState({ activePage }, () => this.sortEntities());
-
-  getEntities = () => {
+  getEntities = (): void => {
     const { activePage, itemsPerPage, sort, order } = this.state;
     this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
   };
 
-  showCardAction = (debtId: number) => {
+  showCardAction = (debtId: number): void => {
     this.props.setSelectedDebtId(debtId);
     this.props.setShowActionOptions(true);
   };
 
-  collect = () => {
+  collect = (): void => {
     this.props.updateEntityStatus(this.props.selectedDebtId, DebtStatus.COLLECTED);
     this.props.setShowCollectDialog(!this.props.showCollectDialog);
   };
 
-  badDebt = () => {
+  badDebt = (): void => {
     this.props.updateEntityStatus(this.props.selectedDebtId, DebtStatus.UNREACHABLE);
     this.props.setShowBadDebtDialog(!this.props.showBadDebtDialog);
   };
 
-  toggleShowOptions = () => {
+  toggleShowOptions = (): void => {
     this.props.setShowActionOptions(!this.props.showActionOptions);
   };
 
-  toggleShowCollectDialog = () => {
+  toggleShowCollectDialog = (): void => {
     this.props.setShowActionOptions(false);
     this.props.setShowCollectDialog(!this.props.showCollectDialog);
   };
 
-  toggleShowBadDebtDialog = () => {
+  toggleShowBadDebtDialog = (): void => {
     this.props.setShowActionOptions(false);
     this.props.setShowBadDebtDialog(!this.props.showBadDebtDialog);
   };
 
   render() {
-    const { debtList, totalItems, showCollectDialog, showBadDebtDialog } = this.props;
+    const { debtList, totalItems, showCollectDialog, showBadDebtDialog, showActionOptions } = this.props;
+    const { activePage, itemsPerPage } = this.state;
     return (
       <div>
         <FinanceConfirmationDialog
@@ -149,19 +154,19 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
           </div>
           <div className={debtList && debtList.length > 0 ? '' : 'd-none'}>
             <Row className="justify-content-center">
-              <JhiItemCount page={this.state.activePage} total={totalItems} itemsPerPage={this.state.itemsPerPage} i18nEnabled />
+              <JhiItemCount page={activePage} total={totalItems} itemsPerPage={itemsPerPage} i18nEnabled />
             </Row>
             <Row className="justify-content-center">
               <JhiPagination
-                activePage={this.state.activePage}
+                activePage={activePage}
                 onSelect={this.handlePagination}
                 maxButtons={5}
-                itemsPerPage={this.state.itemsPerPage}
-                totalItems={this.props.totalItems}
+                itemsPerPage={itemsPerPage}
+                totalItems={totalItems}
               />
             </Row>
           </div>
-          <Modal size="sm" centered isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions}>
+          <Modal size="sm" centered isOpen={showActionOptions} toggle={this.toggleShowOptions}>
             <ModalHeader toggle={this.toggleShowOptions} />
             <ModalBody>
               <h2 className="text-center">Options</h2>
