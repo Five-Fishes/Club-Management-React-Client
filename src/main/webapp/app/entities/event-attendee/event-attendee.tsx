@@ -11,7 +11,7 @@ import { IRootState } from 'app/shared/reducers';
 import { getEventAttendeeEntities } from './event-attendee.reducer';
 // tslint:disable-next-line:no-unused-variable
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import { CustomTab } from 'app/shared/components/customTab/custom-tab';
+import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { EventAttendeeRow } from 'app/entities/event-attendee/event-attendee-row';
 import { EventAttendeeSortModalModal } from 'app/entities/event-attendee/event-attendee-sort-modal';
 
@@ -23,7 +23,7 @@ export class EventAttendee extends React.Component<IEventAttendeeProps> {
   state = {
     ...getSortState(this.props.location, ITEMS_PER_PAGE),
     modalIsOpen: false,
-    eventId: this.props.match.params.eventId
+    eventId: this.props.match.params.eventId,
   };
 
   componentDidMount() {
@@ -46,7 +46,7 @@ export class EventAttendee extends React.Component<IEventAttendeeProps> {
     this.setState(
       {
         order: orderProp,
-        sort: sortProp
+        sort: sortProp,
       },
       () => {
         this.sortEntities();
@@ -74,6 +74,7 @@ export class EventAttendee extends React.Component<IEventAttendeeProps> {
 
   render() {
     const { eventAttendeeList, totalItems } = this.props;
+    const eventId: number = parseInt(this.props.match.params.eventId, 10);
     return (
       <div>
         <h2 id="event-attendee-heading" className="event-module-heading">
@@ -81,7 +82,7 @@ export class EventAttendee extends React.Component<IEventAttendeeProps> {
         </h2>
         <EventAttendeeSortModalModal sort={this.sort} isOpen={this.state.modalIsOpen} toggleModal={this.closeModal} />
         <div className="my-3">
-          <CustomTab currentTab="Attendees" tabList={eventTabList(this.state.eventId)} />
+          <CustomTab currentTab="Attendees" tabList={eventTabList(eventId)} />
         </div>
         <div className="mx-4">
           <Button className="btn btn-primary float-right" id="event-attendee-sort-by-button" onClick={this.openModal}>
@@ -141,17 +142,14 @@ export class EventAttendee extends React.Component<IEventAttendeeProps> {
 
 const mapStateToProps = ({ eventAttendee }: IRootState) => ({
   eventAttendeeList: eventAttendee.entities,
-  totalItems: eventAttendee.totalItems
+  totalItems: eventAttendee.totalItems,
 });
 
 const mapDispatchToProps = {
-  getEventAttendeeEntities
+  getEventAttendeeEntities,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventAttendee);
+export default connect(mapStateToProps, mapDispatchToProps)(EventAttendee);

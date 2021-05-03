@@ -10,7 +10,7 @@ import {
   JhiPagination,
   JhiItemCount,
   getSortState,
-  IPaginationBaseState
+  IPaginationBaseState,
 } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -23,7 +23,7 @@ export interface IUserManagementProps extends StateProps, DispatchProps, RouteCo
 
 export class UserManagement extends React.Component<IUserManagementProps, IPaginationBaseState> {
   state: IPaginationBaseState = {
-    ...getSortState(this.props.location, ITEMS_PER_PAGE)
+    ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
   componentDidMount() {
@@ -34,7 +34,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
     this.setState(
       {
         order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
+        sort: prop,
       },
       () => this.sortUsers()
     );
@@ -55,12 +55,17 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
   toggleActive = user => () => {
     this.props.updateUser({
       ...user,
-      activated: !user.activated
+      activated: !user.activated,
     });
   };
 
   render() {
-    const { users, account, match, totalItems } = this.props;
+    const {
+      users,
+      authentication: { id: currentUserId },
+      match,
+      totalItems,
+    } = this.props;
     return (
       <div>
         <h2 id="user-management-page-heading">
@@ -164,7 +169,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                       to={`${match.url}/${user.login}/delete`}
                       color="danger"
                       size="sm"
-                      disabled={account.login === user.login}
+                      disabled={currentUserId === user.id}
                     >
                       <FontAwesomeIcon icon="trash" />{' '}
                       <span className="d-none d-md-inline">
@@ -199,7 +204,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
 const mapStateToProps = (storeState: IRootState) => ({
   users: storeState.userManagement.users,
   totalItems: storeState.userManagement.totalItems,
-  account: storeState.authentication.account
+  authentication: storeState.authentication,
 });
 
 const mapDispatchToProps = { getUsers, updateUser };
@@ -207,7 +212,4 @@ const mapDispatchToProps = { getUsers, updateUser };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserManagement);
+export default connect(mapStateToProps, mapDispatchToProps)(UserManagement);

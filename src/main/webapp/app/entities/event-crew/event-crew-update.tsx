@@ -9,7 +9,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
 import { getEntity, updateEntity, createEntity, reset } from './event-crew.reducer';
-import { IEventCrew, EventCrewRole } from 'app/shared/model/event-crew.model';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
@@ -31,7 +30,7 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
     this.state = {
       isNew: !this.props.match.params || !this.props.match.params.id,
       users: [],
-      event: null
+      event: null,
     };
   }
 
@@ -76,7 +75,7 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
       const { eventCrewEntity } = this.props;
       const entity = {
         ...eventCrewEntity,
-        ...values
+        ...values,
       };
 
       if (this.state.isNew) {
@@ -131,7 +130,7 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
                     <div>
                       <AvInput id="event-crew-userId" type="select" className="form-control" name="userId" readOnly={!isNew} required>
                         <option value="" disabled hidden>
-                          Select a user
+                          {translate('global.select.selectUser')}
                         </option>
                         {this.state.users
                           ? this.state.users.sort(this.compareFirstName).map(user => (
@@ -159,11 +158,14 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
                     type="select"
                     className="form-control"
                     name="role"
-                    value={(!isNew && eventCrewEntity.role) || 'HEAD'}
+                    value={(!isNew && eventCrewEntity.role) || ''}
                     required
                   >
-                    <option value={EventCrewRole.HEAD}>{EventCrewRole.HEAD}</option>
-                    <option value={EventCrewRole.MEMBER}>{EventCrewRole.MEMBER}</option>
+                    <option value="" disabled hidden>
+                      {translate('global.select.selectOne')}
+                    </option>
+                    <option value="HEAD">{translate(`clubmanagementApp.EventCrewRole.HEAD`)}</option>
+                    <option value="MEMBER">{translate(`clubmanagementApp.EventCrewRole.MEMBER`)}</option>
                   </AvInput>
                 </AvGroup>
                 <br />
@@ -200,20 +202,17 @@ const mapStateToProps = (storeState: IRootState) => ({
   eventCrewEntity: storeState.eventCrew.entity,
   loading: storeState.eventCrew.loading,
   updating: storeState.eventCrew.updating,
-  updateSuccess: storeState.eventCrew.updateSuccess
+  updateSuccess: storeState.eventCrew.updateSuccess,
 });
 
 const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventCrewUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(EventCrewUpdate);

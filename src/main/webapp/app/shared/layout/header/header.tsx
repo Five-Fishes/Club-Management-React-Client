@@ -13,7 +13,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface IHeaderProps {
   isAuthenticated: boolean;
-  isAdmin: boolean;
   ribbonEnv: string;
   isSwaggerEnabled: boolean;
   currentLocale: string;
@@ -26,7 +25,7 @@ export interface IHeaderState {
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
   state: IHeaderState = {
-    menuOpen: false
+    menuOpen: false,
   };
 
   handleLocaleChange = event => {
@@ -40,7 +39,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
   };
 
   render() {
-    const { currentLocale, isAuthenticated, isAdmin, isSwaggerEnabled } = this.props;
+    const { currentLocale, isAuthenticated, isSwaggerEnabled } = this.props;
 
     const btn = (
       <Button outline color="primary" aria-label="Menu" onClick={this.toggleMenu} style={{ background: 'white' }}>

@@ -3,7 +3,16 @@ import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 // tslint:disable-next-line:no-unused-variable
-import { byteSize, Translate, ICrudGetAllAction, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
+import {
+  byteSize,
+  Translate,
+  translate,
+  ICrudGetAllAction,
+  getSortState,
+  IPaginationBaseState,
+  JhiPagination,
+  JhiItemCount,
+} from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IRootState } from 'app/shared/reducers';
@@ -13,10 +22,13 @@ import { IEventChecklist } from 'app/shared/model/event-checklist.model';
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import '../../styles/event-module.scss';
-import { CustomTab } from 'app/shared/components/customTab/custom-tab';
+import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { eventTabList } from 'app/shared/util/tab.constants';
 import { ListingCard } from 'app/shared/components/listing-card/listing-card';
 import './eventChecklist.scss';
+import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
+import EventRole from 'app/shared/model/enum/event-role.enum';
 
 export interface IEventChecklistProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string; eventId: string }> {}
 
@@ -24,7 +36,7 @@ export type IEventChecklistState = IPaginationBaseState;
 
 export class EventChecklist extends React.Component<IEventChecklistProps, IEventChecklistState> {
   state: IEventChecklistState = {
-    ...getSortState(this.props.location, ITEMS_PER_PAGE)
+    ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
   componentDidMount() {
@@ -35,7 +47,7 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
     this.setState(
       {
         order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
+        sort: prop,
       },
       () => this.sortEntities()
     );
@@ -65,7 +77,7 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
 
   render() {
     const { eventChecklistList, match, totalItems, selectedEventChecklistId } = this.props;
-    const { eventId } = this.props.match.params;
+    const eventId: number = parseInt(this.props.match.params.eventId, 10);
     return (
       <div>
         <h2 id="event-checklist-heading" className="event-module-heading">
@@ -75,14 +87,15 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
           <CustomTab tabList={eventTabList(eventId)} currentTab="Checklist" />
         </div>
         <div className="mx-4">
-          <div className="text-center">
-            <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
-              <FontAwesomeIcon icon="plus" />
-              &nbsp;
-              <Translate contentKey="entity.action.add">Add</Translate>
-            </Link>
-          </div>
-
+          <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.CREW} eventId={eventId}>
+            <div className="text-center">
+              <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
+                <FontAwesomeIcon icon="plus" />
+                &nbsp;
+                <Translate contentKey="entity.action.add">Add</Translate>
+              </Link>
+            </div>
+          </AuthorizationChecker>
           <div>
             {eventChecklistList && eventChecklistList.length > 0 ? (
               eventChecklistList.map((eventChecklist, i) => (
@@ -92,20 +105,29 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
                   showActionMenu
                   title={eventChecklist.name}
                   actionMenuHandler={this.showCardAction.bind(this, eventChecklist.id)}
+                  actionMenuAuthorizationProps={{
+                    ccRole: CCRole.ADMIN,
+                    eventRole: EventRole.CREW,
+                    eventId: eventChecklist.eventId,
+                  }}
                 >
                   <span className="card-item d-block mb-2">
                     <span>
-                      <Translate contentKey="clubmanagementApp.eventChecklist.type">Type</Translate>:
-                      <span className="font-weight-bolder text-dark">{eventChecklist.type}</span>
+                      <Translate contentKey="clubmanagementApp.eventChecklist.type">Type</Translate>:{' '}
+                      <span className="font-weight-bolder text-dark">
+                        {translate(`clubmanagementApp.EventChecklistType.${eventChecklist.type}`)}
+                      </span>
                     </span>
                     <span className="float-right">
-                      <Translate contentKey="clubmanagementApp.eventChecklist.status">Status</Translate>:
-                      <span className="font-weight-bolder text-dark">{eventChecklist.status}</span>
+                      <Translate contentKey="clubmanagementApp.eventChecklist.status">Status</Translate>:{' '}
+                      <span className="font-weight-bolder text-dark">
+                        {translate(`clubmanagementApp.EventChecklistStatus.${eventChecklist.status}`)}
+                      </span>
                     </span>
                   </span>
                   <span className="card-item d-block">
                     <span>
-                      <Translate contentKey="clubmanagementApp.eventChecklist.description">Description</Translate>:
+                      <Translate contentKey="clubmanagementApp.eventChecklist.description">Description</Translate>:{' '}
                       <span className="font-weight-bolder text-dark">{eventChecklist.description}</span>
                     </span>
                   </span>
@@ -117,34 +139,36 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
               </div>
             )}
           </div>
-          <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions}>
+          <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions} centered>
             <ModalHeader toggle={this.toggleShowOptions} />
-            <ModalBody>
+            <ModalBody className="px-4">
               <h2 className="text-center">Options</h2>
-              <Button
-                tag={Link}
-                to={`${match.url}/${selectedEventChecklistId}/edit`}
-                color="primary"
-                className="d-block mx-auto my-3 w-75"
-                onClick={this.toggleShowOptions}
-              >
-                <FontAwesomeIcon icon="pencil-alt" />{' '}
-                <span>
-                  <Translate contentKey="entity.action.update">Update</Translate>
-                </span>
-              </Button>
-              <Button
-                tag={Link}
-                to={`${match.url}/${selectedEventChecklistId}/delete`}
-                color="cancel"
-                className="d-block mx-auto my-3 w-75"
-                onClick={this.toggleShowOptions}
-              >
-                <FontAwesomeIcon icon="trash" />{' '}
-                <span>
-                  <Translate contentKey="entity.action.delete">Delete</Translate>
-                </span>
-              </Button>
+              <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.CREW} eventId={eventId}>
+                <Button
+                  tag={Link}
+                  to={`${match.url}/${selectedEventChecklistId}/edit`}
+                  color="secondary"
+                  className="d-block mx-auto my-3 w-100"
+                  onClick={this.toggleShowOptions}
+                >
+                  <span>
+                    <Translate contentKey="entity.action.update">Update</Translate>
+                  </span>
+                </Button>
+              </AuthorizationChecker>
+              <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.CREW} eventId={eventId}>
+                <Button
+                  tag={Link}
+                  to={`${match.url}/${selectedEventChecklistId}/delete`}
+                  color="cancel"
+                  className="d-block mx-auto my-3 w-100"
+                  onClick={this.toggleShowOptions}
+                >
+                  <span>
+                    <Translate contentKey="entity.action.delete">Delete</Translate>
+                  </span>
+                </Button>
+              </AuthorizationChecker>
             </ModalBody>
           </Modal>
         </div>
@@ -157,19 +181,16 @@ const mapStateToProps = ({ eventChecklist }: IRootState) => ({
   eventChecklistList: eventChecklist.entities,
   totalItems: eventChecklist.totalItems,
   selectedEventChecklistId: eventChecklist.selectedEventChecklistId,
-  showActionOptions: eventChecklist.showActionOptions
+  showActionOptions: eventChecklist.showActionOptions,
 });
 
 const mapDispatchToProps = {
   getChecklistsByEventId,
   setSelectedEventChecklistId,
-  setShowActionOptions
+  setShowActionOptions,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventChecklist);
+export default connect(mapStateToProps, mapDispatchToProps)(EventChecklist);

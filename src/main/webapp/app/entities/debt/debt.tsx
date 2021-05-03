@@ -12,7 +12,7 @@ import {
   updateEntityStatus,
   setShowActionOptions,
   setShowBadDebtDialog,
-  setShowCollectDialog
+  setShowCollectDialog,
 } from './debt.reducer';
 import { DebtStatus } from 'app/shared/model/debt.model';
 import '../../styles/finance-module.scss';
@@ -20,9 +20,10 @@ import '../../styles/finance-module.scss';
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { ListingCard } from 'app/shared/components/listing-card/listing-card';
-import { CustomTab } from 'app/shared/components/customTab/custom-tab';
+import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { financeTabList } from 'app/shared/util/tab.constants';
 import moment from 'moment';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
 import FinanceConfirmationDialog from 'app/shared/components/financeConfirmationDialog/finance-confirmation-dialog';
 
 export interface IDebtProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
@@ -31,7 +32,7 @@ export type IDebtState = IPaginationBaseState;
 
 export class Debt extends React.Component<IDebtProps, IDebtState> {
   state: IDebtState = {
-    ...getSortState(this.props.location, ITEMS_PER_PAGE)
+    ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
   constructor(props) {
@@ -131,6 +132,9 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
                   title={debt.eventName}
                   date={moment(debt.createdDate).format(APP_LOCAL_DATE_FORMAT)}
                   actionMenuHandler={this.showCardAction.bind(this, debt.id)}
+                  actionMenuAuthorizationProps={{
+                    ccRole: CCRole.ADMIN,
+                  }}
                 >
                   <span className="card-item d-block mb-1">
                     <span>
@@ -194,7 +198,7 @@ const mapStateToProps = ({ debt }: IRootState) => ({
   selectedDebtId: debt.selectedDebtId,
   showActionOptions: debt.showActionOptions,
   showCollectDialog: debt.showCollectDialog,
-  showBadDebtDialog: debt.showBadDebtDialog
+  showBadDebtDialog: debt.showBadDebtDialog,
 });
 
 const mapDispatchToProps = {
@@ -203,13 +207,10 @@ const mapDispatchToProps = {
   setSelectedDebtId,
   setShowActionOptions,
   setShowCollectDialog,
-  setShowBadDebtDialog
+  setShowBadDebtDialog,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Debt);
+export default connect(mapStateToProps, mapDispatchToProps)(Debt);

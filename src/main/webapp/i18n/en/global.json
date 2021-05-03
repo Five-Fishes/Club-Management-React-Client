@@ -101,7 +101,8 @@
       "id": "ID"
     },
     "select": {
-      "selectOne": "Select One"
+      "selectOne": "Select One",
+      "selectUser": "Select a User"
     },
     "ribbon": {
       "dev": "Development"
@@ -125,6 +126,7 @@
       "yes": "Yes",
       "no": "No",
       "register": "Register",
+      "deregister": "Deregister",
       "complete": "Complete",
       "collect": "Collect",
       "badDebt": "Bad Debt"
@@ -159,6 +161,7 @@
     "userexists": "Login name already used!",
     "emailexists": "Email is already in use!",
     "idexists": "A new {{ entityName }} cannot already have an ID",
+    "noname": "A new {{ entityName }} cannot be created without a name",
     "idnull": "Invalid ID"
   },
   "footer": "ThirdCC @ 2020"

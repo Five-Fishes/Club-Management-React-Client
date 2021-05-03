@@ -9,12 +9,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 import { getEventActivitiesByEventId, setSelectedEventActivityId, setShowActionOptions } from './event-activity.reducer';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import { CustomTab } from 'app/shared/components/customTab/custom-tab';
+import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { eventTabList } from 'app/shared/util/tab.constants';
 import { ListingCard } from 'app/shared/components/listing-card/listing-card';
 import { convertDateTimeFromServerToLocaleDate } from 'app/shared/util/date-utils';
 import { convertDaysDurationToTimeFormat, timeFormatDurationToString } from 'app/shared/util/duration-utils';
 import '../../styles/event-module.scss';
+import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
+import EventRole from 'app/shared/model/enum/event-role.enum';
 
 export interface IEventActivityProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string; eventId: string }> {}
 
@@ -22,7 +25,7 @@ export type IEventActivityState = IPaginationBaseState;
 
 export class EventActivity extends React.Component<IEventActivityProps, IEventActivityState> {
   state: IEventActivityState = {
-    ...getSortState(this.props.location, ITEMS_PER_PAGE)
+    ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
   componentDidMount() {
@@ -33,7 +36,7 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
     this.setState(
       {
         order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
+        sort: prop,
       },
       () => this.sortEntities()
     );
@@ -63,7 +66,7 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
 
   render() {
     const { eventActivityList, match, totalItems, selectedEventActivityId } = this.props;
-    const { eventId } = this.props.match.params;
+    const eventId: number = parseInt(this.props.match.params.eventId, 10);
     return (
       <div>
         <h2 id="event-activity-heading" className="event-module-heading">
@@ -73,14 +76,15 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
           <CustomTab tabList={eventTabList(eventId)} currentTab="Activities" />
         </div>
         <div className="mx-4">
-          <div className="text-center">
-            <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
-              <FontAwesomeIcon icon="plus" />
-              &nbsp;
-              <Translate contentKey="entity.action.add">Add</Translate>
-            </Link>
-          </div>
-
+          <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.CREW} eventId={eventId}>
+            <div className="text-center">
+              <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
+                <FontAwesomeIcon icon="plus" />
+                &nbsp;
+                <Translate contentKey="entity.action.add">Add</Translate>
+              </Link>
+            </div>
+          </AuthorizationChecker>
           <div>
             {eventActivityList && eventActivityList.length > 0 ? (
               eventActivityList.map((eventActivity, i) => (
@@ -89,6 +93,11 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
                   showActionMenu
                   title={eventActivity.name}
                   actionMenuHandler={this.showCardAction.bind(this, eventActivity.id)}
+                  actionMenuAuthorizationProps={{
+                    ccRole: CCRole.ADMIN,
+                    eventRole: EventRole.CREW,
+                    eventId: eventActivity.eventId,
+                  }}
                 >
                   <span className="card-item d-block mb-2">
                     <span>
@@ -98,8 +107,10 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
                   </span>
                   <span className="card-item d-block mb-2">
                     <span>
-                      <Translate contentKey="clubmanagementApp.eventActivity.duration">Duration (In Day)</Translate>:{' '}
-                      <span>{timeFormatDurationToString(convertDaysDurationToTimeFormat(eventActivity.durationInDay))}</span>
+                      <Translate contentKey="clubmanagementApp.eventActivity.duration">Duration</Translate>:{' '}
+                      <span className="font-weight-bolder text-dark">
+                        {timeFormatDurationToString(convertDaysDurationToTimeFormat(eventActivity.durationInDay))}
+                      </span>
                     </span>
                   </span>
                   <span className="card-item d-block">
@@ -118,34 +129,36 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
           </div>
         </div>
 
-        <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions}>
+        <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions} centered>
           <ModalHeader toggle={this.toggleShowOptions} />
-          <ModalBody>
+          <ModalBody className="px-4">
             <h2 className="text-center">Options</h2>
-            <Button
-              tag={Link}
-              to={`${match.url}/${selectedEventActivityId}/edit`}
-              onClick={this.toggleShowOptions}
-              color="primary"
-              className="d-block mx-auto my-3 w-75"
-            >
-              <FontAwesomeIcon icon="pencil-alt" />{' '}
-              <span>
-                <Translate contentKey="entity.action.update">Update</Translate>
-              </span>
-            </Button>
-            <Button
-              tag={Link}
-              to={`${match.url}/${selectedEventActivityId}/delete`}
-              onClick={this.toggleShowOptions}
-              color="cancel"
-              className="d-block mx-auto my-3 w-75"
-            >
-              <FontAwesomeIcon icon="trash" />{' '}
-              <span>
-                <Translate contentKey="entity.action.delete">Delete</Translate>
-              </span>
-            </Button>
+            <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.CREW} eventId={eventId}>
+              <Button
+                tag={Link}
+                to={`${match.url}/${selectedEventActivityId}/edit`}
+                onClick={this.toggleShowOptions}
+                color="secondary"
+                className="d-block mx-auto my-3 w-100"
+              >
+                <span>
+                  <Translate contentKey="entity.action.update">Update</Translate>
+                </span>
+              </Button>
+            </AuthorizationChecker>
+            <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.CREW} eventId={eventId}>
+              <Button
+                tag={Link}
+                to={`${match.url}/${selectedEventActivityId}/delete`}
+                onClick={this.toggleShowOptions}
+                color="cancel"
+                className="d-block mx-auto my-3 w-100"
+              >
+                <span>
+                  <Translate contentKey="entity.action.delete">Delete</Translate>
+                </span>
+              </Button>
+            </AuthorizationChecker>
           </ModalBody>
         </Modal>
 
@@ -172,19 +185,16 @@ const mapStateToProps = ({ eventActivity }: IRootState) => ({
   eventActivityList: eventActivity.entities,
   totalItems: eventActivity.totalItems,
   selectedEventActivityId: eventActivity.selectedEventActivityId,
-  showActionOptions: eventActivity.showActionOptions
+  showActionOptions: eventActivity.showActionOptions,
 });
 
 const mapDispatchToProps = {
   getEventActivitiesByEventId,
   setSelectedEventActivityId,
-  setShowActionOptions
+  setShowActionOptions,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventActivity);
+export default connect(mapStateToProps, mapDispatchToProps)(EventActivity);

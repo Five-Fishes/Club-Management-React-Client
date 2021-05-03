@@ -8,6 +8,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IEvent } from 'app/shared/model/event.model';
 import { IRootState } from 'app/shared/reducers';
 import { getEntity, deleteEntity } from './event.reducer';
+import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
+import EventRole from 'app/shared/model/enum/event-role.enum';
 
 export interface IEventDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -29,7 +32,7 @@ export class EventDeleteDialog extends React.Component<IEventDeleteDialogProps> 
   render() {
     const { eventEntity } = this.props;
     return (
-      <Modal isOpen toggle={this.handleClose}>
+      <Modal isOpen toggle={this.handleClose} centered>
         <ModalHeader toggle={this.handleClose}>
           <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
         </ModalHeader>
@@ -38,17 +41,20 @@ export class EventDeleteDialog extends React.Component<IEventDeleteDialogProps> 
             Are you sure you want to delete this Event?
           </Translate>
         </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={this.handleClose}>
+        <ModalFooter clasName="mx-3">
+          <Button className="mr-auto" color="secondary" onClick={this.handleClose}>
             <FontAwesomeIcon icon="ban" />
             &nbsp;
             <Translate contentKey="entity.action.cancel">Cancel</Translate>
           </Button>
-          <Button id="jhi-confirm-delete-event" color="danger" onClick={this.confirmDelete}>
-            <FontAwesomeIcon icon="trash" />
-            &nbsp;
-            <Translate contentKey="entity.action.delete">Delete</Translate>
-          </Button>
+          <AuthorizationChecker>
+            {/* no one can delete for now */}
+            <Button id="jhi-confirm-delete-event" color="danger" onClick={this.confirmDelete}>
+              <FontAwesomeIcon icon="trash" />
+              &nbsp;
+              <Translate contentKey="entity.action.delete">Delete</Translate>
+            </Button>
+          </AuthorizationChecker>
         </ModalFooter>
       </Modal>
     );
@@ -56,7 +62,7 @@ export class EventDeleteDialog extends React.Component<IEventDeleteDialogProps> 
 }
 
 const mapStateToProps = ({ event }: IRootState) => ({
-  eventEntity: event.entity
+  eventEntity: event.entity,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };
@@ -64,7 +70,4 @@ const mapDispatchToProps = { getEntity, deleteEntity };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventDeleteDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(EventDeleteDialog);

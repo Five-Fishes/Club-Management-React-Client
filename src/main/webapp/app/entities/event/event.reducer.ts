@@ -13,7 +13,7 @@ export const ACTION_TYPES = {
   UPDATE_EVENT: 'event/UPDATE_EVENT',
   DELETE_EVENT: 'event/DELETE_EVENT',
   SET_BLOB: 'event/SET_BLOB',
-  RESET: 'event/RESET'
+  RESET: 'event/RESET',
 };
 
 const initialState = {
@@ -23,7 +23,7 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
 };
 
 export type EventState = Readonly<typeof initialState>;
@@ -38,7 +38,7 @@ export default (state: EventState = initialState, action): EventState => {
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        loading: true
+        loading: true,
       };
     case REQUEST(ACTION_TYPES.CREATE_EVENT):
     case REQUEST(ACTION_TYPES.UPDATE_EVENT):
@@ -47,7 +47,7 @@ export default (state: EventState = initialState, action): EventState => {
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        updating: true
+        updating: true,
       };
     case FAILURE(ACTION_TYPES.FETCH_EVENT_LIST):
     case FAILURE(ACTION_TYPES.FETCH_EVENT):
@@ -59,20 +59,20 @@ export default (state: EventState = initialState, action): EventState => {
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload
+        errorMessage: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_EVENT_LIST):
       return {
         ...state,
         loading: false,
         entities: action.payload.data,
-        totalItems: parseInt(action.payload.headers['x-total-count'], 10)
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.FETCH_EVENT):
       return {
         ...state,
         loading: false,
-        entity: action.payload.data
+        entity: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.CREATE_EVENT):
     case SUCCESS(ACTION_TYPES.UPDATE_EVENT):
@@ -80,14 +80,14 @@ export default (state: EventState = initialState, action): EventState => {
         ...state,
         updating: false,
         updateSuccess: true,
-        entity: action.payload.data
+        entity: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.DELETE_EVENT):
       return {
         ...state,
         updating: false,
         updateSuccess: true,
-        entity: {}
+        entity: {},
       };
     case ACTION_TYPES.SET_BLOB:
       const { name, data, contentType } = action.payload;
@@ -96,12 +96,12 @@ export default (state: EventState = initialState, action): EventState => {
         entity: {
           ...state.entity,
           [name]: data,
-          [name + 'ContentType']: contentType
-        }
+          [name + 'ContentType']: contentType,
+        },
       };
     case ACTION_TYPES.RESET:
       return {
-        ...initialState
+        ...initialState,
       };
     default:
       return state;
@@ -110,13 +110,19 @@ export default (state: EventState = initialState, action): EventState => {
 
 const apiUrl = 'api/events';
 
-// Actions
-
-export const getEntities: ICrudGetAllAction<IEvent> = (page, size, sort) => {
-  const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+export const getUpcomingEntities: ICrudGetAllAction<IEvent> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}/upcoming${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_EVENT_LIST,
-    payload: axios.get<IEvent>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+    payload: axios.get<IEvent>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
+  };
+};
+
+export const getPreviousEntities: ICrudGetAllAction<IEvent> = (page, size, sort) => {
+  const requestUrl = `${apiUrl}/past${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
+  return {
+    type: ACTION_TYPES.FETCH_EVENT_LIST,
+    payload: axios.get<IEvent>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
   };
 };
 
@@ -124,25 +130,25 @@ export const getEntity: ICrudGetAction<IEvent> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
     type: ACTION_TYPES.FETCH_EVENT,
-    payload: axios.get<IEvent>(requestUrl)
+    payload: axios.get<IEvent>(requestUrl),
   };
 };
 
 export const createEntity: ICrudPutAction<IEvent> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_EVENT,
-    payload: axios.post(apiUrl, cleanEntity(entity))
+    payload: axios.post(apiUrl, cleanEntity(entity)),
   });
-  dispatch(getEntities());
+  dispatch(getUpcomingEntities());
   return result;
 };
 
 export const updateEntity: ICrudPutAction<IEvent> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_EVENT,
-    payload: axios.put(apiUrl, cleanEntity(entity))
+    payload: axios.put(apiUrl, cleanEntity(entity)),
   });
-  dispatch(getEntities());
+  dispatch(getUpcomingEntities());
   return result;
 };
 
@@ -150,9 +156,9 @@ export const deleteEntity: ICrudDeleteAction<IEvent> = id => async dispatch => {
   const requestUrl = `${apiUrl}/${id}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_EVENT,
-    payload: axios.delete(requestUrl)
+    payload: axios.delete(requestUrl),
   });
-  dispatch(getEntities());
+  dispatch(getUpcomingEntities());
   return result;
 };
 
@@ -161,10 +167,10 @@ export const setBlob = (name, data, contentType?) => ({
   payload: {
     name,
     data,
-    contentType
-  }
+    contentType,
+  },
 });
 
 export const reset = () => ({
-  type: ACTION_TYPES.RESET
+  type: ACTION_TYPES.RESET,
 });

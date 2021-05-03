@@ -17,7 +17,7 @@ export const ACTION_TYPES = {
   FETCH_FACULTY_LIST: 'completeProfile/FETCH_FECULTY_LIST',
   FETCH_YEARSESSION_LIST: 'completeProfile/FETCH_YEARSESSION_LIST',
   FETCH_USERPROFILE_UNIINFO: 'completeProfile/FETCH_USERPROFILE_UNIINFO',
-  RESET: 'completeProfile/RESET'
+  RESET: 'completeProfile/RESET',
 };
 
 const initialState = {
@@ -29,7 +29,7 @@ const initialState = {
   yearSessionList: [] as ReadonlyArray<IYearSession>,
   isProfileCompleted: false,
   updating: false,
-  updateSuccess: false
+  updateSuccess: false,
 };
 
 export type CompleteProfileState = Readonly<typeof initialState>;
@@ -47,7 +47,7 @@ export default (state: CompleteProfileState = initialState, action): CompletePro
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        loading: true
+        loading: true,
       };
     case FAILURE(ACTION_TYPES.COMPLETE_USERPROFILE):
     case FAILURE(ACTION_TYPES.FETCH_USERPROFILE_UNIINFO):
@@ -56,7 +56,7 @@ export default (state: CompleteProfileState = initialState, action): CompletePro
         updating: false,
         updateSuccess: false,
         loading: false,
-        errorMessage: action.payload
+        errorMessage: action.payload,
       };
     case SUCCESS(ACTION_TYPES.COMPLETE_USERPROFILE):
       return {
@@ -65,36 +65,36 @@ export default (state: CompleteProfileState = initialState, action): CompletePro
         updateSuccess: true,
         loading: false,
         errorMessage: null,
-        userProfile: action.payload.data
+        userProfile: action?.payload?.data ?? defaultValue,
       };
     case SUCCESS(ACTION_TYPES.FETCH_USERPROFILE_UNIINFO):
       return {
         ...state,
         loading: false,
         errorMessage: null,
-        userProfile: action.payload.data
+        userProfile: action?.payload?.data ?? defaultValue,
       };
     case ACTION_TYPES.FETCH_FACULTY_LIST:
       return {
         ...state,
         loading: false,
-        facultyList: action.payload.data
+        facultyList: action?.payload?.data ?? [],
       };
     case ACTION_TYPES.FETCH_COURSEPROGRAM_LIST:
       return {
         ...state,
         loading: false,
-        courseProgramList: action.payload.data
+        courseProgramList: action?.payload?.data ?? [],
       };
     case ACTION_TYPES.FETCH_YEARSESSION_LIST:
       return {
         ...state,
         loading: false,
-        yearSessionList: action.payload.data
+        yearSessionList: action?.payload?.data ?? [],
       };
     case ACTION_TYPES.RESET:
       return {
-        ...initialState
+        ...initialState,
       };
     default:
       return state;
@@ -109,7 +109,7 @@ export const completeUserProfile: ICrudPutAction<IUserUniInfo> = entity => async
   const requestUrl = `${apiUrl}/profile`;
   const result = await dispatch({
     type: ACTION_TYPES.COMPLETE_USERPROFILE,
-    payload: axios.post(requestUrl, cleanEntity(entity))
+    payload: axios.post(requestUrl, cleanEntity(entity)),
   });
   await checkUserProfileCompleted();
   return result;
@@ -119,6 +119,6 @@ export const fetchUserProfileWithUniInfo: IGetActionWithoutParam<IUserUniInfo> =
   const requestUrl = `api/user-uni-infos/current`;
   return {
     type: ACTION_TYPES.FETCH_USERPROFILE_UNIINFO,
-    payload: axios.get<IUserUniInfo>(`${requestUrl}`)
+    payload: axios.get<IUserUniInfo>(`${requestUrl}`),
   };
 };
