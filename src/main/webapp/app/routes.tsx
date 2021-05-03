@@ -4,15 +4,14 @@ import Loadable from 'react-loadable';
 
 import Home from 'app/modules/home/home';
 import Entities from 'app/entities';
-import PrivateRoute from 'app/shared/auth/private-route';
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
+import AppRoute from 'app/shared/auth/app-route';
 import PageNotFound from 'app/shared/error/page-not-found';
-import { AUTHORITIES } from 'app/config/constants';
 import AuthLogin from 'app/modules/auth/login/auth-login';
 import AuthEmailLogin from 'app/modules/auth/email-login/auth-email-login';
 import AuthEmailRegister from './modules/auth/email-register/auth-email-register';
 import AuthEmailReset from './modules/auth/email-reset/auth-email-reset';
 import UserProfile from './modules/user-profile/user-profile';
+import CCRole from './shared/model/enum/cc-role.enum';
 
 // tslint:disable:space-in-parens
 
@@ -25,15 +24,15 @@ const Admin = Loadable({
 const Routes = () => (
   <div className="h-100">
     <Switch>
-      <ErrorBoundaryRoute exact path="/auth/login" component={AuthLogin} />
-      <ErrorBoundaryRoute exact path="/auth/email/login" component={AuthEmailLogin} />
-      <ErrorBoundaryRoute exact path="/auth/email/register" component={AuthEmailRegister} />
-      <ErrorBoundaryRoute exact path="/auth/email/reset" component={AuthEmailReset} />
-      <PrivateRoute exact path="/profile" component={UserProfile} />
-      <PrivateRoute path="/admin" component={Admin} hasAnyAuthorities={[AUTHORITIES.ADMIN]} />
-      <PrivateRoute path="/entity" component={Entities} hasAnyAuthorities={[AUTHORITIES.USER, AUTHORITIES.ADMIN]} />
-      <ErrorBoundaryRoute path="/" exact component={Home} />
-      <ErrorBoundaryRoute component={PageNotFound} />
+      <AppRoute exact path="/" component={Home} isPublic />
+      <AppRoute exact path="/auth/login" component={AuthLogin} isPublic />
+      <AppRoute exact path="/auth/email/login" component={AuthEmailLogin} isPublic />
+      <AppRoute exact path="/auth/email/register" component={AuthEmailRegister} isPublic />
+      <AppRoute exact path="/auth/email/reset" component={AuthEmailReset} isPublic />
+      <AppRoute exact path="/profile" component={UserProfile} asLongAsIsAuthenticated />
+      <AppRoute path="/entity" component={Entities} isPublic />
+      <AppRoute path="/admin" component={Admin} ccRole={CCRole.ADMIN} />
+      <AppRoute component={PageNotFound} isPublic />
     </Switch>
   </div>
 );

@@ -32,9 +32,11 @@ describe('Entities reducer tests', () => {
     errorMessage: null,
     entities: [] as ReadonlyArray<IEventActivity>,
     entity: defaultValue,
-    totalItems: 0,
     updating: false,
-    updateSuccess: false
+    totalItems: 0,
+    updateSuccess: false,
+    selectedEventActivityId: 0,
+    showActionOptions: false
   };
 
   function testInitialState(state) {

@@ -6,15 +6,15 @@ export const eventMainTabList: ITabInfo[] = [
   {
     tabName: 'Upcoming',
     tabTranslateKey: 'clubmanagementApp.event.upcoming',
-    tabRoute: '/event/event',
-    isPublic: true
+    tabRoute: '/entity/event',
+    isPublic: true,
   },
   {
     tabName: 'Previous',
     tabTranslateKey: 'clubmanagementApp.event.previous',
     tabRoute: '/entity/event?previous',
-    isPublic: true
-  }
+    isPublic: true,
+  },
 ];
 
 export const eventTabList = (eventId: number): ITabInfo[] => [
@@ -22,7 +22,7 @@ export const eventTabList = (eventId: number): ITabInfo[] => [
     tabName: 'Details',
     tabTranslateKey: 'clubmanagementApp.event.tab',
     tabRoute: `/entity/event/${eventId}`,
-    isPublic: true
+    isPublic: true,
   },
   {
     tabName: 'Activities',
@@ -30,7 +30,7 @@ export const eventTabList = (eventId: number): ITabInfo[] => [
     tabRoute: `/entity/event-activity/event/${eventId}`,
     ccRole: CCRole.ADMIN,
     eventRole: EventRole.CREW,
-    eventId
+    eventId,
   },
   {
     tabName: 'Checklist',
@@ -38,7 +38,7 @@ export const eventTabList = (eventId: number): ITabInfo[] => [
     tabRoute: `/entity/event-checklist/event/${eventId}`,
     ccRole: CCRole.ADMIN,
     eventRole: EventRole.CREW,
-    eventId
+    eventId,
   },
   {
     tabName: 'Budget',
@@ -46,7 +46,7 @@ export const eventTabList = (eventId: number): ITabInfo[] => [
     tabRoute: `/entity/event-budget/event/${eventId}`,
     ccRole: CCRole.ADMIN,
     eventRole: EventRole.CREW,
-    eventId
+    eventId,
   },
   {
     tabName: 'Attendees',
@@ -54,7 +54,7 @@ export const eventTabList = (eventId: number): ITabInfo[] => [
     tabRoute: `/entity/event-attendee/event/${eventId}`,
     ccRole: CCRole.ADMIN,
     eventRole: EventRole.CREW,
-    eventId
+    eventId,
   },
   {
     tabName: 'Crews',
@@ -62,8 +62,8 @@ export const eventTabList = (eventId: number): ITabInfo[] => [
     tabRoute: `/entity/event-crew/event/${eventId}`,
     ccRole: CCRole.ADMIN,
     eventRole: EventRole.CREW,
-    eventId
-  }
+    eventId,
+  },
 ];
 
 export const financeTabList: ITabInfo[] = [
@@ -71,24 +71,24 @@ export const financeTabList: ITabInfo[] = [
     tabName: 'Report',
     tabTranslateKey: 'clubmanagementApp.financeReport.tab',
     tabRoute: '/entity/finance-report',
-    ccRole: CCRole.ADMIN
+    ccRole: CCRole.ADMIN,
   },
   {
     tabName: 'All Transactions',
     tabTranslateKey: 'clubmanagementApp.transaction.tab',
     tabRoute: '/entity/transaction',
-    ccRole: CCRole.ADMIN
+    ccRole: CCRole.ADMIN,
   },
   {
     tabName: 'Members Debt',
     tabTranslateKey: 'clubmanagementApp.debt.tab',
     tabRoute: '/entity/debt',
-    ccRole: CCRole.ADMIN
+    ccRole: CCRole.ADMIN,
   },
   {
     tabName: 'CC Debt',
     tabTranslateKey: 'clubmanagementApp.claim.tab',
     tabRoute: '/entity/claim',
-    ccRole: CCRole.ADMIN
-  }
+    ccRole: CCRole.ADMIN,
+  },
 ];
