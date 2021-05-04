@@ -37,6 +37,8 @@ describe('Entities reducer tests', () => {
     updateSuccess: false,
     selectedDebtId: 0,
     showActionOptions: false,
+    showCollectDialog: false,
+    showBadDebtDialog: false,
   };
 
   function testInitialState(state) {
