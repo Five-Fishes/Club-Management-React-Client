@@ -35,52 +35,65 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
     ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
+  constructor(props) {
+    super(props);
+    this.sortEntities = this.sortEntities.bind(this);
+    this.handlePagination = this.handlePagination.bind(this);
+    this.getEntities = this.getEntities.bind(this);
+    this.showCardAction = this.showCardAction.bind(this);
+    this.collect = this.collect.bind(this);
+    this.badDebt = this.badDebt.bind(this);
+    this.toggleShowOptions = this.toggleShowOptions.bind(this);
+    this.toggleShowCollectDialog = this.toggleShowCollectDialog.bind(this);
+    this.toggleShowBadDebtDialog = this.toggleShowBadDebtDialog.bind(this);
+  }
+
   componentDidMount() {
     this.getEntities();
   }
 
-  sortEntities = (): void => {
+  sortEntities(): void {
     this.getEntities();
     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}`);
-  };
+  }
 
-  handlePagination = (activePage: number): void => {
+  handlePagination(activePage: number): void {
     this.setState({ activePage }, () => this.sortEntities());
-  };
+  }
 
-  getEntities = (): void => {
+  getEntities(): void {
     const { activePage, itemsPerPage, sort, order } = this.state;
     this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
-  };
+  }
 
-  showCardAction = (debtId: number): void => {
+  showCardAction(debtId: number): void {
     this.props.setSelectedDebtId(debtId);
     this.props.setShowActionOptions(true);
-  };
+  }
 
-  collect = (): void => {
+  collect(): void {
     this.props.updateEntityStatus(this.props.selectedDebtId, DebtStatus.COLLECTED);
     this.props.setShowCollectDialog(!this.props.showCollectDialog);
-  };
+  }
 
-  badDebt = (): void => {
+  badDebt(): void {
     this.props.updateEntityStatus(this.props.selectedDebtId, DebtStatus.UNREACHABLE);
     this.props.setShowBadDebtDialog(!this.props.showBadDebtDialog);
-  };
+  }
 
-  toggleShowOptions = (): void => {
+  toggleShowOptions(): void {
     this.props.setShowActionOptions(!this.props.showActionOptions);
-  };
+  }
 
-  toggleShowCollectDialog = (): void => {
+  toggleShowCollectDialog(): void {
     this.props.setShowActionOptions(false);
     this.props.setShowCollectDialog(!this.props.showCollectDialog);
-  };
+  }
 
-  toggleShowBadDebtDialog = (): void => {
+  toggleShowBadDebtDialog(): void {
     this.props.setShowActionOptions(false);
     this.props.setShowBadDebtDialog(!this.props.showBadDebtDialog);
-  };
+  }
 
   render() {
     const { debtList, totalItems, showCollectDialog, showBadDebtDialog, showActionOptions } = this.props;
