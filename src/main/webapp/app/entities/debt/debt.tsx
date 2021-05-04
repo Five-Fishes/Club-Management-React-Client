@@ -35,18 +35,6 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
     ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
-  constructor(props) {
-    super(props);
-    this.sortEntities = this.sortEntities.bind(this);
-    this.handlePagination = this.handlePagination.bind(this);
-    this.getEntities = this.getEntities.bind(this);
-    this.collect = this.collect.bind(this);
-    this.badDebt = this.badDebt.bind(this);
-    this.toggleShowOptions = this.toggleShowOptions.bind(this);
-    this.toggleShowCollectDialog = this.toggleShowCollectDialog.bind(this);
-    this.toggleShowBadDebtDialog = this.toggleShowBadDebtDialog.bind(this);
-  }
-
   componentDidMount() {
     this.getEntities();
   }
