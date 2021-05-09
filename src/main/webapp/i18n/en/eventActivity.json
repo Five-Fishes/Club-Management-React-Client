@@ -20,6 +20,7 @@
       },
       "eventId": "Event Id",
       "startDate": "Start Date",
+      "duration": "Duration",
       "durationInDay": "Duration (In Day)",
       "name": "Name",
       "description": "Description",

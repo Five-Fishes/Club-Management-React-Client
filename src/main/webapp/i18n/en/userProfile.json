@@ -1,7 +1,22 @@
 {
-  "userProfile": {
-    "stats": "Stats",
-    "evolution": "Evolution",
-    "roles": "Roles"
+  "clubmanagementApp": {
+    "userProfile": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "gender": "Gender",
+      "phoneNumber": "Phone Number",
+      "dateOfBirth": "Date of Birth",
+      "profileImage": "Profile Image",
+      "genderValue": {
+        "MALE": "Male",
+        "FEMALE": "Female"
+      },
+      "stats": "Stats",
+      "evolution": "Evolution",
+      "roles": "Roles"
+    },
+    "completeProfile": {
+      "title": "Complete Profile"
+    }
   }
 }

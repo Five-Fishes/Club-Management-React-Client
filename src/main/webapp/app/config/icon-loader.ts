@@ -32,16 +32,23 @@ import { faGlobe } from '@fortawesome/free-solid-svg-icons/faGlobe';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons/faEnvelope';
 import { faBars } from '@fortawesome/free-solid-svg-icons/faBars';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons/faCalendarAlt';
+import { faCalendarAlt as farCalendarAlt } from '@fortawesome/free-regular-svg-icons/faCalendarAlt';
 import { faClock } from '@fortawesome/free-solid-svg-icons/faClock';
 import { faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons/faMapMarkerAlt';
 import { faMoneyBillAlt } from '@fortawesome/free-solid-svg-icons/faMoneyBillAlt';
 import { faPen } from '@fortawesome/free-solid-svg-icons/faPen';
+import { faCalendar } from '@fortawesome/free-solid-svg-icons/faCalendar';
+import { faPlaneDeparture } from '@fortawesome/free-solid-svg-icons/faPlaneDeparture';
 // brands
 import { faFacebookF } from '@fortawesome/free-brands-svg-icons/faFacebookF';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons/faGoogle';
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons/faEllipsisV';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons/faEllipsisH';
+import { faCar } from '@fortawesome/free-solid-svg-icons/faCar';
+import { faWhatsappSquare } from '@fortawesome/free-brands-svg-icons/faWhatsappSquare';
 import { library } from '@fortawesome/fontawesome-svg-core';
+import { faSortAmountUp } from '@fortawesome/free-solid-svg-icons/faSortAmountUp';
+import { faEuroSign } from '@fortawesome/free-solid-svg-icons/faEuroSign';
 
 export const loadIcons = () => {
   library.add(
@@ -82,10 +89,17 @@ export const loadIcons = () => {
     faGoogle,
     faEllipsisV,
     faEllipsisH,
+    faCar,
+    faWhatsappSquare,
     faCalendarAlt,
+    farCalendarAlt,
+    faCalendar,
     faClock,
     faMapMarkerAlt,
     faMoneyBillAlt,
-    faPen
+    faPen,
+    faSortAmountUp,
+    faPlaneDeparture,
+    faEuroSign
   );
 };

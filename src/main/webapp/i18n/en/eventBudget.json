@@ -4,6 +4,7 @@
       "home": {
         "title": "Event Budget",
         "createLabel": "Create Event Budget",
+        "editLabel": "Update Event Budget",
         "createOrEditLabel": "Create or edit a Event Budget",
         "notFound": "No Event Budget found"
       },

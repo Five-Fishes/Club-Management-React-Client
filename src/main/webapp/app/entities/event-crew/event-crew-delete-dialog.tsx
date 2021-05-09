@@ -7,17 +7,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { IEventCrew } from 'app/shared/model/event-crew.model';
 import { IRootState } from 'app/shared/reducers';
-import { getEntity, deleteEntity } from './event-crew.reducer';
+import { getEntity, deleteEntity, deleteEntityWithEventId } from './event-crew.reducer';
+import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
+import EventRole from 'app/shared/model/enum/event-role.enum';
 
-export interface IEventCrewDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IEventCrewDeleteDialogProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
 export class EventCrewDeleteDialog extends React.Component<IEventCrewDeleteDialogProps> {
   componentDidMount() {
-    this.props.getEntity(this.props.match.params.id);
+    this.props.getEntity(this.props.match.params.id, this.props.match.params.eventId);
   }
 
   confirmDelete = event => {
-    this.props.deleteEntity(this.props.eventCrewEntity.id);
+    this.props.deleteEntityWithEventId(this.props.eventCrewEntity.id, this.props.match.params.eventId);
     this.handleClose(event);
   };
 
@@ -29,7 +32,7 @@ export class EventCrewDeleteDialog extends React.Component<IEventCrewDeleteDialo
   render() {
     const { eventCrewEntity } = this.props;
     return (
-      <Modal isOpen toggle={this.handleClose}>
+      <Modal isOpen toggle={this.handleClose} centered>
         <ModalHeader toggle={this.handleClose}>
           <Translate contentKey="entity.delete.title">Confirm delete operation</Translate>
         </ModalHeader>
@@ -38,17 +41,19 @@ export class EventCrewDeleteDialog extends React.Component<IEventCrewDeleteDialo
             Are you sure you want to delete this EventCrew?
           </Translate>
         </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={this.handleClose}>
+        <ModalFooter className="mx-3">
+          <Button className="mr-auto" color="secondary" onClick={this.handleClose}>
             <FontAwesomeIcon icon="ban" />
             &nbsp;
             <Translate contentKey="entity.action.cancel">Cancel</Translate>
           </Button>
-          <Button id="jhi-confirm-delete-eventCrew" color="danger" onClick={this.confirmDelete}>
-            <FontAwesomeIcon icon="trash" />
-            &nbsp;
-            <Translate contentKey="entity.action.delete">Delete</Translate>
-          </Button>
+          <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={eventCrewEntity.eventId}>
+            <Button id="jhi-confirm-delete-eventCrew" color="cancel" onClick={this.confirmDelete}>
+              <FontAwesomeIcon icon="trash" />
+              &nbsp;
+              <Translate contentKey="entity.action.delete">Delete</Translate>
+            </Button>
+          </AuthorizationChecker>
         </ModalFooter>
       </Modal>
     );
@@ -56,15 +61,12 @@ export class EventCrewDeleteDialog extends React.Component<IEventCrewDeleteDialo
 }
 
 const mapStateToProps = ({ eventCrew }: IRootState) => ({
-  eventCrewEntity: eventCrew.entity
+  eventCrewEntity: eventCrew.entity,
 });
 
-const mapDispatchToProps = { getEntity, deleteEntity };
+const mapDispatchToProps = { getEntity, deleteEntity, deleteEntityWithEventId };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventCrewDeleteDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(EventCrewDeleteDialog);

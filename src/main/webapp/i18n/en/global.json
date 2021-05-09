@@ -20,7 +20,8 @@
         "userCcInfo": "User CC Info",
         "userUniInfo": "User Uni Info",
         "faculty": "Faculty",
-        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
+        "options": "Options"
       },
       "account": {
         "main": "Account",
@@ -100,7 +101,8 @@
       "id": "ID"
     },
     "select": {
-      "selectOne": "Select One"
+      "selectOne": "Select One",
+      "selectUser": "Select a User"
     },
     "ribbon": {
       "dev": "Development"
@@ -120,7 +122,14 @@
       "update": "Update",
       "open": "Open",
       "save": "Save",
-      "view": "View"
+      "view": "View",
+      "yes": "Yes",
+      "no": "No",
+      "register": "Register",
+      "deregister": "Deregister",
+      "complete": "Complete",
+      "collect": "Collect",
+      "badDebt": "Bad Debt"
     },
     "detail": {
       "field": "Field",
@@ -146,12 +155,13 @@
   "error": {
     "internalServerError": "Internal server error",
     "server.not.reachable": "Server not reachable",
-    "url.not.found": "Not found",
+    "urlNotFound": "URL Not found",
     "NotNull": "Field {{ fieldName }} cannot be empty!",
     "Size": "Field {{ fieldName }} does not meet min/max size requirements!",
     "userexists": "Login name already used!",
     "emailexists": "Email is already in use!",
     "idexists": "A new {{ entityName }} cannot already have an ID",
+    "noname": "A new {{ entityName }} cannot be created without a name",
     "idnull": "Invalid ID"
   },
   "footer": "ThirdCC @ 2020"

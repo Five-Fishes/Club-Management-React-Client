@@ -11,6 +11,8 @@ import { getEntity as getEventEntity } from '../event/event.reducer';
 import { convertDateTimeToServer } from 'app/shared/util/date-utils';
 import moment from 'moment';
 import { APP_LOCAL_DATETIME_FORMAT } from 'app/config/constants';
+import { convertTimeFormatToDaysDuration } from 'app/shared/util/duration-utils';
+import '../../styles/event-module.scss';
 
 export interface IEventActivityCreateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
@@ -32,6 +34,12 @@ export class EventActivityCreate extends React.Component<IEventActivityCreatePro
 
   saveEntity = (event, errors, values) => {
     values.startDate = convertDateTimeToServer(values.startDate);
+
+    values['durationInDay'] = convertTimeFormatToDaysDuration({
+      days: values.durationDay,
+      hours: values.durationHour,
+      minutes: values.durationMinute
+    });
 
     if (errors.length === 0) {
       const { eventActivityEntity } = this.props;
@@ -55,10 +63,10 @@ export class EventActivityCreate extends React.Component<IEventActivityCreatePro
     const { description } = eventActivityEntity;
 
     return (
-      <div className="container">
+      <div className="mx-3">
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.eventActivity.home.createTitle">
+            <h2 id="clubmanagementApp.eventActivity.home.createTitle" className="event-module-form-heading">
               <Translate contentKey="clubmanagementApp.eventActivity.home.createTitle">Create Event Activity</Translate>
             </h2>
           </Col>
@@ -102,10 +110,19 @@ export class EventActivityCreate extends React.Component<IEventActivityCreatePro
                   />
                 </AvGroup>
                 <AvGroup>
-                  <Label id="durationInDayLabel" for="event-activity-durationInDay">
-                    <Translate contentKey="clubmanagementApp.eventActivity.durationInDay">Duration In Day</Translate>
+                  <Label id="durationInDayLabel" for="event-activity-durationInDay" className="font-weight-bold">
+                    <Translate contentKey="clubmanagementApp.eventActivity.duration">Duration</Translate>
                   </Label>
-                  <AvField id="event-activity-durationInDay" type="number" min="0" name="durationInDay" />
+                  <AvField id="event-activity-duration-day" type="number" min="0" name="durationDay" label="Days" grid={{ xs: 9 }} />
+                  <AvField id="event-activity-duration-hour" type="number" min="0" name="durationHour" label="Hours" grid={{ xs: 9 }} />
+                  <AvField
+                    id="event-activity-duration-minute"
+                    type="number"
+                    min="0"
+                    name="durationMinute"
+                    label="Minutes"
+                    grid={{ xs: 9 }}
+                  />
                 </AvGroup>
                 <AvGroup>
                   <Label id="descriptionLabel" for="event-activity-description">
@@ -114,16 +131,19 @@ export class EventActivityCreate extends React.Component<IEventActivityCreatePro
                   <AvInput id="event-activity-description" type="textarea" name="description" />
                 </AvGroup>
                 <span className="text-error">{errorMessage ? errorMessage.response.data.detail : ''}</span>
-                <div className="text-center mx-4 d-flex justify-content-between justify-content-md-center mb-2">
-                  <Button tag={Link} id="cancel-save" to={`/entity/event-activity/event/${eventId}`} replace color="cancel">
-                    <FontAwesomeIcon icon="arrow-left" />
-                    &nbsp;
+                <div className="text-center general-buttonContainer--flexContainer">
+                  <Button
+                    className="general-button--width"
+                    tag={Link}
+                    id="cancel-save"
+                    to={`/entity/event-activity/event/${eventId}`}
+                    replace
+                    color="cancel"
+                  >
                     <Translate contentKey="entity.action.cancel">Cancel</Translate>
                   </Button>
                   &nbsp;
-                  <Button color="action" id="save-entity" type="submit" disabled={updating}>
-                    <FontAwesomeIcon icon="save" />
-                    &nbsp;
+                  <Button className="general-button--width" color="action" id="save-entity" type="submit" disabled={updating}>
                     <Translate contentKey="entity.action.create">Create</Translate>
                   </Button>
                 </div>

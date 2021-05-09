@@ -2,9 +2,9 @@
   "clubmanagementApp": {
     "EventChecklistStatus": {
       "null": "",
-      "OPEN": "OPEN",
-      "IN_PROGRESS": "IN_PROGRESS",
-      "FINISHED": "FINISHED"
+      "OPEN": "未筹备",
+      "IN_PROGRESS": "筹备中",
+      "FINISHED": "已筹备"
     }
   }
 }

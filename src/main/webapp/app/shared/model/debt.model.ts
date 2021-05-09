@@ -13,6 +13,9 @@ export interface IDebt {
   receiptUrl?: string;
   fileName?: string;
   fileType?: string;
+  eventName?: string;
+  userName?: string;
+  createdDate?: any;
 }
 
 export const defaultValue: Readonly<IDebt> = {};

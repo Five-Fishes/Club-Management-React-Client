@@ -4,8 +4,9 @@
       "home": {
         "title": "活动预算",
         "createLabel": "创建活动预算",
+        "editLabel": "编辑活动预算",
         "createOrEditLabel": "创建或编辑活动预算",
-        "notFound": "无活动预算"
+        "notFound": "未发现任何活动预算"
       },
       "created": "活动预算 {{ param }} 创建成功",
       "updated": "活动预算 {{ param }} 更新成功",
@@ -16,9 +17,9 @@
       "detail": {
         "title": "活动预算"
       },
-      "eventId": "Event Id",
+      "eventId": "活动 ID",
       "amount": "数额",
-      "type": "种类",
+      "type": "类型",
       "name": "名称",
       "details": "详情",
       "budget": "预算",

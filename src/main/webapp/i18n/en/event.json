@@ -16,18 +16,22 @@
       "upcoming": "Upcoming",
       "previous": "Previous",
       "detail": {
-        "title": "Event"
+        "title": "Event Details"
       },
       "name": "Name",
       "description": "Description",
       "remarks": "Remarks",
+      "date": "Date",
+      "time": "Time",
       "venue": "Venue",
       "startDate": "Start Date",
       "endDate": "End Date",
       "fee": "Fee",
       "requiredTransport": "Required Transport",
+      "noRequiredTransport": "No Required Transport",
       "status": "Status",
-      "image": "Image",
+      "imageFile": "Image file",
+      "imageUrl": "Image link",
       "fileName": "File Name",
       "fileType": "File Type",
       "tab": "Details"

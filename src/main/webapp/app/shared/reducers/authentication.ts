@@ -1,6 +1,7 @@
 export const ACTION_TYPES = {
   LOGOUT: 'authentication/LOGOUT',
-  FETCH_ACCOUNT: 'authentication/FETCH_ACCOUNT'
+  FETCH_ACCOUNT: 'authentication/FETCH_ACCOUNT',
+  CHECK_USERPROFILE_COMPLETE: 'authentication/CHECK_USERPROFILE_COMPLETE',
 };
 
 export interface IAuthenticationInitialState {
@@ -14,6 +15,7 @@ export interface IAuthenticationInitialState {
   eventCrewEventIds: number[];
   isCurrentCCHead: boolean;
   isCurrentAdministrator: boolean;
+  isProfileCompleted?: boolean;
 }
 
 const initialState: IAuthenticationInitialState = {
@@ -26,7 +28,8 @@ const initialState: IAuthenticationInitialState = {
   eventHeadEventIds: [],
   eventCrewEventIds: [],
   isCurrentCCHead: false,
-  isCurrentAdministrator: false
+  isCurrentAdministrator: false,
+  isProfileCompleted: false,
 };
 
 // Reducer
@@ -34,10 +37,7 @@ const initialState: IAuthenticationInitialState = {
 export default (state: IAuthenticationInitialState = initialState, action): IAuthenticationInitialState => {
   switch (action.type) {
     case ACTION_TYPES.LOGOUT:
-      return {
-        ...state,
-        isAuthenticated: false
-      };
+      return initialState;
     case ACTION_TYPES.FETCH_ACCOUNT:
       return {
         ...state,
@@ -50,7 +50,12 @@ export default (state: IAuthenticationInitialState = initialState, action): IAut
         eventHeadEventIds: action.payload.eventHeadEventIds,
         eventCrewEventIds: action.payload.eventCrewEventIds,
         isCurrentCCHead: action.payload.isCurrentCCHead,
-        isCurrentAdministrator: action.payload.isCurrentAdministrator
+        isCurrentAdministrator: action.payload.isCurrentAdministrator,
+      };
+    case ACTION_TYPES.CHECK_USERPROFILE_COMPLETE:
+      return {
+        ...state,
+        isProfileCompleted: action.payload.isProfileCompleted,
       };
     default:
       return state;
