@@ -96,17 +96,20 @@ export const financeTabList: ITabInfo[] = [
 export const profileTab: ITabInfo[] = [
   {
     tabName: 'Stats',
-    tabTranslateKey: 'userProfile.stats',
-    tabRoute: '/profile/stats'
+    tabTranslateKey: 'clubmanagementApp.userProfile.stats',
+    tabRoute: '/profile/stats',
+    asLongAsIsAuthenticated: true,
   },
   {
     tabName: 'Evolution',
-    tabTranslateKey: 'userProfile.evolution',
-    tabRoute: '/profile/evolution'
+    tabTranslateKey: 'clubmanagementApp.userProfile.evolution',
+    tabRoute: '/profile/evolution',
+    asLongAsIsAuthenticated: true,
   },
   {
     tabName: 'Roles',
-    tabTranslateKey: 'userProfile.roles',
-    tabRoute: '/profile/roles'
-  }
+    tabTranslateKey: 'clubmanagementApp.userProfile.roles',
+    tabRoute: '/profile/roles',
+    asLongAsIsAuthenticated: true,
+  },
 ];

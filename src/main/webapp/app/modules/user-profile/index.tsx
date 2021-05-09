@@ -1,14 +1,13 @@
 import React from 'react';
 import { Switch } from 'react-router-dom';
 
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
-
 import UserProfile from './user-profile';
+import AppRoute from 'app/shared/auth/app-route';
 
 const Routes = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute path={`${match.url}`} component={UserProfile} />
+      <AppRoute path={`${match.url}`} component={UserProfile} asLongAsIsAuthenticated />
     </Switch>
   </>
 );

@@ -1,23 +1,29 @@
 import axios from 'axios';
-import { ICrudGetAction } from 'react-jhipster';
 
-import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
-import { IUser, defaultValue } from 'app/shared/model/user.model';
+import { IUserUniInfo, defaultValue as defaultUserUniInfo } from 'app/shared/model/user-uni-info.model';
+import { IUserCCInfo } from 'app/shared/model/user-cc-info.model';
+import { IUserCCRoleInfo } from 'app/shared/model/user-cc-role-info.model';
 import { IGetEntityWithoutParams } from 'app/shared/type/custom-action';
 
 export const ACTION_TYPES = {
   FETCH_USERPROFILE: 'userProfile/FETCH_USERPROFILE',
-  RESET: 'userProfile/RESET'
+  FETCH_USERPROFILE_CCINFO: 'userProfile/FETCH_USERPROFILE_CCINFO',
+  FETCH_USERPROFILE_CCROLE: 'userProfile/FETCH_USERPROFILE_CCROLE',
+  SET_CURRENT_TAB: 'userProfile/SET_CURRENT_TAB',
+  RESET: 'userProfile/RESET',
 };
 
 const initialState = {
   loading: false,
   errorMessage: null,
-  entity: defaultValue,
+  entity: defaultUserUniInfo,
+  userCCEvolutionInfo: [] as ReadonlyArray<IUserCCInfo>,
+  userCCRolesInfo: [] as ReadonlyArray<IUserCCRoleInfo>,
   updating: false,
-  updateSuccess: false
+  updateSuccess: false,
+  currentProfileTab: 'Stats',
 };
 
 export type UserState = Readonly<typeof initialState>;
@@ -31,7 +37,7 @@ export default (state: UserState = initialState, action): UserState => {
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        loading: true
+        loading: true,
       };
     case FAILURE(ACTION_TYPES.FETCH_USERPROFILE):
       return {
@@ -39,31 +45,69 @@ export default (state: UserState = initialState, action): UserState => {
         updating: false,
         updateSuccess: false,
         loading: false,
-        errorMessage: action.payload
+        errorMessage: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_USERPROFILE):
       return {
         ...state,
         loading: false,
-        entity: action.payload.data
+        entity: action.payload.data,
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_USERPROFILE_CCINFO):
+      return {
+        ...state,
+        loading: false,
+        userCCEvolutionInfo: action.payload.data,
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_USERPROFILE_CCROLE):
+      return {
+        ...state,
+        loading: false,
+        userCCRolesInfo: action.payload.data,
+      };
+    case ACTION_TYPES.SET_CURRENT_TAB:
+      return {
+        ...state,
+        currentProfileTab: action.payload.currentTab,
       };
     case ACTION_TYPES.RESET:
       return {
-        ...initialState
+        ...initialState,
       };
     default:
       return state;
   }
 };
 
-const apiUrl = 'api/users';
-
 // Actions
 
-export const getCurrentUserProfile: IGetEntityWithoutParams<IUser> = () => {
-  const requestUrl = `${apiUrl}/current`;
+export const getCurrentUserProfile: IGetEntityWithoutParams<IUserUniInfo> = () => {
+  const requestUrl = `api/user-uni-infos/current`;
   return {
     type: ACTION_TYPES.FETCH_USERPROFILE,
-    payload: axios.get<IUser>(requestUrl)
+    payload: axios.get<IUserUniInfo>(requestUrl),
   };
 };
+
+export const getCurrentUserCCInfoProfile: IGetEntityWithoutParams<IUserCCInfo> = () => {
+  const requestUrl = `api/user-cc-infos/current`;
+  return {
+    type: ACTION_TYPES.FETCH_USERPROFILE_CCINFO,
+    payload: axios.get<IUserCCInfo>(requestUrl),
+  };
+};
+
+export const getCurrentUserCCRolesProfile: IGetEntityWithoutParams<IUserCCRoleInfo> = () => {
+  const requestUrl = `api/user-cc-infos/roles/current`;
+  return {
+    type: ACTION_TYPES.FETCH_USERPROFILE_CCROLE,
+    payload: axios.get<IUserCCRoleInfo>(requestUrl),
+  };
+};
+
+export const setUserProfileCurrentTab = (currentTab: string) => ({
+  type: ACTION_TYPES.SET_CURRENT_TAB,
+  payload: {
+    currentTab,
+  },
+});

@@ -25,7 +25,7 @@ export class UserProfileStats extends React.Component<IUserProfileStatsProps, {}
             <Col xs="9">
               <span className="d-block mb-1">{userEntity.gender}</span>
               <span className="d-block mb-1">{convertDateTimeFromServerToLocaleDate(userEntity.dateOfBirth)}</span>
-              <span className="d-block mb-1">{userEntity.contactNo}</span>
+              <span className="d-block mb-1">{userEntity.phoneNumber}</span>
               <span className="d-block mb-1">{userEntity.email}</span>
             </Col>
             <Col xs="2">
@@ -41,7 +41,7 @@ export class UserProfileStats extends React.Component<IUserProfileStatsProps, {}
 }
 
 const mapStateToProps = ({ user }: IRootState) => ({
-  userEntity: user.entity
+  userEntity: user.entity,
 });
 
 type StateProps = ReturnType<typeof mapStateToProps>;

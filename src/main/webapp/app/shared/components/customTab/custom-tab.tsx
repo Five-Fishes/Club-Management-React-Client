@@ -15,6 +15,7 @@ import AuthorizationChecker, {
 interface ICustomTabOwnProps {
   currentTab: string;
   tabList: ITabInfo[];
+  handleClick?: React.FC<void>;
 }
 
 interface ICustomTabProps extends ICustomTabOwnProps, StateProps {}
@@ -40,7 +41,7 @@ class CustomTab extends React.Component<ICustomTabProps, {}> {
   }
 
   render() {
-    const { tabList, currentTab } = this.props;
+    const { tabList, currentTab, handleClick } = this.props;
     const tabsThatWillBeShow = tabList.filter(tabInfo => {
       const { eventId } = tabInfo;
       const { eventHeadEventIds, eventCrewEventIds } = this.props;
@@ -55,7 +56,7 @@ class CustomTab extends React.Component<ICustomTabProps, {}> {
         <div className="tab-container my-2 text-center">
           <ButtonGroup className="w-100 px-3">
             {tabList.map(tabInfo => (
-              <TabItem key={tabInfo.tabName} currentTab={currentTab} tabInfo={tabInfo} />
+              <TabItem key={tabInfo.tabName} currentTab={currentTab} tabInfo={tabInfo} tabOnClick={handleClick} />
             ))}
           </ButtonGroup>
         </div>
@@ -73,14 +74,30 @@ export default connect(mapStateToProps)(CustomTab);
 interface ITabItemProps {
   currentTab: string;
   tabInfo: ITabInfo;
+  tabOnClick: React.FC<void>;
 }
 
-const TabItem: React.FC<ITabItemProps> = ({ currentTab, tabInfo }) => {
+const TabItem: React.FC<ITabItemProps> = ({ currentTab, tabInfo, tabOnClick }) => {
   const isCurrentTab: boolean = tabInfo.tabName === currentTab;
   const btnClassName = classnames('tab-item', isCurrentTab ? 'active-tab' : '');
+
+  const handleClick = tabName => {
+    if (tabOnClick !== undefined) {
+      tabOnClick(tabName);
+    }
+  };
+
   return (
     <AuthorizationChecker {...tabInfo}>
-      <Button key={tabInfo.tabName} id="tab-btn" color="#07ADE1" className={btnClassName} tag={Link} to={tabInfo.tabRoute}>
+      <Button
+        key={tabInfo.tabName}
+        id="tab-btn"
+        color="#07ADE1"
+        className={btnClassName}
+        tag={Link}
+        to={tabInfo.tabRoute}
+        onClick={handleClick(tabInfo.tabName)}
+      >
         <Translate contentKey={tabInfo.tabTranslateKey}>{tabInfo.tabName}</Translate>
       </Button>
     </AuthorizationChecker>

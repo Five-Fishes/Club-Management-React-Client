@@ -4,7 +4,7 @@ export const enum UserUniStatus {
   GRADUATED = 'GRADUATED',
   STUDYING = 'STUDYING',
   EXTENDED = 'EXTENDED',
-  TRANSFERRED = 'TRANSFERRED'
+  TRANSFERRED = 'TRANSFERRED',
 }
 
 export interface IUserUniInfo {
@@ -19,10 +19,28 @@ export interface IUserUniInfo {
   status?: UserUniStatus;
   firstName?: string;
   lastName?: string;
+  email?: string;
   gender?: string;
   phoneNumber?: string;
   imageUrl?: string;
   dateOfBirth?: Moment;
 }
 
-export const defaultValue: Readonly<IUserUniInfo> = {};
+export const defaultValue: Readonly<IUserUniInfo> = {
+  id: null,
+  userId: null,
+  faculty: '',
+  program: '',
+  yearSession: '',
+  intakeSemester: null,
+  yearOfStudy: null,
+  stayIn: '',
+  status: null,
+  firstName: '',
+  lastName: '',
+  email: '',
+  gender: '',
+  phoneNumber: '',
+  imageUrl: '',
+  dateOfBirth: null,
+};
