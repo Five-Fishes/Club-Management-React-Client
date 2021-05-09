@@ -21,14 +21,14 @@ export interface IDebtUpdateState {
 }
 
 export class DebtUpdate extends React.Component<IDebtUpdateProps, IDebtUpdateState> {
-  constructor(props) {
+  constructor(props: IDebtUpdateProps) {
     super(props);
     this.state = {
-      isNew: !this.props.match.params || !this.props.match.params.id
+      isNew: !this.props.match.params || !this.props.match.params.id,
     };
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: IDebtUpdateProps, nextState: IDebtUpdateState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
       this.handleClose();
     }
@@ -42,12 +42,12 @@ export class DebtUpdate extends React.Component<IDebtUpdateProps, IDebtUpdateSta
     }
   }
 
-  saveEntity = (event, errors, values) => {
+  saveEntity = (event: any, errors: any, values: any) => {
     if (errors.length === 0) {
       const { debtEntity } = this.props;
       const entity = {
         ...debtEntity,
-        ...values
+        ...values,
       };
 
       if (this.state.isNew) {
@@ -167,20 +167,17 @@ const mapStateToProps = (storeState: IRootState) => ({
   debtEntity: storeState.debt.entity,
   loading: storeState.debt.loading,
   updating: storeState.debt.updating,
-  updateSuccess: storeState.debt.updateSuccess
+  updateSuccess: storeState.debt.updateSuccess,
 });
 
 const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DebtUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(DebtUpdate);

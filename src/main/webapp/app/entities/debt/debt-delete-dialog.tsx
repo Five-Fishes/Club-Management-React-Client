@@ -16,12 +16,12 @@ export class DebtDeleteDialog extends React.Component<IDebtDeleteDialogProps> {
     this.props.getEntity(this.props.match.params.id);
   }
 
-  confirmDelete = event => {
+  confirmDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
     this.props.deleteEntity(this.props.debtEntity.id);
     this.handleClose(event);
   };
 
-  handleClose = event => {
+  handleClose = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     this.props.history.goBack();
   };
@@ -56,7 +56,7 @@ export class DebtDeleteDialog extends React.Component<IDebtDeleteDialogProps> {
 }
 
 const mapStateToProps = ({ debt }: IRootState) => ({
-  debtEntity: debt.entity
+  debtEntity: debt.entity,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };
@@ -64,7 +64,4 @@ const mapDispatchToProps = { getEntity, deleteEntity };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(DebtDeleteDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(DebtDeleteDialog);

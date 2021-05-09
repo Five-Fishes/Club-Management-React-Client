@@ -19,18 +19,18 @@ export type IClaimState = IPaginationBaseState;
 
 export class Claim extends React.Component<IClaimProps, IClaimState> {
   state: IClaimState = {
-    ...getSortState(this.props.location, ITEMS_PER_PAGE)
+    ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
   componentDidMount() {
     this.getEntities();
   }
 
-  sort = prop => () => {
+  sort = (prop: any) => () => {
     this.setState(
       {
         order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
+        sort: prop,
       },
       () => this.sortEntities()
     );
@@ -41,7 +41,7 @@ export class Claim extends React.Component<IClaimProps, IClaimState> {
     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
   }
 
-  handlePagination = activePage => this.setState({ activePage }, () => this.sortEntities());
+  handlePagination = (activePage: number) => this.setState({ activePage }, () => this.sortEntities());
 
   getEntities = () => {
     const { activePage, itemsPerPage, sort, order } = this.state;
@@ -162,17 +162,14 @@ export class Claim extends React.Component<IClaimProps, IClaimState> {
 
 const mapStateToProps = ({ claim }: IRootState) => ({
   claimList: claim.entities,
-  totalItems: claim.totalItems
+  totalItems: claim.totalItems,
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEntities,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Claim);
+export default connect(mapStateToProps, mapDispatchToProps)(Claim);

@@ -54,7 +54,7 @@ export interface IAuthorizationCheckerOwnProps extends IAuthorizationCondition {
 interface IAuthorizationCheckerProps extends IAuthorizationCheckerOwnProps, StateProps {}
 
 class AuthorizationChecker extends React.Component<IAuthorizationCheckerProps, {}> {
-  constructor(props) {
+  constructor(props: IAuthorizationCheckerProps) {
     super(props);
   }
 
@@ -69,14 +69,14 @@ class AuthorizationChecker extends React.Component<IAuthorizationCheckerProps, {
 const mapStateToProps = ({ authentication }: IRootState, ownProps: IAuthorizationCheckerOwnProps) => {
   const { eventId } = ownProps;
   const { isAuthenticated, isCurrentCCHead, isCurrentAdministrator, eventHeadEventIds, eventCrewEventIds } = authentication;
-  const isEventHead = eventId && eventHeadEventIds.includes(eventId);
-  const isEventCrew = eventId && eventCrewEventIds.includes(eventId);
+  const isEventHead = Boolean(eventId && eventHeadEventIds.includes(eventId));
+  const isEventCrew = Boolean(eventId && eventCrewEventIds.includes(eventId));
   return {
     isAuthenticated,
     isCurrentCCHead,
     isCurrentAdministrator,
     isEventHead,
-    isEventCrew
+    isEventCrew,
   };
 };
 

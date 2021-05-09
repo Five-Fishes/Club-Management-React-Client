@@ -1,7 +1,9 @@
+import { AnyAction } from 'redux';
+
 export const ACTION_TYPES = {
   LOGOUT: 'authentication/LOGOUT',
   FETCH_ACCOUNT: 'authentication/FETCH_ACCOUNT',
-  CHECK_USERPROFILE_COMPLETE: 'authentication/CHECK_USERPROFILE_COMPLETE'
+  CHECK_USERPROFILE_COMPLETE: 'authentication/CHECK_USERPROFILE_COMPLETE',
 };
 
 export interface IAuthenticationInitialState {
@@ -29,12 +31,12 @@ const initialState: IAuthenticationInitialState = {
   eventCrewEventIds: [],
   isCurrentCCHead: false,
   isCurrentAdministrator: false,
-  isProfileCompleted: false
+  isProfileCompleted: false,
 };
 
 // Reducer
 
-export default (state: IAuthenticationInitialState = initialState, action): IAuthenticationInitialState => {
+export default (state: IAuthenticationInitialState = initialState, action: AnyAction): IAuthenticationInitialState => {
   switch (action.type) {
     case ACTION_TYPES.LOGOUT:
       return initialState;
@@ -50,12 +52,12 @@ export default (state: IAuthenticationInitialState = initialState, action): IAut
         eventHeadEventIds: action.payload.eventHeadEventIds,
         eventCrewEventIds: action.payload.eventCrewEventIds,
         isCurrentCCHead: action.payload.isCurrentCCHead,
-        isCurrentAdministrator: action.payload.isCurrentAdministrator
+        isCurrentAdministrator: action.payload.isCurrentAdministrator,
       };
     case ACTION_TYPES.CHECK_USERPROFILE_COMPLETE:
       return {
         ...state,
-        isProfileCompleted: action.payload.isProfileCompleted
+        isProfileCompleted: action.payload.isProfileCompleted,
       };
     default:
       return state;

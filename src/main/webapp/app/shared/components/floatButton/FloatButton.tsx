@@ -4,8 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import './floatButton.css';
 
-const FloatButton = props => (
-  <Button color="action" className="floatButton shadow" onClick={props.onClick}>
+interface IFloatButton {
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+}
+
+const FloatButton: React.FC<IFloatButton> = ({ onClick }) => (
+  <Button color="action" className="floatButton shadow" onClick={onClick}>
     <FontAwesomeIcon icon="plus" size="lg" />
   </Button>
 );

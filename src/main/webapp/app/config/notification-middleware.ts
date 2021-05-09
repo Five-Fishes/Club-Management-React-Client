@@ -1,11 +1,12 @@
+import { AxiosError, AxiosResponse } from 'axios';
 import { isPromise, translate } from 'react-jhipster';
 import { toast } from 'react-toastify';
 
-const addErrorAlert = (message, key?, data?) => {
+const addErrorAlert = (message: string, key?: any, data?: any) => {
   key = key ? key : message;
   toast.error(translate(key, data));
 };
-export default () => next => action => {
+export default () => (next: any) => (action: any) => {
   // If not a promise, continue on
   if (!isPromise(action.payload)) {
     return next(action);
@@ -17,14 +18,15 @@ export default () => next => action => {
    * the promise middleware, but adds a `then` and `catch.
    */
   return next(action)
-    .then(response => {
+    .then((response: any) => {
       if (action.meta && action.meta.successMessage) {
         toast.success(action.meta.successMessage);
       } else if (response && response.action && response.action.payload && response.action.payload.headers) {
         const headers = response.action.payload.headers;
-        let alert: string = null;
-        let alertParams: string = null;
-        Object.entries(headers).forEach(([k, v]: [string, string]) => {
+        let alert: string | null = null;
+        let alertParams: string | null = null;
+        const headerEntries: [string, string][] = Object.entries(headers);
+        headerEntries.forEach(([k, v]: [string, string]) => {
           if (k.toLowerCase().endsWith('app-alert')) {
             alert = v;
           } else if (k.toLowerCase().endsWith('app-params')) {
@@ -38,7 +40,7 @@ export default () => next => action => {
       }
       return Promise.resolve(response);
     })
-    .catch(error => {
+    .catch((error: AxiosError) => {
       if (action.meta && action.meta.errorMessage) {
         toast.error(action.meta.errorMessage);
       } else if (error && error.response) {
@@ -53,10 +55,10 @@ export default () => next => action => {
               break;
 
             case 400:
-              const headers = Object.entries(response.headers);
+              const headers: [string, string][] = Object.entries(response.headers);
               let errorHeader = null;
               let entityKey = null;
-              headers.forEach(([k, v]: [string, string]) => {
+              headers.forEach(([k, v]) => {
                 if (k.toLowerCase().endsWith('app-error')) {
                   errorHeader = v;
                 } else if (k.toLowerCase().endsWith('app-params')) {

@@ -27,10 +27,10 @@ export class EventCrew extends React.Component<IEventCrewProps> {
     ...getSortState(this.props.location, ITEMS_PER_PAGE),
     modalIsOpen: false,
     eventCrewId: null,
-    eventId: this.props.match.params.eventId
+    eventId: this.props.match.params.eventId,
   };
 
-  openModal = eventCrewId => {
+  openModal = (eventCrewId: number) => {
     this.setState({ modalIsOpen: true, eventCrewId });
   };
 
@@ -67,12 +67,12 @@ export class EventCrew extends React.Component<IEventCrewProps> {
           updateBtnAuthorizationProps={{
             eventId,
             ccRole: CCRole.ADMIN,
-            eventRole: EventRole.HEAD
+            eventRole: EventRole.HEAD,
           }}
           deleteBtnAuthorizationProps={{
             eventId,
             ccRole: CCRole.ADMIN,
-            eventRole: EventRole.HEAD
+            eventRole: EventRole.HEAD,
           }}
         />
         <h1 id="event-crew-heading" className="event-module-heading">
@@ -108,18 +108,15 @@ export class EventCrew extends React.Component<IEventCrewProps> {
 }
 
 const mapStateToProps = ({ eventCrew }: IRootState) => ({
-  eventCrewList: eventCrew.entities
+  eventCrewList: eventCrew.entities,
 });
 
 const mapDispatchToProps = {
   getEntities,
-  getEventCrewByEventId
+  getEventCrewByEventId,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventCrew);
+export default connect(mapStateToProps, mapDispatchToProps)(EventCrew);

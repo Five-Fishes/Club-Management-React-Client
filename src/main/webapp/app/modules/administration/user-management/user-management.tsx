@@ -10,7 +10,7 @@ import {
   JhiPagination,
   JhiItemCount,
   getSortState,
-  IPaginationBaseState
+  IPaginationBaseState,
 } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -18,23 +18,24 @@ import { APP_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { getUsers, updateUser } from './user-management.reducer';
 import { IRootState } from 'app/shared/reducers';
+import { IUser } from 'app/shared/model/user.model';
 
 export interface IUserManagementProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
 export class UserManagement extends React.Component<IUserManagementProps, IPaginationBaseState> {
   state: IPaginationBaseState = {
-    ...getSortState(this.props.location, ITEMS_PER_PAGE)
+    ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
   componentDidMount() {
     this.getUsers();
   }
 
-  sort = prop => () => {
+  sort = (prop: string) => () => {
     this.setState(
       {
         order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
+        sort: prop,
       },
       () => this.sortUsers()
     );
@@ -45,17 +46,17 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
   }
 
-  handlePagination = activePage => this.setState({ activePage }, () => this.sortUsers());
+  handlePagination = (activePage: number) => this.setState({ activePage }, () => this.sortUsers());
 
   getUsers = () => {
     const { activePage, itemsPerPage, sort, order } = this.state;
     this.props.getUsers(activePage - 1, itemsPerPage, `${sort},${order}`);
   };
 
-  toggleActive = user => () => {
+  toggleActive = (user: IUser) => () => {
     this.props.updateUser({
       ...user,
-      activated: !user.activated
+      activated: !user.activated,
     });
   };
 
@@ -64,7 +65,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
       users,
       authentication: { id: currentUserId },
       match,
-      totalItems
+      totalItems,
     } = this.props;
     return (
       <div>
@@ -143,12 +144,12 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
                       ))
                     : null}
                 </td>
-                <td>
-                  <TextFormat value={user.createdDate} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
-                </td>
+                <td>{user.createdDate && <TextFormat value={user.createdDate} type="date" format={APP_DATE_FORMAT} blankOnInvalid />}</td>
                 <td>{user.lastModifiedBy}</td>
                 <td>
-                  <TextFormat value={user.lastModifiedDate} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
+                  {user.lastModifiedDate && (
+                    <TextFormat value={user.lastModifiedDate} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
+                  )}
                 </td>
                 <td className="text-right">
                   <div className="btn-group flex-btn-group-container">
@@ -204,7 +205,7 @@ export class UserManagement extends React.Component<IUserManagementProps, IPagin
 const mapStateToProps = (storeState: IRootState) => ({
   users: storeState.userManagement.users,
   totalItems: storeState.userManagement.totalItems,
-  authentication: storeState.authentication
+  authentication: storeState.authentication,
 });
 
 const mapDispatchToProps = { getUsers, updateUser };
@@ -212,7 +213,4 @@ const mapDispatchToProps = { getUsers, updateUser };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserManagement);
+export default connect(mapStateToProps, mapDispatchToProps)(UserManagement);

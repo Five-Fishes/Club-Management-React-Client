@@ -18,11 +18,11 @@ import '../../styles/event-module.scss';
 export interface IEventActivityUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
 export class EventActivityUpdate extends React.Component<IEventActivityUpdateProps> {
-  constructor(props) {
+  constructor(props: IEventActivityUpdateProps) {
     super(props);
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: IEventActivityUpdateProps) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
       this.handleClose();
     }
@@ -38,24 +38,24 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
     return {
       durationDay: duration.days,
       durationHour: duration.hours,
-      durationMinute: duration.minutes
+      durationMinute: duration.minutes,
     };
   }
 
-  saveEntity = (event, errors, values) => {
+  saveEntity = (event: any, errors: any, values: any) => {
     values.startDate = convertDateTimeToServer(values.startDate);
 
     values['durationInDay'] = convertTimeFormatToDaysDuration({
       days: values.durationDay,
       hours: values.durationHour,
-      minutes: values.durationMinute
+      minutes: values.durationMinute,
     });
 
     if (errors.length === 0) {
       const { eventActivityEntity } = this.props;
       const entity = {
         ...eventActivityEntity,
-        ...values
+        ...values,
       };
       this.props.updateEntity(entity);
     }
@@ -87,7 +87,7 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
               <AvForm
                 model={{
                   ...eventActivityEntity,
-                  ...timeFormatDuration
+                  ...timeFormatDuration,
                 }}
                 onSubmit={this.saveEntity}
               >
@@ -113,13 +113,13 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
                         format: APP_LOCAL_DATETIME_FORMAT,
                         start: {
                           value: moment().format(APP_LOCAL_DATETIME_FORMAT),
-                          errorMessage: 'Activity Date cannot early than today'
+                          errorMessage: 'Activity Date cannot early than today',
                         },
                         end: {
                           value: eventEntity.hasOwnProperty('endDate') ? eventEntity.endDate : '2030-12-30T10:00',
-                          errorMessage: 'Activity Date cannot later than Event Date'
-                        }
-                      }
+                          errorMessage: 'Activity Date cannot later than Event Date',
+                        },
+                      },
                     }}
                     value={convertDateTimeFromServer(this.props.eventActivityEntity.startDate)}
                   />
@@ -145,7 +145,7 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
                   </Label>
                   <AvInput id="event-activity-description" type="textarea" name="description" />
                 </AvGroup>
-                <span className="text-error">{errorMessage ? errorMessage.response.data.detail : ''}</span>
+                <span className="text-error">{errorMessage ? errorMessage.response?.data?.detail : ''}</span>
                 <div className="text-center general-buttonContainer--flexContainer">
                   <Button
                     className="general-button--width"
@@ -177,19 +177,16 @@ const mapStateToProps = (storeState: IRootState) => ({
   updating: storeState.eventActivity.updating,
   updateSuccess: storeState.eventActivity.updateSuccess,
   errorMessage: storeState.eventActivity.errorMessage,
-  eventEntity: storeState.event.entity
+  eventEntity: storeState.event.entity,
 });
 
 const mapDispatchToProps = {
   getEntity,
   updateEntity,
-  getEventEntity
+  getEventEntity,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventActivityUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(EventActivityUpdate);

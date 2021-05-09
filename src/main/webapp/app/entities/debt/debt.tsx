@@ -24,18 +24,18 @@ export type IDebtState = IPaginationBaseState;
 
 export class Debt extends React.Component<IDebtProps, IDebtState> {
   state: IDebtState = {
-    ...getSortState(this.props.location, ITEMS_PER_PAGE)
+    ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
   componentDidMount() {
     this.getEntities();
   }
 
-  sort = prop => () => {
+  sort = (prop: any) => () => {
     this.setState(
       {
         order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
+        sort: prop,
       },
       () => this.sortEntities()
     );
@@ -46,14 +46,15 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
   }
 
-  handlePagination = activePage => this.setState({ activePage }, () => this.sortEntities());
+  handlePagination = (activePage: number) => this.setState({ activePage }, () => this.sortEntities());
 
   getEntities = () => {
     const { activePage, itemsPerPage, sort, order } = this.state;
     this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
   };
 
-  showCardAction = (debtId: number) => {
+  showCardAction = (debtId?: number) => {
+    if (typeof debtId === 'undefined') return;
     this.props.setSelectedDebtId(debtId);
     this.props.setShowActionOptions(true);
   };
@@ -92,7 +93,7 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
                   date={moment(debt.createdDate).format(APP_LOCAL_DATE_FORMAT)}
                   actionMenuHandler={this.showCardAction.bind(this, debt.id)}
                   actionMenuAuthorizationProps={{
-                    ccRole: CCRole.ADMIN
+                    ccRole: CCRole.ADMIN,
                   }}
                 >
                   <span className="card-item d-block mb-1">
@@ -141,20 +142,17 @@ const mapStateToProps = ({ debt }: IRootState) => ({
   debtList: debt.entities,
   totalItems: debt.totalItems,
   selectedDebtId: debt.selectedDebtId,
-  showActionOptions: debt.showActionOptions
+  showActionOptions: debt.showActionOptions,
 });
 
 const mapDispatchToProps = {
   getEntities,
   updateEntityStatus,
   setSelectedDebtId,
-  setShowActionOptions
+  setShowActionOptions,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Debt);
+export default connect(mapStateToProps, mapDispatchToProps)(Debt);

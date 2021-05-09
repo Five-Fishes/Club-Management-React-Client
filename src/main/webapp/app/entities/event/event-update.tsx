@@ -20,14 +20,14 @@ export interface IEventUpdateState {
 }
 
 export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdateState> {
-  constructor(props) {
+  constructor(props: IEventUpdateProps) {
     super(props);
     this.state = {
-      isNew: !this.props.match.params || !this.props.match.params.id
+      isNew: !this.props.match.params || !this.props.match.params.id,
     };
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: IEventUpdateProps, nextState: IEventUpdateState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
       this.handleClose();
     }
@@ -41,15 +41,7 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
     }
   }
 
-  onBlobChange = (isAnImage, name) => event => {
-    setFileData(event, (contentType, data) => this.props.setBlob(name, data, contentType), isAnImage);
-  };
-
-  clearBlob = name => () => {
-    this.props.setBlob(name, undefined, undefined);
-  };
-
-  saveEntity = (event, errors, values) => {
+  saveEntity = (event: any, errors: any, values: any) => {
     values.startDate = convertDateTimeToServer(values.startDate);
     values.endDate = convertDateTimeToServer(values.endDate);
 
@@ -57,7 +49,7 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
       const { eventEntity } = this.props;
       const entity = {
         ...eventEntity,
-        ...values
+        ...values,
       };
 
       if (this.state.isNew) {
@@ -214,7 +206,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   eventEntity: storeState.event.entity,
   loading: storeState.event.loading,
   updating: storeState.event.updating,
-  updateSuccess: storeState.event.updateSuccess
+  updateSuccess: storeState.event.updateSuccess,
 });
 
 const mapDispatchToProps = {
@@ -222,13 +214,10 @@ const mapDispatchToProps = {
   updateEntity,
   setBlob,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(EventUpdate);

@@ -25,18 +25,18 @@ export type IEventActivityState = IPaginationBaseState;
 
 export class EventActivity extends React.Component<IEventActivityProps, IEventActivityState> {
   state: IEventActivityState = {
-    ...getSortState(this.props.location, ITEMS_PER_PAGE)
+    ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
   componentDidMount() {
     this.getEntities();
   }
 
-  sort = prop => () => {
+  sort = (prop: any) => () => {
     this.setState(
       {
         order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
+        sort: prop,
       },
       () => this.sortEntities()
     );
@@ -47,7 +47,7 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
   }
 
-  handlePagination = activePage => this.setState({ activePage }, () => this.sortEntities());
+  handlePagination = (activePage: number) => this.setState({ activePage }, () => this.sortEntities());
 
   getEntities = () => {
     const { eventId } = this.props.match.params;
@@ -55,7 +55,8 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
     this.props.getEventActivitiesByEventId(Number.parseInt(eventId, 10), activePage - 1, itemsPerPage, `${sort},${order}`);
   };
 
-  showCardAction = (eventActivityId: number) => {
+  showCardAction = (eventActivityId?: number): void => {
+    if (typeof eventActivityId === 'undefined') return;
     this.props.setSelectedEventActivityId(eventActivityId);
     this.props.setShowActionOptions(true);
   };
@@ -96,7 +97,7 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
                   actionMenuAuthorizationProps={{
                     ccRole: CCRole.ADMIN,
                     eventRole: EventRole.CREW,
-                    eventId: eventActivity.eventId
+                    eventId: eventActivity.eventId,
                   }}
                 >
                   <span className="card-item d-block mb-2">
@@ -185,19 +186,16 @@ const mapStateToProps = ({ eventActivity }: IRootState) => ({
   eventActivityList: eventActivity.entities,
   totalItems: eventActivity.totalItems,
   selectedEventActivityId: eventActivity.selectedEventActivityId,
-  showActionOptions: eventActivity.showActionOptions
+  showActionOptions: eventActivity.showActionOptions,
 });
 
 const mapDispatchToProps = {
   getEventActivitiesByEventId,
   setSelectedEventActivityId,
-  setShowActionOptions
+  setShowActionOptions,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventActivity);
+export default connect(mapStateToProps, mapDispatchToProps)(EventActivity);

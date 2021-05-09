@@ -18,7 +18,7 @@ export interface IHealthPageState {
 export class HealthPage extends React.Component<IHealthPageProps, IHealthPageState> {
   state: IHealthPageState = {
     healthObject: {},
-    showModal: false
+    showModal: false,
   };
 
   componentDidMount() {
@@ -31,19 +31,19 @@ export class HealthPage extends React.Component<IHealthPageProps, IHealthPageSta
     }
   };
 
-  getSystemHealthInfo = (name, healthObject) => () => {
+  getSystemHealthInfo = (name: any, healthObject: any) => () => {
     this.setState({
       showModal: true,
       healthObject: {
         ...healthObject,
-        name
-      }
+        name,
+      },
     });
   };
 
   handleClose = () => {
     this.setState({
-      showModal: false
+      showModal: false,
     });
   };
 
@@ -107,7 +107,7 @@ export class HealthPage extends React.Component<IHealthPageProps, IHealthPageSta
 
 const mapStateToProps = (storeState: IRootState) => ({
   health: storeState.administration.health,
-  isFetching: storeState.administration.loading
+  isFetching: storeState.administration.loading,
 });
 
 const mapDispatchToProps = { systemHealth };
@@ -115,7 +115,4 @@ const mapDispatchToProps = { systemHealth };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(HealthPage);
+export default connect(mapStateToProps, mapDispatchToProps)(HealthPage);

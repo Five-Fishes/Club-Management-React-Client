@@ -10,7 +10,7 @@ import { toast } from 'react-toastify';
 export interface IUserProfileProps extends StateProps, RouteComponentProps<{}> {}
 
 export class UserProfile extends React.Component<IUserProfileProps, {}> {
-  constructor(props) {
+  constructor(props: IUserProfileProps) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
   }
@@ -33,7 +33,7 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
 }
 
 const mapStateToProps = ({ authentication }: IRootState) => ({
-  isAuthenticated: authentication.isAuthenticated
+  isAuthenticated: authentication.isAuthenticated,
 });
 
 type StateProps = ReturnType<typeof mapStateToProps>;

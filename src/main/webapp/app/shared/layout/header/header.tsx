@@ -15,7 +15,7 @@ export interface IHeaderProps {
   isAuthenticated: boolean;
   ribbonEnv: string;
   isSwaggerEnabled: boolean;
-  currentLocale: string;
+  currentLocale?: string;
   onLocaleChange: Function;
 }
 
@@ -25,10 +25,10 @@ export interface IHeaderState {
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
   state: IHeaderState = {
-    menuOpen: false
+    menuOpen: false,
   };
 
-  handleLocaleChange = event => {
+  handleLocaleChange: React.MouseEventHandler<HTMLElement> = event => {
     const langKey = event.target.value;
     Storage.session.set('locale', langKey);
     this.props.onLocaleChange(langKey);

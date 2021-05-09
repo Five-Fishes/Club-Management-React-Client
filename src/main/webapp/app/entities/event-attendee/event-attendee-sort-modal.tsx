@@ -14,7 +14,7 @@ export interface IEventAttendeeSortButtonInfo {
 export interface IEventAttendeeSortModalProps {
   isOpen: boolean;
   toggleModal: () => void;
-  sort: (sortProp, orderProp) => void;
+  sort: (sortProp: any, orderProp: any) => void;
 }
 
 export class EventAttendeeSortModalModal extends React.Component<IEventAttendeeSortModalProps> {
@@ -33,5 +33,17 @@ export class EventAttendeeSortModalModal extends React.Component<IEventAttendeeS
   }
 }
 
-const ButtonItems = ({ buttonList, sort }) =>
-  buttonList.map(button => <EventAttendeeSortButton buttonInfo={button} sort={sort} key={button.buttonName} />);
+interface IButtonItems {
+  buttonList: IEventAttendeeSortButtonInfo[];
+  sort: (sortProp: any, orderProp: any) => void;
+}
+
+const ButtonItems: React.FC<IButtonItems> = ({ buttonList, sort }) => {
+  return (
+    <>
+      {buttonList.map(button => (
+        <EventAttendeeSortButton buttonInfo={button} sort={sort} key={button.buttonName} />
+      ))}
+    </>
+  );
+};

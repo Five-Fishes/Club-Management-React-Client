@@ -17,11 +17,11 @@ import '../../styles/event-module.scss';
 export interface IEventActivityCreateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
 export class EventActivityCreate extends React.Component<IEventActivityCreateProps> {
-  constructor(props) {
+  constructor(props: IEventActivityCreateProps) {
     super(props);
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: IEventActivityCreateProps) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
       this.handleClose();
     }
@@ -32,20 +32,20 @@ export class EventActivityCreate extends React.Component<IEventActivityCreatePro
     this.props.getEventEntity(this.props.match.params.eventId);
   }
 
-  saveEntity = (event, errors, values) => {
+  saveEntity = (event: any, errors: any, values: any) => {
     values.startDate = convertDateTimeToServer(values.startDate);
 
     values['durationInDay'] = convertTimeFormatToDaysDuration({
       days: values.durationDay,
       hours: values.durationHour,
-      minutes: values.durationMinute
+      minutes: values.durationMinute,
     });
 
     if (errors.length === 0) {
       const { eventActivityEntity } = this.props;
       const entity = {
         ...eventActivityEntity,
-        ...values
+        ...values,
       };
 
       this.props.createEntity(entity);
@@ -102,9 +102,9 @@ export class EventActivityCreate extends React.Component<IEventActivityCreatePro
                         start: { value: moment().format(APP_LOCAL_DATETIME_FORMAT), errorMessage: 'Activity Date cannot early than today' },
                         end: {
                           value: eventEntity.hasOwnProperty('endDate') ? eventEntity.endDate : '2030-12-30T10:00',
-                          errorMessage: 'Activity Date cannot later than Event Date'
-                        }
-                      }
+                          errorMessage: 'Activity Date cannot later than Event Date',
+                        },
+                      },
                     }}
                     value={null}
                   />
@@ -130,7 +130,7 @@ export class EventActivityCreate extends React.Component<IEventActivityCreatePro
                   </Label>
                   <AvInput id="event-activity-description" type="textarea" name="description" />
                 </AvGroup>
-                <span className="text-error">{errorMessage ? errorMessage.response.data.detail : ''}</span>
+                <span className="text-error">{errorMessage ? errorMessage.response?.data?.detail : ''}</span>
                 <div className="text-center general-buttonContainer--flexContainer">
                   <Button
                     className="general-button--width"
@@ -162,19 +162,16 @@ const mapStateToProps = (storeState: IRootState) => ({
   updating: storeState.eventActivity.updating,
   updateSuccess: storeState.eventActivity.updateSuccess,
   errorMessage: storeState.eventActivity.errorMessage,
-  eventEntity: storeState.event.entity
+  eventEntity: storeState.event.entity,
 });
 
 const mapDispatchToProps = {
   createEntity,
   getEventEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventActivityCreate);
+export default connect(mapStateToProps, mapDispatchToProps)(EventActivityCreate);

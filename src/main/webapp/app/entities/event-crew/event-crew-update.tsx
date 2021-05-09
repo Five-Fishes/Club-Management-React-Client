@@ -21,16 +21,16 @@ export interface IEventCrewUpdateProps extends StateProps, DispatchProps, RouteC
 export interface IEventCrewUpdateState {
   isNew: boolean;
   users: IUser[];
-  event: IEvent;
+  event: IEvent | null;
 }
 
 export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEventCrewUpdateState> {
-  constructor(props) {
+  constructor(props: IEventCrewUpdateProps) {
     super(props);
     this.state = {
       isNew: !this.props.match.params || !this.props.match.params.id,
       users: [],
-      event: null
+      event: null,
     };
   }
 
@@ -41,17 +41,11 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
     this.setState({ users: users.data, event: event.data });
   };
 
-  compareFirstName = (a, b) => {
-    if (a.firstName < b.firstName) {
-      return -1;
-    }
-    if (a.firstName > b.firstName) {
-      return 1;
-    }
-    return 0;
+  compareFirstName = (a: IUser, b: IUser) => {
+    return `${a.firstName}`.localeCompare(`${b.firstName}`);
   };
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: IEventCrewUpdateProps, nextState: IEventCrewUpdateState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
       this.handleClose();
     }
@@ -70,12 +64,12 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
     this.setState({ users: [], event: null });
   }
 
-  saveEntity = (event, errors, values) => {
+  saveEntity = (event: any, errors: any, values: any) => {
     if (errors.length === 0) {
       const { eventCrewEntity } = this.props;
       const entity = {
         ...eventCrewEntity,
-        ...values
+        ...values,
       };
 
       if (this.state.isNew) {
@@ -202,20 +196,17 @@ const mapStateToProps = (storeState: IRootState) => ({
   eventCrewEntity: storeState.eventCrew.entity,
   loading: storeState.eventCrew.loading,
   updating: storeState.eventCrew.updating,
-  updateSuccess: storeState.eventCrew.updateSuccess
+  updateSuccess: storeState.eventCrew.updateSuccess,
 });
 
 const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventCrewUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(EventCrewUpdate);

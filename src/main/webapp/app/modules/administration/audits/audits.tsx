@@ -39,35 +39,35 @@ export class AuditsPage extends React.Component<IAuditsPageProps, IAuditsPageSta
   state: IAuditsPageState = {
     ...getSortState(this.props.location, ITEMS_PER_PAGE),
     fromDate: previousMonth(),
-    toDate: today()
+    toDate: today(),
   };
 
   componentDidMount() {
     this.getAudits();
   }
 
-  onChangeFromDate = evt => {
+  onChangeFromDate = (evt: React.ChangeEvent<HTMLInputElement>) => {
     this.setState(
       {
-        fromDate: evt.target.value
+        fromDate: evt.target.value,
       },
       () => this.getAudits()
     );
   };
-  onChangeToDate = evt => {
+  onChangeToDate = (evt: React.ChangeEvent<HTMLInputElement>) => {
     this.setState(
       {
-        toDate: evt.target.value
+        toDate: evt.target.value,
       },
       () => this.getAudits()
     );
   };
 
-  sort = prop => () => {
+  sort = (prop: string) => () => {
     this.setState(
       {
         order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
+        sort: prop,
       },
       () => this.transition()
     );
@@ -78,7 +78,7 @@ export class AuditsPage extends React.Component<IAuditsPageProps, IAuditsPageSta
     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
   };
 
-  handlePagination = activePage => this.setState({ activePage }, () => this.transition());
+  handlePagination = (activePage: number) => this.setState({ activePage }, () => this.transition());
 
   getAudits = () => {
     const { activePage, itemsPerPage, sort, order, fromDate, toDate } = this.state;
@@ -121,7 +121,7 @@ export class AuditsPage extends React.Component<IAuditsPageProps, IAuditsPageSta
               </tr>
             </thead>
             <tbody>
-              {audits.map((audit, i) => (
+              {audits.map((audit: any, i) => (
                 <tr key={`audit-${i}`}>
                   <td>{<TextFormat value={audit.timestamp} type="date" format={APP_TIMESTAMP_FORMAT} />}</td>
                   <td>{audit.principal}</td>
@@ -160,7 +160,7 @@ export class AuditsPage extends React.Component<IAuditsPageProps, IAuditsPageSta
 
 const mapStateToProps = (storeState: IRootState) => ({
   audits: storeState.administration.audits,
-  totalItems: storeState.administration.totalItems
+  totalItems: storeState.administration.totalItems,
 });
 
 const mapDispatchToProps = { getAudits };
@@ -168,7 +168,4 @@ const mapDispatchToProps = { getAudits };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AuditsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(AuditsPage);

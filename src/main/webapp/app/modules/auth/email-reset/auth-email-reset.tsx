@@ -14,17 +14,17 @@ export interface IAuthEmailResetState {
 }
 
 export class AuthEmailReset extends React.Component<IAuthEmailResetProps, IAuthEmailResetState> {
-  constructor(props) {
+  constructor(props: IAuthEmailResetProps) {
     super(props);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
     this.state = {
-      isSubmitting: false
+      isSubmitting: false,
     };
   }
 
-  handleValidSubmit(event, values) {
+  handleValidSubmit(event: any, values: any) {
     this.setState({
-      isSubmitting: true
+      isSubmitting: true,
     });
     emailResetPassword(values.email)
       .then(() => {
@@ -36,7 +36,7 @@ export class AuthEmailReset extends React.Component<IAuthEmailResetProps, IAuthE
       })
       .finally(() => {
         this.setState({
-          isSubmitting: false
+          isSubmitting: false,
         });
       });
   }
@@ -63,7 +63,7 @@ export class AuthEmailReset extends React.Component<IAuthEmailResetProps, IAuthE
                     className="mb-2"
                     validate={{
                       required: { value: true, errorMessage: 'Please enter your email' },
-                      email: { value: true, errorMessage: 'This is not a valid email' }
+                      email: { value: true, errorMessage: 'This is not a valid email' },
                     }}
                   />
                 </div>
@@ -86,7 +86,7 @@ export class AuthEmailReset extends React.Component<IAuthEmailResetProps, IAuthE
 }
 
 const mapStateToProps = ({ authentication }: IRootState) => ({
-  isAuthenticated: authentication.isAuthenticated
+  isAuthenticated: authentication.isAuthenticated,
 });
 
 type StateProps = ReturnType<typeof mapStateToProps>;

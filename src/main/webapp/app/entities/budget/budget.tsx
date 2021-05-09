@@ -10,7 +10,7 @@ import {
   setSelectedEventBudgetId,
   setShowActionOptions,
   getEventBudgetTotal,
-  getEventRealTotal
+  getEventRealTotal,
 } from './budget.reducer';
 import { eventTabList } from 'app/shared/util/tab.constants';
 import classnames from 'classnames';
@@ -29,7 +29,7 @@ export type IEventBudgetState = IPaginationBaseState;
 
 export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
   state: IEventBudgetState = {
-    ...getSortState(this.props.location, ITEMS_PER_PAGE)
+    ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
   componentDidMount() {
@@ -38,17 +38,17 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
     this.getEventRealTotal();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: IBudgetProps) {
     if (prevProps.totalItems !== this.props.totalItems) {
       this.getEventBudgetTotal();
     }
   }
 
-  sort = prop => () => {
+  sort = (prop: any) => () => {
     this.setState(
       {
         order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
+        sort: prop,
       },
       () => this.sortEntities()
     );
@@ -59,7 +59,7 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
   }
 
-  handlePagination = activePage => this.setState({ activePage }, () => this.sortEntities());
+  handlePagination = (activePage: number) => this.setState({ activePage }, () => this.sortEntities());
 
   getEntities = () => {
     const eventId = this.props.match.params.eventId;
@@ -77,7 +77,8 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
     this.props.getEventRealTotal(eventId);
   };
 
-  showCardAction = (eventBudgetId: number) => {
+  showCardAction = (eventBudgetId?: number) => {
+    if (typeof eventBudgetId === 'undefined') return;
     this.props.setSelectedEventBudgetId(eventBudgetId);
     this.props.setShowActionOptions(true);
   };
@@ -108,11 +109,11 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
                 <span>
                   <span className="text-income">
                     <Translate contentKey="clubmanagementApp.eventBudget.income">Income</Translate>: &nbsp;
-                    <span className="small">RM {eventBudgetTotal.totalIncome.toFixed(2)}</span>
+                    <span className="small">{eventBudgetTotal.totalIncome && `RM ${eventBudgetTotal.totalIncome.toFixed(2)}`}</span>
                   </span>
                   <span className="float-right text-expense">
                     <Translate contentKey="clubmanagementApp.eventBudget.expense">Expense</Translate>: &nbsp;
-                    <span className="small">RM {eventBudgetTotal.totalExpense.toFixed(2)}</span>
+                    <span className="small">{eventBudgetTotal.totalExpense && `RM ${eventBudgetTotal.totalExpense.toFixed(2)}`}</span>
                   </span>
                 </span>
               </div>
@@ -125,11 +126,11 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
                 <span>
                   <span className="text-income">
                     <Translate contentKey="clubmanagementApp.eventBudget.income">Income</Translate>: &nbsp;
-                    <span className="small">RM {eventRealTotal.totalIncome.toFixed(2)}</span>
+                    <span className="small">{eventBudgetTotal.totalIncome && `RM ${eventBudgetTotal.totalIncome.toFixed(2)}`}</span>
                   </span>
                   <span className="float-right text-expense">
                     <Translate contentKey="clubmanagementApp.eventBudget.expense">Expense</Translate>: &nbsp;
-                    <span className="small">RM {eventRealTotal.totalExpense.toFixed(2)}</span>
+                    <span className="small">{eventBudgetTotal.totalExpense && `RM ${eventBudgetTotal.totalExpense.toFixed(2)}`}</span>
                   </span>
                 </span>
               </div>
@@ -154,7 +155,7 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
                   actionMenuAuthorizationProps={{
                     ccRole: CCRole.ADMIN,
                     eventRole: EventRole.HEAD,
-                    eventId: eventBudget.eventId
+                    eventId: eventBudget.eventId,
                   }}
                 >
                   <span
@@ -163,7 +164,7 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
                       eventBudget.type === 'INCOME' ? 'text-income' : 'text-expense'
                     )}
                   >
-                    {'RM ' + eventBudget.amount.toFixed(2).toString()}
+                    {eventBudget.amount && `RM ${eventBudget.amount.toFixed(2)}`}
                   </span>
                   <span className="card-item d-block mb-2">
                     <span>
@@ -238,7 +239,7 @@ const mapStateToProps = ({ budget }: IRootState) => ({
   selectedEventBudgetId: budget.selectedEventBudgetId,
   showActionOptions: budget.showActionOptions,
   eventBudgetTotal: budget.eventBudgetTotal,
-  eventRealTotal: budget.eventRealTotal
+  eventRealTotal: budget.eventRealTotal,
 });
 
 const mapDispatchToProps = {
@@ -246,13 +247,10 @@ const mapDispatchToProps = {
   setSelectedEventBudgetId,
   setShowActionOptions,
   getEventBudgetTotal,
-  getEventRealTotal
+  getEventRealTotal,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Budget);
+export default connect(mapStateToProps, mapDispatchToProps)(Budget);

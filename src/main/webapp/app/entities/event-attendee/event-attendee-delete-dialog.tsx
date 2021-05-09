@@ -19,12 +19,12 @@ export class EventAttendeeDeleteDialog extends React.Component<IEventAttendeeDel
     this.props.getEntity(this.props.match.params.attendeeId);
   }
 
-  confirmDelete = event => {
+  confirmDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
     this.props.deleteEntity(this.props.eventAttendeeEntity.id);
     this.handleClose(event);
   };
 
-  handleClose = event => {
+  handleClose = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     this.props.history.goBack();
   };
@@ -60,7 +60,7 @@ export class EventAttendeeDeleteDialog extends React.Component<IEventAttendeeDel
 }
 
 const mapStateToProps = ({ eventAttendee }: IRootState) => ({
-  eventAttendeeEntity: eventAttendee.entity
+  eventAttendeeEntity: eventAttendee.entity,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };
@@ -68,7 +68,4 @@ const mapDispatchToProps = { getEntity, deleteEntity };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventAttendeeDeleteDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(EventAttendeeDeleteDialog);

@@ -9,7 +9,7 @@ import { Translate } from 'react-jhipster';
 import { Link } from 'react-router-dom';
 import AuthorizationChecker, {
   IAuthorizationCheckerOwnProps,
-  authorizationCheck
+  authorizationCheck,
 } from 'app/shared/components/authorization-checker/authorization-checker';
 
 interface ICustomTabOwnProps {
@@ -26,9 +26,9 @@ export interface ITabInfo extends IAuthorizationCheckerOwnProps {
 }
 
 class CustomTab extends React.Component<ICustomTabProps, {}> {
-  private scrollerRef;
+  private scrollerRef: React.RefObject<any>;
 
-  constructor(props) {
+  constructor(props: ICustomTabProps) {
     super(props);
     this.scrollerRef = React.createRef();
   }
@@ -44,8 +44,8 @@ class CustomTab extends React.Component<ICustomTabProps, {}> {
     const tabsThatWillBeShow = tabList.filter(tabInfo => {
       const { eventId } = tabInfo;
       const { eventHeadEventIds, eventCrewEventIds } = this.props;
-      const isEventHead = eventId && eventHeadEventIds.includes(eventId);
-      const isEventCrew = eventId && eventCrewEventIds.includes(eventId);
+      const isEventHead = Boolean(eventId && eventHeadEventIds.includes(eventId));
+      const isEventCrew = Boolean(eventId && eventCrewEventIds.includes(eventId));
       const authorizationState = { ...this.props, isEventHead, isEventCrew };
       return authorizationCheck(tabInfo, authorizationState);
     });

@@ -27,9 +27,12 @@ export class EventTable extends React.Component<IEventTableProps> {
           </tr>
         </thead>
         <tbody>
-          {this.props.users.map((user, index) => (
-            <EventTableRow key={user.id} user={user} index={index} openModal={this.props.openModal} />
-          ))}
+          {
+            // @ts-ignore refractor in issue 113
+            this.props.users.map((user, index) => (
+              <EventTableRow key={user.id} user={user} index={index} openModal={this.props.openModal} />
+            ))
+          }
         </tbody>
       </Table>
     );

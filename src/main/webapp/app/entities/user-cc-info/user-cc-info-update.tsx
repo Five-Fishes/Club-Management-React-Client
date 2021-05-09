@@ -21,14 +21,14 @@ export interface IUserCCInfoUpdateState {
 }
 
 export class UserCCInfoUpdate extends React.Component<IUserCCInfoUpdateProps, IUserCCInfoUpdateState> {
-  constructor(props) {
+  constructor(props: IUserCCInfoUpdateProps) {
     super(props);
     this.state = {
-      isNew: !this.props.match.params || !this.props.match.params.id
+      isNew: !this.props.match.params || !this.props.match.params.id,
     };
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: IUserCCInfoUpdateProps, nextState: IUserCCInfoUpdateState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
       this.handleClose();
     }
@@ -42,12 +42,12 @@ export class UserCCInfoUpdate extends React.Component<IUserCCInfoUpdateProps, IU
     }
   }
 
-  saveEntity = (event, errors, values) => {
+  saveEntity = (event: any, errors: any, values: any) => {
     if (errors.length === 0) {
       const { userCCInfoEntity } = this.props;
       const entity = {
         ...userCCInfoEntity,
-        ...values
+        ...values,
       };
 
       if (this.state.isNew) {
@@ -154,20 +154,17 @@ const mapStateToProps = (storeState: IRootState) => ({
   userCCInfoEntity: storeState.userCCInfo.entity,
   loading: storeState.userCCInfo.loading,
   updating: storeState.userCCInfo.updating,
-  updateSuccess: storeState.userCCInfo.updateSuccess
+  updateSuccess: storeState.userCCInfo.updateSuccess,
 });
 
 const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserCCInfoUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(UserCCInfoUpdate);
