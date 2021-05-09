@@ -5,7 +5,7 @@ import { locales, languages } from 'app/config/translation';
 
 interface ILocaleMenu {
   currentLocale?: string;
-  onClick: React.MouseEventHandler<HTMLElement>;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export const LocaleMenu: React.FC<ILocaleMenu> = ({ currentLocale, onClick }) => {

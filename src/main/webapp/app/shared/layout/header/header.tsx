@@ -28,8 +28,8 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
     menuOpen: false,
   };
 
-  handleLocaleChange: React.MouseEventHandler<HTMLElement> = event => {
-    const langKey = event.target.value;
+  handleLocaleChange = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const langKey = (event.target as HTMLButtonElement).value;
     Storage.session.set('locale', langKey);
     this.props.onLocaleChange(langKey);
   };
