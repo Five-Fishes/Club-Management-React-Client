@@ -16,7 +16,7 @@ export const ACTION_TYPES = {
 
 const initialState: IAdministrationState = {
   loading: false,
-  errorMessage: null,
+  errResponse: null,
   logs: {
     loggers: [] as any[],
   },
@@ -33,7 +33,7 @@ const initialState: IAdministrationState = {
 
 export interface IAdministrationState {
   loading: boolean;
-  errorMessage: null | AxiosError;
+  errResponse: null | AxiosError;
   logs: {
     loggers: any[];
   };
@@ -61,7 +61,7 @@ export default (state: IAdministrationState = initialState, action: AnyAction): 
     case REQUEST(ACTION_TYPES.FETCH_HEALTH):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         loading: true,
       };
     case FAILURE(ACTION_TYPES.FETCH_METRICS):
@@ -74,7 +74,7 @@ export default (state: IAdministrationState = initialState, action: AnyAction): 
       return {
         ...state,
         loading: false,
-        errorMessage: action.payload,
+        errResponse: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_METRICS):
       return {

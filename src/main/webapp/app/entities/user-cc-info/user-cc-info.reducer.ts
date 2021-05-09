@@ -18,7 +18,7 @@ export const ACTION_TYPES = {
 
 const initialState: IUserCCInfoState = {
   loading: false,
-  errorMessage: null,
+  errResponse: null,
   entities: [] as ReadonlyArray<IUserCCInfo>,
   entity: defaultValue,
   updating: false,
@@ -27,7 +27,7 @@ const initialState: IUserCCInfoState = {
 
 export interface IUserCCInfoState {
   loading: boolean;
-  errorMessage: null | AxiosError;
+  errResponse: null | AxiosError;
   entities: ReadonlyArray<IUserCCInfo>;
   entity: Readonly<IUserCCInfo>;
   updating: boolean;
@@ -42,7 +42,7 @@ export default (state: IUserCCInfoState = initialState, action: AnyAction): IUse
     case REQUEST(ACTION_TYPES.FETCH_USERCCINFO):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         loading: true,
       };
@@ -51,7 +51,7 @@ export default (state: IUserCCInfoState = initialState, action: AnyAction): IUse
     case REQUEST(ACTION_TYPES.DELETE_USERCCINFO):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         updating: true,
       };
@@ -65,7 +65,7 @@ export default (state: IUserCCInfoState = initialState, action: AnyAction): IUse
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload,
+        errResponse: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_USERCCINFO_LIST):
       return {

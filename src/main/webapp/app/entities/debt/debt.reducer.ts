@@ -20,7 +20,7 @@ export const ACTION_TYPES = {
 
 const initialState: IDebtState = {
   loading: false,
-  errorMessage: null,
+  errResponse: null,
   entities: [] as ReadonlyArray<IDebt>,
   entity: defaultValue,
   updating: false,
@@ -32,7 +32,7 @@ const initialState: IDebtState = {
 
 export interface IDebtState {
   loading: boolean;
-  errorMessage: null | AxiosError;
+  errResponse: null | AxiosError;
   entities: ReadonlyArray<IDebt>;
   entity: Readonly<IDebt>;
   updating: boolean;
@@ -50,7 +50,7 @@ export default (state: IDebtState = initialState, action: AnyAction): IDebtState
     case REQUEST(ACTION_TYPES.FETCH_DEBT):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         loading: true,
       };
@@ -59,7 +59,7 @@ export default (state: IDebtState = initialState, action: AnyAction): IDebtState
     case REQUEST(ACTION_TYPES.DELETE_DEBT):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         updating: true,
       };
@@ -73,7 +73,7 @@ export default (state: IDebtState = initialState, action: AnyAction): IDebtState
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload,
+        errResponse: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_DEBT_LIST):
       return {

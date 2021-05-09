@@ -44,7 +44,7 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
   };
 
   render() {
-    const { loading, updating, errorMessage, facultyList, courseProgramList, yearSessionList, userProfile } = this.props;
+    const { loading, updating, errResponse, facultyList, courseProgramList, yearSessionList, userProfile } = this.props;
     return (
       <div>
         <h2 id="complete-profile-heading">
@@ -254,7 +254,7 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                   />
                 </AvGroup>
 
-                <span className="text-error">{errorMessage ? errorMessage.response?.data?.detail : ''}</span>
+                <span className="text-error">{errResponse ? errResponse.response?.data?.detail : ''}</span>
                 <div className="text-center mx-4 justify-content-between justify-content-md-center mb-2">
                   <Button color="action" id="save-entity" type="submit" disabled={updating}>
                     <FontAwesomeIcon icon="save" />

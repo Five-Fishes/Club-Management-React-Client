@@ -19,7 +19,7 @@ export const ACTION_TYPES = {
 
 const initialState: IClubFamilyState = {
   loading: false,
-  errorMessage: null,
+  errResponse: null,
   entities: [] as ReadonlyArray<IClubFamily>,
   entity: defaultValue,
   updating: false,
@@ -28,7 +28,7 @@ const initialState: IClubFamilyState = {
 
 export interface IClubFamilyState {
   loading: boolean;
-  errorMessage: null | AxiosError;
+  errResponse: null | AxiosError;
   entities: ReadonlyArray<IClubFamily>;
   entity: Readonly<IClubFamily>;
   updating: boolean;
@@ -43,7 +43,7 @@ export default (state: IClubFamilyState = initialState, action: AnyAction): IClu
     case REQUEST(ACTION_TYPES.FETCH_CLUBFAMILY):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         loading: true,
       };
@@ -52,7 +52,7 @@ export default (state: IClubFamilyState = initialState, action: AnyAction): IClu
     case REQUEST(ACTION_TYPES.DELETE_CLUBFAMILY):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         updating: true,
       };
@@ -66,7 +66,7 @@ export default (state: IClubFamilyState = initialState, action: AnyAction): IClu
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload,
+        errResponse: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_CLUBFAMILY_LIST):
       return {

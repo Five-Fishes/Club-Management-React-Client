@@ -18,7 +18,7 @@ export const ACTION_TYPES = {
 
 const initialState: IAdministratorState = {
   loading: false,
-  errorMessage: null,
+  errResponse: null,
   entities: [] as ReadonlyArray<IAdministrator>,
   entity: defaultValue,
   updating: false,
@@ -27,7 +27,7 @@ const initialState: IAdministratorState = {
 
 export interface IAdministratorState {
   loading: boolean;
-  errorMessage: null | AxiosError;
+  errResponse: null | AxiosError;
   entities: ReadonlyArray<IAdministrator>;
   entity: Readonly<IAdministrator>;
   updating: boolean;
@@ -42,7 +42,7 @@ export default (state: IAdministratorState = initialState, action: AnyAction): I
     case REQUEST(ACTION_TYPES.FETCH_ADMINISTRATOR):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         loading: true,
       };
@@ -51,7 +51,7 @@ export default (state: IAdministratorState = initialState, action: AnyAction): I
     case REQUEST(ACTION_TYPES.DELETE_ADMINISTRATOR):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         updating: true,
       };
@@ -65,7 +65,7 @@ export default (state: IAdministratorState = initialState, action: AnyAction): I
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload,
+        errResponse: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_ADMINISTRATOR_LIST):
       return {

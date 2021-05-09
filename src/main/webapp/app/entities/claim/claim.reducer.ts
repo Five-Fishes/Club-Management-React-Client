@@ -18,7 +18,7 @@ export const ACTION_TYPES = {
 
 const initialState: IClaimState = {
   loading: false,
-  errorMessage: null,
+  errResponse: null,
   entities: [] as ReadonlyArray<IClaim>,
   entity: defaultValue,
   updating: false,
@@ -28,7 +28,7 @@ const initialState: IClaimState = {
 
 export interface IClaimState {
   loading: boolean;
-  errorMessage: null | AxiosError;
+  errResponse: null | AxiosError;
   entities: ReadonlyArray<IClaim>;
   entity: Readonly<IClaim>;
   updating: boolean;
@@ -44,7 +44,7 @@ export default (state: IClaimState = initialState, action: AnyAction): IClaimSta
     case REQUEST(ACTION_TYPES.FETCH_CLAIM):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         loading: true,
       };
@@ -53,7 +53,7 @@ export default (state: IClaimState = initialState, action: AnyAction): IClaimSta
     case REQUEST(ACTION_TYPES.DELETE_CLAIM):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         updating: true,
       };
@@ -67,7 +67,7 @@ export default (state: IClaimState = initialState, action: AnyAction): IClaimSta
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload,
+        errResponse: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_CLAIM_LIST):
       return {

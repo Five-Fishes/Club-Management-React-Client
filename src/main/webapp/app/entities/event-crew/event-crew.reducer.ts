@@ -19,7 +19,7 @@ export const ACTION_TYPES = {
 
 const initialState: IEventCrewState = {
   loading: false,
-  errorMessage: null,
+  errResponse: null,
   entities: [] as ReadonlyArray<IEventCrew>,
   entity: defaultValue,
   updating: false,
@@ -28,7 +28,7 @@ const initialState: IEventCrewState = {
 
 export interface IEventCrewState {
   loading: boolean;
-  errorMessage: null | AxiosError;
+  errResponse: null | AxiosError;
   entities: ReadonlyArray<IEventCrew>;
   entity: Readonly<IEventCrew>;
   updating: boolean;
@@ -43,7 +43,7 @@ export default (state: IEventCrewState = initialState, action: AnyAction): IEven
     case REQUEST(ACTION_TYPES.FETCH_EVENTCREW):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         loading: true,
       };
@@ -52,7 +52,7 @@ export default (state: IEventCrewState = initialState, action: AnyAction): IEven
     case REQUEST(ACTION_TYPES.DELETE_EVENTCREW):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         updating: true,
       };
@@ -66,7 +66,7 @@ export default (state: IEventCrewState = initialState, action: AnyAction): IEven
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload,
+        errResponse: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_EVENTCREW_LIST):
       return {

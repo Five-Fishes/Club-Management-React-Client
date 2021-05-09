@@ -17,7 +17,7 @@ export const ACTION_TYPES = {
 
 const initialState: IUserManagementState = {
   loading: false,
-  errorMessage: null,
+  errResponse: null,
   users: [] as ReadonlyArray<IUser>,
   authorities: [] as any[],
   user: defaultValue,
@@ -28,7 +28,7 @@ const initialState: IUserManagementState = {
 
 export interface IUserManagementState {
   loading: boolean;
-  errorMessage: null | AxiosError;
+  errResponse: null | AxiosError;
   users: ReadonlyArray<IUser>;
   authorities: ReadonlyArray<any>;
   user: Readonly<IUser>;
@@ -48,7 +48,7 @@ export default (state: IUserManagementState = initialState, action: AnyAction): 
     case REQUEST(ACTION_TYPES.FETCH_USER):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         loading: true,
       };
@@ -57,7 +57,7 @@ export default (state: IUserManagementState = initialState, action: AnyAction): 
     case REQUEST(ACTION_TYPES.DELETE_USER):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         updating: true,
       };
@@ -72,7 +72,7 @@ export default (state: IUserManagementState = initialState, action: AnyAction): 
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload,
+        errResponse: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_ROLES):
       return {

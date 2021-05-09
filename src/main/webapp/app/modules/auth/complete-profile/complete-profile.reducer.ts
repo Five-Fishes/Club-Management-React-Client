@@ -23,7 +23,7 @@ export const ACTION_TYPES = {
 
 const initialState: ICompleteProfileState = {
   loading: false,
-  errorMessage: null,
+  errResponse: null,
   userProfile: defaultValue,
   facultyList: [] as ReadonlyArray<IFaculty>,
   courseProgramList: [] as ReadonlyArray<ICourseProgram>,
@@ -35,7 +35,7 @@ const initialState: ICompleteProfileState = {
 
 export interface ICompleteProfileState {
   loading: boolean;
-  errorMessage: null | AxiosError;
+  errResponse: null | AxiosError;
   userProfile: Readonly<IUserUniInfo>;
   facultyList: ReadonlyArray<IFaculty>;
   courseProgramList: ReadonlyArray<ICourseProgram>;
@@ -56,7 +56,7 @@ export default (state: ICompleteProfileState = initialState, action: AnyAction):
     case REQUEST(ACTION_TYPES.FETCH_USERPROFILE_UNIINFO):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         loading: true,
       };
@@ -67,7 +67,7 @@ export default (state: ICompleteProfileState = initialState, action: AnyAction):
         updating: false,
         updateSuccess: false,
         loading: false,
-        errorMessage: action.payload,
+        errResponse: action.payload,
       };
     case SUCCESS(ACTION_TYPES.COMPLETE_USERPROFILE):
       return {
@@ -75,14 +75,14 @@ export default (state: ICompleteProfileState = initialState, action: AnyAction):
         updating: false,
         updateSuccess: true,
         loading: false,
-        errorMessage: null,
+        errResponse: null,
         userProfile: action?.payload?.data ?? defaultValue,
       };
     case SUCCESS(ACTION_TYPES.FETCH_USERPROFILE_UNIINFO):
       return {
         ...state,
         loading: false,
-        errorMessage: null,
+        errResponse: null,
         userProfile: action?.payload?.data ?? defaultValue,
       };
     case ACTION_TYPES.FETCH_FACULTY_LIST:

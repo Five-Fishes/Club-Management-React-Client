@@ -66,7 +66,7 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
   };
 
   render() {
-    const { eventActivityEntity, loading, updating, errorMessage, eventEntity } = this.props;
+    const { eventActivityEntity, loading, updating, errResponse, eventEntity } = this.props;
     const { eventId } = this.props.match.params;
     const timeFormatDuration = this.setDurationInTimeFormat();
 
@@ -145,7 +145,7 @@ export class EventActivityUpdate extends React.Component<IEventActivityUpdatePro
                   </Label>
                   <AvInput id="event-activity-description" type="textarea" name="description" />
                 </AvGroup>
-                <span className="text-error">{errorMessage ? errorMessage.response?.data?.detail : ''}</span>
+                <span className="text-error">{errResponse ? errResponse.response?.data?.detail : ''}</span>
                 <div className="text-center general-buttonContainer--flexContainer">
                   <Button
                     className="general-button--width"
@@ -176,7 +176,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.eventActivity.loading,
   updating: storeState.eventActivity.updating,
   updateSuccess: storeState.eventActivity.updateSuccess,
-  errorMessage: storeState.eventActivity.errorMessage,
+  errResponse: storeState.eventActivity.errResponse,
   eventEntity: storeState.event.entity,
 });
 

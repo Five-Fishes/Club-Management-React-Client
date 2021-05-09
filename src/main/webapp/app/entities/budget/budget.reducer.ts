@@ -25,7 +25,7 @@ export const ACTION_TYPES = {
 
 const initialState: IBudgetState = {
   loading: false,
-  errorMessage: null,
+  errResponse: null,
   entities: [] as ReadonlyArray<IBudget>,
   entity: defaultValue,
   updating: false,
@@ -39,7 +39,7 @@ const initialState: IBudgetState = {
 
 export interface IBudgetState {
   loading: boolean;
-  errorMessage: null | AxiosError;
+  errResponse: null | AxiosError;
   entities: ReadonlyArray<IBudget>;
   entity: Readonly<IBudget>;
   updating: boolean;
@@ -59,7 +59,7 @@ export default (state: IBudgetState = initialState, action: AnyAction): IBudgetS
     case REQUEST(ACTION_TYPES.FETCH_BUDGET):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         loading: true,
       };
@@ -68,7 +68,7 @@ export default (state: IBudgetState = initialState, action: AnyAction): IBudgetS
     case REQUEST(ACTION_TYPES.DELETE_BUDGET):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         updating: true,
       };
@@ -82,7 +82,7 @@ export default (state: IBudgetState = initialState, action: AnyAction): IBudgetS
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload,
+        errResponse: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_BUDGET_LIST):
       return {

@@ -19,7 +19,7 @@ export const ACTION_TYPES = {
 
 const initialState: IEventAttendeeState = {
   loading: false,
-  errorMessage: null,
+  errResponse: null,
   entities: [] as ReadonlyArray<IEventAttendee>,
   entity: defaultValue,
   updating: false,
@@ -29,7 +29,7 @@ const initialState: IEventAttendeeState = {
 
 export interface IEventAttendeeState {
   loading: boolean;
-  errorMessage: null | AxiosError;
+  errResponse: null | AxiosError;
   entities: ReadonlyArray<IEventAttendee>;
   entity: Readonly<IEventAttendee>;
   updating: boolean;
@@ -45,7 +45,7 @@ export default (state: IEventAttendeeState = initialState, action: AnyAction): I
     case REQUEST(ACTION_TYPES.FETCH_EVENTATTENDEE):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         loading: true,
       };
@@ -54,7 +54,7 @@ export default (state: IEventAttendeeState = initialState, action: AnyAction): I
     case REQUEST(ACTION_TYPES.DELETE_EVENTATTENDEE):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         updating: true,
       };
@@ -68,7 +68,7 @@ export default (state: IEventAttendeeState = initialState, action: AnyAction): I
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload,
+        errResponse: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST):
       return {

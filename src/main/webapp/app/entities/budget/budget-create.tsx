@@ -44,7 +44,7 @@ export class EventBudgetCreate extends React.Component<IBudgetCreateProps> {
   };
 
   render() {
-    const { loading, updating, errorMessage } = this.props;
+    const { loading, updating, errResponse } = this.props;
     const { eventId } = this.props.match.params;
 
     return (
@@ -122,7 +122,7 @@ export class EventBudgetCreate extends React.Component<IBudgetCreateProps> {
                     }}
                   />
                 </AvGroup>
-                <span className="text-error">{errorMessage ? errorMessage.response?.data?.detail : ''}</span>
+                <span className="text-error">{errResponse ? errResponse.response?.data?.detail : ''}</span>
                 <div className="general-buttonContainer--flexContainer">
                   <Button
                     className="general-button--width"
@@ -153,7 +153,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.budget.loading,
   updating: storeState.budget.updating,
   updateSuccess: storeState.budget.updateSuccess,
-  errorMessage: storeState.budget.errorMessage,
+  errResponse: storeState.budget.errResponse,
 });
 
 const mapDispatchToProps = {

@@ -65,7 +65,7 @@ export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpd
   };
 
   render() {
-    const { budgetEntity, loading, updating, errorMessage } = this.props;
+    const { budgetEntity, loading, updating, errResponse } = this.props;
     const { isNew } = this.state;
 
     const { details } = budgetEntity;
@@ -149,7 +149,7 @@ export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpd
                     {budgetEntity.details}
                   </AvInput>
                 </AvGroup>
-                <div className="text-danger">{errorMessage ? errorMessage.response?.data?.detail : ''}</div>
+                <div className="text-danger">{errResponse ? errResponse.response?.data?.detail : ''}</div>
                 <div className="general-buttonContainer--flexContainer">
                   <Button
                     className="general-button--width"
@@ -180,7 +180,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.budget.loading,
   updating: storeState.budget.updating,
   updateSuccess: storeState.budget.updateSuccess,
-  errorMessage: storeState.budget.errorMessage,
+  errResponse: storeState.budget.errResponse,
 });
 
 const mapDispatchToProps = {

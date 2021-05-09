@@ -18,7 +18,7 @@ export const ACTION_TYPES = {
 
 const initialState: ITransactionState = {
   loading: false,
-  errorMessage: null,
+  errResponse: null,
   entities: [] as ReadonlyArray<ITransaction>,
   entity: defaultValue,
   updating: false,
@@ -28,7 +28,7 @@ const initialState: ITransactionState = {
 
 export interface ITransactionState {
   loading: boolean;
-  errorMessage: null | AxiosError;
+  errResponse: null | AxiosError;
   entities: ReadonlyArray<ITransaction>;
   entity: Readonly<ITransaction>;
   updating: boolean;
@@ -44,7 +44,7 @@ export default (state: ITransactionState = initialState, action: AnyAction): ITr
     case REQUEST(ACTION_TYPES.FETCH_TRANSACTION):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         loading: true,
       };
@@ -53,7 +53,7 @@ export default (state: ITransactionState = initialState, action: AnyAction): ITr
     case REQUEST(ACTION_TYPES.DELETE_TRANSACTION):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         updating: true,
       };
@@ -67,7 +67,7 @@ export default (state: ITransactionState = initialState, action: AnyAction): ITr
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload,
+        errResponse: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_TRANSACTION_LIST):
       return {
