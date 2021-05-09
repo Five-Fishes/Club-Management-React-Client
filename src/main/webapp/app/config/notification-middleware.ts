@@ -25,7 +25,7 @@ export default () => (next: any) => (action: any) => {
         const headers = response.action.payload.headers;
         let alert: string | null = null;
         let alertParams: string | null = null;
-        const headerEntries: [string, string][] = Object.entries(headers);
+        const headerEntries: Array<[string, string]> = Object.entries(headers);
         headerEntries.forEach(([k, v]: [string, string]) => {
           if (k.toLowerCase().endsWith('app-alert')) {
             alert = v;
@@ -55,7 +55,7 @@ export default () => (next: any) => (action: any) => {
               break;
 
             case 400:
-              const headers: [string, string][] = Object.entries(response.headers);
+              const headers: Array<[string, string]> = Object.entries(response.headers);
               let errorHeader = null;
               let entityKey = null;
               headers.forEach(([k, v]) => {

@@ -41,9 +41,7 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
     this.setState({ users: users.data, event: event.data });
   };
 
-  compareFirstName = (a: IUser, b: IUser) => {
-    return `${a.firstName}`.localeCompare(`${b.firstName}`);
-  };
+  compareFirstName = (a: IUser, b: IUser) => `${a.firstName}`.localeCompare(`${b.firstName}`);
 
   componentWillUpdate(nextProps: IEventCrewUpdateProps, nextState: IEventCrewUpdateState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {

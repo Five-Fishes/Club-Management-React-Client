@@ -38,12 +38,10 @@ interface IButtonItems {
   sort: (sortProp: any, orderProp: any) => void;
 }
 
-const ButtonItems: React.FC<IButtonItems> = ({ buttonList, sort }) => {
-  return (
-    <>
-      {buttonList.map(button => (
-        <EventAttendeeSortButton buttonInfo={button} sort={sort} key={button.buttonName} />
-      ))}
-    </>
-  );
-};
+const ButtonItems: React.FC<IButtonItems> = ({ buttonList, sort }) => (
+  <>
+    {buttonList.map(button => (
+      <EventAttendeeSortButton buttonInfo={button} sort={sort} key={button.buttonName} />
+    ))}
+  </>
+);

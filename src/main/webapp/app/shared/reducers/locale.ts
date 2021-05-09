@@ -31,7 +31,7 @@ export default (state: LocaleState = initialState, action: AnyAction): LocaleSta
 type setLocaleReturnType = (dispatch: Dispatch) => Promise<void>;
 
 export function setLocale(locale: string): setLocaleReturnType {
-  return async function (dispatch) {
+  return async dispatch => {
     if (!Object.keys(TranslatorContext.context.translations).includes(locale)) {
       const response = await axios.get(`i18n/${locale}.json?buildTimestamp=${process.env.BUILD_TIMESTAMP}`, { baseURL: '' });
       TranslatorContext.registerTranslations(locale, response.data);

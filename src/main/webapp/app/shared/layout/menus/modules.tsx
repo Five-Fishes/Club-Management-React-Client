@@ -12,16 +12,14 @@ interface IModule {
   sideNavToggler: React.MouseEventHandler<HTMLAnchorElement>;
 }
 
-export const Module: React.FC<IModule> = ({ moduleName, iconName, path, sideNavToggler }) => {
-  return (
-    <Link to={path} onClick={sideNavToggler}>
-      <div className="module">
-        <FontAwesomeIcon icon={iconName} className="module-icon" />
-        {moduleName}
-      </div>
-    </Link>
-  );
-};
+export const Module: React.FC<IModule> = ({ moduleName, iconName, path, sideNavToggler }) => (
+  <Link to={path} onClick={sideNavToggler}>
+    <div className="module">
+      <FontAwesomeIcon icon={iconName} className="module-icon" />
+      {moduleName}
+    </div>
+  </Link>
+);
 
 interface IModuleMenu {
   button: React.ReactElement;
