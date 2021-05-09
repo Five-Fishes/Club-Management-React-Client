@@ -9,7 +9,7 @@ import { Translate } from 'react-jhipster';
 import { Link } from 'react-router-dom';
 import AuthorizationChecker, {
   IAuthorizationCheckerOwnProps,
-  authorizationCheck
+  authorizationCheck,
 } from 'app/shared/components/authorization-checker/authorization-checker';
 
 interface ICustomTabOwnProps {

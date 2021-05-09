@@ -61,7 +61,7 @@ export class EventCrewDeleteDialog extends React.Component<IEventCrewDeleteDialo
 }
 
 const mapStateToProps = ({ eventCrew }: IRootState) => ({
-  eventCrewEntity: eventCrew.entity
+  eventCrewEntity: eventCrew.entity,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity, deleteEntityWithEventId };
@@ -69,7 +69,4 @@ const mapDispatchToProps = { getEntity, deleteEntity, deleteEntityWithEventId };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventCrewDeleteDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(EventCrewDeleteDialog);

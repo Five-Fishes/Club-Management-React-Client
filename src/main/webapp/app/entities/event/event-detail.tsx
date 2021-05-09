@@ -148,7 +148,7 @@ export class EventDetail extends React.Component<IEventDetailProps> {
 const mapStateToProps = ({ event, authentication, eventAttendee }: IRootState) => ({
   eventEntity: event.entity,
   userId: authentication.id,
-  eventAttendeeEntity: eventAttendee.entity
+  eventAttendeeEntity: eventAttendee.entity,
 });
 
 const mapDispatchToProps = { getEntity, getEntityByEventIdAndUserId };
@@ -156,7 +156,4 @@ const mapDispatchToProps = { getEntity, getEntityByEventIdAndUserId };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(EventDetail);

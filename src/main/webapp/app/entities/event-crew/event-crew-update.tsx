@@ -30,7 +30,7 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
     this.state = {
       isNew: !this.props.match.params || !this.props.match.params.id,
       users: [],
-      event: null
+      event: null,
     };
   }
 
@@ -75,7 +75,7 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
       const { eventCrewEntity } = this.props;
       const entity = {
         ...eventCrewEntity,
-        ...values
+        ...values,
       };
 
       if (this.state.isNew) {
@@ -202,20 +202,17 @@ const mapStateToProps = (storeState: IRootState) => ({
   eventCrewEntity: storeState.eventCrew.entity,
   loading: storeState.eventCrew.loading,
   updating: storeState.eventCrew.updating,
-  updateSuccess: storeState.eventCrew.updateSuccess
+  updateSuccess: storeState.eventCrew.updateSuccess,
 });
 
 const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventCrewUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(EventCrewUpdate);

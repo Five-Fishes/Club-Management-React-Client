@@ -33,7 +33,7 @@ export class Event extends React.Component<IEventProps, IEventState> {
   state: IEventState = {
     ...getSortState(this.props.location, ITEMS_PER_PAGE),
     modalIsOpen: false,
-    eventId: null
+    eventId: null,
   };
 
   getTab = () => {
@@ -94,12 +94,12 @@ export class Event extends React.Component<IEventProps, IEventState> {
           updateBtnAuthorizationProps={{
             eventId,
             ccRole: CCRole.ADMIN,
-            eventRole: EventRole.HEAD
+            eventRole: EventRole.HEAD,
           }}
           deleteBtnAuthorizationProps={{
             eventId,
             ccRole: CCRole.ADMIN,
-            eventRole: EventRole.HEAD
+            eventRole: EventRole.HEAD,
           }}
         />
         <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={eventId}>
@@ -173,18 +173,15 @@ const EventCard: React.FC<IEventCardProps> = ({ event, toggleModal }) => {
 
 const mapStateToProps = ({ event }: IRootState) => ({
   eventList: event.entities,
-  totalItems: event.totalItems
+  totalItems: event.totalItems,
 });
 
 const mapDispatchToProps = {
   getUpcomingEntities,
-  getPreviousEntities
+  getPreviousEntities,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Event);
+export default connect(mapStateToProps, mapDispatchToProps)(Event);

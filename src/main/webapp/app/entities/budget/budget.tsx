@@ -10,7 +10,7 @@ import {
   setSelectedEventBudgetId,
   setShowActionOptions,
   getEventBudgetTotal,
-  getEventRealTotal
+  getEventRealTotal,
 } from './budget.reducer';
 import { eventTabList } from 'app/shared/util/tab.constants';
 import classnames from 'classnames';
@@ -29,7 +29,7 @@ export type IEventBudgetState = IPaginationBaseState;
 
 export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
   state: IEventBudgetState = {
-    ...getSortState(this.props.location, ITEMS_PER_PAGE)
+    ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
   componentDidMount() {
@@ -48,7 +48,7 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
     this.setState(
       {
         order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
+        sort: prop,
       },
       () => this.sortEntities()
     );
@@ -154,7 +154,7 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
                   actionMenuAuthorizationProps={{
                     ccRole: CCRole.ADMIN,
                     eventRole: EventRole.HEAD,
-                    eventId: eventBudget.eventId
+                    eventId: eventBudget.eventId,
                   }}
                 >
                   <span
@@ -238,7 +238,7 @@ const mapStateToProps = ({ budget }: IRootState) => ({
   selectedEventBudgetId: budget.selectedEventBudgetId,
   showActionOptions: budget.showActionOptions,
   eventBudgetTotal: budget.eventBudgetTotal,
-  eventRealTotal: budget.eventRealTotal
+  eventRealTotal: budget.eventRealTotal,
 });
 
 const mapDispatchToProps = {
@@ -246,13 +246,10 @@ const mapDispatchToProps = {
   setSelectedEventBudgetId,
   setShowActionOptions,
   getEventBudgetTotal,
-  getEventRealTotal
+  getEventRealTotal,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Budget);
+export default connect(mapStateToProps, mapDispatchToProps)(Budget);

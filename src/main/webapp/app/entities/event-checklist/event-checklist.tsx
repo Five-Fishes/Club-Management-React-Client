@@ -11,7 +11,7 @@ import {
   getSortState,
   IPaginationBaseState,
   JhiPagination,
-  JhiItemCount
+  JhiItemCount,
 } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -36,7 +36,7 @@ export type IEventChecklistState = IPaginationBaseState;
 
 export class EventChecklist extends React.Component<IEventChecklistProps, IEventChecklistState> {
   state: IEventChecklistState = {
-    ...getSortState(this.props.location, ITEMS_PER_PAGE)
+    ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
   componentDidMount() {
@@ -47,7 +47,7 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
     this.setState(
       {
         order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
+        sort: prop,
       },
       () => this.sortEntities()
     );
@@ -108,7 +108,7 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
                   actionMenuAuthorizationProps={{
                     ccRole: CCRole.ADMIN,
                     eventRole: EventRole.CREW,
-                    eventId: eventChecklist.eventId
+                    eventId: eventChecklist.eventId,
                   }}
                 >
                   <span className="card-item d-block mb-2">
@@ -181,19 +181,16 @@ const mapStateToProps = ({ eventChecklist }: IRootState) => ({
   eventChecklistList: eventChecklist.entities,
   totalItems: eventChecklist.totalItems,
   selectedEventChecklistId: eventChecklist.selectedEventChecklistId,
-  showActionOptions: eventChecklist.showActionOptions
+  showActionOptions: eventChecklist.showActionOptions,
 });
 
 const mapDispatchToProps = {
   getChecklistsByEventId,
   setSelectedEventChecklistId,
-  setShowActionOptions
+  setShowActionOptions,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventChecklist);
+export default connect(mapStateToProps, mapDispatchToProps)(EventChecklist);

@@ -14,7 +14,9 @@ export const ACTION_TYPES = {
   DELETE_DEBT: 'debt/DELETE_DEBT',
   RESET: 'debt/RESET',
   SET_DEBT_ID: 'debt/SET_DEBT_ID',
-  SET_SHOW_ACTION_OPTIONS: 'debt/SET_SHOW_ACTION_OPTIONS'
+  SET_SHOW_ACTION_OPTIONS: 'debt/SET_SHOW_ACTION_OPTIONS',
+  SET_SHOW_COLLECT_DIALOG: 'debt/SET_SHOW_COLLECT_DIALOG',
+  SET_SHOW_BAD_DEBT_DIALOG: 'debt/SET_SHOW_BAD_DEBT_DIALOG'
 };
 
 const initialState = {
@@ -26,7 +28,9 @@ const initialState = {
   totalItems: 0,
   updateSuccess: false,
   selectedDebtId: 0,
-  showActionOptions: false
+  showActionOptions: false,
+  showCollectDialog: false,
+  showBadDebtDialog: false
 };
 
 export type DebtState = Readonly<typeof initialState>;
@@ -108,6 +112,18 @@ export default (state: DebtState = initialState, action): DebtState => {
         ...state,
         showActionOptions: show
       };
+    case ACTION_TYPES.SET_SHOW_COLLECT_DIALOG:
+      const { showCollect } = action.payload;
+      return {
+        ...state,
+        showCollectDialog: showCollect
+      };
+    case ACTION_TYPES.SET_SHOW_BAD_DEBT_DIALOG:
+      const { showBadDebt } = action.payload;
+      return {
+        ...state,
+        showBadDebtDialog: showBadDebt
+      };
     default:
       return state;
   }
@@ -186,5 +202,19 @@ export const setShowActionOptions = show => ({
   type: ACTION_TYPES.SET_SHOW_ACTION_OPTIONS,
   payload: {
     show
+  }
+});
+
+export const setShowCollectDialog = showCollect => ({
+  type: ACTION_TYPES.SET_SHOW_COLLECT_DIALOG,
+  payload: {
+    showCollect
+  }
+});
+
+export const setShowBadDebtDialog = showBadDebt => ({
+  type: ACTION_TYPES.SET_SHOW_BAD_DEBT_DIALOG,
+  payload: {
+    showBadDebt
   }
 });

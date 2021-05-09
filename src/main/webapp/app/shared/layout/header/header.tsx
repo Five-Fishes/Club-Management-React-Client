@@ -25,7 +25,7 @@ export interface IHeaderState {
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
   state: IHeaderState = {
-    menuOpen: false
+    menuOpen: false,
   };
 
   handleLocaleChange = event => {

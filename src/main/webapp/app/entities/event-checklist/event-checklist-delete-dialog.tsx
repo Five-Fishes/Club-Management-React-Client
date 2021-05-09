@@ -61,7 +61,7 @@ export class EventChecklistDeleteDialog extends React.Component<IEventChecklistD
 }
 
 const mapStateToProps = ({ eventChecklist }: IRootState) => ({
-  eventChecklistEntity: eventChecklist.entity
+  eventChecklistEntity: eventChecklist.entity,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };
@@ -69,7 +69,4 @@ const mapDispatchToProps = { getEntity, deleteEntity };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventChecklistDeleteDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(EventChecklistDeleteDialog);

@@ -17,10 +17,7 @@ import ErrorBoundary from 'app/shared/error/error-boundary';
 import AppRoutes from 'app/routes';
 import { fetchAccount } from './shared/services/auth.service';
 
-const baseHref = document
-  .querySelector('base')
-  .getAttribute('href')
-  .replace(/\/$/, '');
+const baseHref = document.querySelector('base').getAttribute('href').replace(/\/$/, '');
 
 export interface IAppProps extends StateProps, DispatchProps {}
 
@@ -65,7 +62,7 @@ const mapStateToProps = ({ authentication, applicationProfile, locale }: IRootSt
   isAuthenticated: authentication.isAuthenticated,
   ribbonEnv: applicationProfile.ribbonEnv,
   isInProduction: applicationProfile.inProduction,
-  isSwaggerEnabled: applicationProfile.isSwaggerEnabled
+  isSwaggerEnabled: applicationProfile.isSwaggerEnabled,
 });
 
 const mapDispatchToProps = { setLocale, getProfile };
@@ -73,7 +70,4 @@ const mapDispatchToProps = { setLocale, getProfile };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(hot(module)(App));
+export default connect(mapStateToProps, mapDispatchToProps)(hot(module)(App));

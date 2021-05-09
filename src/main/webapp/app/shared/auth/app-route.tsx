@@ -27,7 +27,7 @@ const AppRouteComponent: React.FC<IAppRouteProps> = (props: IAppRouteProps) => {
         to={{
           pathname: '/auth/login',
           search: props.location.search,
-          state: { from: props.location }
+          state: { from: props.location },
         }}
       />
     );
@@ -56,17 +56,12 @@ function mapStateToProps({ authentication }: IRootState) {
   const { isAuthenticated, isProfileCompleted } = authentication;
   return {
     isAuthenticated,
-    isProfileCompleted
+    isProfileCompleted,
   };
 }
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 
-const AppRoute = connect<StateProps, undefined, IAppRouteOwnProps>(
-  mapStateToProps,
-  null,
-  null,
-  { pure: false }
-)(AppRouteComponent);
+const AppRoute = connect<StateProps, undefined, IAppRouteOwnProps>(mapStateToProps, null, null, { pure: false })(AppRouteComponent);
 
 export default AppRoute;

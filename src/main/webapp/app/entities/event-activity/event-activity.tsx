@@ -25,7 +25,7 @@ export type IEventActivityState = IPaginationBaseState;
 
 export class EventActivity extends React.Component<IEventActivityProps, IEventActivityState> {
   state: IEventActivityState = {
-    ...getSortState(this.props.location, ITEMS_PER_PAGE)
+    ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
   componentDidMount() {
@@ -36,7 +36,7 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
     this.setState(
       {
         order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
+        sort: prop,
       },
       () => this.sortEntities()
     );
@@ -96,7 +96,7 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
                   actionMenuAuthorizationProps={{
                     ccRole: CCRole.ADMIN,
                     eventRole: EventRole.CREW,
-                    eventId: eventActivity.eventId
+                    eventId: eventActivity.eventId,
                   }}
                 >
                   <span className="card-item d-block mb-2">
@@ -185,19 +185,16 @@ const mapStateToProps = ({ eventActivity }: IRootState) => ({
   eventActivityList: eventActivity.entities,
   totalItems: eventActivity.totalItems,
   selectedEventActivityId: eventActivity.selectedEventActivityId,
-  showActionOptions: eventActivity.showActionOptions
+  showActionOptions: eventActivity.showActionOptions,
 });
 
 const mapDispatchToProps = {
   getEventActivitiesByEventId,
   setSelectedEventActivityId,
-  setShowActionOptions
+  setShowActionOptions,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventActivity);
+export default connect(mapStateToProps, mapDispatchToProps)(EventActivity);

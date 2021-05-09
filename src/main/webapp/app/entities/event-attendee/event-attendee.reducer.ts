@@ -13,7 +13,7 @@ export const ACTION_TYPES = {
   CREATE_EVENTATTENDEE: 'eventAttendee/CREATE_EVENTATTENDEE',
   UPDATE_EVENTATTENDEE: 'eventAttendee/UPDATE_EVENTATTENDEE',
   DELETE_EVENTATTENDEE: 'eventAttendee/DELETE_EVENTATTENDEE',
-  RESET: 'eventAttendee/RESET'
+  RESET: 'eventAttendee/RESET',
 };
 
 const initialState = {
@@ -23,7 +23,7 @@ const initialState = {
   entity: defaultValue,
   updating: false,
   totalItems: 0,
-  updateSuccess: false
+  updateSuccess: false,
 };
 
 export type EventAttendeeState = Readonly<typeof initialState>;
@@ -38,7 +38,7 @@ export default (state: EventAttendeeState = initialState, action): EventAttendee
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        loading: true
+        loading: true,
       };
     case REQUEST(ACTION_TYPES.CREATE_EVENTATTENDEE):
     case REQUEST(ACTION_TYPES.UPDATE_EVENTATTENDEE):
@@ -47,7 +47,7 @@ export default (state: EventAttendeeState = initialState, action): EventAttendee
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        updating: true
+        updating: true,
       };
     case FAILURE(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST):
     case FAILURE(ACTION_TYPES.FETCH_EVENTATTENDEE):
@@ -59,20 +59,20 @@ export default (state: EventAttendeeState = initialState, action): EventAttendee
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload
+        errorMessage: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST):
       return {
         ...state,
         loading: false,
         entities: action.payload.data,
-        totalItems: parseInt(action.payload.headers['x-total-count'], 10)
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.FETCH_EVENTATTENDEE):
       return {
         ...state,
         loading: false,
-        entity: action.payload.data
+        entity: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.CREATE_EVENTATTENDEE):
     case SUCCESS(ACTION_TYPES.UPDATE_EVENTATTENDEE):
@@ -80,18 +80,18 @@ export default (state: EventAttendeeState = initialState, action): EventAttendee
         ...state,
         updating: false,
         updateSuccess: true,
-        entity: action.payload.data
+        entity: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.DELETE_EVENTATTENDEE):
       return {
         ...state,
         updating: false,
         updateSuccess: true,
-        entity: {}
+        entity: {},
       };
     case ACTION_TYPES.RESET:
       return {
-        ...initialState
+        ...initialState,
       };
     default:
       return state;
@@ -106,7 +106,7 @@ export const getEventAttendeeEntities: IGetAllByEventId<IEventAttendee> = (event
   const requestUrl = `${apiUrl}/event/${eventId}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_EVENTATTENDEE_LIST,
-    payload: axios.get<IEventAttendee>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+    payload: axios.get<IEventAttendee>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
   };
 };
 
@@ -114,7 +114,7 @@ export const getEntities: ICrudGetAllAction<IEventAttendee> = (page, size, sort)
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_EVENTATTENDEE_LIST,
-    payload: axios.get<IEventAttendee>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+    payload: axios.get<IEventAttendee>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
   };
 };
 
@@ -122,7 +122,7 @@ export const getEntity: ICrudGetAction<IEventAttendee> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
     type: ACTION_TYPES.FETCH_EVENTATTENDEE,
-    payload: axios.get<IEventAttendee>(requestUrl)
+    payload: axios.get<IEventAttendee>(requestUrl),
   };
 };
 
@@ -130,14 +130,14 @@ export const getEntityByEventIdAndUserId = (eventId, userId) => {
   const requestUrl = `${apiUrl}/event/${eventId}/user/${userId}`;
   return {
     type: ACTION_TYPES.FETCH_EVENTATTENDEE,
-    payload: axios.get<IEventAttendee>(requestUrl)
+    payload: axios.get<IEventAttendee>(requestUrl),
   };
 };
 
 export const createEntity: ICrudPutAction<IEventAttendee> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_EVENTATTENDEE,
-    payload: axios.post(apiUrl, cleanEntity(entity))
+    payload: axios.post(apiUrl, cleanEntity(entity)),
   });
   return result;
 };
@@ -145,7 +145,7 @@ export const createEntity: ICrudPutAction<IEventAttendee> = entity => async disp
 export const updateEntity: ICrudPutAction<IEventAttendee> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_EVENTATTENDEE,
-    payload: axios.put(apiUrl, cleanEntity(entity))
+    payload: axios.put(apiUrl, cleanEntity(entity)),
   });
   return result;
 };
@@ -154,11 +154,11 @@ export const deleteEntity: ICrudDeleteAction<IEventAttendee> = id => async dispa
   const requestUrl = `${apiUrl}/${id}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_EVENTATTENDEE,
-    payload: axios.delete(requestUrl)
+    payload: axios.delete(requestUrl),
   });
   return result;
 };
 
 export const reset = () => ({
-  type: ACTION_TYPES.RESET
+  type: ACTION_TYPES.RESET,
 });

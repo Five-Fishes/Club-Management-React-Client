@@ -60,7 +60,7 @@ export class BudgetDeleteDialog extends React.Component<IBudgetDeleteDialogProps
 }
 
 const mapStateToProps = ({ budget }: IRootState) => ({
-  budgetEntity: budget.entity
+  budgetEntity: budget.entity,
 });
 
 const mapDispatchToProps = { getEntity, deleteEntity };
@@ -68,7 +68,4 @@ const mapDispatchToProps = { getEntity, deleteEntity };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BudgetDeleteDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(BudgetDeleteDialog);

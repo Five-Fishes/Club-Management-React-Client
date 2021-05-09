@@ -76,7 +76,7 @@ const mapStateToProps = ({ authentication }: IRootState, ownProps: IAuthorizatio
     isCurrentCCHead,
     isCurrentAdministrator,
     isEventHead,
-    isEventCrew
+    isEventCrew,
   };
 };
 
