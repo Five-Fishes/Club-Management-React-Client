@@ -17,7 +17,7 @@ import CCRole from './shared/model/enum/cc-role.enum';
 
 const Admin = Loadable({
   loader: () => import(/* webpackChunkName: "administration" */ 'app/modules/administration'),
-  loading: () => <div>loading ...</div>
+  loading: () => <div>loading ...</div>,
 });
 // tslint:enable
 

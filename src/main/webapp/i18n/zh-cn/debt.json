@@ -2,27 +2,37 @@
   "clubmanagementApp": {
     "debt": {
       "home": {
-        "title": "Debts",
-        "createLabel": "创建新 Debt",
-        "createOrEditLabel": "创建或编辑 Debt",
-        "notFound": "No Debt found"
+        "title": "会员欠款",
+        "createLabel": "创建新会员欠款",
+        "createOrEditLabel": "创建或编辑会员欠款",
+        "notFound": "没有发现会员欠款"
       },
-      "created": "Debt {{ param }} 创建成功",
-      "updated": "Debt {{ param }} 更新成功",
-      "deleted": "Debt {{ param }} 删除成功",
+      "created": "会员欠款 {{ param }} 创建成功",
+      "updated": "会员欠款 {{ param }} 更新成功",
+      "deleted": "会员欠款 {{ param }} 删除成功",
       "delete": {
-        "question": "你确定要删除 Debt {{ id }} 吗？"
+        "question": "你确定要删除会员欠款 {{ id }} 吗？"
+      },
+      "badDebt": {
+        "title": "确认坏账",
+        "question": "你确定要更改会员欠款 {{ id }} 的状况为坏账吗？"
+      },
+      "collect": {
+        "title": "确认收钱",
+        "question": "你确定要更改会员欠款 {{ id }} 的状况为已收钱吗?"
       },
       "detail": {
-        "title": "Debt"
+        "title": "会员欠款"
       },
-      "receiptId": "Receipt Id",
-      "eventAttendeeId": "Event Attendee Id",
-      "amount": "Amount",
-      "status": "Status",
-      "receiptUrl": "Receipt Url",
-      "fileName": "File Name",
-      "fileType": "File Type",
+      "receiptId": "收据 ID",
+      "eventAttendeeId": "活动参与者 ID",
+      "amount": "欠款数额",
+      "status": "欠款状况",
+      "receiptUrl": "收据网址",
+      "fileName": "文件名称",
+      "fileType": "文件格式",
+      "income": "收入",
+      "participationFee": "活动参加费",
       "tab": "会员欠款"
     }
   }

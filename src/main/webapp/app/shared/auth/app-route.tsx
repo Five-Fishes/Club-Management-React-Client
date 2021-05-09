@@ -63,6 +63,8 @@ function mapStateToProps({ authentication }: IRootState) {
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 
-const AppRoute = connect(mapStateToProps, null, null, { pure: false })(AppRouteComponent);
+const AppRoute = connect<StateProps, undefined, IAppRouteOwnProps, IRootState>(mapStateToProps, null, null, { pure: false })(
+  AppRouteComponent
+);
 
 export default AppRoute;

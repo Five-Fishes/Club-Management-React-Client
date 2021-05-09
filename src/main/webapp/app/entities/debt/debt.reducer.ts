@@ -16,6 +16,8 @@ export const ACTION_TYPES = {
   RESET: 'debt/RESET',
   SET_DEBT_ID: 'debt/SET_DEBT_ID',
   SET_SHOW_ACTION_OPTIONS: 'debt/SET_SHOW_ACTION_OPTIONS',
+  SET_SHOW_COLLECT_DIALOG: 'debt/SET_SHOW_COLLECT_DIALOG',
+  SET_SHOW_BAD_DEBT_DIALOG: 'debt/SET_SHOW_BAD_DEBT_DIALOG',
 };
 
 const initialState: IDebtState = {
@@ -28,6 +30,8 @@ const initialState: IDebtState = {
   updateSuccess: false,
   selectedDebtId: 0,
   showActionOptions: false,
+  showCollectDialog: false,
+  showBadDebtDialog: false,
 };
 
 export interface IDebtState {
@@ -40,6 +44,8 @@ export interface IDebtState {
   updateSuccess: boolean;
   selectedDebtId: number;
   showActionOptions: boolean;
+  showCollectDialog: boolean;
+  showBadDebtDialog: boolean;
 }
 
 // Reducer
@@ -119,6 +125,18 @@ export default (state: IDebtState = initialState, action: AnyAction): IDebtState
         ...state,
         showActionOptions: show,
       };
+    case ACTION_TYPES.SET_SHOW_COLLECT_DIALOG:
+      const { showCollect } = action.payload;
+      return {
+        ...state,
+        showCollectDialog: showCollect,
+      };
+    case ACTION_TYPES.SET_SHOW_BAD_DEBT_DIALOG:
+      const { showBadDebt } = action.payload;
+      return {
+        ...state,
+        showBadDebtDialog: showBadDebt,
+      };
     default:
       return state;
   }
@@ -197,5 +215,19 @@ export const setShowActionOptions = (show: boolean) => ({
   type: ACTION_TYPES.SET_SHOW_ACTION_OPTIONS,
   payload: {
     show,
+  },
+});
+
+export const setShowCollectDialog = (showCollect: boolean) => ({
+  type: ACTION_TYPES.SET_SHOW_COLLECT_DIALOG,
+  payload: {
+    showCollect,
+  },
+});
+
+export const setShowBadDebtDialog = (showBadDebt: boolean) => ({
+  type: ACTION_TYPES.SET_SHOW_BAD_DEBT_DIALOG,
+  payload: {
+    showBadDebt,
   },
 });
