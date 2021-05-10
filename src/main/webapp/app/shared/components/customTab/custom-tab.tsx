@@ -81,11 +81,11 @@ const TabItem: React.FC<ITabItemProps> = ({ currentTab, tabInfo, tabOnClick }) =
   const isCurrentTab: boolean = tabInfo.tabName === currentTab;
   const btnClassName = classnames('tab-item', isCurrentTab ? 'active-tab' : '');
 
-  const handleClick = tabName => {
+  function handleClick(tabName) {
     if (tabOnClick !== undefined) {
       tabOnClick(tabName);
     }
-  };
+  }
 
   return (
     <AuthorizationChecker {...tabInfo}>
@@ -96,7 +96,7 @@ const TabItem: React.FC<ITabItemProps> = ({ currentTab, tabInfo, tabOnClick }) =
         className={btnClassName}
         tag={Link}
         to={tabInfo.tabRoute}
-        onClick={handleClick(tabInfo.tabName)}
+        onClick={handleClick.bind(tabInfo.tabName)}
       >
         <Translate contentKey={tabInfo.tabTranslateKey}>{tabInfo.tabName}</Translate>
       </Button>

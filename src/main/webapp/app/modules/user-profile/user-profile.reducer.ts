@@ -23,7 +23,7 @@ const initialState = {
   userCCRolesInfo: [] as ReadonlyArray<IUserCCRoleInfo>,
   updating: false,
   updateSuccess: false,
-  currentProfileTab: 'Stats',
+  currentProfileTab: '',
 };
 
 export type UserState = Readonly<typeof initialState>;

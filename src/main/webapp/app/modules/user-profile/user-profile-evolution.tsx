@@ -10,9 +10,9 @@ import { getCurrentUserCCInfoProfile } from './user-profile.reducer';
 export interface IUserProfileEvolutionProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export class UserProfileEvolution extends React.Component<IUserProfileEvolutionProps> {
-  // constructor(props) {
-  //   super(props);
-  // }
+  constructor(props) {
+    super(props);
+  }
 
   componentDidMount() {
     this.props.getCurrentUserCCInfoProfile();
@@ -54,14 +54,16 @@ interface ICCInfoCardProps {
 }
 
 const CCInfoCard: React.FC<ICCInfoCardProps> = ({ roleName, fishLevel, yearSession }) => (
-  <Row className="justify-content-center">
-    <Col xs="7">
-      <h2 className="d-block my-1">{roleName}</h2>
-      <h4 className="d-block my-1">{fishLevel}</h4>
-      <span className="d-block my-1">{yearSession}</span>
-    </Col>
-    <Col xs="5">
-      <img className="w-75" src="content/images/jhipster_family_member_0_head-192.png" alt="User Profile Evolution Image" />
-    </Col>
-  </Row>
+  <div className="card-container container my-3">
+    <Row className="justify-content-center align-items-center">
+      <Col xs="7">
+        <h2 className="d-block my-1">{roleName}</h2>
+        <h4 className="d-block my-1">{fishLevel}</h4>
+        <h6 className="d-block my-1">{yearSession}</h6>
+      </Col>
+      <Col xs="5">
+        <img className="w-75" src="content/images/black-whale.png" alt="User Profile Evolution Image" />
+      </Col>
+    </Row>
+  </div>
 );

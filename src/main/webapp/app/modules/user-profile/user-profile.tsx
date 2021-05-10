@@ -13,27 +13,27 @@ import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { profileTab } from 'app/shared/util/tab.constants';
 import AppRoute from 'app/shared/auth/app-route';
 
-import { UserProfileStats } from './user-profile-stats';
-import { UserProfileEvolution } from './user-profile-evolution';
-import { UserProfileRole } from './user-profile-role';
+import UserProfileStats from './user-profile-stats';
+import UserProfileEvolution from './user-profile-evolution';
+import UserProfileRole from './user-profile-role';
 import { concatFullName } from 'app/shared/util/string-util';
-import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface IUserProfileProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
 const UserProfileTabContent = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/stats`} component={UserProfileStats} />
-      <ErrorBoundaryRoute path={`${match.url}`} component={UserProfileEvolution} />
-      <ErrorBoundaryRoute exact path={`${match.url}/roles`} component={UserProfileRole} />
+      <AppRoute exact path={`${match.url}/stats`} component={UserProfileStats} />
+      <AppRoute exact path={`${match.url}/evolution`} component={UserProfileEvolution} />
+      <AppRoute exact path={`${match.url}/roles`} component={UserProfileRole} />
     </Switch>
   </>
 );
 export class UserProfile extends React.Component<IUserProfileProps, {}> {
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
     this.tabOnClick = this.tabOnClick.bind(this);
   }
 
@@ -45,15 +45,15 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
     this.props.setUserProfileCurrentTab(tabName);
   }
 
-  handleClick() {
+  handleLogout() {
     logout();
     toast.info('Logout Successfully');
     this.props.history.push('/');
   }
 
   render() {
-    const { match } = this.props;
-    const { firstName, lastName, gender, imageUrl } = this.props.userUniEntity;
+    const { match, currentProfileTab } = this.props;
+    const { firstName, lastName, gender, imageUrl, clubFamilyName, clubFamilySlogan } = this.props.userUniEntity;
     return (
       <>
         <div className="d-block text-center my-3">
@@ -76,16 +76,24 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
           )}
         </div>
         <div className="text-center">
-          <h2>{concatFullName(firstName, lastName)}</h2>
-          <span className="d-block mx-auto mb-3 family-label py-2 px-3">Family</span>
-          <p>Description</p>
+          <h1>{concatFullName(firstName, lastName)}</h1>
+          {Boolean(clubFamilyName) && (
+            <>
+              <h3 className="d-block mx-auto mb-3 family-label py-2 px-3">
+                <FontAwesomeIcon icon="fish" />
+                &nbsp;{clubFamilyName}
+              </h3>
+              <p className="family-slogan">{clubFamilySlogan}</p>
+            </>
+          )}
         </div>
-        {/* TODO: Profile Tab with Dynamic currentTab */}
-        <CustomTab tabList={profileTab} handleClick={this.tabOnClick} />
-        {/* TODO: Dynamic Profile Tab Content */}
-        <UserProfileTabContent match={match} />
-        <div className="d-block text-center mb-2">
-          <Button color="action px-5" onClick={this.handleClick}>
+
+        <CustomTab tabList={profileTab} currentTab={currentProfileTab} handleClick={this.tabOnClick} />
+        <div className="mx-2">
+          <UserProfileTabContent match={match} />
+        </div>
+        <div className="d-block text-center my-5">
+          <Button color="action px-5" onClick={this.handleLogout}>
             <Translate contentKey="global.menu.account.logout">Logout</Translate>
           </Button>
         </div>

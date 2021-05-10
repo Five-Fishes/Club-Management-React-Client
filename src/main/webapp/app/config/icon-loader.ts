@@ -39,6 +39,7 @@ import { faMoneyBillAlt } from '@fortawesome/free-solid-svg-icons/faMoneyBillAlt
 import { faPen } from '@fortawesome/free-solid-svg-icons/faPen';
 import { faCalendar } from '@fortawesome/free-solid-svg-icons/faCalendar';
 import { faPlaneDeparture } from '@fortawesome/free-solid-svg-icons/faPlaneDeparture';
+import { faFish } from '@fortawesome/free-solid-svg-icons/faFish';
 // brands
 import { faFacebookF } from '@fortawesome/free-brands-svg-icons/faFacebookF';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons/faGoogle';
@@ -100,6 +101,7 @@ export const loadIcons = () => {
     faPen,
     faSortAmountUp,
     faPlaneDeparture,
-    faEuroSign
+    faEuroSign,
+    faFish
   );
 };

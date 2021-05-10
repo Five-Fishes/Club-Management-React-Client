@@ -24,6 +24,8 @@ export interface IUserUniInfo {
   phoneNumber?: string;
   imageUrl?: string;
   dateOfBirth?: Moment;
+  clubFamilyName?: string;
+  clubFamilySlogan?: string;
 }
 
 export const defaultValue: Readonly<IUserUniInfo> = {
@@ -43,4 +45,6 @@ export const defaultValue: Readonly<IUserUniInfo> = {
   phoneNumber: '',
   imageUrl: '',
   dateOfBirth: null,
+  clubFamilyName: '',
+  clubFamilySlogan: '',
 };

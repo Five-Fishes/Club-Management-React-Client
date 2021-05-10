@@ -16,20 +16,21 @@ export class UserProfileStats extends React.Component<IUserProfileStatsProps, {}
   }
 
   render() {
-    const { userEntity } = this.props;
-    // TODO: userEntity appear to be undefined
+    const { gender, dateOfBirth, phoneNumber, email } = this.props.userEntity;
     return (
       <>
         <div className="card-container container my-3">
           <Row className="justify-content-center">
             <Col xs="9">
-              <span className="d-block mb-1">{userEntity.gender}</span>
-              <span className="d-block mb-1">{convertDateTimeFromServerToLocaleDate(userEntity.dateOfBirth)}</span>
-              <span className="d-block mb-1">{userEntity.phoneNumber}</span>
-              <span className="d-block mb-1">{userEntity.email}</span>
+              <h6 className="d-block mb-1">{gender}</h6>
+              <h6 className="d-block mb-1">{convertDateTimeFromServerToLocaleDate(dateOfBirth)}</h6>
+              <h6 className="d-block mb-1">{phoneNumber}</h6>
+              <a href={'mailto:' + email}>
+                <h6 className="d-block mb-1">{email}</h6>
+              </a>
             </Col>
             <Col xs="2">
-              <Button tag={Link} id="update-profile-btn" to="/profile/update" replace>
+              <Button color="white" className="bg-transparent text-dark" tag={Link} id="update-profile-btn" to="/profile/update" replace>
                 <FontAwesomeIcon icon="pen" />
               </Button>
             </Col>

@@ -62,14 +62,14 @@ interface ICCRoleCardProps {
 
 const CCRoleCard: React.FC<ICCRoleCardProps> = ({ roleType, roleName, yearSession, eventName }) => (
   <div className="card-container container my-3">
-    <Row className="justify-content-center">
+    <Row className="justify-content-center align-items-center">
       <Col xs="7">
         {roleType === CCRoleType.EVENT_CREW ? <h2 className="d-block my-1">{eventName}</h2> : <h2 className="d-block my-1">Third CC</h2>}
-        <span className="d-block my-1">{roleName}</span>
-        <span className="d-block my-1">{yearSession}</span>
+        <h6 className="d-block my-1">{roleName}</h6>
+        <h6 className="d-block my-1">{yearSession}</h6>
       </Col>
       <Col xs="5">
-        <img className="w-75" src="content/images/jhipster_family_member_0_head-192.png" alt="User Profile Evolution Image" />
+        <img className="w-75" src="content/images/shark.png" alt="User Profile Evolution Image" />
       </Col>
     </Row>
   </div>
