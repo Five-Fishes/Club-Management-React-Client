@@ -1,13 +1,17 @@
 .option-icon {
   position: absolute;
-  top: -1.25rem;
+  top: 0rem;
   right: 10px;
+  z-index: 100;
 }
 
 .event-card {
   border-color: white;
   box-shadow: 2px 5px 20px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
+}
+
+.event-card:hover {
 }
 
 .event-title {
