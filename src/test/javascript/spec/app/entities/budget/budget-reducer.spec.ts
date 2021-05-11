@@ -29,7 +29,7 @@ describe('Entities reducer tests', () => {
 
   const initialState = {
     loading: false,
-    errorMessage: null,
+    errResponse: null,
     entities: [] as ReadonlyArray<IBudget>,
     entity: defaultValue,
     updating: false,
@@ -44,7 +44,7 @@ describe('Entities reducer tests', () => {
   function testInitialState(state) {
     expect(state).toMatchObject({
       loading: false,
-      errorMessage: null,
+      errResponse: null,
       updating: false,
       updateSuccess: false,
     });
@@ -68,7 +68,7 @@ describe('Entities reducer tests', () => {
     it('should set state to loading', () => {
       testMultipleTypes([REQUEST(ACTION_TYPES.FETCH_BUDGET_LIST), REQUEST(ACTION_TYPES.FETCH_BUDGET)], {}, state => {
         expect(state).toMatchObject({
-          errorMessage: null,
+          errResponse: null,
           updateSuccess: false,
           loading: true,
         });
@@ -81,7 +81,7 @@ describe('Entities reducer tests', () => {
         {},
         state => {
           expect(state).toMatchObject({
-            errorMessage: null,
+            errResponse: null,
             updateSuccess: false,
             updating: true,
           });

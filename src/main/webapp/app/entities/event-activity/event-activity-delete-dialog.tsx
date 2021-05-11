@@ -19,12 +19,12 @@ export class EventActivityDeleteDialog extends React.Component<IEventActivityDel
     this.props.getEntity(this.props.match.params.id, this.props.match.params.eventId);
   }
 
-  confirmDelete = event => {
+  confirmDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
     this.props.deleteEntity(this.props.match.params.id, this.props.match.params.eventId);
     this.handleClose(event);
   };
 
-  handleClose = event => {
+  handleClose = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     this.props.history.goBack();
   };

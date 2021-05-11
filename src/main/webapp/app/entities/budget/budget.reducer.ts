@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
@@ -6,6 +6,8 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 
 import { IBudget, defaultValue, IEventBudgetTotal, defaultEventBudgetTotal } from 'app/shared/model/budget.model';
 import { IGetAllByEventId, IDeleteEvent, IPutEvent, IGetEvent } from 'app/shared/type/event-custom-action';
+import { AnyAction } from 'redux';
+import { relativeTimeRounding } from 'moment';
 
 export const ACTION_TYPES = {
   FETCH_BUDGET_LIST: 'budget/FETCH_BUDGET_LIST',
@@ -21,9 +23,9 @@ export const ACTION_TYPES = {
   FETCH_TOTAL_REAL_AMOUNT: 'budget/FETCH_TOTAL_REAL_AMOUNT',
 };
 
-const initialState = {
+const initialState: IBudgetState = {
   loading: false,
-  errorMessage: null,
+  errResponse: null,
   entities: [] as ReadonlyArray<IBudget>,
   entity: defaultValue,
   updating: false,
@@ -35,17 +37,29 @@ const initialState = {
   eventRealTotal: defaultEventBudgetTotal,
 };
 
-export type BudgetState = Readonly<typeof initialState>;
+export interface IBudgetState {
+  loading: boolean;
+  errResponse: null | AxiosError;
+  entities: ReadonlyArray<IBudget>;
+  entity: Readonly<IBudget>;
+  updating: boolean;
+  totalItems: number;
+  updateSuccess: boolean;
+  selectedEventBudgetId: number;
+  showActionOptions: boolean;
+  eventBudgetTotal: Readonly<IEventBudgetTotal>;
+  eventRealTotal: Readonly<IEventBudgetTotal>;
+}
 
 // Reducer
 
-export default (state: BudgetState = initialState, action): BudgetState => {
+export default (state: IBudgetState = initialState, action: AnyAction): IBudgetState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_BUDGET_LIST):
     case REQUEST(ACTION_TYPES.FETCH_BUDGET):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         loading: true,
       };
@@ -54,7 +68,7 @@ export default (state: BudgetState = initialState, action): BudgetState => {
     case REQUEST(ACTION_TYPES.DELETE_BUDGET):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         updating: true,
       };
@@ -68,7 +82,7 @@ export default (state: BudgetState = initialState, action): BudgetState => {
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload,
+        errResponse: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_BUDGET_LIST):
       return {
@@ -165,6 +179,7 @@ export const getEntity: IGetEvent<IBudget> = (id, eventId) => {
 };
 
 export const createEntity: ICrudPutAction<IBudget> = entity => async dispatch => {
+  if (!entity || !entity.eventId) return;
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_BUDGET,
     payload: axios.post(apiUrl, cleanEntity(entity)),
@@ -174,6 +189,7 @@ export const createEntity: ICrudPutAction<IBudget> = entity => async dispatch =>
 };
 
 export const updateEntity: ICrudPutAction<IBudget> = entity => async dispatch => {
+  if (!entity || !entity.eventId) return;
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_BUDGET,
     payload: axios.put(apiUrl, cleanEntity(entity)),
@@ -183,6 +199,7 @@ export const updateEntity: ICrudPutAction<IBudget> = entity => async dispatch =>
 };
 
 export const deleteEntity: IDeleteEvent<IBudget> = (id, eventId) => async dispatch => {
+  if (!eventId) return;
   const requestUrl = `${apiUrl}/${id}/event/${eventId}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_BUDGET,
@@ -192,7 +209,7 @@ export const deleteEntity: IDeleteEvent<IBudget> = (id, eventId) => async dispat
   return result;
 };
 
-export const setBlob = (name, data, contentType?) => ({
+export const setBlob = (name: any, data: any, contentType?: any) => ({
   type: ACTION_TYPES.SET_BLOB,
   payload: {
     name,
@@ -205,14 +222,14 @@ export const reset = () => ({
   type: ACTION_TYPES.RESET,
 });
 
-export const setSelectedEventBudgetId = eventBudgetId => ({
+export const setSelectedEventBudgetId = (eventBudgetId: number) => ({
   type: ACTION_TYPES.SET_EVENT_BUDGET_ID,
   payload: {
     eventBudgetId,
   },
 });
 
-export const setShowActionOptions = show => ({
+export const setShowActionOptions = (show: boolean) => ({
   type: ACTION_TYPES.SET_SHOW_ACTION_OPTIONS,
   payload: {
     show,

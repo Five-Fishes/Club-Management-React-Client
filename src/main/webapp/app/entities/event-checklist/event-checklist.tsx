@@ -43,7 +43,7 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
     this.getEntities();
   }
 
-  sort = prop => () => {
+  sort = (prop: any) => () => {
     this.setState(
       {
         order: this.state.order === 'asc' ? 'desc' : 'asc',
@@ -58,7 +58,7 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
   }
 
-  handlePagination = activePage => this.setState({ activePage }, () => this.sortEntities());
+  handlePagination = (activePage: number) => this.setState({ activePage }, () => this.sortEntities());
 
   getEntities = () => {
     const eventId = this.props.match.params.eventId;
@@ -66,7 +66,8 @@ export class EventChecklist extends React.Component<IEventChecklistProps, IEvent
     this.props.getChecklistsByEventId(Number.parseInt(eventId, 10), activePage - 1, itemsPerPage, `${sort},${order}`);
   };
 
-  showCardAction = (eventChecklistId: number) => {
+  showCardAction = (eventChecklistId?: number) => {
+    if (typeof eventChecklistId === 'undefined') return;
     this.props.setSelectedEventChecklistId(eventChecklistId);
     this.props.setShowActionOptions(true);
   };

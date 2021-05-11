@@ -13,7 +13,7 @@ export interface ILogsPageState {
 
 export class LogsPage extends React.Component<ILogsPageProps, ILogsPageState> {
   state: ILogsPageState = {
-    filter: ''
+    filter: '',
   };
 
   componentDidMount() {
@@ -26,19 +26,20 @@ export class LogsPage extends React.Component<ILogsPageProps, ILogsPageState> {
     }
   };
 
-  changeLevel = (loggerName, level) => () => {
+  changeLevel = (loggerName: string, level: string) => () => {
     this.props.changeLogLevel(loggerName, level);
   };
 
-  setFilter = evt => {
+  setFilter = (evt: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      filter: evt.target.value
+      filter: evt.target.value,
     });
   };
 
-  getClassName = (level, check, className) => (level === check ? `btn btn-sm btn-${className}` : 'btn btn-sm btn-light');
+  getClassName = (level: string, check: string, className: string) =>
+    level === check ? `btn btn-sm btn-${className}` : 'btn btn-sm btn-light';
 
-  filterFn = l => l.name.toUpperCase().includes(this.state.filter.toUpperCase());
+  filterFn = (l: any) => l.name.toUpperCase().includes(this.state.filter.toUpperCase());
 
   render() {
     const { logs, isFetching } = this.props;
@@ -136,7 +137,7 @@ export class LogsPage extends React.Component<ILogsPageProps, ILogsPageState> {
 
 const mapStateToProps = ({ administration }: IRootState) => ({
   logs: administration.logs,
-  isFetching: administration.loading
+  isFetching: administration.loading,
 });
 
 const mapDispatchToProps = { getLoggers, changeLogLevel };
@@ -144,7 +145,4 @@ const mapDispatchToProps = { getLoggers, changeLogLevel };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LogsPage);
+export default connect(mapStateToProps, mapDispatchToProps)(LogsPage);

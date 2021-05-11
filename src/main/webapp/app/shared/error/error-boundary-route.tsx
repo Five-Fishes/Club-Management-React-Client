@@ -1,15 +1,14 @@
 import React from 'react';
-import { Route, RouteProps } from 'react-router-dom';
+import { Route, RouteComponentProps, RouteProps } from 'react-router-dom';
 import ErrorBoundary from 'app/shared/error/error-boundary';
 
 export const ErrorBoundaryRoute = ({ component: Component, ...rest }: RouteProps) => {
-  const encloseInErrorBoundary = props => (
+  if (!Component) throw new Error(`A component needs to be specified for path ${(rest as any).path}`);
+  const encloseInErrorBoundary = (props: RouteComponentProps) => (
     <ErrorBoundary>
       <Component {...props} />
     </ErrorBoundary>
   );
-
-  if (!Component) throw new Error(`A component needs to be specified for path ${(rest as any).path}`);
 
   return <Route {...rest} render={encloseInErrorBoundary} />;
 };

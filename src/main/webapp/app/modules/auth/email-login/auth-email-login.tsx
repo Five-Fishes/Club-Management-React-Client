@@ -15,17 +15,17 @@ export interface IAuthEmailLoginState {
 }
 
 export class AuthEmailLogin extends React.Component<IAuthEmailLoginProps, IAuthEmailLoginState> {
-  constructor(props) {
+  constructor(props: IAuthEmailLoginProps) {
     super(props);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
     this.state = {
-      isSubmitting: false
+      isSubmitting: false,
     };
   }
 
-  handleValidSubmit(event, values) {
+  handleValidSubmit(event: any, values: any) {
     this.setState({
-      isSubmitting: true
+      isSubmitting: true,
     });
     emailLogin(values)
       .then(firebaseToken => getAuthToken(firebaseToken))
@@ -38,7 +38,7 @@ export class AuthEmailLogin extends React.Component<IAuthEmailLoginProps, IAuthE
       })
       .finally(() => {
         this.setState({
-          isSubmitting: false
+          isSubmitting: false,
         });
       });
   }
@@ -65,7 +65,7 @@ export class AuthEmailLogin extends React.Component<IAuthEmailLoginProps, IAuthE
                     className="mb-2"
                     validate={{
                       required: { value: true, errorMessage: 'Please enter your email' },
-                      email: { value: true, errorMessage: 'This is not a valid email' }
+                      email: { value: true, errorMessage: 'This is not a valid email' },
                     }}
                   />
                 </div>
@@ -75,7 +75,7 @@ export class AuthEmailLogin extends React.Component<IAuthEmailLoginProps, IAuthE
                     placeholder="Password"
                     type="password"
                     validate={{
-                      required: { value: true, errorMessage: 'Please enter your password' }
+                      required: { value: true, errorMessage: 'Please enter your password' },
                     }}
                   />
                 </div>
@@ -101,7 +101,7 @@ export class AuthEmailLogin extends React.Component<IAuthEmailLoginProps, IAuthE
 }
 
 const mapStateToProps = ({ authentication }: IRootState) => ({
-  isAuthenticated: authentication.isAuthenticated
+  isAuthenticated: authentication.isAuthenticated,
 });
 
 type StateProps = ReturnType<typeof mapStateToProps>;

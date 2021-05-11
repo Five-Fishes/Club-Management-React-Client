@@ -26,7 +26,7 @@ const AppRouteComponent: React.FC<IAppRouteProps> = (props: IAppRouteProps) => {
       <Redirect
         to={{
           pathname: '/auth/login',
-          search: props.location.search,
+          search: props.location?.search,
           state: { from: props.location },
         }}
       />
@@ -35,12 +35,13 @@ const AppRouteComponent: React.FC<IAppRouteProps> = (props: IAppRouteProps) => {
   if (!isPublic && !isProfileCompleted) {
     return (
       <ErrorBoundary>
+        {/* @ts-ignore will refractor in issue 111 */}
         <CompleteUserProfile />
       </ErrorBoundary>
     );
   }
-  if (!Component) throw new Error(`Missing Component in private route: ${props.path}`);
   function renderFunc(routeProps: RouteComponentProps<any>): React.ReactNode {
+    if (!Component) throw new Error(`Missing Component in private route: ${props.path}`);
     return (
       <AuthorizationChecker {...props} fallbackEl={props.fallbackEl || UnauthorizedBanner}>
         <ErrorBoundary>
@@ -62,6 +63,8 @@ function mapStateToProps({ authentication }: IRootState) {
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 
-const AppRoute = connect<StateProps, undefined, IAppRouteOwnProps>(mapStateToProps, null, null, { pure: false })(AppRouteComponent);
+const AppRoute = connect<StateProps, undefined, IAppRouteOwnProps, IRootState>(mapStateToProps, null, null, { pure: false })(
+  AppRouteComponent
+);
 
 export default AppRoute;

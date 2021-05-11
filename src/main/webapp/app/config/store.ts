@@ -14,14 +14,11 @@ const defaultMiddlewares = [
   notificationMiddleware,
   promiseMiddleware,
   loadingBarMiddleware(),
-  loggerMiddleware
+  loggerMiddleware,
 ];
-const composedMiddlewares = middlewares =>
+const composedMiddlewares = (middlewares: any[]) =>
   process.env.NODE_ENV === 'development'
-    ? compose(
-        applyMiddleware(...defaultMiddlewares, ...middlewares),
-        DevTools.instrument()
-      )
+    ? compose(applyMiddleware(...defaultMiddlewares, ...middlewares), DevTools.instrument())
     : compose(applyMiddleware(...defaultMiddlewares, ...middlewares));
 
 export const initialize = (initialState?: IRootState, middlewares = []) =>
