@@ -53,7 +53,7 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
 
   render() {
     const { match, currentProfileTab } = this.props;
-    const { firstName, lastName, gender, imageUrl, clubFamilyName, clubFamilySlogan } = this.props.userUniEntity;
+    const { firstName, lastName, gender, imageUrl, clubFamilyId, clubFamilyName, clubFamilyDescription } = this.props.userUniEntity;
     return (
       <>
         <div className="d-block text-center my-3">
@@ -77,13 +77,13 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
         </div>
         <div className="text-center">
           <h1>{concatFullName(firstName, lastName)}</h1>
-          {Boolean(clubFamilyName) && (
+          {Boolean(clubFamilyId) && (
             <>
               <h3 className="d-block mx-auto mb-3 family-label py-2 px-3">
                 <FontAwesomeIcon icon="fish" />
                 &nbsp;{clubFamilyName}
               </h3>
-              <p className="family-slogan">{clubFamilySlogan}</p>
+              <p className="family-description">{clubFamilyDescription}</p>
             </>
           )}
         </div>
