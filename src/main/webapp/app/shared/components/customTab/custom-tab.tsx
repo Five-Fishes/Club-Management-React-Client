@@ -15,7 +15,7 @@ import AuthorizationChecker, {
 interface ICustomTabOwnProps {
   currentTab: string;
   tabList: ITabInfo[];
-  handleClick?: React.FC<void>;
+  handleClick?: (tabName: string) => void;
 }
 
 interface ICustomTabProps extends ICustomTabOwnProps, StateProps {}
@@ -74,18 +74,18 @@ export default connect(mapStateToProps)(CustomTab);
 interface ITabItemProps {
   currentTab: string;
   tabInfo: ITabInfo;
-  tabOnClick: React.FC<void>;
+  tabOnClick?: (tabName: string) => void;
 }
 
 const TabItem: React.FC<ITabItemProps> = ({ currentTab, tabInfo, tabOnClick }) => {
   const isCurrentTab: boolean = tabInfo.tabName === currentTab;
   const btnClassName = classnames('tab-item', isCurrentTab ? 'active-tab' : '');
 
-  function handleClick(tabName) {
+  const handleClick = (tabName: string) => {
     if (tabOnClick !== undefined) {
       tabOnClick(tabName);
     }
-  }
+  };
 
   return (
     <AuthorizationChecker {...tabInfo}>
@@ -96,7 +96,7 @@ const TabItem: React.FC<ITabItemProps> = ({ currentTab, tabInfo, tabOnClick }) =
         className={btnClassName}
         tag={Link}
         to={tabInfo.tabRoute}
-        onClick={handleClick.bind(tabInfo.tabName)}
+        onClick={handleClick(tabInfo.tabName)}
       >
         <Translate contentKey={tabInfo.tabTranslateKey}>{tabInfo.tabName}</Translate>
       </Button>

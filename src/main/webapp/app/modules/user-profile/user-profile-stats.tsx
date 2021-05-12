@@ -11,7 +11,7 @@ import { convertDateTimeFromServerToLocaleDate } from 'app/shared/util/date-util
 export interface IUserProfileStatsProps extends StateProps, RouteComponentProps<{}> {}
 
 export class UserProfileStats extends React.Component<IUserProfileStatsProps, {}> {
-  constructor(props) {
+  constructor(props: IUserProfileStatsProps) {
     super(props);
   }
 

@@ -10,7 +10,7 @@ import { getCurrentUserCCInfoProfile } from './user-profile.reducer';
 export interface IUserProfileEvolutionProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export class UserProfileEvolution extends React.Component<IUserProfileEvolutionProps> {
-  constructor(props) {
+  constructor(props: IUserProfileEvolutionProps) {
     super(props);
   }
 
@@ -48,9 +48,9 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfileEvolution);
 
 interface ICCInfoCardProps {
-  roleName: string;
-  fishLevel: string;
-  yearSession: string;
+  roleName?: string;
+  fishLevel?: string;
+  yearSession?: string;
 }
 
 const CCInfoCard: React.FC<ICCInfoCardProps> = ({ roleName, fishLevel, yearSession }) => (

@@ -6,6 +6,7 @@ import { IUserUniInfo, defaultValue as defaultUserUniInfo } from 'app/shared/mod
 import { IUserCCInfo } from 'app/shared/model/user-cc-info.model';
 import { IUserCCRoleInfo } from 'app/shared/model/user-cc-role-info.model';
 import { IGetEntityWithoutParams } from 'app/shared/type/custom-action';
+import { AnyAction } from 'redux';
 
 export const ACTION_TYPES = {
   FETCH_USERPROFILE: 'userProfile/FETCH_USERPROFILE',
@@ -30,7 +31,7 @@ export type IUserState = Readonly<typeof initialState>;
 
 // Reducers
 
-export default (state: IUserState = initialState, action): IUserState => {
+export default (state: IUserState = initialState, action: AnyAction): IUserState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_USERPROFILE):
       return {

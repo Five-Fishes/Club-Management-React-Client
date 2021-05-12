@@ -19,9 +19,9 @@ import UserProfileRole from './user-profile-role';
 import { concatFullName } from 'app/shared/util/string-util';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export interface IUserProfileProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
+export interface IUserProfileProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
-const UserProfileTabContent = ({ match }) => (
+const UserProfileTabContent: React.FC<RouteComponentProps> = ({ match }) => (
   <>
     <Switch>
       <AppRoute exact path={`${match.url}/stats`} component={UserProfileStats} />
@@ -41,7 +41,7 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
     this.props.getCurrentUserProfile();
   }
 
-  tabOnClick(tabName) {
+  tabOnClick(tabName: string) {
     this.props.setUserProfileCurrentTab(tabName);
   }
 

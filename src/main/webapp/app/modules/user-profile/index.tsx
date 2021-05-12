@@ -1,10 +1,10 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { RouteComponentProps, Switch } from 'react-router-dom';
 
 import UserProfile from './user-profile';
 import AppRoute from 'app/shared/auth/app-route';
 
-const Routes = ({ match }) => (
+const Routes: React.FC<RouteComponentProps> = ({ match }) => (
   <>
     <Switch>
       <AppRoute path={`${match.url}`} component={UserProfile} asLongAsIsAuthenticated />

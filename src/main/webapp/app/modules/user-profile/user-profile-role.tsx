@@ -11,7 +11,7 @@ import { getCurrentUserCCRolesProfile } from './user-profile.reducer';
 export interface IUserProfileRoleProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
 export class UserProfileRole extends React.Component<IUserProfileRoleProps, {}> {
-  constructor(props) {
+  constructor(props: IUserProfileRoleProps) {
     super(props);
   }
 
@@ -54,9 +54,9 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfileRole);
 
 interface ICCRoleCardProps {
-  roleType: CCRoleType;
-  roleName: string;
-  yearSession: string;
+  roleType?: CCRoleType;
+  roleName?: string;
+  yearSession?: string;
   eventName?: string;
 }
 
