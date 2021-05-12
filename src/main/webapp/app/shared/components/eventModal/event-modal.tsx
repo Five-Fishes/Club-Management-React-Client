@@ -7,7 +7,7 @@ import AuthorizationChecker, { IAuthorizationCheckerOwnProps } from 'app/shared/
 import './event-modal.scss';
 export interface IEventModalProps extends RouteComponentProps {
   isOpen: boolean;
-  toggleModal: Function;
+  toggleModal: React.MouseEventHandler<any>;
   updatePath: string;
   deletePath: string;
   updateBtnAuthorizationProps: IAuthorizationCheckerOwnProps;

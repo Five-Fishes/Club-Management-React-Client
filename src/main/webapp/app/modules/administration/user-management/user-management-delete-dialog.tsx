@@ -16,12 +16,12 @@ export class UserManagementDeleteDialog extends React.Component<IUserManagementD
     this.props.getUser(this.props.match.params.login);
   }
 
-  confirmDelete = event => {
+  confirmDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
     this.props.deleteUser(this.props.user.login);
     this.handleClose(event);
   };
 
-  handleClose = event => {
+  handleClose = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     this.props.history.goBack();
   };
@@ -56,7 +56,7 @@ export class UserManagementDeleteDialog extends React.Component<IUserManagementD
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
-  user: storeState.userManagement.user
+  user: storeState.userManagement.user,
 });
 
 const mapDispatchToProps = { getUser, deleteUser };
@@ -64,7 +64,4 @@ const mapDispatchToProps = { getUser, deleteUser };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserManagementDeleteDialog);
+export default connect(mapStateToProps, mapDispatchToProps)(UserManagementDeleteDialog);

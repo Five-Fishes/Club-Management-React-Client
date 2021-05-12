@@ -21,7 +21,7 @@ interface ILoginConfig {
 }
 
 export class AuthLogin extends React.Component<IAuthLoginProps> {
-  constructor(props) {
+  constructor(props: IAuthLoginProps) {
     super(props);
     this.handleGoogleLogin = this.handleGoogleLogin.bind(this);
     this.handleFacebookLogin = this.handleFacebookLogin.bind(this);
@@ -87,27 +87,31 @@ const config: ILoginConfig[] = [
     displayName: 'Google',
     icon: ['fab', 'google'],
     bgColor: '#FFF',
-    textColor: '#533f03'
+    textColor: '#533f03',
   },
   {
     type: 'facebook',
     displayName: 'Facebook',
     icon: ['fab', 'facebook-f'],
     bgColor: '#3B5998',
-    textColor: '#FFF'
+    textColor: '#FFF',
   },
   {
     type: 'email',
     displayName: 'Email',
     icon: 'envelope',
     bgColor: '#1DB2A1',
-    textColor: '#FFF'
-  }
+    textColor: '#FFF',
+  },
 ];
 
-function LoginButton(props) {
-  const { handleLogin } = props;
-  const selectedConfig = config.find(el => el.type === props.type);
+interface ILoginButton {
+  handleLogin: () => void;
+  type: 'google' | 'facebook' | 'email';
+}
+
+const LoginButton: React.FC<ILoginButton> = ({ handleLogin, type }) => {
+  const selectedConfig = config.find(el => el.type === type);
   if (!selectedConfig) {
     throw new Error('config not declared for this sign in method');
   }
@@ -125,10 +129,10 @@ function LoginButton(props) {
       </div>
     </>
   );
-}
+};
 
 const mapStateToProps = ({ authentication }: IRootState) => ({
-  isAuthenticated: authentication.isAuthenticated
+  isAuthenticated: authentication.isAuthenticated,
 });
 
 type StateProps = ReturnType<typeof mapStateToProps>;

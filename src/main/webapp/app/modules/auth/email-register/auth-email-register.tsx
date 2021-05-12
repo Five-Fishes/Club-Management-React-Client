@@ -14,17 +14,17 @@ export interface IAuthEmailRegisterState {
 }
 
 export class AuthEmailRegister extends React.Component<IAuthEmailRegisterProps, IAuthEmailRegisterState> {
-  constructor(props) {
+  constructor(props: IAuthEmailRegisterProps) {
     super(props);
     this.handleValidSubmit = this.handleValidSubmit.bind(this);
     this.state = {
-      isSubmitting: false
+      isSubmitting: false,
     };
   }
 
-  handleValidSubmit(event, values) {
+  handleValidSubmit(event: any, values: any) {
     this.setState({
-      isSubmitting: true
+      isSubmitting: true,
     });
     emailRegister(values)
       .then(() => {
@@ -34,7 +34,7 @@ export class AuthEmailRegister extends React.Component<IAuthEmailRegisterProps, 
       .catch(() => toast.error('Fail to register an account'))
       .finally(() => {
         this.setState({
-          isSubmitting: false
+          isSubmitting: false,
         });
       });
   }
@@ -61,7 +61,7 @@ export class AuthEmailRegister extends React.Component<IAuthEmailRegisterProps, 
                     className="mb-2"
                     validate={{
                       required: { value: true, errorMessage: 'Please enter your email' },
-                      email: { value: true, errorMessage: 'This is not a valid email' }
+                      email: { value: true, errorMessage: 'This is not a valid email' },
                     }}
                   />
                 </div>
@@ -74,12 +74,12 @@ export class AuthEmailRegister extends React.Component<IAuthEmailRegisterProps, 
                       required: { value: true, errorMessage: 'Please enter your password' },
                       pattern: {
                         value: /(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/,
-                        errorMessage: 'Password must contain at least 1 lowercase character, 1 uppercase character and 1 digit'
+                        errorMessage: 'Password must contain at least 1 lowercase character, 1 uppercase character and 1 digit',
                       },
                       minLength: {
                         value: 8,
-                        errorMessage: 'Password must have at least 8 characters'
-                      }
+                        errorMessage: 'Password must have at least 8 characters',
+                      },
                     }}
                   />
                 </div>
@@ -90,7 +90,7 @@ export class AuthEmailRegister extends React.Component<IAuthEmailRegisterProps, 
                     type="password"
                     validate={{
                       required: { value: true, errorMessage: 'Please confirm your password' },
-                      match: { value: 'password', errorMessage: 'Password is not the same' }
+                      match: { value: 'password', errorMessage: 'Password is not the same' },
                     }}
                   />
                 </div>
@@ -110,7 +110,7 @@ export class AuthEmailRegister extends React.Component<IAuthEmailRegisterProps, 
 }
 
 const mapStateToProps = ({ authentication }: IRootState) => ({
-  isAuthenticated: authentication.isAuthenticated
+  isAuthenticated: authentication.isAuthenticated,
 });
 
 type StateProps = ReturnType<typeof mapStateToProps>;

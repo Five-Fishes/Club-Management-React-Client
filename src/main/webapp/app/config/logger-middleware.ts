@@ -1,4 +1,4 @@
-export default () => next => action => {
+export default () => (next: any) => (action: any) => {
   if (process.env.NODE_ENV !== 'production') {
     const { type, payload, meta } = action;
 

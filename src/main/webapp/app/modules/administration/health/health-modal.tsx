@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 
-const formatDiskSpaceOutput = rawValue => {
+const formatDiskSpaceOutput = (rawValue: number) => {
   // Should display storage space in an human readable unit
   const val = rawValue / 1073741824;
   if (val > 1) {
@@ -12,7 +12,13 @@ const formatDiskSpaceOutput = rawValue => {
   }
 };
 
-const HealthModal = ({ handleClose, healthObject, showModal }) => {
+interface IHealthModal {
+  handleClose?: React.MouseEventHandler<any>;
+  healthObject?: any;
+  showModal?: boolean;
+}
+
+const HealthModal: React.FC<IHealthModal> = ({ handleClose, healthObject, showModal }) => {
   const data = healthObject.details || {};
   return (
     <Modal isOpen={showModal} modalTransition={{ timeout: 20 }} backdropTransition={{ timeout: 10 }} toggle={handleClose}>

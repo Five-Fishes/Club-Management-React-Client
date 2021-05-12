@@ -19,12 +19,12 @@ export class EventCrewDeleteDialog extends React.Component<IEventCrewDeleteDialo
     this.props.getEntity(this.props.match.params.id, this.props.match.params.eventId);
   }
 
-  confirmDelete = event => {
+  confirmDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
     this.props.deleteEntityWithEventId(this.props.eventCrewEntity.id, this.props.match.params.eventId);
     this.handleClose(event);
   };
 
-  handleClose = event => {
+  handleClose = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     this.props.history.goBack();
   };

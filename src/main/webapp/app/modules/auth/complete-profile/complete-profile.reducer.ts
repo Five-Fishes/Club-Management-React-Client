@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
@@ -10,6 +10,7 @@ import { ICourseProgram } from 'app/shared/model/course-program.model';
 import { IYearSession } from 'app/shared/model/year-session.model';
 import { checkUserProfileCompleted } from 'app/shared/services/auth.service';
 import { IGetActionWithoutParam } from 'app/shared/type/general-custom-action';
+import { AnyAction } from 'redux';
 
 export const ACTION_TYPES = {
   COMPLETE_USERPROFILE: 'completeProfile/COMPLETE_USERPROFILE',
@@ -20,9 +21,9 @@ export const ACTION_TYPES = {
   RESET: 'completeProfile/RESET',
 };
 
-const initialState = {
+const initialState: ICompleteProfileState = {
   loading: false,
-  errorMessage: null,
+  errResponse: null,
   userProfile: defaultValue,
   facultyList: [] as ReadonlyArray<IFaculty>,
   courseProgramList: [] as ReadonlyArray<ICourseProgram>,
@@ -32,11 +33,21 @@ const initialState = {
   updateSuccess: false,
 };
 
-export type CompleteProfileState = Readonly<typeof initialState>;
+export interface ICompleteProfileState {
+  loading: boolean;
+  errResponse: null | AxiosError;
+  userProfile: Readonly<IUserUniInfo>;
+  facultyList: ReadonlyArray<IFaculty>;
+  courseProgramList: ReadonlyArray<ICourseProgram>;
+  yearSessionList: ReadonlyArray<IYearSession>;
+  isProfileCompleted: boolean;
+  updating: boolean;
+  updateSuccess: boolean;
+}
 
 // Reducers
 
-export default (state: CompleteProfileState = initialState, action): CompleteProfileState => {
+export default (state: ICompleteProfileState = initialState, action: AnyAction): ICompleteProfileState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.COMPLETE_USERPROFILE):
     case REQUEST(ACTION_TYPES.FETCH_FACULTY_LIST):
@@ -45,7 +56,7 @@ export default (state: CompleteProfileState = initialState, action): CompletePro
     case REQUEST(ACTION_TYPES.FETCH_USERPROFILE_UNIINFO):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         loading: true,
       };
@@ -56,7 +67,7 @@ export default (state: CompleteProfileState = initialState, action): CompletePro
         updating: false,
         updateSuccess: false,
         loading: false,
-        errorMessage: action.payload,
+        errResponse: action.payload,
       };
     case SUCCESS(ACTION_TYPES.COMPLETE_USERPROFILE):
       return {
@@ -64,14 +75,14 @@ export default (state: CompleteProfileState = initialState, action): CompletePro
         updating: false,
         updateSuccess: true,
         loading: false,
-        errorMessage: null,
+        errResponse: null,
         userProfile: action?.payload?.data ?? defaultValue,
       };
     case SUCCESS(ACTION_TYPES.FETCH_USERPROFILE_UNIINFO):
       return {
         ...state,
         loading: false,
-        errorMessage: null,
+        errResponse: null,
         userProfile: action?.payload?.data ?? defaultValue,
       };
     case ACTION_TYPES.FETCH_FACULTY_LIST:

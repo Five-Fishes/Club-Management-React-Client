@@ -31,7 +31,7 @@ const UserProfileTabContent = ({ match }) => (
   </>
 );
 export class UserProfile extends React.Component<IUserProfileProps, {}> {
-  constructor(props) {
+  constructor(props: IUserProfileProps) {
     super(props);
     this.handleLogout = this.handleLogout.bind(this);
     this.tabOnClick = this.tabOnClick.bind(this);

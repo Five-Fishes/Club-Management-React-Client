@@ -21,14 +21,14 @@ export interface IFacultyUpdateState {
 }
 
 export class FacultyUpdate extends React.Component<IFacultyUpdateProps, IFacultyUpdateState> {
-  constructor(props) {
+  constructor(props: IFacultyUpdateProps) {
     super(props);
     this.state = {
-      isNew: !this.props.match.params || !this.props.match.params.id
+      isNew: !this.props.match.params || !this.props.match.params.id,
     };
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: IFacultyUpdateProps, nextState: IFacultyUpdateState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
       this.handleClose();
     }
@@ -42,12 +42,12 @@ export class FacultyUpdate extends React.Component<IFacultyUpdateProps, IFaculty
     }
   }
 
-  saveEntity = (event, errors, values) => {
+  saveEntity = (event: any, errors: any, values: any) => {
     if (errors.length === 0) {
       const { facultyEntity } = this.props;
       const entity = {
         ...facultyEntity,
-        ...values
+        ...values,
       };
 
       if (this.state.isNew) {
@@ -127,20 +127,17 @@ const mapStateToProps = (storeState: IRootState) => ({
   facultyEntity: storeState.faculty.entity,
   loading: storeState.faculty.loading,
   updating: storeState.faculty.updating,
-  updateSuccess: storeState.faculty.updateSuccess
+  updateSuccess: storeState.faculty.updateSuccess,
 });
 
 const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FacultyUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(FacultyUpdate);

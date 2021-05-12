@@ -21,7 +21,7 @@ loadIcons();
 
 const rootEl = document.getElementById('root');
 
-const render = Component =>
+function render(Component: typeof React.Component): void {
   ReactDOM.render(
     <ErrorBoundary>
       <Provider store={store}>
@@ -34,5 +34,6 @@ const render = Component =>
     </ErrorBoundary>,
     rootEl
   );
+}
 
 render(AppComponent);

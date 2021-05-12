@@ -12,7 +12,7 @@ import reducer, {
   getEntities,
   getEntity,
   updateEntity,
-  reset
+  reset,
 } from 'app/entities/event-attendee/event-attendee.reducer';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 import { IEventAttendee, defaultValue } from 'app/shared/model/event-attendee.model';
@@ -29,20 +29,20 @@ describe('Entities reducer tests', () => {
 
   const initialState = {
     loading: false,
-    errorMessage: null,
+    errResponse: null,
     entities: [] as ReadonlyArray<IEventAttendee>,
     entity: defaultValue,
     totalItems: 0,
     updating: false,
-    updateSuccess: false
+    updateSuccess: false,
   };
 
   function testInitialState(state) {
     expect(state).toMatchObject({
       loading: false,
-      errorMessage: null,
+      errResponse: null,
       updating: false,
-      updateSuccess: false
+      updateSuccess: false,
     });
     expect(isEmpty(state.entities));
     expect(isEmpty(state.entity));
@@ -64,9 +64,9 @@ describe('Entities reducer tests', () => {
     it('should set state to loading', () => {
       testMultipleTypes([REQUEST(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST), REQUEST(ACTION_TYPES.FETCH_EVENTATTENDEE)], {}, state => {
         expect(state).toMatchObject({
-          errorMessage: null,
+          errResponse: null,
           updateSuccess: false,
-          loading: true
+          loading: true,
         });
       });
     });
@@ -76,14 +76,14 @@ describe('Entities reducer tests', () => {
         [
           REQUEST(ACTION_TYPES.CREATE_EVENTATTENDEE),
           REQUEST(ACTION_TYPES.UPDATE_EVENTATTENDEE),
-          REQUEST(ACTION_TYPES.DELETE_EVENTATTENDEE)
+          REQUEST(ACTION_TYPES.DELETE_EVENTATTENDEE),
         ],
         {},
         state => {
           expect(state).toMatchObject({
-            errorMessage: null,
+            errResponse: null,
             updateSuccess: false,
-            updating: true
+            updating: true,
           });
         }
       );
@@ -94,11 +94,11 @@ describe('Entities reducer tests', () => {
         reducer(
           { ...initialState, loading: true },
           {
-            type: ACTION_TYPES.RESET
+            type: ACTION_TYPES.RESET,
           }
         )
       ).toEqual({
-        ...initialState
+        ...initialState,
       });
     });
   });
@@ -111,14 +111,14 @@ describe('Entities reducer tests', () => {
           FAILURE(ACTION_TYPES.FETCH_EVENTATTENDEE),
           FAILURE(ACTION_TYPES.CREATE_EVENTATTENDEE),
           FAILURE(ACTION_TYPES.UPDATE_EVENTATTENDEE),
-          FAILURE(ACTION_TYPES.DELETE_EVENTATTENDEE)
+          FAILURE(ACTION_TYPES.DELETE_EVENTATTENDEE),
         ],
         'error message',
         state => {
           expect(state).toMatchObject({
             errorMessage: 'error message',
             updateSuccess: false,
-            updating: false
+            updating: false,
           });
         }
       );
@@ -131,13 +131,13 @@ describe('Entities reducer tests', () => {
       expect(
         reducer(undefined, {
           type: SUCCESS(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST),
-          payload
+          payload,
         })
       ).toEqual({
         ...initialState,
         loading: false,
         totalItems: payload.headers['x-total-count'],
-        entities: payload.data
+        entities: payload.data,
       });
     });
 
@@ -146,12 +146,12 @@ describe('Entities reducer tests', () => {
       expect(
         reducer(undefined, {
           type: SUCCESS(ACTION_TYPES.FETCH_EVENTATTENDEE),
-          payload
+          payload,
         })
       ).toEqual({
         ...initialState,
         loading: false,
-        entity: payload.data
+        entity: payload.data,
       });
     });
 
@@ -160,13 +160,13 @@ describe('Entities reducer tests', () => {
       expect(
         reducer(undefined, {
           type: SUCCESS(ACTION_TYPES.CREATE_EVENTATTENDEE),
-          payload
+          payload,
         })
       ).toEqual({
         ...initialState,
         updating: false,
         updateSuccess: true,
-        entity: payload.data
+        entity: payload.data,
       });
     });
 
@@ -174,11 +174,11 @@ describe('Entities reducer tests', () => {
       const payload = 'fake payload';
       const toTest = reducer(undefined, {
         type: SUCCESS(ACTION_TYPES.DELETE_EVENTATTENDEE),
-        payload
+        payload,
       });
       expect(toTest).toMatchObject({
         updating: false,
-        updateSuccess: true
+        updateSuccess: true,
       });
     });
   });
@@ -199,12 +199,12 @@ describe('Entities reducer tests', () => {
     it('dispatches ACTION_TYPES.FETCH_EVENTATTENDEE_LIST actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST)
+          type: REQUEST(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST),
         },
         {
           type: SUCCESS(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST),
-          payload: resolvedObject
-        }
+          payload: resolvedObject,
+        },
       ];
       await store.dispatch(getEntities()).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
@@ -212,12 +212,12 @@ describe('Entities reducer tests', () => {
     it('dispatches ACTION_TYPES.FETCH_EVENTATTENDEE actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.FETCH_EVENTATTENDEE)
+          type: REQUEST(ACTION_TYPES.FETCH_EVENTATTENDEE),
         },
         {
           type: SUCCESS(ACTION_TYPES.FETCH_EVENTATTENDEE),
-          payload: resolvedObject
-        }
+          payload: resolvedObject,
+        },
       ];
       await store.dispatch(getEntity(42666)).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
@@ -225,19 +225,19 @@ describe('Entities reducer tests', () => {
     it('dispatches ACTION_TYPES.CREATE_EVENTATTENDEE actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.CREATE_EVENTATTENDEE)
+          type: REQUEST(ACTION_TYPES.CREATE_EVENTATTENDEE),
         },
         {
           type: SUCCESS(ACTION_TYPES.CREATE_EVENTATTENDEE),
-          payload: resolvedObject
+          payload: resolvedObject,
         },
         {
-          type: REQUEST(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST)
+          type: REQUEST(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST),
         },
         {
           type: SUCCESS(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST),
-          payload: resolvedObject
-        }
+          payload: resolvedObject,
+        },
       ];
       await store.dispatch(createEntity({ id: 1 })).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
@@ -245,19 +245,19 @@ describe('Entities reducer tests', () => {
     it('dispatches ACTION_TYPES.UPDATE_EVENTATTENDEE actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.UPDATE_EVENTATTENDEE)
+          type: REQUEST(ACTION_TYPES.UPDATE_EVENTATTENDEE),
         },
         {
           type: SUCCESS(ACTION_TYPES.UPDATE_EVENTATTENDEE),
-          payload: resolvedObject
+          payload: resolvedObject,
         },
         {
-          type: REQUEST(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST)
+          type: REQUEST(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST),
         },
         {
           type: SUCCESS(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST),
-          payload: resolvedObject
-        }
+          payload: resolvedObject,
+        },
       ];
       await store.dispatch(updateEntity({ id: 1 })).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
@@ -265,19 +265,19 @@ describe('Entities reducer tests', () => {
     it('dispatches ACTION_TYPES.DELETE_EVENTATTENDEE actions', async () => {
       const expectedActions = [
         {
-          type: REQUEST(ACTION_TYPES.DELETE_EVENTATTENDEE)
+          type: REQUEST(ACTION_TYPES.DELETE_EVENTATTENDEE),
         },
         {
           type: SUCCESS(ACTION_TYPES.DELETE_EVENTATTENDEE),
-          payload: resolvedObject
+          payload: resolvedObject,
         },
         {
-          type: REQUEST(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST)
+          type: REQUEST(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST),
         },
         {
           type: SUCCESS(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST),
-          payload: resolvedObject
-        }
+          payload: resolvedObject,
+        },
       ];
       await store.dispatch(deleteEntity(42666)).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
@@ -285,8 +285,8 @@ describe('Entities reducer tests', () => {
     it('dispatches ACTION_TYPES.RESET actions', async () => {
       const expectedActions = [
         {
-          type: ACTION_TYPES.RESET
-        }
+          type: ACTION_TYPES.RESET,
+        },
       ];
       await store.dispatch(reset());
       expect(store.getActions()).toEqual(expectedActions);

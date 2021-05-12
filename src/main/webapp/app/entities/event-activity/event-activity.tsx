@@ -32,7 +32,7 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
     this.getEntities();
   }
 
-  sort = prop => () => {
+  sort = (prop: any) => () => {
     this.setState(
       {
         order: this.state.order === 'asc' ? 'desc' : 'asc',
@@ -47,7 +47,7 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
   }
 
-  handlePagination = activePage => this.setState({ activePage }, () => this.sortEntities());
+  handlePagination = (activePage: number) => this.setState({ activePage }, () => this.sortEntities());
 
   getEntities = () => {
     const { eventId } = this.props.match.params;
@@ -55,7 +55,8 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
     this.props.getEventActivitiesByEventId(Number.parseInt(eventId, 10), activePage - 1, itemsPerPage, `${sort},${order}`);
   };
 
-  showCardAction = (eventActivityId: number) => {
+  showCardAction = (eventActivityId?: number): void => {
+    if (typeof eventActivityId === 'undefined') return;
     this.props.setSelectedEventActivityId(eventActivityId);
     this.props.setShowActionOptions(true);
   };

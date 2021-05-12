@@ -26,14 +26,14 @@ export interface IEventProps extends StateProps, DispatchProps, RouteComponentPr
 
 export type IEventState = IPaginationBaseState & {
   modalIsOpen: boolean;
-  eventId: number;
+  eventId?: number;
 };
 
 export class Event extends React.Component<IEventProps, IEventState> {
   state: IEventState = {
     ...getSortState(this.props.location, ITEMS_PER_PAGE),
     modalIsOpen: false,
-    eventId: null,
+    eventId: undefined,
   };
 
   getTab = () => {
@@ -50,7 +50,7 @@ export class Event extends React.Component<IEventProps, IEventState> {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: IEventProps) {
     const path = this.props.location.search;
     if (prevProps.location.search !== path) {
       const tab = path.substring(path.lastIndexOf('?') + 1);
@@ -72,12 +72,12 @@ export class Event extends React.Component<IEventProps, IEventState> {
     this.props.getPreviousEntities(activePage - 1, itemsPerPage, `startDate,desc`);
   };
 
-  openModal = eventId => {
+  openModal = (eventId: number) => {
     this.setState({ modalIsOpen: true, eventId });
   };
 
   closeModal = () => {
-    this.setState({ modalIsOpen: false, eventId: null });
+    this.setState({ modalIsOpen: false, eventId: undefined });
   };
 
   render() {
@@ -130,7 +130,10 @@ interface IEventCardProps {
 }
 
 const EventCard: React.FC<IEventCardProps> = ({ event, toggleModal }) => {
-  const onToggleModal = () => toggleModal(event.id);
+  function onToggleModal(): void {
+    if (!event.id) return;
+    toggleModal(event.id);
+  }
   return (
     <Card className="p-3 pt-4 event-card">
       <Row>
@@ -155,11 +158,11 @@ const EventCard: React.FC<IEventCardProps> = ({ event, toggleModal }) => {
             </Link>
             <p className="mb-0">
               <Translate contentKey="clubmanagementApp.event.startDate">Start Date</Translate>:{' '}
-              <TextFormat type="date" value={event.startDate} format={APP_DATE_12_ABR_FORMAT} />
+              <TextFormat type="date" value={event.startDate ?? ''} format={APP_DATE_12_ABR_FORMAT} />
             </p>
             <p className="mb-0">
               <Translate contentKey="clubmanagementApp.event.endDate">End Date</Translate>:{' '}
-              <TextFormat type="date" value={event.endDate} format={APP_DATE_12_ABR_FORMAT} />
+              <TextFormat type="date" value={event.endDate ?? ''} format={APP_DATE_12_ABR_FORMAT} />
             </p>
             <p className="mb-0">
               <Translate contentKey="clubmanagementApp.event.venue">Venue</Translate>: {event.venue}

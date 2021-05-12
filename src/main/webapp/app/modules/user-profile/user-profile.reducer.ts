@@ -26,11 +26,11 @@ const initialState = {
   currentProfileTab: '',
 };
 
-export type UserState = Readonly<typeof initialState>;
+export type IUserState = Readonly<typeof initialState>;
 
 // Reducers
 
-export default (state: UserState = initialState, action): UserState => {
+export default (state: IUserState = initialState, action): IUserState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_USERPROFILE):
       return {

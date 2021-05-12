@@ -88,7 +88,7 @@ export class TransactionDetail extends React.Component<ITransactionDetailProps> 
               </span>
             </dt>
             <dd>
-              <TextFormat value={transactionEntity.createdDate} type="date" format={APP_DATE_FORMAT} />
+              <TextFormat value={transactionEntity.createdDate ?? ''} type="date" format={APP_DATE_FORMAT} />
             </dd>
           </dl>
           <Button tag={Link} to="/entity/transaction" replace color="info">
@@ -111,7 +111,7 @@ export class TransactionDetail extends React.Component<ITransactionDetailProps> 
 }
 
 const mapStateToProps = ({ transaction }: IRootState) => ({
-  transactionEntity: transaction.entity
+  transactionEntity: transaction.entity,
 });
 
 const mapDispatchToProps = { getEntity };
@@ -119,7 +119,4 @@ const mapDispatchToProps = { getEntity };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TransactionDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionDetail);

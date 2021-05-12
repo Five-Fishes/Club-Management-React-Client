@@ -13,7 +13,7 @@ export interface IListingCardOwnProps {
 }
 
 export class ListingCard extends React.Component<IListingCardOwnProps> {
-  constructor(props) {
+  constructor(props: IListingCardOwnProps) {
     super(props);
   }
 

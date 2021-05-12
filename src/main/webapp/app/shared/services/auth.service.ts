@@ -9,7 +9,7 @@ import { IAuthToken } from '../model/auth/auth-token.model';
 
 export async function getAuthToken(firebaseToken: string): Promise<void> {
   const headers = {
-    [FIREBASE_AUTH_HEADER_NAME]: firebaseToken
+    [FIREBASE_AUTH_HEADER_NAME]: firebaseToken,
   };
   const response = await axios.post('/api/authenticate/firebase', null, { headers });
   const responseBody: IAuthToken = response.data;
@@ -46,13 +46,14 @@ export async function handleUnauthenticated(): Promise<void> {
 
 const SocialProvider = {
   facebook: firebaseFacebookAuthProvider,
-  google: firebaseGoogleAuthProvider
+  google: firebaseGoogleAuthProvider,
 };
 
 export async function socialLogin(providerType: keyof typeof SocialProvider): Promise<string> {
   const provider = SocialProvider[providerType];
   const userCredentials = await firebaseAuth.signInWithPopup(provider);
-  const firebaseToken = await userCredentials.user.getIdToken();
+  const firebaseToken = await userCredentials.user?.getIdToken();
+  if (!firebaseToken) throw new Error('Firebase Token is undefined');
   Storage.local.set(FIREBASE_TOKEN_KEY, firebaseToken);
   return firebaseToken;
 }

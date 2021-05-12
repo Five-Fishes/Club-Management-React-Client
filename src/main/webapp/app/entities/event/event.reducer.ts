@@ -1,10 +1,11 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IEvent, defaultValue } from 'app/shared/model/event.model';
+import { AnyAction } from 'redux';
 
 export const ACTION_TYPES = {
   FETCH_EVENT_LIST: 'event/FETCH_EVENT_LIST',
@@ -16,9 +17,9 @@ export const ACTION_TYPES = {
   RESET: 'event/RESET',
 };
 
-const initialState = {
+const initialState: IEventState = {
   loading: false,
-  errorMessage: null,
+  errResponse: null,
   entities: [] as ReadonlyArray<IEvent>,
   entity: defaultValue,
   updating: false,
@@ -26,17 +27,25 @@ const initialState = {
   updateSuccess: false,
 };
 
-export type EventState = Readonly<typeof initialState>;
+export interface IEventState {
+  loading: boolean;
+  errResponse: null | AxiosError;
+  entities: ReadonlyArray<IEvent>;
+  entity: Readonly<IEvent>;
+  updating: boolean;
+  totalItems: number;
+  updateSuccess: boolean;
+}
 
 // Reducer
 
-export default (state: EventState = initialState, action): EventState => {
+export default (state: IEventState = initialState, action: AnyAction): IEventState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_EVENT_LIST):
     case REQUEST(ACTION_TYPES.FETCH_EVENT):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         loading: true,
       };
@@ -45,7 +54,7 @@ export default (state: EventState = initialState, action): EventState => {
     case REQUEST(ACTION_TYPES.DELETE_EVENT):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         updating: true,
       };
@@ -59,7 +68,7 @@ export default (state: EventState = initialState, action): EventState => {
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload,
+        errResponse: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_EVENT_LIST):
       return {
@@ -162,7 +171,7 @@ export const deleteEntity: ICrudDeleteAction<IEvent> = id => async dispatch => {
   return result;
 };
 
-export const setBlob = (name, data, contentType?) => ({
+export const setBlob = (name: any, data: any, contentType?: any) => ({
   type: ACTION_TYPES.SET_BLOB,
   payload: {
     name,

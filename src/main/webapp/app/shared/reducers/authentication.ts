@@ -1,3 +1,5 @@
+import { AnyAction } from 'redux';
+
 export const ACTION_TYPES = {
   LOGOUT: 'authentication/LOGOUT',
   FETCH_ACCOUNT: 'authentication/FETCH_ACCOUNT',
@@ -34,7 +36,7 @@ const initialState: IAuthenticationInitialState = {
 
 // Reducer
 
-export default (state: IAuthenticationInitialState = initialState, action): IAuthenticationInitialState => {
+export default (state: IAuthenticationInitialState = initialState, action: AnyAction): IAuthenticationInitialState => {
   switch (action.type) {
     case ACTION_TYPES.LOGOUT:
       return initialState;

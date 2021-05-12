@@ -19,12 +19,12 @@ export class EventChecklistDeleteDialog extends React.Component<IEventChecklistD
     this.props.getEntity(this.props.match.params.id);
   }
 
-  confirmDelete = event => {
+  confirmDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
     this.props.deleteEntity(this.props.eventChecklistEntity.id);
     this.handleClose(event);
   };
 
-  handleClose = event => {
+  handleClose = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     this.props.history.goBack();
   };
