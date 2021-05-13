@@ -93,6 +93,5 @@ export async function emailResetPassword(email: string): Promise<void> {
 }
 
 export async function fetchAccount(): Promise<void> {
-  const res = await axios.get(`/api/account`);
-  store.dispatch({ type: ACTION_TYPES.FETCH_ACCOUNT, payload: res.data });
+  store.dispatch({ type: ACTION_TYPES.FETCH_ACCOUNT, payload: axios.get(`/api/account`) });
 }

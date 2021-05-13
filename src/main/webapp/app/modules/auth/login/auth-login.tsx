@@ -56,7 +56,8 @@ export class AuthLogin extends React.Component<IAuthLoginProps> {
   }
 
   render() {
-    const { isAuthenticated, location } = this.props;
+    const { isAuthenticated, isLoading, location } = this.props;
+    if (isLoading) return <></>;
     if (isAuthenticated) {
       return location.state.from ? <Redirect to={location.state.from} /> : <Redirect to="/" />;
     }
@@ -134,6 +135,7 @@ const LoginButton: React.FC<ILoginButton> = ({ handleLogin, type }) => {
 
 const mapStateToProps = ({ authentication }: IRootState) => ({
   isAuthenticated: authentication.isAuthenticated,
+  isLoading: authentication.loading,
 });
 
 type StateProps = ReturnType<typeof mapStateToProps>;
