@@ -3,7 +3,6 @@ import { AnyAction } from 'redux';
 export const ACTION_TYPES = {
   LOGOUT: 'authentication/LOGOUT',
   FETCH_ACCOUNT: 'authentication/FETCH_ACCOUNT',
-  CHECK_USERPROFILE_COMPLETE: 'authentication/CHECK_USERPROFILE_COMPLETE',
 };
 
 export interface IAuthenticationInitialState {
@@ -17,7 +16,7 @@ export interface IAuthenticationInitialState {
   eventCrewEventIds: number[];
   isCurrentCCHead: boolean;
   isCurrentAdministrator: boolean;
-  isProfileCompleted?: boolean;
+  isProfileCompleted: boolean;
 }
 
 const initialState: IAuthenticationInitialState = {
@@ -53,10 +52,6 @@ export default (state: IAuthenticationInitialState = initialState, action: AnyAc
         eventCrewEventIds: action.payload.eventCrewEventIds,
         isCurrentCCHead: action.payload.isCurrentCCHead,
         isCurrentAdministrator: action.payload.isCurrentAdministrator,
-      };
-    case ACTION_TYPES.CHECK_USERPROFILE_COMPLETE:
-      return {
-        ...state,
         isProfileCompleted: action.payload.isProfileCompleted,
       };
     default:
