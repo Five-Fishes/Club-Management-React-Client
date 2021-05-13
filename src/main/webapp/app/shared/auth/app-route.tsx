@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect, RouteProps, RouteComponentProps } from 'react-router-dom';
+import { Location } from 'history';
 import { Translate } from 'react-jhipster';
 import { IRootState } from 'app/shared/reducers';
 import ErrorBoundary from 'app/shared/error/error-boundary';
@@ -15,19 +16,24 @@ const UnauthorizedBanner: React.ReactElement = (
   </div>
 );
 
+export interface IRedirectLocationState {
+  from?: Location;
+}
+
 interface IAppRouteOwnProps extends RouteProps, IAuthorizationCheckerOwnProps {}
 
 export interface IAppRouteProps extends IAppRouteOwnProps, StateProps {}
 
 const AppRouteComponent: React.FC<IAppRouteProps> = (props: IAppRouteProps) => {
   const { component: Component, isAuthenticated, isProfileCompleted, isPublic } = props;
+  const locationState: IRedirectLocationState = { from: props.location };
   if (!isPublic && !isAuthenticated) {
     return (
       <Redirect
         to={{
           pathname: '/auth/login',
           search: props.location?.search,
-          state: { from: props.location },
+          state: locationState,
         }}
       />
     );
