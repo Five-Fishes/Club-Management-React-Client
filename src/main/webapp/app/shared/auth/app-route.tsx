@@ -1,11 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect, RouteProps, RouteComponentProps } from 'react-router-dom';
-import { Location } from 'history';
+import { Location, LocationDescriptor } from 'history';
 import { Translate } from 'react-jhipster';
 import { IRootState } from 'app/shared/reducers';
 import ErrorBoundary from 'app/shared/error/error-boundary';
-import CompleteUserProfile from 'app/modules/auth/complete-profile/complete-user-profile';
 import AuthorizationChecker, { IAuthorizationCheckerOwnProps } from 'app/shared/components/authorization-checker/authorization-checker';
 
 const UnauthorizedBanner: React.ReactElement = (
@@ -26,24 +25,28 @@ export interface IAppRouteProps extends IAppRouteOwnProps, StateProps {}
 
 const AppRouteComponent: React.FC<IAppRouteProps> = (props: IAppRouteProps) => {
   const { component: Component, isAuthenticated, isProfileCompleted, isPublic } = props;
-  const locationState: IRedirectLocationState = { from: props.location };
+  const toLocation: LocationDescriptor<IRedirectLocationState> = {
+    search: props.location?.search,
+    state: { from: props.location },
+  };
   if (!isPublic && !isAuthenticated) {
     return (
       <Redirect
         to={{
+          ...toLocation,
           pathname: '/auth/login',
-          search: props.location?.search,
-          state: locationState,
         }}
       />
     );
   }
   if (!isPublic && !isProfileCompleted) {
     return (
-      <ErrorBoundary>
-        {/* @ts-ignore will refractor in issue 111 */}
-        <CompleteUserProfile />
-      </ErrorBoundary>
+      <Redirect
+        to={{
+          ...toLocation,
+          pathname: '/profile/complete',
+        }}
+      />
     );
   }
   function renderFunc(routeProps: RouteComponentProps<any>): React.ReactNode {
