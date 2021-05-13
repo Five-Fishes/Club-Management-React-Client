@@ -39,14 +39,12 @@ class CompleteUserProfile extends React.Component<ICompleteUserProfileProps, {}>
         intakeSemester: values.intakeSemesterValue,
         yearSession: values.yearSessionValue,
       };
-      window.console.log(entity);
       this.props.completeUserProfile(entity);
     }
   };
 
   render() {
     const { isProfileCompleted, loading, updating, errResponse, facultyList, courseProgramList, yearSessionList, userProfile } = this.props;
-    console.log('isProfileCompleted', isProfileCompleted);
     if (isProfileCompleted) {
       return <Redirect to="/" />;
     }
