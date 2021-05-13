@@ -24,8 +24,13 @@ export class UserProfileEvolution extends React.Component<IUserProfileEvolutionP
       <>
         {userCCInfo.length > 0 && (
           <div>
-            {userCCInfo.map(ccInfo => (
-              <CCInfoCard roleName={ccInfo.familyRole} fishLevel={ccInfo.fishLevel} yearSession={ccInfo.yearSession} />
+            {userCCInfo.map((ccInfo, index) => (
+              <CCInfoCard
+                key={`cc-info-${index}`}
+                roleName={ccInfo.familyRole}
+                fishLevel={ccInfo.fishLevel}
+                yearSession={ccInfo.yearSession}
+              />
             ))}
           </div>
         )}
@@ -48,6 +53,7 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfileEvolution);
 
 interface ICCInfoCardProps {
+  key: string;
   roleName?: string;
   fishLevel?: string;
   yearSession?: string;

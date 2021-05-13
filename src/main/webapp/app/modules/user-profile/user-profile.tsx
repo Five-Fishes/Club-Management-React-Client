@@ -52,7 +52,7 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
   }
 
   render() {
-    const { match, currentProfileTab } = this.props;
+    const { match, location, history, currentProfileTab } = this.props;
     const { firstName, lastName, gender, imageUrl, clubFamilyId, clubFamilyName, clubFamilyDescription } = this.props.userUniEntity;
     return (
       <>
@@ -90,7 +90,7 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
 
         <CustomTab tabList={profileTab} currentTab={currentProfileTab} handleClick={this.tabOnClick} />
         <div className="mx-2">
-          <UserProfileTabContent match={match} />
+          <UserProfileTabContent match={match} location={location} history={history} />
         </div>
         <div className="d-block text-center my-5">
           <Button color="action px-5" onClick={this.handleLogout}>

@@ -25,8 +25,9 @@ export class UserProfileRole extends React.Component<IUserProfileRoleProps, {}> 
       <>
         {userCCRoleInfo.length > 0 && (
           <div>
-            {userCCRoleInfo.map(roleInfo => (
+            {userCCRoleInfo.map((roleInfo, index) => (
               <CCRoleCard
+                key={`role-info-${index}`}
                 roleName={roleInfo.role}
                 roleType={roleInfo.type}
                 yearSession={roleInfo.yearSession}
@@ -54,6 +55,7 @@ type DispatchProps = typeof mapDispatchToProps;
 export default connect(mapStateToProps, mapDispatchToProps)(UserProfileRole);
 
 interface ICCRoleCardProps {
+  key: string;
   roleType?: CCRoleType;
   roleName?: string;
   yearSession?: string;

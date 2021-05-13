@@ -81,7 +81,7 @@ const TabItem: React.FC<ITabItemProps> = ({ currentTab, tabInfo, tabOnClick }) =
   const isCurrentTab: boolean = tabInfo.tabName === currentTab;
   const btnClassName = classnames('tab-item', isCurrentTab ? 'active-tab' : '');
 
-  const handleClick = (tabName: string) => {
+  const handleClick = (tabName: string) => (event: any) => {
     if (tabOnClick !== undefined) {
       tabOnClick(tabName);
     }
