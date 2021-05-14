@@ -81,9 +81,9 @@ const TabItem: React.FC<ITabItemProps> = ({ currentTab, tabInfo, tabOnClick }) =
   const isCurrentTab: boolean = tabInfo.tabName === currentTab;
   const btnClassName = classnames('tab-item', isCurrentTab ? 'active-tab' : '');
 
-  const handleClick = (tabName: string) => (event: any) => {
+  const handleClick = (event: any) => {
     if (tabOnClick !== undefined) {
-      tabOnClick(tabName);
+      tabOnClick(tabInfo.tabName);
     }
   };
 
@@ -96,7 +96,7 @@ const TabItem: React.FC<ITabItemProps> = ({ currentTab, tabInfo, tabOnClick }) =
         className={btnClassName}
         tag={Link}
         to={tabInfo.tabRoute}
-        onClick={handleClick(tabInfo.tabName)}
+        onClick={handleClick}
       >
         <Translate contentKey={tabInfo.tabTranslateKey}>{tabInfo.tabName}</Translate>
       </Button>

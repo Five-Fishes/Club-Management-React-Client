@@ -10,7 +10,7 @@ import { getCurrentUserCCRolesProfile } from './user-profile.reducer';
 
 export interface IUserProfileRoleProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
 
-export class UserProfileRole extends React.Component<IUserProfileRoleProps, {}> {
+class UserProfileRole extends React.Component<IUserProfileRoleProps, {}> {
   constructor(props: IUserProfileRoleProps) {
     super(props);
   }

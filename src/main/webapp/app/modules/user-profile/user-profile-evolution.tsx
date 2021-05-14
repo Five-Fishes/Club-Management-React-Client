@@ -9,7 +9,7 @@ import { getCurrentUserCCInfoProfile } from './user-profile.reducer';
 
 export interface IUserProfileEvolutionProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
-export class UserProfileEvolution extends React.Component<IUserProfileEvolutionProps> {
+class UserProfileEvolution extends React.Component<IUserProfileEvolutionProps> {
   constructor(props: IUserProfileEvolutionProps) {
     super(props);
   }

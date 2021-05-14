@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
@@ -16,9 +16,9 @@ export const ACTION_TYPES = {
   RESET: 'userProfile/RESET',
 };
 
-const initialState = {
+const initialState: IUserState = {
   loading: false,
-  errorMessage: null,
+  errResponse: null,
   entity: defaultUserUniInfo,
   userCCEvolutionInfo: [] as ReadonlyArray<IUserCCInfo>,
   userCCRolesInfo: [] as ReadonlyArray<IUserCCRoleInfo>,
@@ -27,7 +27,16 @@ const initialState = {
   currentProfileTab: '',
 };
 
-export type IUserState = Readonly<typeof initialState>;
+export interface IUserState {
+  loading: boolean;
+  errResponse: null | AxiosError;
+  entity: IUserUniInfo;
+  userCCEvolutionInfo: ReadonlyArray<IUserCCInfo>;
+  userCCRolesInfo: ReadonlyArray<IUserCCRoleInfo>;
+  updating: boolean;
+  updateSuccess: boolean;
+  currentProfileTab: string;
+}
 
 // Reducers
 
@@ -36,7 +45,7 @@ export default (state: IUserState = initialState, action: AnyAction): IUserState
     case REQUEST(ACTION_TYPES.FETCH_USERPROFILE):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         loading: true,
       };
@@ -46,7 +55,7 @@ export default (state: IUserState = initialState, action: AnyAction): IUserState
         updating: false,
         updateSuccess: false,
         loading: false,
-        errorMessage: action.payload,
+        errResponse: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_USERPROFILE):
       return {

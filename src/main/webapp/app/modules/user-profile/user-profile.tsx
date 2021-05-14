@@ -54,26 +54,20 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
   render() {
     const { match, location, history, currentProfileTab } = this.props;
     const { firstName, lastName, gender, imageUrl, clubFamilyId, clubFamilyName, clubFamilyDescription } = this.props.userUniEntity;
+
+    let imageSrc = 'content/images/placeholder.png';
+    if (imageUrl) {
+      imageSrc = imageUrl;
+    } else if (gender === 'MALE') {
+      imageSrc = 'content/images/jhipster_family_member_0_head-192.png';
+    } else if (gender === 'FEMALE') {
+      imageSrc = 'content/images/jhipster_family_member_3_head-192.png';
+    }
+
     return (
       <>
         <div className="d-block text-center my-3">
-          {Boolean(imageUrl) ? (
-            <img className="border rounded-circle shadow profile-img" src={imageUrl} alt="User Profile Image" />
-          ) : gender === 'MALE' ? (
-            <img
-              className="border rounded-circle shadow profile-img"
-              src="content/images/jhipster_family_member_0_head-192.png"
-              alt="User Profile Image"
-            />
-          ) : gender === 'FEMALE' ? (
-            <img
-              className="border rounded-circle shadow profile-img"
-              src="content/images/jhipster_family_member_3_head-192.png"
-              alt="User Profile Image"
-            />
-          ) : (
-            <img className="border rounded-circle shadow profile-img" src="content/images/placeholder.png" alt="User Profile Image" />
-          )}
+          <img className="border rounded-circle shadow profile-img" src={imageSrc} alt="User Profile Image" />
         </div>
         <div className="text-center">
           <h1>{concatFullName(firstName, lastName)}</h1>
