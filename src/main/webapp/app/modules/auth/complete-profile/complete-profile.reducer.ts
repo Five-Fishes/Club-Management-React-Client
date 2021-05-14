@@ -8,7 +8,7 @@ import { IUserUniInfo, defaultValue } from 'app/shared/model/user-uni-info.model
 import { IFaculty } from 'app/shared/model/faculty.model';
 import { ICourseProgram } from 'app/shared/model/course-program.model';
 import { IYearSession } from 'app/shared/model/year-session.model';
-import { checkUserProfileCompleted } from 'app/shared/services/auth.service';
+import { fetchAccount } from 'app/shared/services/auth.service';
 import { IGetActionWithoutParam } from 'app/shared/type/general-custom-action';
 import { AnyAction } from 'redux';
 
@@ -28,7 +28,6 @@ const initialState: ICompleteProfileState = {
   facultyList: [] as ReadonlyArray<IFaculty>,
   courseProgramList: [] as ReadonlyArray<ICourseProgram>,
   yearSessionList: [] as ReadonlyArray<IYearSession>,
-  isProfileCompleted: false,
   updating: false,
   updateSuccess: false,
 };
@@ -40,7 +39,6 @@ export interface ICompleteProfileState {
   facultyList: ReadonlyArray<IFaculty>;
   courseProgramList: ReadonlyArray<ICourseProgram>;
   yearSessionList: ReadonlyArray<IYearSession>;
-  isProfileCompleted: boolean;
   updating: boolean;
   updateSuccess: boolean;
 }
@@ -122,7 +120,7 @@ export const completeUserProfile: ICrudPutAction<IUserUniInfo> = entity => async
     type: ACTION_TYPES.COMPLETE_USERPROFILE,
     payload: axios.post(requestUrl, cleanEntity(entity)),
   });
-  await checkUserProfileCompleted();
+  await fetchAccount();
   return result;
 };
 

@@ -9,8 +9,9 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import firebase from 'firebase';
 import { toast } from 'react-toastify';
 import { getAuthToken, socialLogin } from 'app/shared/services/auth.service';
+import { IRedirectLocationState } from 'app/shared/auth/app-route';
 
-export interface IAuthLoginProps extends StateProps, RouteComponentProps<{}> {}
+export interface IAuthLoginProps extends StateProps, RouteComponentProps<{}, any, IRedirectLocationState> {}
 
 interface ILoginConfig {
   type: 'google' | 'facebook' | 'email';
@@ -55,9 +56,10 @@ export class AuthLogin extends React.Component<IAuthLoginProps> {
   }
 
   render() {
-    const { isAuthenticated } = this.props;
+    const { isAuthenticated, isLoading, location } = this.props;
+    if (isLoading) return <></>;
     if (isAuthenticated) {
-      return <Redirect to="/" />;
+      return location.state.from ? <Redirect to={location.state.from} /> : <Redirect to="/" />;
     }
     return (
       <>
@@ -133,6 +135,7 @@ const LoginButton: React.FC<ILoginButton> = ({ handleLogin, type }) => {
 
 const mapStateToProps = ({ authentication }: IRootState) => ({
   isAuthenticated: authentication.isAuthenticated,
+  isLoading: authentication.loading,
 });
 
 type StateProps = ReturnType<typeof mapStateToProps>;
