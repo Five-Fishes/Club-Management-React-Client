@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router-dom';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
 
 import { IRootState } from 'app/shared/reducers';
 import { Row, Col, Button, Label } from 'reactstrap';
@@ -11,10 +11,11 @@ import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import moment from 'moment';
 import { getCourseProgramByFacultyId, getFacultyList, getYearSessionList } from 'app/shared/services/uni-academic-info.service';
 import { completeUserProfile, fetchUserProfileWithUniInfo } from './complete-profile.reducer';
+import { IRedirectLocationState } from 'app/shared/auth/app-route';
 
-export interface ICompleteUserProfileProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
+export interface ICompleteUserProfileProps extends StateProps, DispatchProps, RouteComponentProps<{}, any, IRedirectLocationState> {}
 
-export class CompleteUserProfile extends React.Component<ICompleteUserProfileProps, {}> {
+class CompleteUserProfile extends React.Component<ICompleteUserProfileProps, {}> {
   constructor(props: ICompleteUserProfileProps) {
     super(props);
   }
@@ -38,13 +39,15 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
         intakeSemester: values.intakeSemesterValue,
         yearSession: values.yearSessionValue,
       };
-      window.console.log(entity);
       this.props.completeUserProfile(entity);
     }
   };
 
   render() {
-    const { loading, updating, errResponse, facultyList, courseProgramList, yearSessionList, userProfile } = this.props;
+    const { isProfileCompleted, loading, updating, errResponse, facultyList, courseProgramList, yearSessionList, userProfile } = this.props;
+    if (isProfileCompleted) {
+      return <Redirect to="/" />;
+    }
     return (
       <div>
         <h2 id="complete-profile-heading">
@@ -193,7 +196,7 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                   </AvGroup>
                 )}
 
-                {yearSessionList.length > 0 && (
+                {yearSessionList && yearSessionList.length > 0 && (
                   <AvGroup>
                     <Label id="intakeYearSession" for="intakeYearSession">
                       <Translate contentKey="clubmanagementApp.userUniInfo.intakeYearSession">Intake Year Session</Translate>
@@ -273,6 +276,7 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
 
 const mapStateToProps = ({ authentication, completeProfile }: IRootState) => ({
   isAuthenticated: authentication.isAuthenticated,
+  isProfileCompleted: authentication.isProfileCompleted,
   ...completeProfile,
 });
 

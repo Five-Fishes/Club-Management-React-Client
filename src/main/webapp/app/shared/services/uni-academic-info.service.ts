@@ -5,7 +5,6 @@ import { ACTION_TYPES as COMPLETE_PROFILE_ACTION } from '../../modules/auth/comp
 export async function getFacultyList(page?: number, size?: number, sort?: string): Promise<void> {
   const requestUrl = `api/faculties${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   const res = await axios.get(`${requestUrl}`);
-  window.console.log(res.data);
   store.dispatch({ type: COMPLETE_PROFILE_ACTION.FETCH_FACULTY_LIST, payload: res });
 }
 
