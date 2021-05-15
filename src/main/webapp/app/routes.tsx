@@ -30,8 +30,8 @@ const Routes = () => (
       <AppRoute exact path="/auth/email/login" component={AuthEmailLogin} isPublic />
       <AppRoute exact path="/auth/email/register" component={AuthEmailRegister} isPublic />
       <AppRoute exact path="/auth/email/reset" component={AuthEmailReset} isPublic />
-      <AppRoute path="/profile" component={UserProfile} asLongAsIsAuthenticated />
       <AppRoute exact path="/profile/complete" component={CompleteUserProfile} asLongAsIsAuthenticated />
+      <AppRoute path="/profile" component={UserProfile} asLongAsIsAuthenticated />
       <AppRoute path="/entity" component={Entities} isPublic />
       <AppRoute path="/admin" component={Admin} ccRole={CCRole.ADMIN} />
       <AppRoute component={PageNotFound} isPublic />

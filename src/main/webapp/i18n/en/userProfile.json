@@ -1,6 +1,9 @@
 {
   "clubmanagementApp": {
     "userProfile": {
+      "home": {
+        "updateLabel": "Update User Profile"
+      },
       "firstName": "First Name",
       "lastName": "Last Name",
       "gender": "Gender",

@@ -7,11 +7,14 @@ import { IUserCCInfo } from 'app/shared/model/user-cc-info.model';
 import { IUserCCRoleInfo } from 'app/shared/model/user-cc-role-info.model';
 import { IGetEntityWithoutParams } from 'app/shared/type/custom-action';
 import { AnyAction } from 'redux';
+import { ICrudPutAction } from 'react-jhipster';
+import { cleanEntity } from 'app/shared/util/entity-utils';
 
 export const ACTION_TYPES = {
   FETCH_USERPROFILE: 'userProfile/FETCH_USERPROFILE',
   FETCH_USERPROFILE_CCINFO: 'userProfile/FETCH_USERPROFILE_CCINFO',
   FETCH_USERPROFILE_CCROLE: 'userProfile/FETCH_USERPROFILE_CCROLE',
+  UPDATE_USERPROFILE: 'userProfile/UPDATE_USERPROFILE',
   SET_CURRENT_TAB: 'userProfile/SET_CURRENT_TAB',
   RESET: 'userProfile/RESET',
 };
@@ -43,6 +46,7 @@ export interface IUserState {
 export default (state: IUserState = initialState, action: AnyAction): IUserState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_USERPROFILE):
+    case REQUEST(ACTION_TYPES.UPDATE_USERPROFILE):
       return {
         ...state,
         errResponse: null,
@@ -50,6 +54,7 @@ export default (state: IUserState = initialState, action: AnyAction): IUserState
         loading: true,
       };
     case FAILURE(ACTION_TYPES.FETCH_USERPROFILE):
+    case FAILURE(ACTION_TYPES.UPDATE_USERPROFILE):
       return {
         ...state,
         updating: false,
@@ -74,6 +79,14 @@ export default (state: IUserState = initialState, action: AnyAction): IUserState
         ...state,
         loading: false,
         userCCRolesInfo: action.payload.data,
+      };
+    case SUCCESS(ACTION_TYPES.UPDATE_USERPROFILE):
+      return {
+        ...state,
+        loading: false,
+        entity: action.payload.data,
+        updateSuccess: true,
+        updating: false,
       };
     case ACTION_TYPES.SET_CURRENT_TAB:
       return {
@@ -113,6 +126,15 @@ export const getCurrentUserCCRolesProfile: IGetEntityWithoutParams<IUserCCRoleIn
     type: ACTION_TYPES.FETCH_USERPROFILE_CCROLE,
     payload: axios.get<IUserCCRoleInfo>(requestUrl),
   };
+};
+
+export const updateUserProfile: ICrudPutAction<IUserUniInfo> = entity => async dispatch => {
+  const requestUrl = `api/account/profile`;
+  const result = await dispatch({
+    type: ACTION_TYPES.UPDATE_USERPROFILE,
+    payload: axios.post(requestUrl, cleanEntity(entity)),
+  });
+  return result;
 };
 
 export const setUserProfileCurrentTab = (currentTab: string) => ({

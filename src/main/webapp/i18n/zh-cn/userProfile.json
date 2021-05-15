@@ -1,6 +1,9 @@
 {
   "clubmanagementApp": {
     "userProfile": {
+      "home": {
+        "updateLabel": "更新个人资料"
+      },
       "firstName": "名",
       "lastName": "姓",
       "gender": "性别",
