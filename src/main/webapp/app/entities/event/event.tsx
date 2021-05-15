@@ -1,15 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Container, Row, Col, Card, CardImg, Button, Tooltip } from 'reactstrap';
+import { Container } from 'reactstrap';
 // tslint:disable-next-line:no-unused-variable
-import { Translate, TextFormat, getSortState, IPaginationBaseState } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { getSortState, IPaginationBaseState } from 'react-jhipster';
 
 import { IRootState } from 'app/shared/reducers';
 import { getUpcomingEntities, getPreviousEntities } from './event.reducer';
 // tslint:disable-next-line:no-unused-variable
-import { APP_DATE_12_ABR_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 
 import FloatButton from 'app/shared/components/floatButton/FloatButton';
@@ -20,7 +18,6 @@ import './events.scss';
 import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
 import CCRole from 'app/shared/model/enum/cc-role.enum';
 import EventRole from 'app/shared/model/enum/event-role.enum';
-import { IEvent } from 'app/shared/model/event.model';
 import EventCard from './event-card';
 
 export interface IEventProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
@@ -31,14 +28,13 @@ export type IEventState = IPaginationBaseState & {
 };
 
 export class Event extends React.Component<IEventProps, IEventState> {
-  
   constructor(props: IEventProps) {
     super(props);
 
     this.state = {
       ...getSortState(this.props.location, ITEMS_PER_PAGE),
       modalIsOpen: false,
-      eventId: null,
+      eventId: undefined,
     };
 
     this.getTab = this.getTab.bind(this);
@@ -84,12 +80,12 @@ export class Event extends React.Component<IEventProps, IEventState> {
     this.props.getPreviousEntities(activePage - 1, itemsPerPage, `startDate,desc`);
   }
 
-  openModal(eventId: number): void {
+  openModal(eventId?: number): void {
     this.setState({ modalIsOpen: true, eventId });
   }
 
   closeModal(): void {
-    this.setState({ modalIsOpen: false, eventId: null });
+    this.setState({ modalIsOpen: false, eventId: undefined });
   }
 
   render() {

@@ -16,7 +16,7 @@ import { IEvent } from 'app/shared/model/event.model';
 
 export interface IEventCardProps {
   event: IEvent;
-  toggleModal: (eventId: number) => void;
+  toggleModal: (eventId?: number) => void;
 }
 
 const EventCard: React.FC<IEventCardProps> = ({ event, toggleModal }) => {
