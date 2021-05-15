@@ -47,11 +47,11 @@ const EventCard: React.FC<IEventCardProps> = ({ event, toggleModal }) => {
               <h4 className="event-title">{event.name}</h4>
               <p className="mb-0">
                 <Translate contentKey="clubmanagementApp.event.startDate">Start Date</Translate>:{' '}
-                <TextFormat type="date" value={event.startDate} format={APP_DATE_12_ABR_FORMAT} />
+                <TextFormat type="date" value={event.startDate ?? ''} format={APP_DATE_12_ABR_FORMAT} />
               </p>
               <p className="mb-0">
                 <Translate contentKey="clubmanagementApp.event.endDate">End Date</Translate>:{' '}
-                <TextFormat type="date" value={event.endDate} format={APP_DATE_12_ABR_FORMAT} />
+                <TextFormat type="date" value={event.endDate ?? ''} format={APP_DATE_12_ABR_FORMAT} />
               </p>
               <p className="mb-0">
                 <Translate contentKey="clubmanagementApp.event.venue">Venue</Translate>: {event.venue}
