@@ -58,7 +58,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
           <Nav id="header-tabs" className="h-100 ml-auto">
             <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
             {isAuthenticated ? (
-              <Link to="/profile" className="h-100 p-1">
+              <Link to="/profile/stats" className="h-100 p-1">
                 <img
                   className="mh-100 border rounded-circle shadow"
                   src="content/images/jhipster_family_member_0_head-192.png"

@@ -24,7 +24,7 @@ interface IAppRouteOwnProps extends RouteProps, IAuthorizationCheckerOwnProps {}
 export interface IAppRouteProps extends IAppRouteOwnProps, StateProps {}
 
 const AppRouteComponent: React.FC<IAppRouteProps> = (props: IAppRouteProps) => {
-  const { component: Component, isAuthenticated, isProfileCompleted, isPublic } = props;
+  const { component: Component, isAuthenticated, isProfileCompleted, isPublic, location } = props;
   const toLocation: LocationDescriptor<IRedirectLocationState> = {
     search: props.location?.search,
     state: { from: props.location },
@@ -39,7 +39,8 @@ const AppRouteComponent: React.FC<IAppRouteProps> = (props: IAppRouteProps) => {
       />
     );
   }
-  if (!isPublic && !isProfileCompleted) {
+  const isCompleteProfilePage: boolean = location?.pathname === '/profile/complete';
+  if (!isPublic && !isProfileCompleted && !isCompleteProfilePage) {
     return (
       <Redirect
         to={{

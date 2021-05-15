@@ -53,7 +53,7 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
 
   render() {
     const { match, location, history, currentProfileTab } = this.props;
-    const { firstName, lastName, gender, imageUrl, clubFamilyId, clubFamilyName, clubFamilyDescription } = this.props.userUniEntity;
+    const { firstName, lastName, gender, imageUrl, clubFamilyId, clubFamilyName, clubFamilyDescription } = this.props.userProfile;
 
     let imageSrc = 'content/images/placeholder.png';
     if (imageUrl) {
@@ -99,7 +99,7 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
 const mapStateToProps = ({ authentication, user }: IRootState) => ({
   isAuthenticated: authentication.isAuthenticated,
   userId: authentication.id,
-  userUniEntity: user.entity,
+  userProfile: user.userProfile,
   currentProfileTab: user.currentProfileTab,
 });
 

@@ -29,7 +29,7 @@ class UserProfileUpdate extends React.Component<IUserProfileUpdateProps, {}> {
 
   updateProfile = (event: any, errors: any, values: any) => {
     if (errors.length === 0) {
-      const userProfile = this.props.entity;
+      const { userProfile } = this.props;
       const updatedEntity = {
         ...userProfile,
         ...values,
@@ -43,7 +43,7 @@ class UserProfileUpdate extends React.Component<IUserProfileUpdateProps, {}> {
   }
 
   render() {
-    const { loading, updating, errResponse, entity } = this.props;
+    const { loading, updating, errResponse, userProfile } = this.props;
     return (
       <div className="mx-3">
         <h2 id="complete-profile-heading">
@@ -54,7 +54,7 @@ class UserProfileUpdate extends React.Component<IUserProfileUpdateProps, {}> {
             {loading ? (
               <p>Loading...</p>
             ) : (
-              <AvForm model={entity} onSubmit={this.updateProfile}>
+              <AvForm model={userProfile} onSubmit={this.updateProfile}>
                 <AvGroup>
                   <AvField
                     id="first-name"

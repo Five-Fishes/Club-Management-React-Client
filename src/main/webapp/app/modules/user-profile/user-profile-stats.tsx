@@ -16,7 +16,7 @@ class UserProfileStats extends React.Component<IUserProfileStatsProps, {}> {
   }
 
   render() {
-    const { gender, dateOfBirth, phoneNumber, email } = this.props.userEntity;
+    const { gender, dateOfBirth, phoneNumber, email } = this.props.userProfile;
     return (
       <>
         <div className="card-container container my-3">
@@ -42,7 +42,7 @@ class UserProfileStats extends React.Component<IUserProfileStatsProps, {}> {
 }
 
 const mapStateToProps = ({ user }: IRootState) => ({
-  userEntity: user.entity,
+  userProfile: user.userProfile,
 });
 
 type StateProps = ReturnType<typeof mapStateToProps>;
