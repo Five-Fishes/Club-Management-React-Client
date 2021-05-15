@@ -28,9 +28,9 @@ class UserProfileRole extends React.Component<IUserProfileRoleProps, {}> {
             {userCCRoleInfo.map((roleInfo, index) => (
               <CCRoleCard
                 key={`role-info-${index}`}
-                roleName={roleInfo.role}
+                roleName={roleInfo.role ?? ''}
+                yearSession={roleInfo.yearSession ?? ''}
                 roleType={roleInfo.type}
-                yearSession={roleInfo.yearSession}
                 eventName={roleInfo.eventName}
               />
             ))}
@@ -56,9 +56,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(UserProfileRole);
 
 interface ICCRoleCardProps {
   key: string;
+  roleName: string;
+  yearSession: string;
   roleType?: CCRoleType;
-  roleName?: string;
-  yearSession?: string;
   eventName?: string;
 }
 

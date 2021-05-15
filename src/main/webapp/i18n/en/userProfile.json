@@ -2,7 +2,7 @@
   "clubmanagementApp": {
     "userProfile": {
       "firstName": "First Name",
-      "lastName": "Last Name",
+      "lastName": "Last Name (Surname)",
       "gender": "Gender",
       "phoneNumber": "Phone Number",
       "dateOfBirth": "Date of Birth",

@@ -70,7 +70,7 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
           <img className="border rounded-circle shadow profile-img" src={imageSrc} alt="User Profile Image" />
         </div>
         <div className="text-center">
-          <h1>{concatFullName(firstName, lastName)}</h1>
+          <h1>{concatFullName(firstName ?? '', lastName ?? '')}</h1>
           {Boolean(clubFamilyId) && (
             <>
               <h3 className="d-block mx-auto mb-3 family-label py-2 px-3">
