@@ -12,6 +12,11 @@
 }
 
 .event-card:hover {
+  box-shadow: 2px 5px 20px rgba(0, 0, 0, 0.25);
+}
+
+.event-card a {
+  text-decoration: none;
 }
 
 .event-title {
@@ -21,9 +26,9 @@
   width: 90%;
 }
 
-.event-title:hover {
-  white-space: normal;
-}
+// .event-title:hover {
+//   white-space: normal;
+// }
 
 .event-bottom-padding {
   padding-bottom: 30px;
