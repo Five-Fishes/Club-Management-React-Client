@@ -18,12 +18,12 @@ export class BudgetDeleteDialog extends React.Component<IBudgetDeleteDialogProps
     this.props.getEntity(this.props.match.params.id, this.props.match.params.eventId);
   }
 
-  confirmDelete = event => {
+  confirmDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
     this.props.deleteEntity(this.props.budgetEntity.id, this.props.budgetEntity.eventId);
     this.handleClose(event);
   };
 
-  handleClose = event => {
+  handleClose = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     this.props.history.goBack();
   };

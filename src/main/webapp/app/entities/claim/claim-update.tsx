@@ -21,14 +21,14 @@ export interface IClaimUpdateState {
 }
 
 export class ClaimUpdate extends React.Component<IClaimUpdateProps, IClaimUpdateState> {
-  constructor(props) {
+  constructor(props: IClaimUpdateProps) {
     super(props);
     this.state = {
-      isNew: !this.props.match.params || !this.props.match.params.id
+      isNew: !this.props.match.params || !this.props.match.params.id,
     };
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: IClaimUpdateProps, nextState: IClaimUpdateState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
       this.handleClose();
     }
@@ -42,12 +42,12 @@ export class ClaimUpdate extends React.Component<IClaimUpdateProps, IClaimUpdate
     }
   }
 
-  saveEntity = (event, errors, values) => {
+  saveEntity = (event: any, errors: any, values: any) => {
     if (errors.length === 0) {
       const { claimEntity } = this.props;
       const entity = {
         ...claimEntity,
-        ...values
+        ...values,
       };
 
       if (this.state.isNew) {
@@ -168,20 +168,17 @@ const mapStateToProps = (storeState: IRootState) => ({
   claimEntity: storeState.claim.entity,
   loading: storeState.claim.loading,
   updating: storeState.claim.updating,
-  updateSuccess: storeState.claim.updateSuccess
+  updateSuccess: storeState.claim.updateSuccess,
 });
 
 const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ClaimUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(ClaimUpdate);

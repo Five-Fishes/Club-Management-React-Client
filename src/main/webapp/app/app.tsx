@@ -17,7 +17,8 @@ import ErrorBoundary from 'app/shared/error/error-boundary';
 import AppRoutes from 'app/routes';
 import { fetchAccount } from './shared/services/auth.service';
 
-const baseHref = document.querySelector('base').getAttribute('href').replace(/\/$/, '');
+let baseHref = (document.querySelector('base') as HTMLBaseElement).getAttribute('href') ?? '';
+baseHref = baseHref.replace(/\/$/, '');
 
 export interface IAppProps extends StateProps, DispatchProps {}
 

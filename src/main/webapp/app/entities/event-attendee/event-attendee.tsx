@@ -38,11 +38,11 @@ export class EventAttendee extends React.Component<IEventAttendeeProps> {
     this.setState({ ...this.state, modalIsOpen: false });
   };
 
-  contactUser = contactNumber => {
+  contactUser = (contactNumber: number) => {
     window.open(`https://wa.me/${contactNumber}`, '_blank');
   };
 
-  sort = (sortProp, orderProp) => {
+  sort = (sortProp: any, orderProp: any) => {
     this.setState(
       {
         order: orderProp,
@@ -63,7 +63,7 @@ export class EventAttendee extends React.Component<IEventAttendeeProps> {
     );
   }
 
-  handlePagination = activePage => {
+  handlePagination = (activePage: number) => {
     this.setState({ activePage }, () => this.sortEntities());
   };
 

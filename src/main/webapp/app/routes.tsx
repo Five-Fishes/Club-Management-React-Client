@@ -12,6 +12,7 @@ import AuthEmailRegister from './modules/auth/email-register/auth-email-register
 import AuthEmailReset from './modules/auth/email-reset/auth-email-reset';
 import UserProfile from './modules/user-profile/user-profile';
 import CCRole from './shared/model/enum/cc-role.enum';
+import CompleteUserProfile from './modules/auth/complete-profile/complete-user-profile';
 
 // tslint:disable:space-in-parens
 
@@ -30,6 +31,7 @@ const Routes = () => (
       <AppRoute exact path="/auth/email/register" component={AuthEmailRegister} isPublic />
       <AppRoute exact path="/auth/email/reset" component={AuthEmailReset} isPublic />
       <AppRoute exact path="/profile" component={UserProfile} asLongAsIsAuthenticated />
+      <AppRoute exact path="/profile/complete" component={CompleteUserProfile} asLongAsIsAuthenticated />
       <AppRoute path="/entity" component={Entities} isPublic />
       <AppRoute path="/admin" component={Admin} ccRole={CCRole.ADMIN} />
       <AppRoute component={PageNotFound} isPublic />

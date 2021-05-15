@@ -18,7 +18,7 @@ export interface IUserManagementUpdateState {
 
 export class UserManagementUpdate extends React.Component<IUserManagementUpdateProps, IUserManagementUpdateState> {
   state: IUserManagementUpdateState = {
-    isNew: !this.props.match.params || !this.props.match.params.login
+    isNew: !this.props.match.params || !this.props.match.params.login,
   };
 
   componentDidMount() {
@@ -34,7 +34,7 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
     this.props.reset();
   }
 
-  saveUser = (event, values) => {
+  saveUser = (event: any, values: any) => {
     if (this.state.isNew) {
       this.props.createUser(values);
     } else {
@@ -84,20 +84,20 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     validate={{
                       required: {
                         value: true,
-                        errorMessage: translate('register.messages.validate.login.required')
+                        errorMessage: translate('register.messages.validate.login.required'),
                       },
                       pattern: {
                         value: '^[_.@A-Za-z0-9-]*$',
-                        errorMessage: translate('register.messages.validate.login.pattern')
+                        errorMessage: translate('register.messages.validate.login.pattern'),
                       },
                       minLength: {
                         value: 1,
-                        errorMessage: translate('register.messages.validate.login.minlength')
+                        errorMessage: translate('register.messages.validate.login.minlength'),
                       },
                       maxLength: {
                         value: 50,
-                        errorMessage: translate('register.messages.validate.login.maxlength')
-                      }
+                        errorMessage: translate('register.messages.validate.login.maxlength'),
+                      },
                     }}
                     value={user.login}
                   />
@@ -113,8 +113,8 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     validate={{
                       maxLength: {
                         value: 50,
-                        errorMessage: translate('entity.validation.maxlength', { max: 50 })
-                      }
+                        errorMessage: translate('entity.validation.maxlength', { max: 50 }),
+                      },
                     }}
                     value={user.firstName}
                   />
@@ -130,8 +130,8 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     validate={{
                       maxLength: {
                         value: 50,
-                        errorMessage: translate('entity.validation.maxlength', { max: 50 })
-                      }
+                        errorMessage: translate('entity.validation.maxlength', { max: 50 }),
+                      },
                     }}
                     value={user.lastName}
                   />
@@ -146,19 +146,19 @@ export class UserManagementUpdate extends React.Component<IUserManagementUpdateP
                     validate={{
                       required: {
                         value: true,
-                        errorMessage: translate('global.messages.validate.email.required')
+                        errorMessage: translate('global.messages.validate.email.required'),
                       },
                       email: {
-                        errorMessage: translate('global.messages.validate.email.invalid')
+                        errorMessage: translate('global.messages.validate.email.invalid'),
                       },
                       minLength: {
                         value: 5,
-                        errorMessage: translate('global.messages.validate.email.minlength')
+                        errorMessage: translate('global.messages.validate.email.minlength'),
                       },
                       maxLength: {
                         value: 254,
-                        errorMessage: translate('global.messages.validate.email.maxlength')
-                      }
+                        errorMessage: translate('global.messages.validate.email.maxlength'),
+                      },
                     }}
                     value={user.email}
                   />
@@ -219,7 +219,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   user: storeState.userManagement.user,
   roles: storeState.userManagement.authorities,
   loading: storeState.userManagement.loading,
-  updating: storeState.userManagement.updating
+  updating: storeState.userManagement.updating,
 });
 
 const mapDispatchToProps = { getUser, getRoles, updateUser, createUser, reset };
@@ -227,7 +227,4 @@ const mapDispatchToProps = { getUser, getRoles, updateUser, createUser, reset };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserManagementUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(UserManagementUpdate);

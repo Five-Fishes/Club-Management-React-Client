@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router-dom';
+import { Redirect, RouteComponentProps } from 'react-router-dom';
 
 import { IRootState } from 'app/shared/reducers';
 import { Row, Col, Button, Label } from 'reactstrap';
@@ -11,11 +11,12 @@ import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import moment from 'moment';
 import { getCourseProgramByFacultyId, getFacultyList, getYearSessionList } from 'app/shared/services/uni-academic-info.service';
 import { completeUserProfile, fetchUserProfileWithUniInfo } from './complete-profile.reducer';
+import { IRedirectLocationState } from 'app/shared/auth/app-route';
 
-export interface ICompleteUserProfileProps extends StateProps, DispatchProps, RouteComponentProps<{}> {}
+export interface ICompleteUserProfileProps extends StateProps, DispatchProps, RouteComponentProps<{}, any, IRedirectLocationState> {}
 
-export class CompleteUserProfile extends React.Component<ICompleteUserProfileProps, {}> {
-  constructor(props) {
+class CompleteUserProfile extends React.Component<ICompleteUserProfileProps, {}> {
+  constructor(props: ICompleteUserProfileProps) {
     super(props);
   }
 
@@ -25,26 +26,28 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
     getYearSessionList(0, 10, 'value');
   }
 
-  fetchCourseProgramByFaculty(e) {
+  fetchCourseProgramByFaculty(e: any) {
     const facultyId = e.target.value;
     getCourseProgramByFacultyId(facultyId, 0, 20, 'name');
   }
 
-  completeProfile = (event, errors, values) => {
+  completeProfile = (event: any, errors: any, values: any) => {
     if (errors.length === 0) {
       const entity = {
         ...values,
         courseProgramId: values.courseProgram,
         intakeSemester: values.intakeSemesterValue,
-        yearSession: values.yearSessionValue
+        yearSession: values.yearSessionValue,
       };
-      window.console.log(entity);
       this.props.completeUserProfile(entity);
     }
   };
 
   render() {
-    const { loading, updating, errorMessage, facultyList, courseProgramList, yearSessionList, userProfile } = this.props;
+    const { isProfileCompleted, loading, updating, errResponse, facultyList, courseProgramList, yearSessionList, userProfile } = this.props;
+    if (isProfileCompleted) {
+      return <Redirect to="/" />;
+    }
     return (
       <div>
         <h2 id="complete-profile-heading">
@@ -64,7 +67,7 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                     name="firstName"
                     validate={{
                       required: { value: true, errorMessage: 'Please enter your First Name' },
-                      maxLength: { value: 200, errorMessage: 'First Name cannot be more than 200 characters' }
+                      maxLength: { value: 200, errorMessage: 'First Name cannot be more than 200 characters' },
                     }}
                   />
                 </AvGroup>
@@ -77,7 +80,7 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                     name="lastName"
                     validate={{
                       required: { value: true, errorMessage: 'Please enter your Last Name' },
-                      maxLength: { value: 200, errorMessage: 'Last Name cannot be more than 200 characters' }
+                      maxLength: { value: 200, errorMessage: 'Last Name cannot be more than 200 characters' },
                     }}
                   />
                 </AvGroup>
@@ -92,7 +95,7 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                     className="form-control"
                     name="gender"
                     validate={{
-                      required: { value: true, errorMessage: 'Please select your gender' }
+                      required: { value: true, errorMessage: 'Please select your gender' },
                     }}
                   >
                     <option value="" disabled>
@@ -112,7 +115,7 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                     placeholder="E.g 123857221"
                     validate={{
                       required: { value: true, errorMessage: 'Please enter your Phone Number' },
-                      pattern: { value: '^([1-9][0-9]{6,11})$', errorMessage: 'Please enter a valid Phone Number without Country Code' }
+                      pattern: { value: '^([1-9][0-9]{6,11})$', errorMessage: 'Please enter a valid Phone Number without Country Code' },
                     }}
                   />
                 </AvGroup>
@@ -132,12 +135,10 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                       dateRange: {
                         format: APP_LOCAL_DATE_FORMAT,
                         start: {
-                          value: moment()
-                            .subtract(40, 'years')
-                            .format(APP_LOCAL_DATE_FORMAT)
+                          value: moment().subtract(40, 'years').format(APP_LOCAL_DATE_FORMAT),
                         },
-                        end: { value: moment().format(APP_LOCAL_DATE_FORMAT) }
-                      }
+                        end: { value: moment().format(APP_LOCAL_DATE_FORMAT) },
+                      },
                     }}
                   />
                 </AvGroup>
@@ -154,7 +155,7 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                       name="facultyId"
                       onChange={this.fetchCourseProgramByFaculty}
                       validate={{
-                        required: { value: true, errorMessage: 'Please select your Faculty' }
+                        required: { value: true, errorMessage: 'Please select your Faculty' },
                       }}
                     >
                       <option value={''} disabled>
@@ -180,7 +181,7 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                       className="form-control"
                       name="courseProgram"
                       validate={{
-                        required: { value: true, errorMessage: 'Please select your Course Program' }
+                        required: { value: true, errorMessage: 'Please select your Course Program' },
                       }}
                     >
                       <option value={''} disabled>
@@ -195,7 +196,7 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                   </AvGroup>
                 )}
 
-                {yearSessionList.length > 0 && (
+                {yearSessionList && yearSessionList.length > 0 && (
                   <AvGroup>
                     <Label id="intakeYearSession" for="intakeYearSession">
                       <Translate contentKey="clubmanagementApp.userUniInfo.intakeYearSession">Intake Year Session</Translate>
@@ -206,7 +207,7 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                       className="form-control"
                       name="yearSessionValue"
                       validate={{
-                        required: { value: true, errorMessage: 'Please select your Intake Year Session' }
+                        required: { value: true, errorMessage: 'Please select your Intake Year Session' },
                       }}
                     >
                       <option value={''} disabled>
@@ -232,7 +233,7 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                     className="form-control"
                     name="intakeSemesterValue"
                     validate={{
-                      required: { value: true, errorMessage: 'Please select your Intake Semster' }
+                      required: { value: true, errorMessage: 'Please select your Intake Semster' },
                     }}
                   >
                     <option value={''} disabled>
@@ -251,12 +252,12 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
                     name="stayIn"
                     validate={{
                       required: { value: true, errorMessage: 'Please enter your current stay location' },
-                      maxLength: { value: '200', errorMessage: 'Provide the location currently stay in within 200 chracters' }
+                      maxLength: { value: '200', errorMessage: 'Provide the location currently stay in within 200 chracters' },
                     }}
                   />
                 </AvGroup>
 
-                <span className="text-error">{errorMessage ? errorMessage.response.data.detail : ''}</span>
+                <span className="text-error">{errResponse ? errResponse.response?.data?.detail : ''}</span>
                 <div className="text-center mx-4 justify-content-between justify-content-md-center mb-2">
                   <Button color="action" id="save-entity" type="submit" disabled={updating}>
                     <FontAwesomeIcon icon="save" />
@@ -275,18 +276,16 @@ export class CompleteUserProfile extends React.Component<ICompleteUserProfilePro
 
 const mapStateToProps = ({ authentication, completeProfile }: IRootState) => ({
   isAuthenticated: authentication.isAuthenticated,
-  ...completeProfile
+  isProfileCompleted: authentication.isProfileCompleted,
+  ...completeProfile,
 });
 
 const mapDispatchToProps = {
   completeUserProfile,
-  fetchUserProfileWithUniInfo
+  fetchUserProfileWithUniInfo,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CompleteUserProfile);
+export default connect(mapStateToProps, mapDispatchToProps)(CompleteUserProfile);

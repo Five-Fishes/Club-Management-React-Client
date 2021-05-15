@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
@@ -6,6 +6,7 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 
 import { IEventAttendee, defaultValue } from 'app/shared/model/event-attendee.model';
 import { IGetAllByEventId } from 'app/shared/type/event-custom-action';
+import { AnyAction } from 'redux';
 
 export const ACTION_TYPES = {
   FETCH_EVENTATTENDEE_LIST: 'eventAttendee/FETCH_EVENTATTENDEE_LIST',
@@ -16,9 +17,9 @@ export const ACTION_TYPES = {
   RESET: 'eventAttendee/RESET',
 };
 
-const initialState = {
+const initialState: IEventAttendeeState = {
   loading: false,
-  errorMessage: null,
+  errResponse: null,
   entities: [] as ReadonlyArray<IEventAttendee>,
   entity: defaultValue,
   updating: false,
@@ -26,17 +27,25 @@ const initialState = {
   updateSuccess: false,
 };
 
-export type EventAttendeeState = Readonly<typeof initialState>;
+export interface IEventAttendeeState {
+  loading: boolean;
+  errResponse: null | AxiosError;
+  entities: ReadonlyArray<IEventAttendee>;
+  entity: Readonly<IEventAttendee>;
+  updating: boolean;
+  totalItems: number;
+  updateSuccess: boolean;
+}
 
 // Reducer
 
-export default (state: EventAttendeeState = initialState, action): EventAttendeeState => {
+export default (state: IEventAttendeeState = initialState, action: AnyAction): IEventAttendeeState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST):
     case REQUEST(ACTION_TYPES.FETCH_EVENTATTENDEE):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         loading: true,
       };
@@ -45,7 +54,7 @@ export default (state: EventAttendeeState = initialState, action): EventAttendee
     case REQUEST(ACTION_TYPES.DELETE_EVENTATTENDEE):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
         updating: true,
       };
@@ -59,7 +68,7 @@ export default (state: EventAttendeeState = initialState, action): EventAttendee
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload,
+        errResponse: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_EVENTATTENDEE_LIST):
       return {
@@ -126,7 +135,7 @@ export const getEntity: ICrudGetAction<IEventAttendee> = id => {
   };
 };
 
-export const getEntityByEventIdAndUserId = (eventId, userId) => {
+export const getEntityByEventIdAndUserId = (eventId: number, userId: number) => {
   const requestUrl = `${apiUrl}/event/${eventId}/user/${userId}`;
   return {
     type: ACTION_TYPES.FETCH_EVENTATTENDEE,

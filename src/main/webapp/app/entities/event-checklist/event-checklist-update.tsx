@@ -24,15 +24,15 @@ export interface IEventChecklistUpdateState {
 }
 
 export class EventChecklistUpdate extends React.Component<IEventChecklistUpdateProps, IEventChecklistUpdateState> {
-  constructor(props) {
+  constructor(props: IEventChecklistUpdateProps) {
     super(props);
     this.state = {
       isNew: !this.props.match.params || !this.props.match.params.id,
-      eventId: this.props.match.params.eventId
+      eventId: this.props.match.params.eventId,
     };
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: IEventChecklistUpdateProps, nextState: IEventChecklistUpdateState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
       this.handleClose();
     }
@@ -46,20 +46,12 @@ export class EventChecklistUpdate extends React.Component<IEventChecklistUpdateP
     }
   }
 
-  onBlobChange = (isAnImage, name) => event => {
-    setFileData(event, (contentType, data) => this.props.setBlob(name, data, contentType), isAnImage);
-  };
-
-  clearBlob = name => () => {
-    this.props.setBlob(name, undefined, undefined);
-  };
-
-  saveEntity = (event, errors, values) => {
+  saveEntity = (event: any, errors: any, values: any) => {
     if (errors.length === 0) {
       const { eventChecklistEntity } = this.props;
       const entity = {
         ...eventChecklistEntity,
-        ...values
+        ...values,
       };
       entity.eventId = this.state.eventId;
 
@@ -172,7 +164,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   eventChecklistEntity: storeState.eventChecklist.entity,
   loading: storeState.eventChecklist.loading,
   updating: storeState.eventChecklist.updating,
-  updateSuccess: storeState.eventChecklist.updateSuccess
+  updateSuccess: storeState.eventChecklist.updateSuccess,
 });
 
 const mapDispatchToProps = {
@@ -180,13 +172,10 @@ const mapDispatchToProps = {
   updateEntity,
   setBlob,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventChecklistUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(EventChecklistUpdate);

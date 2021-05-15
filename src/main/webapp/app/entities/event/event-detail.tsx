@@ -26,13 +26,15 @@ export interface IEventDetailProps extends StateProps, DispatchProps, RouteCompo
 
 export class EventDetail extends React.Component<IEventDetailProps> {
   componentDidMount() {
-    this.props.getEntity(this.props.match.params.id);
-    this.props.getEntityByEventIdAndUserId(this.props.match.params.id, this.props.userId);
+    const eventId = parseInt(this.props.match.params.id, 10);
+    this.props.getEntity(eventId);
+    this.props.getEntityByEventIdAndUserId(eventId, this.props.userId);
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: IEventDetailProps) {
+    const eventId = parseInt(this.props.match.params.id, 10);
     if (prevProps.userId !== this.props.userId && !isNaN(this.props.userId)) {
-      this.props.getEntityByEventIdAndUserId(this.props.match.params.id, this.props.userId);
+      this.props.getEntityByEventIdAndUserId(eventId, this.props.userId);
     }
   }
 
@@ -43,9 +45,7 @@ export class EventDetail extends React.Component<IEventDetailProps> {
         <h1 className="event-module-heading">
           <Translate contentKey="clubmanagementApp.event.detail.title"> Event Details </Translate>
         </h1>
-        <div className="my-3">
-          <CustomTab currentTab="Details" tabList={eventTabList(eventEntity.id)} />
-        </div>
+        <div className="my-3">{eventEntity.id && <CustomTab currentTab="Details" tabList={eventTabList(eventEntity.id)} />}</div>
         <div className="pt-3 mx-4">
           <img
             className="event-img"
@@ -58,13 +58,13 @@ export class EventDetail extends React.Component<IEventDetailProps> {
               <FontAwesomeIcon icon={['far', 'calendar-alt']} size="sm" />
               <h6>
                 <Translate contentKey="clubmanagementApp.event.startDate">Start Date</Translate>:{' '}
-                <TextFormat value={eventEntity.startDate} type="date" format={APP_DATE_12_FORMAT} />{' '}
+                <TextFormat value={eventEntity.startDate ?? ''} type="date" format={APP_DATE_12_FORMAT} />{' '}
               </h6>
 
               <FontAwesomeIcon icon={'calendar-alt'} size="sm" />
               <h6>
                 <Translate contentKey="clubmanagementApp.event.endDate">End Date</Translate>:{' '}
-                <TextFormat value={eventEntity.endDate} type="date" format={APP_DATE_12_FORMAT} />{' '}
+                <TextFormat value={eventEntity.endDate ?? ''} type="date" format={APP_DATE_12_FORMAT} />{' '}
               </h6>
 
               <FontAwesomeIcon icon={'map-marker-alt'} size="sm" />

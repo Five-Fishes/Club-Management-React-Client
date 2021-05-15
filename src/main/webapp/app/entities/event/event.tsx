@@ -27,10 +27,11 @@ export interface IEventProps extends StateProps, DispatchProps, RouteComponentPr
 
 export type IEventState = IPaginationBaseState & {
   modalIsOpen: boolean;
-  eventId: number;
+  eventId?: number;
 };
 
 export class Event extends React.Component<IEventProps, IEventState> {
+  
   constructor(props: IEventProps) {
     super(props);
 

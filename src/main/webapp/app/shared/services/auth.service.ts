@@ -9,14 +9,13 @@ import { IAuthToken } from '../model/auth/auth-token.model';
 
 export async function getAuthToken(firebaseToken: string): Promise<void> {
   const headers = {
-    [FIREBASE_AUTH_HEADER_NAME]: firebaseToken
+    [FIREBASE_AUTH_HEADER_NAME]: firebaseToken,
   };
   const response = await axios.post('/api/authenticate/firebase', null, { headers });
   const responseBody: IAuthToken = response.data;
   Storage.local.set(ACCESS_TOKEN_KEY, responseBody.accessToken);
   Storage.local.set(REFRESH_TOKEN_KEY, responseBody.refreshToken);
   await fetchAccount();
-  // await checkUserProfileCompleted();
 }
 
 export function logout(): void {
@@ -40,19 +39,19 @@ export async function handleUnauthenticated(): Promise<void> {
     Storage.local.set(ACCESS_TOKEN_KEY, responseBody.accessToken);
     Storage.local.set(REFRESH_TOKEN_KEY, responseBody.refreshToken);
     await fetchAccount();
-    // await checkUserProfileCompleted();
   }
 }
 
 const SocialProvider = {
   facebook: firebaseFacebookAuthProvider,
-  google: firebaseGoogleAuthProvider
+  google: firebaseGoogleAuthProvider,
 };
 
 export async function socialLogin(providerType: keyof typeof SocialProvider): Promise<string> {
   const provider = SocialProvider[providerType];
   const userCredentials = await firebaseAuth.signInWithPopup(provider);
-  const firebaseToken = await userCredentials.user.getIdToken();
+  const firebaseToken = await userCredentials.user?.getIdToken();
+  if (!firebaseToken) throw new Error('Firebase Token is undefined');
   Storage.local.set(FIREBASE_TOKEN_KEY, firebaseToken);
   return firebaseToken;
 }
@@ -94,12 +93,5 @@ export async function emailResetPassword(email: string): Promise<void> {
 }
 
 export async function fetchAccount(): Promise<void> {
-  const res = await axios.get(`/api/account`);
-  store.dispatch({ type: ACTION_TYPES.FETCH_ACCOUNT, payload: res.data });
-  await checkUserProfileCompleted();
-}
-
-export async function checkUserProfileCompleted(): Promise<void> {
-  const res = await axios.get(`/api/account/is-profile-completed`);
-  store.dispatch({ type: ACTION_TYPES.CHECK_USERPROFILE_COMPLETE, payload: res.data });
+  store.dispatch({ type: ACTION_TYPES.FETCH_ACCOUNT, payload: axios.get(`/api/account`) });
 }

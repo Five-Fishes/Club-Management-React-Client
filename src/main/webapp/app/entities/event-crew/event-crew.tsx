@@ -30,7 +30,7 @@ export class EventCrew extends React.Component<IEventCrewProps> {
     eventId: this.props.match.params.eventId,
   };
 
-  openModal = eventCrewId => {
+  openModal = (eventCrewId: number) => {
     this.setState({ modalIsOpen: true, eventCrewId });
   };
 

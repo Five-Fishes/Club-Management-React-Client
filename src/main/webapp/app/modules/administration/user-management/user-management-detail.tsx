@@ -64,9 +64,7 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
             <dt>
               <Translate contentKey="userManagement.createdDate">Created Date</Translate>
             </dt>
-            <dd>
-              <TextFormat value={user.createdDate} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
-            </dd>
+            <dd>{user.createdDate && <TextFormat value={user.createdDate} type="date" format={APP_DATE_FORMAT} blankOnInvalid />}</dd>
             <dt>
               <Translate contentKey="userManagement.lastModifiedBy">Last Modified By</Translate>
             </dt>
@@ -75,7 +73,7 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
               <Translate contentKey="userManagement.lastModifiedDate">Last Modified Date</Translate>
             </dt>
             <dd>
-              <TextFormat value={user.lastModifiedDate} type="date" format={APP_DATE_FORMAT} blankOnInvalid />
+              {user.lastModifiedDate && <TextFormat value={user.lastModifiedDate} type="date" format={APP_DATE_FORMAT} blankOnInvalid />}
             </dd>
             <dt>
               <Translate contentKey="userManagement.profiles">Profiles</Translate>
@@ -105,7 +103,7 @@ export class UserManagementDetail extends React.Component<IUserManagementDetailP
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
-  user: storeState.userManagement.user
+  user: storeState.userManagement.user,
 });
 
 const mapDispatchToProps = { getUser };
@@ -113,7 +111,4 @@ const mapDispatchToProps = { getUser };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserManagementDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(UserManagementDetail);

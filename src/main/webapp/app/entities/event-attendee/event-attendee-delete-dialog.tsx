@@ -19,12 +19,12 @@ export class EventAttendeeDeleteDialog extends React.Component<IEventAttendeeDel
     this.props.getEntity(this.props.match.params.attendeeId);
   }
 
-  confirmDelete = event => {
+  confirmDelete = (event: React.MouseEvent<HTMLButtonElement>) => {
     this.props.deleteEntity(this.props.eventAttendeeEntity.id);
     this.handleClose(event);
   };
 
-  handleClose = event => {
+  handleClose = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     this.props.history.goBack();
   };

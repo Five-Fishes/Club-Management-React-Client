@@ -23,14 +23,14 @@ export interface IBudgetUpdateState {
 }
 
 export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpdateState> {
-  constructor(props) {
+  constructor(props: IBudgetUpdateProps) {
     super(props);
     this.state = {
-      isNew: !this.props.match.params || !this.props.match.params.id
+      isNew: !this.props.match.params || !this.props.match.params.id,
     };
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: IBudgetUpdateProps, nextState: IBudgetUpdateState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
       this.handleClose();
     }
@@ -44,20 +44,12 @@ export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpd
     }
   }
 
-  onBlobChange = (isAnImage, name) => event => {
-    setFileData(event, (contentType, data) => this.props.setBlob(name, data, contentType), isAnImage);
-  };
-
-  clearBlob = name => () => {
-    this.props.setBlob(name, undefined, undefined);
-  };
-
-  saveEntity = (event, errors, values) => {
+  saveEntity = (event: any, errors: any, values: any) => {
     if (errors.length === 0) {
       const { budgetEntity } = this.props;
       const entity = {
         ...budgetEntity,
-        ...values
+        ...values,
       };
 
       if (this.state.isNew) {
@@ -73,7 +65,7 @@ export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpd
   };
 
   render() {
-    const { budgetEntity, loading, updating, errorMessage } = this.props;
+    const { budgetEntity, loading, updating, errResponse } = this.props;
     const { isNew } = this.state;
 
     const { details } = budgetEntity;
@@ -105,7 +97,10 @@ export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpd
                     validate={{
                       required: { value: true, errorMessage: 'Please enter an amount for this budget' },
                       min: { value: 0, errorMessage: 'Amount cannot be less than 0' },
-                      pattern: { value: '^([0-9]*.?[0-9]{1,2})$', errorMessage: 'Please enter a valid amount with max of 2 decimal values' }
+                      pattern: {
+                        value: '^([0-9]*.?[0-9]{1,2})$',
+                        errorMessage: 'Please enter a valid amount with max of 2 decimal values',
+                      },
                     }}
                   />
                 </AvGroup>
@@ -120,7 +115,7 @@ export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpd
                     value={budgetEntity.name}
                     validate={{
                       required: { value: true, errorMessage: 'Please enter a name for this budget' },
-                      maxLength: { value: 100, errorMessage: 'Name cannot be more than 100 characters' }
+                      maxLength: { value: 100, errorMessage: 'Name cannot be more than 100 characters' },
                     }}
                   />
                 </AvGroup>
@@ -148,13 +143,13 @@ export class BudgetUpdate extends React.Component<IBudgetUpdateProps, IBudgetUpd
                     type="textarea"
                     name="details"
                     validate={{
-                      maxLength: { value: 200, errorMessage: 'Details cannot be more than 200 characters' }
+                      maxLength: { value: 200, errorMessage: 'Details cannot be more than 200 characters' },
                     }}
                   >
                     {budgetEntity.details}
                   </AvInput>
                 </AvGroup>
-                <div className="text-danger">{errorMessage ? errorMessage.response.data.detail : ''}</div>
+                <div className="text-danger">{errResponse ? errResponse.response?.data?.detail : ''}</div>
                 <div className="general-buttonContainer--flexContainer">
                   <Button
                     className="general-button--width"
@@ -185,7 +180,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.budget.loading,
   updating: storeState.budget.updating,
   updateSuccess: storeState.budget.updateSuccess,
-  errorMessage: storeState.budget.errorMessage
+  errResponse: storeState.budget.errResponse,
 });
 
 const mapDispatchToProps = {
@@ -193,13 +188,10 @@ const mapDispatchToProps = {
   updateEntity,
   setBlob,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(BudgetUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(BudgetUpdate);

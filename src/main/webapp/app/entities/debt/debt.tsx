@@ -35,7 +35,7 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
     ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
-  constructor(props) {
+  constructor(props: IDebtProps) {
     super(props);
     this.sortEntities = this.sortEntities.bind(this);
     this.handlePagination = this.handlePagination.bind(this);
@@ -66,7 +66,8 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
     this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
   }
 
-  showCardAction(debtId: number): void {
+  showCardAction(debtId?: number): void {
+    if (typeof debtId === 'undefined') return;
     this.props.setSelectedDebtId(debtId);
     this.props.setShowActionOptions(true);
   }

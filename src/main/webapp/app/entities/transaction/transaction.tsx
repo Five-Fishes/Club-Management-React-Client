@@ -19,18 +19,18 @@ export type ITransactionState = IPaginationBaseState;
 
 export class Transaction extends React.Component<ITransactionProps, ITransactionState> {
   state: ITransactionState = {
-    ...getSortState(this.props.location, ITEMS_PER_PAGE)
+    ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
   componentDidMount() {
     this.getEntities();
   }
 
-  sort = prop => () => {
+  sort = (prop: any) => () => {
     this.setState(
       {
         order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
+        sort: prop,
       },
       () => this.sortEntities()
     );
@@ -41,7 +41,7 @@ export class Transaction extends React.Component<ITransactionProps, ITransaction
     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
   }
 
-  handlePagination = activePage => this.setState({ activePage }, () => this.sortEntities());
+  handlePagination = (activePage: number) => this.setState({ activePage }, () => this.sortEntities());
 
   getEntities = () => {
     const { activePage, itemsPerPage, sort, order } = this.state;
@@ -122,7 +122,7 @@ export class Transaction extends React.Component<ITransactionProps, ITransaction
                     <td>{transaction.fileType}</td>
                     <td>{transaction.createdBy}</td>
                     <td>
-                      <TextFormat type="date" value={transaction.createdDate} format={APP_DATE_FORMAT} />
+                      <TextFormat type="date" value={transaction.createdDate ?? ''} format={APP_DATE_FORMAT} />
                     </td>
                     <td className="text-right">
                       <div className="btn-group flex-btn-group-container">
@@ -177,17 +177,14 @@ export class Transaction extends React.Component<ITransactionProps, ITransaction
 
 const mapStateToProps = ({ transaction }: IRootState) => ({
   transactionList: transaction.entities,
-  totalItems: transaction.totalItems
+  totalItems: transaction.totalItems,
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEntities,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Transaction);
+export default connect(mapStateToProps, mapDispatchToProps)(Transaction);

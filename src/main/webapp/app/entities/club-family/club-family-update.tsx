@@ -21,14 +21,14 @@ export interface IClubFamilyUpdateState {
 }
 
 export class ClubFamilyUpdate extends React.Component<IClubFamilyUpdateProps, IClubFamilyUpdateState> {
-  constructor(props) {
+  constructor(props: IClubFamilyUpdateProps) {
     super(props);
     this.state = {
-      isNew: !this.props.match.params || !this.props.match.params.id
+      isNew: !this.props.match.params || !this.props.match.params.id,
     };
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: IClubFamilyUpdateProps, nextState: IClubFamilyUpdateState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
       this.handleClose();
     }
@@ -42,20 +42,20 @@ export class ClubFamilyUpdate extends React.Component<IClubFamilyUpdateProps, IC
     }
   }
 
-  onBlobChange = (isAnImage, name) => event => {
-    setFileData(event, (contentType, data) => this.props.setBlob(name, data, contentType), isAnImage);
+  onBlobChange = (isAnImage: boolean, name: string) => (event: any) => {
+    setFileData(event, (contentType: any, data: any) => this.props.setBlob(name, data, contentType), isAnImage);
   };
 
-  clearBlob = name => () => {
+  clearBlob = (name: any) => () => {
     this.props.setBlob(name, undefined, undefined);
   };
 
-  saveEntity = (event, errors, values) => {
+  saveEntity = (event: any, errors: any, values: any) => {
     if (errors.length === 0) {
       const { clubFamilyEntity } = this.props;
       const entity = {
         ...clubFamilyEntity,
-        ...values
+        ...values,
       };
 
       if (this.state.isNew) {
@@ -137,7 +137,7 @@ const mapStateToProps = (storeState: IRootState) => ({
   clubFamilyEntity: storeState.clubFamily.entity,
   loading: storeState.clubFamily.loading,
   updating: storeState.clubFamily.updating,
-  updateSuccess: storeState.clubFamily.updateSuccess
+  updateSuccess: storeState.clubFamily.updateSuccess,
 });
 
 const mapDispatchToProps = {
@@ -145,13 +145,10 @@ const mapDispatchToProps = {
   updateEntity,
   setBlob,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ClubFamilyUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(ClubFamilyUpdate);

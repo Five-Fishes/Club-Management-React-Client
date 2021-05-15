@@ -21,14 +21,14 @@ export interface ITransactionUpdateState {
 }
 
 export class TransactionUpdate extends React.Component<ITransactionUpdateProps, ITransactionUpdateState> {
-  constructor(props) {
+  constructor(props: ITransactionUpdateProps) {
     super(props);
     this.state = {
-      isNew: !this.props.match.params || !this.props.match.params.id
+      isNew: !this.props.match.params || !this.props.match.params.id,
     };
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: ITransactionUpdateProps, nextState: ITransactionUpdateState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
       this.handleClose();
     }
@@ -42,14 +42,14 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
     }
   }
 
-  saveEntity = (event, errors, values) => {
+  saveEntity = (event: any, errors: any, values: any) => {
     values.createdDate = convertDateTimeToServer(values.createdDate);
 
     if (errors.length === 0) {
       const { transactionEntity } = this.props;
       const entity = {
         ...transactionEntity,
-        ...values
+        ...values,
       };
 
       if (this.state.isNew) {
@@ -193,20 +193,17 @@ const mapStateToProps = (storeState: IRootState) => ({
   transactionEntity: storeState.transaction.entity,
   loading: storeState.transaction.loading,
   updating: storeState.transaction.updating,
-  updateSuccess: storeState.transaction.updateSuccess
+  updateSuccess: storeState.transaction.updateSuccess,
 });
 
 const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TransactionUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionUpdate);
