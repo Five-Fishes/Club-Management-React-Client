@@ -10,7 +10,10 @@
       "genderValue": {
         "MALE": "男",
         "FEMALE": "女"
-      }
+      },
+      "stats": "资料",
+      "evolution": "进化",
+      "roles": "角色"
     },
     "completeProfile": {
       "title": "完成个人资料"

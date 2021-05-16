@@ -64,6 +64,10 @@ import faculty, {
   IFacultyState
 } from 'app/entities/faculty/faculty.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
+// prettier-ignore
+import user, {
+  IUserState
+} from 'app/modules/user-profile/user-profile.reducer';
 import completeProfile, { ICompleteProfileState } from 'app/modules/auth/complete-profile/complete-profile.reducer';
 
 export interface IRootState {
@@ -88,6 +92,7 @@ export interface IRootState {
   readonly faculty: IFacultyState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
+  readonly user: IUserState;
   readonly completeProfile: ICompleteProfileState;
 }
 
@@ -113,6 +118,7 @@ const rootReducer = combineReducers<IRootState>({
   faculty,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
+  user,
   completeProfile,
 });
 

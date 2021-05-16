@@ -1,41 +1,114 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Switch, Route } from 'react-router-dom';
 
 import { IRootState } from 'app/shared/reducers';
-import { Container, Button } from 'reactstrap';
-import { logout } from 'app/shared/services/auth.service';
+import { getCurrentUserProfile, setUserProfileCurrentTab } from './user-profile.reducer';
+import { Button } from 'reactstrap';
 import { toast } from 'react-toastify';
+import { Translate } from 'react-jhipster';
 
-export interface IUserProfileProps extends StateProps, RouteComponentProps<{}> {}
+import { logout } from 'app/shared/services/auth.service';
+import CustomTab from 'app/shared/components/customTab/custom-tab';
+import { profileTab } from 'app/shared/util/tab.constants';
+import AppRoute from 'app/shared/auth/app-route';
 
+import UserProfileStats from './user-profile-stats';
+import UserProfileEvolution from './user-profile-evolution';
+import UserProfileRole from './user-profile-role';
+import { concatFullName } from 'app/shared/util/string-util';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+export interface IUserProfileProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
+
+const UserProfileTabContent: React.FC<RouteComponentProps> = ({ match }) => (
+  <>
+    <Switch>
+      <AppRoute exact path={`${match.url}/stats`} component={UserProfileStats} />
+      <AppRoute exact path={`${match.url}/evolution`} component={UserProfileEvolution} />
+      <AppRoute exact path={`${match.url}/roles`} component={UserProfileRole} />
+    </Switch>
+  </>
+);
 export class UserProfile extends React.Component<IUserProfileProps, {}> {
   constructor(props: IUserProfileProps) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+    this.tabOnClick = this.tabOnClick.bind(this);
   }
 
-  handleClick() {
+  componentDidMount() {
+    this.props.getCurrentUserProfile();
+  }
+
+  tabOnClick(tabName: string) {
+    this.props.setUserProfileCurrentTab(tabName);
+  }
+
+  handleLogout() {
     logout();
     toast.info('Logout Successfully');
     this.props.history.push('/');
   }
 
   render() {
+    const { match, location, history, currentProfileTab } = this.props;
+    const { firstName, lastName, gender, imageUrl, clubFamilyId, clubFamilyName, clubFamilyDescription } = this.props.userUniEntity;
+
+    let imageSrc = 'content/images/placeholder.png';
+    if (imageUrl) {
+      imageSrc = imageUrl;
+    } else if (gender === 'MALE') {
+      imageSrc = 'content/images/jhipster_family_member_0_head-192.png';
+    } else if (gender === 'FEMALE') {
+      imageSrc = 'content/images/jhipster_family_member_3_head-192.png';
+    }
+
     return (
       <>
-        <Container className="h-100 w-75 d-flex align-items-center justify-content-center pb-3">
-          <Button onClick={this.handleClick}>Logout</Button>
-        </Container>
+        <div className="d-block text-center my-3">
+          <img className="border rounded-circle shadow profile-img" src={imageSrc} alt="User Profile Image" />
+        </div>
+        <div className="text-center">
+          <h1>{concatFullName(firstName ?? '', lastName ?? '')}</h1>
+          {Boolean(clubFamilyId) && (
+            <>
+              <h3 className="d-block mx-auto mb-3 family-label py-2 px-3">
+                <FontAwesomeIcon icon="fish" />
+                &nbsp;{clubFamilyName}
+              </h3>
+              <p className="family-description">{clubFamilyDescription}</p>
+            </>
+          )}
+        </div>
+
+        <CustomTab tabList={profileTab} currentTab={currentProfileTab} handleClick={this.tabOnClick} />
+        <div className="mx-2">
+          <UserProfileTabContent match={match} location={location} history={history} />
+        </div>
+        <div className="d-block text-center my-5">
+          <Button color="action px-5" onClick={this.handleLogout}>
+            <Translate contentKey="global.menu.account.logout">Logout</Translate>
+          </Button>
+        </div>
       </>
     );
   }
 }
 
-const mapStateToProps = ({ authentication }: IRootState) => ({
+const mapStateToProps = ({ authentication, user }: IRootState) => ({
   isAuthenticated: authentication.isAuthenticated,
+  userId: authentication.id,
+  userUniEntity: user.entity,
+  currentProfileTab: user.currentProfileTab,
 });
 
-type StateProps = ReturnType<typeof mapStateToProps>;
+const mapDispatchToProps = {
+  getCurrentUserProfile,
+  setUserProfileCurrentTab,
+};
 
-export default connect(mapStateToProps)(UserProfile);
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserProfile);

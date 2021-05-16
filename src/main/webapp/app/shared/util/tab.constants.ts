@@ -92,3 +92,24 @@ export const financeTabList: ITabInfo[] = [
     ccRole: CCRole.ADMIN,
   },
 ];
+
+export const profileTab: ITabInfo[] = [
+  {
+    tabName: 'Stats',
+    tabTranslateKey: 'clubmanagementApp.userProfile.stats',
+    tabRoute: '/profile/stats',
+    asLongAsIsAuthenticated: true,
+  },
+  {
+    tabName: 'Evolution',
+    tabTranslateKey: 'clubmanagementApp.userProfile.evolution',
+    tabRoute: '/profile/evolution',
+    asLongAsIsAuthenticated: true,
+  },
+  {
+    tabName: 'Roles',
+    tabTranslateKey: 'clubmanagementApp.userProfile.roles',
+    tabRoute: '/profile/roles',
+    asLongAsIsAuthenticated: true,
+  },
+];
