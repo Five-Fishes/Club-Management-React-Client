@@ -6,47 +6,53 @@ import { IEventAttendee } from 'app/shared/model/event-attendee.model';
 import { translate } from 'react-jhipster';
 
 export interface IEventTableRowProps {
-  user: IEventCrew | IEventAttendee;
+  record: { [key: string]: any };
+  fields: { [key: string]: any };
   index: number;
-  openModal: Function;
+  hasNumbering?: boolean;
+  openModal?: (id: number) => void;
 }
 
 export class EventTableRow extends React.Component<IEventTableRowProps> {
-  state = { user: this.props.user };
-  onToggleModal = () => this.props.openModal(this.props.user.id);
-
-  contactUser = () => {
-    window.open(`https://wa.me/+60${this.props.user.contactNumber}`, '_blank');
-  };
+  //   contactUser = () => {
+  //     window.open(`https://wa.me/+60${this.props.record.contactNumber}`, '_blank');
+  //   };
 
   render() {
-    const { user, index } = this.props;
-
-    let thirdColumn;
-    if ('role' in user) {
-      thirdColumn = translate(`clubmanagementApp.EventCrewRole.${user.role}`);
-    } else if ('year' in user) {
-      // @ts-ignore
-      thirdColumn = user.year;
-    }
+    const { record, fields, hasNumbering, index, openModal } = this.props;
 
     return (
       <tr>
-        <td scope="row">{index + 1}</td>
-        <td>{user.userName}</td>
-        <td>{thirdColumn}</td>
-        <td>{'provideTransport' in user ? <FontAwesomeIcon icon="car" /> : null}</td>
+        {hasNumbering ? <td scope="row">{index + 1}</td> : null}
+        {Object.keys(fields).map(key => {
+          if (key == 'id') {
+            return null;
+          } else {
+            return <td key={record[key]}>{record[key]}</td>;
+          }
+        })}
+        {openModal ? (
+          <td>
+            <Button color="Link" className="icon-btn" onClick={() => openModal(this.props.record.id)}>
+              <FontAwesomeIcon icon="ellipsis-v" color="#07ade1" />
+            </Button>
+          </td>
+        ) : null}
+      </tr>
+    );
+  }
+}
+
+{
+  /* 
+        <td>{record.userName}</td>
+        <td>{'provideTransport' in record ? <FontAwesomeIcon icon="car" /> : null}</td>
         <td>
           <Button color="Link" className="icon-btn" onClick={this.contactUser}>
             <FontAwesomeIcon icon={['fab', 'whatsapp-square']} color="#25D366" size="lg" />
           </Button>
         </td>
         <td>
-          <Button onClick={this.onToggleModal} color="Link" className="icon-btn">
-            <FontAwesomeIcon icon="ellipsis-v" color="#07ade1" />
-          </Button>
-        </td>
-      </tr>
-    );
-  }
+          
+        </td> */
 }

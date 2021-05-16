@@ -94,7 +94,12 @@ export class EventCrew extends React.Component<IEventCrewProps> {
           </AuthorizationChecker>
           <div className="table-responsive mt-4">
             {eventCrewList && eventCrewList.length > 0 ? (
-              <EventTable users={eventCrewList} openModal={this.openModal} />
+              <EventTable
+                fields={{ id: 'id', userName: 'Name', role: 'Role', contactNumber: '' }}
+                records={eventCrewList}
+                hasNumbering={true}
+                openModal={this.openModal}
+              />
             ) : (
               <div className="alert alert-warning">
                 <Translate contentKey="clubmanagementApp.eventCrew.home.notFound">No Event Crews found {}</Translate>

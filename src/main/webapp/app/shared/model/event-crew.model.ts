@@ -1,6 +1,6 @@
 export const enum EventCrewRole {
   HEAD = 'HEAD',
-  MEMBER = 'MEMBER'
+  MEMBER = 'MEMBER',
 }
 
 export interface IEventCrew {
