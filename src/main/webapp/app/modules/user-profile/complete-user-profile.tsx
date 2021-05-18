@@ -60,7 +60,6 @@ class CompleteUserProfile extends React.Component<ICompleteUserProfileProps, {}>
               <p>Loading...</p>
             ) : (
               <AvForm model={userProfile} onSubmit={this.completeProfile}>
-                {window.console.log(userProfile)}
                 <AvGroup>
                   <AvField
                     id="first-name"
