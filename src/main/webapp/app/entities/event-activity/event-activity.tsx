@@ -29,6 +29,10 @@ export class EventActivity extends React.Component<IEventActivityProps, IEventAc
   };
 
   componentDidMount() {
+    if (this.state.sort === 'id') {
+      this.state.order = 'asc';
+      this.state.sort = 'startDate';
+    }
     this.getEntities();
   }
 
