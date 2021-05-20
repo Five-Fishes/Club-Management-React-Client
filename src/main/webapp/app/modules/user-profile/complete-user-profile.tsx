@@ -10,8 +10,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import moment from 'moment';
 import { getCourseProgramByFacultyId, getFacultyList, getYearSessionList } from 'app/shared/services/uni-academic-info.service';
-import { completeUserProfile, fetchUserProfileWithUniInfo } from './complete-profile.reducer';
+import { completeUserProfile, getCurrentUserProfile } from './user-profile.reducer';
 import { IRedirectLocationState } from 'app/shared/auth/app-route';
+import { convertDateTimeFromServerToLocaleDate } from 'app/shared/util/date-utils';
 
 export interface ICompleteUserProfileProps extends StateProps, DispatchProps, RouteComponentProps<{}, any, IRedirectLocationState> {}
 
@@ -21,9 +22,9 @@ class CompleteUserProfile extends React.Component<ICompleteUserProfileProps, {}>
   }
 
   componentDidMount() {
-    this.props.fetchUserProfileWithUniInfo();
     getFacultyList(0, 40, 'shortName');
     getYearSessionList(0, 10, 'value');
+    this.props.getCurrentUserProfile();
   }
 
   fetchCourseProgramByFaculty(e: any) {
@@ -49,7 +50,7 @@ class CompleteUserProfile extends React.Component<ICompleteUserProfileProps, {}>
       return <Redirect to="/" />;
     }
     return (
-      <div>
+      <div className="mx-3">
         <h2 id="complete-profile-heading">
           <Translate contentKey="clubmanagementApp.completeProfile.title">Complete Profile</Translate>
         </h2>
@@ -112,10 +113,10 @@ class CompleteUserProfile extends React.Component<ICompleteUserProfileProps, {}>
                     label={translate('clubmanagementApp.userProfile.phoneNumber')}
                     type="text"
                     name="phoneNumber"
-                    placeholder="E.g 123857221"
+                    placeholder="E.g 0123857221"
                     validate={{
                       required: { value: true, errorMessage: 'Please enter your Phone Number' },
-                      pattern: { value: '^([1-9][0-9]{6,11})$', errorMessage: 'Please enter a valid Phone Number without Country Code' },
+                      pattern: { value: '^([0-9]{6,11})$', errorMessage: 'Please enter a valid Phone Number' },
                     }}
                   />
                 </AvGroup>
@@ -140,6 +141,7 @@ class CompleteUserProfile extends React.Component<ICompleteUserProfileProps, {}>
                         end: { value: moment().format(APP_LOCAL_DATE_FORMAT) },
                       },
                     }}
+                    value={userProfile.dateOfBirth ? userProfile.dateOfBirth.format(APP_LOCAL_DATE_FORMAT) : ''}
                   />
                 </AvGroup>
 
@@ -209,6 +211,7 @@ class CompleteUserProfile extends React.Component<ICompleteUserProfileProps, {}>
                       validate={{
                         required: { value: true, errorMessage: 'Please select your Intake Year Session' },
                       }}
+                      value={userProfile.yearSession ? userProfile.yearSession : ''}
                     >
                       <option value={''} disabled>
                         {translate('global.select.selectOne')}
@@ -235,6 +238,7 @@ class CompleteUserProfile extends React.Component<ICompleteUserProfileProps, {}>
                     validate={{
                       required: { value: true, errorMessage: 'Please select your Intake Semster' },
                     }}
+                    value={userProfile.intakeSemester ? userProfile.intakeSemester : ''}
                   >
                     <option value={''} disabled>
                       {translate('global.select.selectOne')}
@@ -274,15 +278,15 @@ class CompleteUserProfile extends React.Component<ICompleteUserProfileProps, {}>
   }
 }
 
-const mapStateToProps = ({ authentication, completeProfile }: IRootState) => ({
+const mapStateToProps = ({ authentication, user }: IRootState) => ({
   isAuthenticated: authentication.isAuthenticated,
   isProfileCompleted: authentication.isProfileCompleted,
-  ...completeProfile,
+  ...user,
 });
 
 const mapDispatchToProps = {
   completeUserProfile,
-  fetchUserProfileWithUniInfo,
+  getCurrentUserProfile,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
