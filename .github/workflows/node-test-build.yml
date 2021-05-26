@@ -6,8 +6,6 @@ name: Node.js Build and Test CI
 on:
   pull_request:
     branches: 
-      - 'master'
-      - 'production-version-*'
       - 'dev-version-*'
 
 jobs:
