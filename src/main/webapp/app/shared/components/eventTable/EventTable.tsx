@@ -1,39 +1,44 @@
 import { IEventCrew } from 'app/shared/model/event-crew.model';
 import React from 'react';
 import { Table } from 'reactstrap';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { EventTableRow } from './EventTableRow';
 
-export interface IEventTableProps {
+// type asdf = keyof T;
+export interface IEventTableProps<T> {
   hasNumbering?: boolean;
-  fields: { [key: string]: string };
-  records: ReadonlyArray<any>; //Set array generic type to object interface (Eg:IEventCrew)
+  hasWhatsapp?: boolean;
+  hasIcon?: boolean;
+  icon?: IconProp;
+  //   fields: { [key: string]: string };
+  fields: Partial<Record<keyof T, string>>;
+  records: ReadonlyArray<T>;
   openModal?: (id: number) => void;
 }
 
-export class EventTable extends React.Component<IEventTableProps> {
+export class EventTable<T> extends React.Component<IEventTableProps<T>> {
   render() {
-    const { hasNumbering, fields, records, openModal } = this.props;
-    const allowedField: Array<string> = Object.keys(fields);
+    const { hasNumbering, hasWhatsapp, hasIcon, icon, fields, records, openModal } = this.props;
+    const allowedField: string[] = Object.keys(fields);
 
     const filteredRecord = records.map(record => {
       return Object.keys(record)
         .filter(key => allowedField.includes(key))
-        .reduce((obj: any, key) => {
-          obj[key] = record[key];
+        .reduce((obj: Record<string, any>, key) => {
+          obj[key] = record[key as keyof T];
           return obj;
         }, {});
     });
 
-    console.log(filteredRecord);
     return (
       <Table responsive size="sm">
         <thead>
           {hasNumbering ? <th>#</th> : null}
           {Object.keys(fields).map(key => {
-            if (key == 'id') {
+            if (key === 'id') {
               return null;
             } else {
-              return <th>{fields[key]}</th>;
+              return <th>{fields[key as keyof T]}</th>;
             }
           })}
         </thead>
@@ -45,8 +50,11 @@ export class EventTable extends React.Component<IEventTableProps> {
               fields={fields}
               index={index}
               openModal={openModal}
-              hasNumbering={true}
-            ></EventTableRow>
+              hasNumbering={hasNumbering}
+              hasWhatsapp={hasWhatsapp}
+              hasIcon={hasIcon}
+              icon={icon}
+            />
           ))}
         </tbody>
       </Table>

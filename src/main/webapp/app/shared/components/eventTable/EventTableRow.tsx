@@ -4,36 +4,58 @@ import { Button } from 'reactstrap';
 import { IEventCrew } from 'app/shared/model/event-crew.model';
 import { IEventAttendee } from 'app/shared/model/event-attendee.model';
 import { translate } from 'react-jhipster';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 export interface IEventTableRowProps {
   record: { [key: string]: any };
   fields: { [key: string]: any };
   index: number;
   hasNumbering?: boolean;
+  hasWhatsapp?: boolean;
+  hasIcon?: boolean;
+  icon?: IconProp;
   openModal?: (id: number) => void;
 }
 
 export class EventTableRow extends React.Component<IEventTableRowProps> {
-  //   contactUser = () => {
-  //     window.open(`https://wa.me/+60${this.props.record.contactNumber}`, '_blank');
-  //   };
+  contactUser(): void {
+    window.open(`https://wa.me/+60${this.props.record.contactNumber}`, '_blank');
+  }
+
+  openModal(): void {
+    if (this.props.openModal) {
+      this.props.openModal(this.props.record.id);
+    }
+  }
 
   render() {
-    const { record, fields, hasNumbering, index, openModal } = this.props;
+    const { record, fields, hasNumbering, hasWhatsapp, hasIcon, icon, index, openModal } = this.props;
 
     return (
       <tr>
-        {hasNumbering ? <td scope="row">{index + 1}</td> : null}
+        {hasNumbering && <td scope="row">{index + 1}</td>}
         {Object.keys(fields).map(key => {
-          if (key == 'id') {
+          if (key === 'id') {
             return null;
           } else {
             return <td key={record[key]}>{record[key]}</td>;
           }
         })}
+        {hasIcon && icon ? (
+          <td>
+            <FontAwesomeIcon icon={icon} />
+          </td>
+        ) : null}
+        {hasWhatsapp ? (
+          <td>
+            <Button color="Link" className="icon-btn" onClick={this.contactUser}>
+              <FontAwesomeIcon icon={['fab', 'whatsapp-square']} color="#25D366" size="lg" />
+            </Button>
+          </td>
+        ) : null}
         {openModal ? (
           <td>
-            <Button color="Link" className="icon-btn" onClick={() => openModal(this.props.record.id)}>
+            <Button color="Link" className="icon-btn" onClick={this.openModal}>
               <FontAwesomeIcon icon="ellipsis-v" color="#07ade1" />
             </Button>
           </td>
@@ -41,18 +63,4 @@ export class EventTableRow extends React.Component<IEventTableRowProps> {
       </tr>
     );
   }
-}
-
-{
-  /* 
-        <td>{record.userName}</td>
-        <td>{'provideTransport' in record ? <FontAwesomeIcon icon="car" /> : null}</td>
-        <td>
-          <Button color="Link" className="icon-btn" onClick={this.contactUser}>
-            <FontAwesomeIcon icon={['fab', 'whatsapp-square']} color="#25D366" size="lg" />
-          </Button>
-        </td>
-        <td>
-          
-        </td> */
 }

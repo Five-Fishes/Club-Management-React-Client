@@ -95,9 +95,15 @@ export class EventCrew extends React.Component<IEventCrewProps> {
           <div className="table-responsive mt-4">
             {eventCrewList && eventCrewList.length > 0 ? (
               <EventTable
-                fields={{ id: 'id', userName: 'Name', role: 'Role', contactNumber: '' }}
+                fields={{
+                  userName: 'Name',
+                  role: 'Role',
+                  contactNumber: '',
+                }}
                 records={eventCrewList}
-                hasNumbering={true}
+                hasNumbering
+                hasIcon
+                hasWhatsapp
                 openModal={this.openModal}
               />
             ) : (
