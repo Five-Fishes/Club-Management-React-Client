@@ -4,13 +4,11 @@ import { Table } from 'reactstrap';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { EventTableRow } from './EventTableRow';
 
-// type asdf = keyof T;
 export interface IEventTableProps<T> {
   hasNumbering?: boolean;
   hasWhatsapp?: boolean;
   hasIcon?: boolean;
   icon?: IconProp;
-  //   fields: { [key: string]: string };
   fields: Partial<Record<keyof T, string>>;
   records: ReadonlyArray<T>;
   openModal?: (id: number) => void;
