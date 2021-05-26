@@ -1,4 +1,3 @@
-import { IEventCrew } from 'app/shared/model/event-crew.model';
 import React from 'react';
 import { Table } from 'reactstrap';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';

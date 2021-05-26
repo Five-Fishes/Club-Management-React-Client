@@ -1,14 +1,11 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from 'reactstrap';
-import { IEventCrew } from 'app/shared/model/event-crew.model';
-import { IEventAttendee } from 'app/shared/model/event-attendee.model';
-import { translate } from 'react-jhipster';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
-export interface IEventTableRowProps {
-  record: { [key: string]: any };
-  fields: { [key: string]: any };
+export interface IEventTableRowProps<T> {
+  record: Record<string, any>;
+  fields: Partial<Record<keyof T, string>>;
   index: number;
   hasNumbering?: boolean;
   hasWhatsapp?: boolean;
@@ -17,7 +14,7 @@ export interface IEventTableRowProps {
   openModal?: (id: number) => void;
 }
 
-export class EventTableRow extends React.Component<IEventTableRowProps> {
+export class EventTableRow<T> extends React.Component<IEventTableRowProps<T>> {
   contactUser(): void {
     window.open(`https://wa.me/+60${this.props.record.contactNumber}`, '_blank');
   }
