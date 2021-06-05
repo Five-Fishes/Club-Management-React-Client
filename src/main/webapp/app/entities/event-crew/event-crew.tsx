@@ -95,12 +95,12 @@ export class EventCrew extends React.Component<IEventCrewProps> {
           <div className="table-responsive mt-4">
             {eventCrewList && eventCrewList.length > 0 ? (
               <EventTable
-                fields={{
+                columns={{
                   userName: 'Name',
                   role: 'Role',
                   contactNumber: '',
                 }}
-                records={eventCrewList}
+                dataSet={eventCrewList}
                 hasNumbering
                 hasIcon
                 hasWhatsapp

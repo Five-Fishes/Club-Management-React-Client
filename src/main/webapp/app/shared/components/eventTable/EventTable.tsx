@@ -8,21 +8,21 @@ export interface IEventTableProps<T> {
   hasWhatsapp?: boolean;
   hasIcon?: boolean;
   icon?: IconProp;
-  fields: Partial<Record<keyof T, string>>;
-  records: ReadonlyArray<T>;
+  columns: Partial<Record<keyof T, string>>;
+  dataSet: ReadonlyArray<T>;
   openModal?: (id: number) => void;
 }
 
 export class EventTable<T> extends React.Component<IEventTableProps<T>> {
   render() {
-    const { hasNumbering, hasWhatsapp, hasIcon, icon, fields, records, openModal } = this.props;
-    const allowedField: string[] = Object.keys(fields);
+    const { hasNumbering, hasWhatsapp, hasIcon, icon, columns, dataSet, openModal } = this.props;
+    const allowedField: string[] = Object.keys(columns);
 
-    const filteredRecord = records.map(record => {
-      return Object.keys(record)
+    const filteredRecord = dataSet.map(data => {
+      return Object.keys(data)
         .filter(key => allowedField.includes(key))
         .reduce((obj: Record<string, any>, key) => {
-          obj[key] = record[key as keyof T];
+          obj[key] = data[key as keyof T];
           return obj;
         }, {});
     });
@@ -31,20 +31,20 @@ export class EventTable<T> extends React.Component<IEventTableProps<T>> {
       <Table responsive size="sm">
         <thead>
           {hasNumbering ? <th>#</th> : null}
-          {Object.keys(fields).map(key => {
+          {Object.keys(columns).map(key => {
             if (key === 'id') {
               return null;
             } else {
-              return <th>{fields[key as keyof T]}</th>;
+              return <th>{columns[key as keyof T]}</th>;
             }
           })}
         </thead>
         <tbody>
-          {filteredRecord.map((record, index) => (
+          {filteredRecord.map((data, index) => (
             <EventTableRow
-              key={record.id}
-              record={record}
-              fields={fields}
+              key={data.id}
+              record={data}
+              columns={columns}
               index={index}
               openModal={openModal}
               hasNumbering={hasNumbering}

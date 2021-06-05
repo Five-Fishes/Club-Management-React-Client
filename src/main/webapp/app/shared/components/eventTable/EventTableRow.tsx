@@ -5,7 +5,7 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 
 export interface IEventTableRowProps<T> {
   record: Record<string, any>;
-  fields: Partial<Record<keyof T, string>>;
+  columns: Partial<Record<keyof T, string>>;
   index: number;
   hasNumbering?: boolean;
   hasWhatsapp?: boolean;
@@ -26,12 +26,12 @@ export class EventTableRow<T> extends React.Component<IEventTableRowProps<T>> {
   }
 
   render() {
-    const { record, fields, hasNumbering, hasWhatsapp, hasIcon, icon, index, openModal } = this.props;
+    const { record, columns, hasNumbering, hasWhatsapp, hasIcon, icon, index, openModal } = this.props;
 
     return (
       <tr>
         {hasNumbering && <td scope="row">{index + 1}</td>}
-        {Object.keys(fields).map(key => {
+        {Object.keys(columns).map(key => {
           if (key === 'id') {
             return null;
           } else {
