@@ -37,9 +37,9 @@ export class EventTableRow extends React.Component<IEventTableRowProps> {
     return (
       <tr>
         {hasNumbering && <td scope="row">{index + 1}</td>}
-        {columns.map(column => {
-          return <td key={data[column.key]}>{column.replaceValue && data[column.key] ? column.replaceValue : data[column.key]}</td>;
-        })}
+        {columns.map(column => (
+          <td key={data[column.key]}>{column.replaceValue && data[column.key] ? column.replaceValue : data[column.key]}</td>
+        ))}
         {whatsappKey ? (
           <td>
             <Button color="Link" className="icon-btn" onClick={this.contactUser} disabled={!this.props.data[whatsappKey]}>

@@ -20,9 +20,9 @@ export class EventTable<T> extends React.Component<IEventTableProps<T>> {
       <Table responsive size="sm" className="mt-4">
         <thead>
           {hasNumbering ? <th>#</th> : null}
-          {columns.map(column => {
-            return <th key={column.title}>{column.title}</th>;
-          })}
+          {columns.map(column => (
+            <th key={column.title}>{column.title}</th>
+          ))}
           {whatsappKey && <th />}
           {action && <th />}
         </thead>
