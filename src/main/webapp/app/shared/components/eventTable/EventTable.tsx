@@ -1,13 +1,12 @@
 import React from 'react';
 import { Table } from 'reactstrap';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { Translate } from 'react-jhipster';
 import { EventTableRow } from './EventTableRow';
 import { IColumns } from '../../model/columns.model';
 
 export interface IEventTableProps<T> {
   hasNumbering?: boolean;
-  columns: Array<IColumns>;
+  columns: IColumns[];
   dataSet: ReadonlyArray<T>;
   whatsappKey?: string;
   action?: (id: number) => void;
@@ -22,21 +21,21 @@ export class EventTable<T> extends React.Component<IEventTableProps<T>> {
         <thead>
           {hasNumbering ? <th>#</th> : null}
           {columns.map(column => {
-            return <th>{column.title}</th>;
+            return <th key={column.title}>{column.title}</th>;
           })}
-          {whatsappKey && <th></th>}
-          {action && <th></th>}
+          {whatsappKey && <th />}
+          {action && <th />}
         </thead>
         <tbody>
           {dataSet.map((data, index) => (
             <EventTableRow
-              key={index} //data type
-              data={data}
-              columns={columns}
+              key={index}
               index={index}
-              action={action}
               hasNumbering={hasNumbering}
+              columns={columns}
+              data={data}
               whatsappKey={whatsappKey}
+              action={action}
             />
           ))}
         </tbody>

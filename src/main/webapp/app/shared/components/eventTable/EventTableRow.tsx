@@ -6,7 +6,7 @@ import { IColumns } from '../../model/columns.model';
 export interface IEventTableRowProps {
   hasNumbering?: boolean;
   index: number;
-  columns: Array<IColumns>;
+  columns: IColumns[];
   data: { [key: string]: any };
   whatsappKey?: string;
   action?: (id: number) => void;
