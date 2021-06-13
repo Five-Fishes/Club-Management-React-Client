@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Container, Button, Col, Row, Table } from 'reactstrap';
 // tslint:disable-next-line:no-unused-variable
 import { Translate, getSortState, ICrudGetAllAction, IPaginationBaseState } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,7 +10,6 @@ import { IRootState } from 'app/shared/reducers';
 import { getEntities, getEventCrewByEventId } from './event-crew.reducer';
 import { IEventCrew, EventCrewRole } from 'app/shared/model/event-crew.model';
 // tslint:disable-next-line:no-unused-variable
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import CustomTab from 'app/shared/components/customTab/custom-tab';
 import EventModal from 'app/shared/components/eventModal/event-modal';
 import { eventTabList } from 'app/shared/util/tab.constants';
@@ -95,20 +93,18 @@ export class EventCrew extends React.Component<IEventCrewProps> {
           <div className="table-responsive mt-4">
             {eventCrewList && eventCrewList.length > 0 ? (
               <EventTable
-                columns={{
-                  userName: 'Name',
-                  role: 'Role',
-                  contactNumber: '',
-                }}
+                columns={[
+                  { title: 'Name', key: 'userName' },
+                  { title: 'Role', key: 'role' },
+                ]}
                 dataSet={eventCrewList}
                 hasNumbering
-                hasIcon
-                hasWhatsapp
+                whatsappKey="contactNumber"
                 openModal={this.openModal}
               />
             ) : (
               <div className="alert alert-warning">
-                <Translate contentKey="clubmanagementApp.eventCrew.home.notFound">No Event Crews found {}</Translate>
+                <Translate contentKey="clubmanagementApp.eventCrew.home.notFound">No Event Crews found </Translate>
               </div>
             )}
           </div>

@@ -1,60 +1,50 @@
 import React from 'react';
 import { Table } from 'reactstrap';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { Translate } from 'react-jhipster';
 import { EventTableRow } from './EventTableRow';
+import { IColumns } from './columns.model';
 
 export interface IEventTableProps<T> {
   hasNumbering?: boolean;
-  hasWhatsapp?: boolean;
+  whatsappKey?: string;
   hasIcon?: boolean;
   icon?: IconProp;
-  columns: Partial<Record<keyof T, string>>;
+  columns: Array<IColumns>;
   dataSet: ReadonlyArray<T>;
   openModal?: (id: number) => void;
 }
 
 export class EventTable<T> extends React.Component<IEventTableProps<T>> {
   render() {
-    const { hasNumbering, hasWhatsapp, hasIcon, icon, columns, dataSet, openModal } = this.props;
-    const allowedField: string[] = Object.keys(columns);
+    const { hasNumbering, whatsappKey, columns, dataSet, openModal } = this.props;
 
-    const filteredRecord = dataSet.map(data => {
-      return Object.keys(data)
-        .filter(key => allowedField.includes(key))
-        .reduce((obj: Record<string, any>, key) => {
-          obj[key] = data[key as keyof T];
-          return obj;
-        }, {});
-    });
-
-    return (
+    return dataSet && dataSet.length > 0 ? (
       <Table responsive size="sm">
         <thead>
           {hasNumbering ? <th>#</th> : null}
-          {Object.keys(columns).map(key => {
-            if (key === 'id') {
-              return null;
-            } else {
-              return <th>{columns[key as keyof T]}</th>;
-            }
+          {columns.map(column => {
+            return <th>{column.title}</th>;
           })}
         </thead>
         <tbody>
-          {filteredRecord.map((data, index) => (
+          {dataSet.map((data, index) => (
             <EventTableRow
-              key={data.id}
-              record={data}
+              key={index} //data type
+              data={data}
               columns={columns}
               index={index}
               openModal={openModal}
               hasNumbering={hasNumbering}
-              hasWhatsapp={hasWhatsapp}
-              hasIcon={hasIcon}
-              icon={icon}
+              whatsappKey={whatsappKey}
             />
           ))}
         </tbody>
       </Table>
+    ) : (
+      <div className="alert alert-warning">
+        <Translate contentKey="clubmanagementApp.eventAttendee.home.notFound">No Event Attendees found</Translate>
+      </div>
     );
   }
 }
