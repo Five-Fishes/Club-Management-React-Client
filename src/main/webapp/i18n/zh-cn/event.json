@@ -4,6 +4,7 @@
       "home": {
         "title": "活动",
         "createLabel": "创建新活动",
+        "editLabel": "更新活动",
         "createOrEditLabel": "新活动或活动更新",
         "notFound": "未发现任何活动"
       },

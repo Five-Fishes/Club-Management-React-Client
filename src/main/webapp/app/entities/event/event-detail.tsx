@@ -49,8 +49,8 @@ export class EventDetail extends React.Component<IEventDetailProps> {
         <div className="pt-3 mx-4">
           <img
             className="event-img"
-            src={eventEntity.imageUrl ? eventEntity.imageUrl : 'content/images/placeholder.png'}
-            alt={eventEntity.fileName}
+            src={eventEntity.imageStorageDTO?.imageUrl ?? 'content/images/placeholder.png'}
+            alt={eventEntity.imageStorageDTO?.fileName ?? 'Event Image Placeholder'}
           />
           <div className="mt-4">
             <h2>{eventEntity.name}</h2>
