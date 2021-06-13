@@ -12,6 +12,7 @@ import { getEventAttendeeEntities } from './event-attendee.reducer';
 // tslint:disable-next-line:no-unused-variable
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import CustomTab from 'app/shared/components/customTab/custom-tab';
+import { EventTable } from 'app/shared/components/eventTable/EventTable';
 import { EventAttendeeRow } from 'app/entities/event-attendee/event-attendee-row';
 import { EventAttendeeSortModalModal } from 'app/entities/event-attendee/event-attendee-sort-modal';
 
@@ -92,28 +93,38 @@ export class EventAttendee extends React.Component<IEventAttendeeProps> {
           </Button>
           <div className="table-responsive">
             {eventAttendeeList && eventAttendeeList.length > 0 ? (
-              <Table responsive>
-                <thead>
-                  <tr>
-                    <th>
-                      <Translate contentKey="global.field.id">ID</Translate>
-                    </th>
-                    <th>
-                      <Translate contentKey="clubmanagementApp.eventAttendee.userName">User Name</Translate>
-                    </th>
-                    <th>
-                      <Translate contentKey="clubmanagementApp.eventAttendee.session">Session</Translate>
-                    </th>
-                    <th />
-                    <th />
-                  </tr>
-                </thead>
-                <tbody>
-                  {eventAttendeeList.map((eventAttendee, index) => (
-                    <EventAttendeeRow user={eventAttendee} index={index} />
-                  ))}
-                </tbody>
-              </Table>
+              //   <Table responsive>
+              //     <thead>
+              //       <tr>
+              //         <th>
+              //           <Translate contentKey="global.field.id">ID</Translate>
+              //         </th>
+              //         <th>
+              //           <Translate contentKey="clubmanagementApp.eventAttendee.userName">User Name</Translate>
+              //         </th>
+              //         <th>
+              //           <Translate contentKey="clubmanagementApp.eventAttendee.session">Session</Translate>
+              //         </th>
+              //         <th />
+              //         <th />
+              //       </tr>
+              //     </thead>
+              //     <tbody>
+              //       {eventAttendeeList.map((eventAttendee, index) => (
+              //         <EventAttendeeRow user={eventAttendee} index={index} />
+              //       ))}
+              //     </tbody>
+              //   </Table>
+              <EventTable
+                columns={[
+                  { title: 'Name', key: 'userName' },
+                  { title: 'Year', key: 'yearSession' },
+                  { title: '', key: 'provideTransport', replaceValue: <FontAwesomeIcon icon="car" /> },
+                ]}
+                dataSet={eventAttendeeList}
+                hasNumbering
+                whatsappKey="contactNumber"
+              />
             ) : (
               <div className="alert alert-warning">
                 <Translate contentKey="clubmanagementApp.eventAttendee.home.notFound">No Event Attendees found</Translate>

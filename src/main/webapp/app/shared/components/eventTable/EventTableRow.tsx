@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from 'reactstrap';
-import { IColumns } from './columns.model';
+import { IColumns } from '../../model/columns.model';
 
 export interface IEventTableRowProps<T> {
   data: Record<string, any>;
@@ -38,7 +38,7 @@ export class EventTableRow<T> extends React.Component<IEventTableRowProps<T>> {
       <tr>
         {hasNumbering && <td scope="row">{index + 1}</td>}
         {columns.map(column => {
-          return <td key={data[column.key]}>{column.replaceValue ?? data[column.key]}</td>;
+          return <td key={data[column.key]}>{column.replaceValue && data[column.key] ? column.replaceValue : data[column.key]}</td>;
         })}
         {whatsappKey ? (
           <td>

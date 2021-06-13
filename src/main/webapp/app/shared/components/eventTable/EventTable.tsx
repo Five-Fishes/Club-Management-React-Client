@@ -3,7 +3,7 @@ import { Table } from 'reactstrap';
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { Translate } from 'react-jhipster';
 import { EventTableRow } from './EventTableRow';
-import { IColumns } from './columns.model';
+import { IColumns } from '../../model/columns.model';
 
 export interface IEventTableProps<T> {
   hasNumbering?: boolean;
