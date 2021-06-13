@@ -7,25 +7,25 @@ import { IColumns } from '../../model/columns.model';
 
 export interface IEventTableProps<T> {
   hasNumbering?: boolean;
-  whatsappKey?: string;
-  hasIcon?: boolean;
-  icon?: IconProp;
   columns: Array<IColumns>;
   dataSet: ReadonlyArray<T>;
-  openModal?: (id: number) => void;
+  whatsappKey?: string;
+  action?: (id: number) => void;
 }
 
 export class EventTable<T> extends React.Component<IEventTableProps<T>> {
   render() {
-    const { hasNumbering, whatsappKey, columns, dataSet, openModal } = this.props;
+    const { hasNumbering, whatsappKey, columns, dataSet, action } = this.props;
 
     return dataSet && dataSet.length > 0 ? (
-      <Table responsive size="sm">
+      <Table responsive size="sm" className="mt-4">
         <thead>
           {hasNumbering ? <th>#</th> : null}
           {columns.map(column => {
             return <th>{column.title}</th>;
           })}
+          {whatsappKey && <th></th>}
+          {action && <th></th>}
         </thead>
         <tbody>
           {dataSet.map((data, index) => (
@@ -34,7 +34,7 @@ export class EventTable<T> extends React.Component<IEventTableProps<T>> {
               data={data}
               columns={columns}
               index={index}
-              openModal={openModal}
+              action={action}
               hasNumbering={hasNumbering}
               whatsappKey={whatsappKey}
             />

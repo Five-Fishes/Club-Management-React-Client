@@ -90,7 +90,7 @@ export class EventCrew extends React.Component<IEventCrewProps> {
               </Link>
             </div>
           </AuthorizationChecker>
-          <div className="table-responsive mt-4">
+          <div className="table-responsive">
             {eventCrewList && eventCrewList.length > 0 ? (
               <EventTable
                 columns={[
@@ -100,7 +100,7 @@ export class EventCrew extends React.Component<IEventCrewProps> {
                 dataSet={eventCrewList}
                 hasNumbering
                 whatsappKey="contactNumber"
-                openModal={this.openModal}
+                action={this.openModal}
               />
             ) : (
               <div className="alert alert-warning">

@@ -3,19 +3,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from 'reactstrap';
 import { IColumns } from '../../model/columns.model';
 
-export interface IEventTableRowProps<T> {
-  data: Record<string, any>;
-  columns: Array<IColumns>;
-  index: number;
+export interface IEventTableRowProps {
   hasNumbering?: boolean;
+  index: number;
+  columns: Array<IColumns>;
+  data: { [key: string]: any };
   whatsappKey?: string;
-  openModal?: (id: number) => void;
+  action?: (id: number) => void;
 }
 
-export class EventTableRow<T> extends React.Component<IEventTableRowProps<T>> {
-  constructor(props: IEventTableRowProps<T>) {
+export class EventTableRow extends React.Component<IEventTableRowProps> {
+  constructor(props: IEventTableRowProps) {
     super(props);
-    this.openModal = this.openModal.bind(this);
+    this.action = this.action.bind(this);
     this.contactUser = this.contactUser.bind(this);
   }
 
@@ -25,14 +25,14 @@ export class EventTableRow<T> extends React.Component<IEventTableRowProps<T>> {
     }
   }
 
-  openModal(): void {
-    if (this.props.openModal) {
-      this.props.openModal(this.props.data.id);
+  action(): void {
+    if (this.props.action) {
+      this.props.action(this.props.data.id);
     }
   }
 
   render() {
-    const { data, columns, hasNumbering, whatsappKey, index, openModal } = this.props;
+    const { data, columns, hasNumbering, whatsappKey, index, action } = this.props;
 
     return (
       <tr>
@@ -47,9 +47,9 @@ export class EventTableRow<T> extends React.Component<IEventTableRowProps<T>> {
             </Button>
           </td>
         ) : null}
-        {openModal ? (
+        {action ? (
           <td>
-            <Button color="Link" className="icon-btn" onClick={this.openModal}>
+            <Button color="Link" className="icon-btn" onClick={this.action}>
               <FontAwesomeIcon icon="ellipsis-v" color="#07ade1" />
             </Button>
           </td>

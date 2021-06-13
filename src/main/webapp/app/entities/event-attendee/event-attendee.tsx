@@ -91,30 +91,8 @@ export class EventAttendee extends React.Component<IEventAttendeeProps> {
             &nbsp;
             <Translate contentKey="clubmanagementApp.eventAttendee.home.sortBy">Sort By</Translate>
           </Button>
-          <div className="table-responsive">
-            {eventAttendeeList && eventAttendeeList.length > 0 ? (
-              //   <Table responsive>
-              //     <thead>
-              //       <tr>
-              //         <th>
-              //           <Translate contentKey="global.field.id">ID</Translate>
-              //         </th>
-              //         <th>
-              //           <Translate contentKey="clubmanagementApp.eventAttendee.userName">User Name</Translate>
-              //         </th>
-              //         <th>
-              //           <Translate contentKey="clubmanagementApp.eventAttendee.session">Session</Translate>
-              //         </th>
-              //         <th />
-              //         <th />
-              //       </tr>
-              //     </thead>
-              //     <tbody>
-              //       {eventAttendeeList.map((eventAttendee, index) => (
-              //         <EventAttendeeRow user={eventAttendee} index={index} />
-              //       ))}
-              //     </tbody>
-              //   </Table>
+          <div className="table-responsive mt4">
+            {
               <EventTable
                 columns={[
                   { title: 'Name', key: 'userName' },
@@ -125,11 +103,7 @@ export class EventAttendee extends React.Component<IEventAttendeeProps> {
                 hasNumbering
                 whatsappKey="contactNumber"
               />
-            ) : (
-              <div className="alert alert-warning">
-                <Translate contentKey="clubmanagementApp.eventAttendee.home.notFound">No Event Attendees found</Translate>
-              </div>
-            )}
+            }
           </div>
           <div className={eventAttendeeList && eventAttendeeList.length > 0 ? '' : 'd-none'}>
             <Row className="justify-content-center">
