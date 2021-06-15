@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
@@ -12,11 +12,13 @@ import { getEntity, updateEntity, createEntity, setBlob, reset } from './event.r
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import './events.scss';
 import '../../styles/event-module.scss';
+import { IEvent } from 'app/shared/model/event.model';
 
 export interface IEventUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface IEventUpdateState {
   isNew: boolean;
+  eventImageFile?: File;
 }
 
 export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdateState> {
@@ -24,7 +26,10 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
     super(props);
     this.state = {
       isNew: !this.props.match.params || !this.props.match.params.id,
+      eventImageFile: undefined,
     };
+    this.convertToFormData = this.convertToFormData.bind(this);
+    this.eventImageChange = this.eventImageChange.bind(this);
   }
 
   componentWillUpdate(nextProps: IEventUpdateProps, nextState: IEventUpdateState) {
@@ -50,15 +55,52 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
       const entity = {
         ...eventEntity,
         ...values,
+        imageFile: this.state.eventImageFile,
       };
+      const entityFormData = this.convertToFormData(entity);
 
       if (this.state.isNew) {
-        this.props.createEntity(entity);
+        this.props.createEntity(entityFormData);
       } else {
-        this.props.updateEntity(entity);
+        this.props.updateEntity(entityFormData);
       }
     }
   };
+
+  convertToFormData(eventEntity: IEvent): FormData {
+    const formData = new FormData();
+    formData.append('name', eventEntity.name ?? '');
+    formData.append('description', eventEntity.description ?? '');
+    formData.append('remarks', eventEntity.remarks ?? '');
+    formData.append('venue', eventEntity.venue ?? '');
+    formData.append('startDate', eventEntity.startDate?.toISOString() ?? '');
+    formData.append('endDate', eventEntity.endDate?.toISOString() ?? '');
+    formData.append('fee', String(eventEntity.fee) ?? '');
+    formData.append('requiredTransport', String(eventEntity.requiredTransport) ?? '');
+    formData.append('status', eventEntity.status ?? '');
+    if (eventEntity.imageFile !== undefined && eventEntity.imageFile.size > 0) {
+      formData.append('multipartFile', eventEntity.imageFile);
+    }
+    if (!this.state.isNew) {
+      formData.append('id', String(eventEntity.id) ?? '');
+    }
+    return formData;
+  }
+
+  eventImageChange(event: ChangeEvent<HTMLInputElement>) {
+    const files = event.target.files;
+    if (files && files?.length > 0) {
+      this.setState({
+        ...this.state,
+        eventImageFile: files[0],
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        eventImageFile: undefined,
+      });
+    }
+  }
 
   handleClose = () => {
     this.props.history.push('/entity/event');
@@ -74,9 +116,15 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
       <div className="mx-3">
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.event.home.createOrEditLabel" className="event-module-form-heading">
-              <Translate contentKey="clubmanagementApp.event.home.createOrEditLabel">Create New or Edit an Event</Translate>
-            </h2>
+            {isNew ? (
+              <h2 id="clubmanagementApp.event.home.createOrEditLabel" className="event-module-form-heading">
+                <Translate contentKey="clubmanagementApp.event.home.createLabel">Create New Event</Translate>
+              </h2>
+            ) : (
+              <h2 id="clubmanagementApp.event.home.createOrEditLabel" className="event-module-form-heading">
+                <Translate contentKey="clubmanagementApp.event.home.editLabel">Edit an Event</Translate>
+              </h2>
+            )}
           </Col>
         </Row>
         <Row className="justify-content-center event-bottom-padding">
@@ -168,17 +216,17 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
                     <option value="CANCELLED">{translate('clubmanagementApp.EventStatus.CANCELLED')}</option>
                   </AvInput>
                 </AvGroup>
-                <AvGroup>
+                {/* <AvGroup>
                   <Label id="imageUrlLabel" for="event-imageUrl">
                     <Translate contentKey="clubmanagementApp.event.imageUrl">Image</Translate>
                   </Label>
                   <AvField id="event-imageUrl" type="text" name="imageUrl" />
-                </AvGroup>
+                </AvGroup> */}
                 <AvGroup>
-                  <Label id="imageUrlLabel" for="event-imageUrl">
+                  <Label id="eventImageFileLabel" for="event-image-file">
                     <Translate contentKey="clubmanagementApp.event.imageFile">Image</Translate>
                   </Label>
-                  <input type="file" accept="image/*" />
+                  <input id="event-image-file" name="imageFile" type="file" accept="image/*" onChange={this.eventImageChange} />
                 </AvGroup>
                 <div className="general-buttonContainer--flexContainer">
                   <Button className="general-button--width" tag={Link} id="cancel-save" to="/entity/event" replace color="cancel">

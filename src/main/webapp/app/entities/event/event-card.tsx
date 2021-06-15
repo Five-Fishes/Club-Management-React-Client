@@ -38,8 +38,8 @@ const EventCard: React.FC<IEventCardProps> = ({ event, toggleModal }) => {
               height="100%"
               width="100%"
               className="rounded-0"
-              src={event.imageUrl ?? 'content/images/placeholder.png'}
-              alt={event.fileName}
+              src={event.imageStorageDTO?.imageUrl ?? 'content/images/placeholder.png'}
+              alt={event.imageStorageDTO?.fileName ?? 'Event Image Placeholder'}
             />
           </Col>
           <Col xs="8" lg="7">

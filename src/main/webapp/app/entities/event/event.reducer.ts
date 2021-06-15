@@ -143,19 +143,19 @@ export const getEntity: ICrudGetAction<IEvent> = id => {
   };
 };
 
-export const createEntity: ICrudPutAction<IEvent> = entity => async dispatch => {
+export const createEntity: ICrudPutAction<FormData> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_EVENT,
-    payload: axios.post(apiUrl, cleanEntity(entity)),
+    payload: axios.post(apiUrl, entity),
   });
   dispatch(getUpcomingEntities());
   return result;
 };
 
-export const updateEntity: ICrudPutAction<IEvent> = entity => async dispatch => {
+export const updateEntity: ICrudPutAction<FormData> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_EVENT,
-    payload: axios.put(apiUrl, cleanEntity(entity)),
+    payload: axios.put(apiUrl, entity),
   });
   dispatch(getUpcomingEntities());
   return result;
