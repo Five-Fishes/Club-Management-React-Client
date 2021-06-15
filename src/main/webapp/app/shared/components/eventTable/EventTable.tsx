@@ -41,8 +41,8 @@ export class EventTable<T> extends React.Component<IEventTableProps<T>> {
         </tbody>
       </Table>
     ) : (
-      <div className="alert alert-warning">
-        <Translate contentKey="clubmanagementApp.eventAttendee.home.notFound">No Event Attendees found</Translate>
+      <div className="alert alert-warning mt-3">
+        <Translate contentKey="error.noResultFound" />
       </div>
     );
   }

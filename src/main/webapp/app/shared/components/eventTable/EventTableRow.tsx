@@ -21,7 +21,7 @@ export class EventTableRow extends React.Component<IEventTableRowProps> {
 
   contactUser(): void {
     if (this.props.whatsappKey) {
-      window.open(`https://wa.me/+60${this.props.data[this.props.whatsappKey]}`, '_blank');
+      window.open(`https://wa.me/+6${this.props.data[this.props.whatsappKey]}`, '_blank');
     }
   }
 
@@ -40,20 +40,20 @@ export class EventTableRow extends React.Component<IEventTableRowProps> {
         {columns.map(column => (
           <td key={data[column.key]}>{column.replaceValue && data[column.key] ? column.replaceValue : data[column.key]}</td>
         ))}
-        {whatsappKey ? (
+        {whatsappKey && (
           <td>
             <Button color="Link" className="icon-btn" onClick={this.contactUser} disabled={!this.props.data[whatsappKey]}>
               <FontAwesomeIcon icon={['fab', 'whatsapp-square']} color="#25D366" size="lg" />
             </Button>
           </td>
-        ) : null}
-        {action ? (
+        )}
+        {action && (
           <td>
             <Button color="Link" className="icon-btn" onClick={this.action}>
               <FontAwesomeIcon icon="ellipsis-v" color="#07ade1" />
             </Button>
           </td>
-        ) : null}
+        )}
       </tr>
     );
   }

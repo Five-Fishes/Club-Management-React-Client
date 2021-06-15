@@ -83,7 +83,7 @@ export class EventCrew extends React.Component<IEventCrewProps> {
         <div className="mx-4">
           <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={eventId}>
             <div className="text-center">
-              <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
+              <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth" id="jh-create-entity">
                 <FontAwesomeIcon icon="plus" />
                 &nbsp;
                 <Translate contentKey="clubmanagementApp.eventCrew.home.createLabel">Add Event Crew</Translate>
@@ -91,22 +91,16 @@ export class EventCrew extends React.Component<IEventCrewProps> {
             </div>
           </AuthorizationChecker>
           <div className="table-responsive">
-            {eventCrewList && eventCrewList.length > 0 ? (
-              <EventTable
-                columns={[
-                  { title: 'Name', key: 'userName' },
-                  { title: 'Role', key: 'role' },
-                ]}
-                dataSet={eventCrewList}
-                hasNumbering
-                whatsappKey="contactNumber"
-                action={this.openModal}
-              />
-            ) : (
-              <div className="alert alert-warning">
-                <Translate contentKey="clubmanagementApp.eventCrew.home.notFound">No Event Crews found </Translate>
-              </div>
-            )}
+            <EventTable
+              columns={[
+                { title: 'Name', key: 'userName' },
+                { title: 'Role', key: 'role' },
+              ]}
+              dataSet={eventCrewList}
+              hasNumbering
+              whatsappKey="contactNumber"
+              action={this.openModal}
+            />
           </div>
         </div>
       </div>
