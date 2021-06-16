@@ -23,6 +23,7 @@ const initialState: IEventCrewState = {
   entities: [] as ReadonlyArray<IEventCrew>,
   entity: defaultValue,
   updating: false,
+  totalItems: 0,
   updateSuccess: false,
 };
 
@@ -32,6 +33,7 @@ export interface IEventCrewState {
   entities: ReadonlyArray<IEventCrew>;
   entity: Readonly<IEventCrew>;
   updating: boolean;
+  totalItems: number;
   updateSuccess: boolean;
 }
 

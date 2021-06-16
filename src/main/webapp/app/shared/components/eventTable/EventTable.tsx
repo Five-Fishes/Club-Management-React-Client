@@ -1,40 +1,49 @@
 import React from 'react';
 import { Table } from 'reactstrap';
-import { EventTableRow } from './EventTableRow';
-import { IEventCrew } from 'app/shared/model/event-crew.model';
-import { IEventAttendee } from 'app/shared/model/event-attendee.model';
 import { Translate } from 'react-jhipster';
+import { EventTableRow } from './EventTableRow';
+import { IColumns } from '../../model/columns.model';
 
-export interface IEventTableProps {
-  users: ReadonlyArray<IEventCrew> | ReadonlyArray<IEventAttendee>;
-  openModal: Function;
+export interface IEventTableProps<T> {
+  hasNumbering?: boolean;
+  columns: IColumns[];
+  dataSet: ReadonlyArray<T>;
+  whatsappKey?: string;
+  action?: (id: number) => void;
 }
 
-export class EventTable extends React.Component<IEventTableProps> {
+export class EventTable<T> extends React.Component<IEventTableProps<T>> {
   render() {
-    return (
-      <Table responsive size="sm">
+    const { hasNumbering, whatsappKey, columns, dataSet, action } = this.props;
+
+    return dataSet && dataSet.length > 0 ? (
+      <Table responsive size="sm" className="mt-4">
         <thead>
-          <tr>
-            <th>#</th>
-            <th>
-              <Translate contentKey="clubmanagementApp.event.name">Name</Translate>{' '}
-            </th>
-            <th>{'role' in this.props.users[0] ? <Translate contentKey="clubmanagementApp.eventCrew.role">Role</Translate> : 'Year'}</th>
-            <th />
-            <th />
-            <th />
-          </tr>
+          {hasNumbering ? <th>#</th> : null}
+          {columns.map(column => (
+            <th key={column.title}>{column.title}</th>
+          ))}
+          {whatsappKey && <th />}
+          {action && <th />}
         </thead>
         <tbody>
-          {
-            // @ts-ignore refractor in issue 113
-            this.props.users.map((user, index) => (
-              <EventTableRow key={user.id} user={user} index={index} openModal={this.props.openModal} />
-            ))
-          }
+          {dataSet.map((data, index) => (
+            <EventTableRow
+              key={index}
+              index={index}
+              hasNumbering={hasNumbering}
+              columns={columns}
+              data={data}
+              whatsappKey={whatsappKey}
+              action={action}
+            />
+          ))}
         </tbody>
       </Table>
+    ) : (
+      <div className="alert alert-warning mt-3">
+        <Translate contentKey="error.noResultFound" />
+      </div>
     );
   }
 }
