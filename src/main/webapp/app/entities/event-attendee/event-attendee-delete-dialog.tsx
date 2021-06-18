@@ -45,14 +45,11 @@ export class EventAttendeeDeleteDialog extends React.Component<IEventAttendeeDel
             &nbsp;
             <Translate contentKey="entity.action.no">No</Translate>
           </Button>
-          <AuthorizationChecker>
-            {/* no one can delete for now */}
-            <Button id="jhi-confirm-delete-eventAttendee" color="cancel" onClick={this.confirmDelete}>
-              <FontAwesomeIcon icon="trash" />
-              &nbsp;
-              <Translate contentKey="entity.action.yes">Yes</Translate>
-            </Button>
-          </AuthorizationChecker>
+          <Button id="jhi-confirm-delete-eventAttendee" color="cancel" onClick={this.confirmDelete}>
+            <FontAwesomeIcon icon="trash" />
+            &nbsp;
+            <Translate contentKey="entity.action.yes">Yes</Translate>
+          </Button>
         </ModalFooter>
       </Modal>
     );
