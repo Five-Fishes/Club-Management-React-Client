@@ -19,6 +19,11 @@ class FinanceReport extends React.Component<IFinanceReportProps> {
     this.props.getFinanceReportStatisticOfCurrentYearSession();
   }
 
+  // the dataEntry is from PieChart component
+  displayPercentage({ dataEntry }: any) {
+    return !!dataEntry.value ? `${Math.round(dataEntry.percentage)} %` : '';
+  }
+
   render() {
     const {
       realiseIncome = 0.0,
@@ -87,16 +92,15 @@ class FinanceReport extends React.Component<IFinanceReportProps> {
               </Row>
             </div>
           </div>
-          {/* tslint:disable-next-line:jsx-no-lambda */}
           <PieChart
+            label={this.displayPercentage}
             data={chartData}
             lineWidth={50}
-            label={({ dataEntry }) => (dataEntry.value !== 0 ? `${Math.round(dataEntry.percentage)} %` : '')}
-            labelStyle={() => ({
+            labelStyle={{
               fill: 'white',
               fontSize: '5px',
               fontFamily: 'sans-serif',
-            })}
+            }}
             labelPosition={75}
           />
         </div>
