@@ -40,7 +40,7 @@ export class EventActivityDetail extends React.Component<IEventActivityDetailPro
               </span>
             </dt>
             <dd>
-              <TextFormat value={eventActivityEntity.startDate} type="date" format={APP_DATE_FORMAT} />
+              <TextFormat value={eventActivityEntity.startDate ?? ''} type="date" format={APP_DATE_FORMAT} />
             </dd>
             <dt>
               <span id="durationInDay">
@@ -81,7 +81,7 @@ export class EventActivityDetail extends React.Component<IEventActivityDetailPro
 }
 
 const mapStateToProps = ({ eventActivity }: IRootState) => ({
-  eventActivityEntity: eventActivity.entity
+  eventActivityEntity: eventActivity.entity,
 });
 
 const mapDispatchToProps = { getEntity };
@@ -89,7 +89,4 @@ const mapDispatchToProps = { getEntity };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventActivityDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(EventActivityDetail);

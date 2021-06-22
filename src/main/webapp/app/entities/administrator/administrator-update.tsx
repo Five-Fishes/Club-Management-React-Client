@@ -21,14 +21,14 @@ export interface IAdministratorUpdateState {
 }
 
 export class AdministratorUpdate extends React.Component<IAdministratorUpdateProps, IAdministratorUpdateState> {
-  constructor(props) {
+  constructor(props: IAdministratorUpdateProps) {
     super(props);
     this.state = {
-      isNew: !this.props.match.params || !this.props.match.params.id
+      isNew: !this.props.match.params || !this.props.match.params.id,
     };
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: IAdministratorUpdateProps, nextState: IAdministratorUpdateState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
       this.handleClose();
     }
@@ -42,12 +42,12 @@ export class AdministratorUpdate extends React.Component<IAdministratorUpdatePro
     }
   }
 
-  saveEntity = (event, errors, values) => {
+  saveEntity = (event: any, errors: any, values: any) => {
     if (errors.length === 0) {
       const { administratorEntity } = this.props;
       const entity = {
         ...administratorEntity,
-        ...values
+        ...values,
       };
 
       if (this.state.isNew) {
@@ -160,20 +160,17 @@ const mapStateToProps = (storeState: IRootState) => ({
   administratorEntity: storeState.administrator.entity,
   loading: storeState.administrator.loading,
   updating: storeState.administrator.updating,
-  updateSuccess: storeState.administrator.updateSuccess
+  updateSuccess: storeState.administrator.updateSuccess,
 });
 
 const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AdministratorUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(AdministratorUpdate);

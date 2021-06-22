@@ -8,8 +8,9 @@ import Metrics from './metrics/metrics';
 import Configuration from './configuration/configuration';
 import Audits from './audits/audits';
 import Docs from './docs/docs';
+import { RouteComponentProps } from 'react-router-dom';
 
-const Routes = ({ match }) => (
+const Routes: React.FC<RouteComponentProps> = ({ match }) => (
   <div>
     <ErrorBoundaryRoute path={`${match.url}/user-management`} component={UserManagement} />
     <ErrorBoundaryRoute exact path={`${match.url}/health`} component={Health} />

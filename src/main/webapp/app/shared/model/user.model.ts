@@ -12,6 +12,9 @@ export interface IUser {
   lastModifiedBy?: string;
   lastModifiedDate?: Date;
   password?: string;
+  gender?: string;
+  dateOfBirth?: Date;
+  contactNo?: string;
 }
 
 export const defaultValue: Readonly<IUser> = {
@@ -24,8 +27,11 @@ export const defaultValue: Readonly<IUser> = {
   langKey: '',
   authorities: [],
   createdBy: '',
-  createdDate: null,
+  createdDate: undefined,
   lastModifiedBy: '',
-  lastModifiedDate: null,
-  password: ''
+  lastModifiedDate: undefined,
+  password: '',
+  gender: '',
+  dateOfBirth: undefined,
+  contactNo: '',
 };

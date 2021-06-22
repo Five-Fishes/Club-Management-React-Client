@@ -2,24 +2,25 @@
   "clubmanagementApp": {
     "event": {
       "home": {
-        "title": "Events",
-        "createLabel": "创建新 Event",
+        "title": "活动",
+        "createLabel": "创建新活动",
+        "editLabel": "更新活动",
         "createOrEditLabel": "新活动或活动更新",
-        "notFound": "No Event found"
+        "notFound": "未发现任何活动"
       },
-      "created": "Event {{ param }} 创建成功",
-      "updated": "Event {{ param }} 更新成功",
-      "deleted": "Event {{ param }} 删除成功",
+      "created": "活动 {{ param }} 创建成功",
+      "updated": "活动 {{ param }} 更新成功",
+      "deleted": "活动 {{ param }} 删除成功",
       "delete": {
-        "question": "你确定要删除 Event {{ id }} 吗？"
+        "question": "你确定要删除活动 {{ id }} 吗？"
       },
       "upcoming": "来临",
       "previous": "往期",
       "detail": {
-        "title": "Event"
+        "title": "活动详情"
       },
       "name": "名字",
-      "description": "详情",
+      "description": "描述",
       "remarks": "备注",
       "venue": "地点",
       "date": "日期",
@@ -28,11 +29,14 @@
       "endDate": "结束日期",
       "fee": "费用",
       "requiredTransport": "需要交通",
+      "noRequiredTransport": "无需交通",
       "status": "活动状态",
       "image": "活动照片",
-      "fileName": "File Name",
-      "fileType": "File Type",
-      "tab": "Details"
+      "imageFile": "照片文件",
+      "imageUrl": "照片链接",
+      "fileName": "文件名称",
+      "fileType": "文件格式",
+      "tab": "详情"
     }
   }
 }

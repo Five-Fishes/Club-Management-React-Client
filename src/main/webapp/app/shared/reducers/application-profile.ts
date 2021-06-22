@@ -1,20 +1,21 @@
 import axios from 'axios';
 
 import { SUCCESS } from 'app/shared/reducers/action-type.util';
+import { AnyAction } from 'redux';
 
 export const ACTION_TYPES = {
-  GET_PROFILE: 'applicationProfile/GET_PROFILE'
+  GET_PROFILE: 'applicationProfile/GET_PROFILE',
 };
 
 const initialState = {
   ribbonEnv: '',
   inProduction: true,
-  isSwaggerEnabled: false
+  isSwaggerEnabled: false,
 };
 
 export type ApplicationProfileState = Readonly<typeof initialState>;
 
-export default (state: ApplicationProfileState = initialState, action): ApplicationProfileState => {
+export default (state: ApplicationProfileState = initialState, action: AnyAction): ApplicationProfileState => {
   switch (action.type) {
     case SUCCESS(ACTION_TYPES.GET_PROFILE):
       const { data } = action.payload;
@@ -22,7 +23,7 @@ export default (state: ApplicationProfileState = initialState, action): Applicat
         ...state,
         ribbonEnv: data['display-ribbon-on-profiles'],
         inProduction: data.activeProfiles.includes('prod'),
-        isSwaggerEnabled: data.activeProfiles.includes('swagger')
+        isSwaggerEnabled: data.activeProfiles.includes('swagger'),
       };
     default:
       return state;
@@ -31,5 +32,5 @@ export default (state: ApplicationProfileState = initialState, action): Applicat
 
 export const getProfile = () => ({
   type: ACTION_TYPES.GET_PROFILE,
-  payload: axios.get('management/info')
+  payload: axios.get('management/info'),
 });

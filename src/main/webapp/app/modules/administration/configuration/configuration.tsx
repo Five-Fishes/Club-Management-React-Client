@@ -18,7 +18,7 @@ export class ConfigurationPage extends React.Component<IConfigurationPageProps, 
   state: IConfigurationPageState = {
     filter: '',
     reversePrefix: false,
-    reverseProperties: false
+    reverseProperties: false,
   };
 
   componentDidMount() {
@@ -26,28 +26,28 @@ export class ConfigurationPage extends React.Component<IConfigurationPageProps, 
     this.props.getEnv();
   }
 
-  setFilter = evt => {
+  setFilter = (evt: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
-      filter: evt.target.value
+      filter: evt.target.value,
     });
   };
 
-  envFilterFn = configProp => configProp.toUpperCase().includes(this.state.filter.toUpperCase());
-  propsFilterFn = configProp => configProp.prefix.toUpperCase().includes(this.state.filter.toUpperCase());
+  envFilterFn = (configProp: any) => configProp.toUpperCase().includes(this.state.filter.toUpperCase());
+  propsFilterFn = (configProp: any) => configProp.prefix.toUpperCase().includes(this.state.filter.toUpperCase());
 
   reversePrefix = () => {
     this.setState({
-      reversePrefix: !this.state.reversePrefix
+      reversePrefix: !this.state.reversePrefix,
     });
   };
 
   reverseProperties = () => {
     this.setState({
-      reverseProperties: !this.state.reverseProperties
+      reverseProperties: !this.state.reverseProperties,
     });
   };
 
-  getContextList = contexts =>
+  getContextList = (contexts: any) =>
     Object.values(contexts)
       .map((v: any) => v.beans)
       .reduce((acc, e) => ({ ...acc, ...e }));
@@ -82,7 +82,7 @@ export class ConfigurationPage extends React.Component<IConfigurationPageProps, 
             {configProps.contexts
               ? Object.values(this.getContextList(configProps.contexts))
                   .filter(this.propsFilterFn)
-                  .map((property, propIndex) => (
+                  .map((property: any, propIndex) => (
                     <tr key={propIndex}>
                       <td>{property['prefix']}</td>
                       <td>
@@ -101,7 +101,7 @@ export class ConfigurationPage extends React.Component<IConfigurationPageProps, 
           </tbody>
         </Table>
         {env.propertySources
-          ? env.propertySources.map((envKey, envIndex) => (
+          ? env.propertySources.map((envKey: any, envIndex: number) => (
               <div key={envIndex}>
                 <h4>
                   <span>{envKey.name}</span>
@@ -136,7 +136,7 @@ export class ConfigurationPage extends React.Component<IConfigurationPageProps, 
 
 const mapStateToProps = ({ administration }: IRootState) => ({
   configuration: administration.configuration,
-  isFetching: administration.loading
+  isFetching: administration.loading,
 });
 
 const mapDispatchToProps = { getConfigurations, getEnv };
@@ -144,7 +144,4 @@ const mapDispatchToProps = { getConfigurations, getEnv };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ConfigurationPage);
+export default connect(mapStateToProps, mapDispatchToProps)(ConfigurationPage);

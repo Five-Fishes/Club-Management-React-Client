@@ -23,18 +23,18 @@ export type ITransactionState = IPaginationBaseState;
 
 export class Transaction extends React.Component<ITransactionProps, ITransactionState> {
   state: ITransactionState = {
-    ...getSortState(this.props.location, ITEMS_PER_PAGE)
+    ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
   componentDidMount() {
     this.getEntities();
   }
 
-  sort = prop => () => {
+  sort = (prop: any) => () => {
     this.setState(
       {
         order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
+        sort: prop,
       },
       () => this.sortEntities()
     );
@@ -45,7 +45,7 @@ export class Transaction extends React.Component<ITransactionProps, ITransaction
     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
   }
 
-  handlePagination = activePage => this.setState({ activePage }, () => this.sortEntities());
+  handlePagination = (activePage: number) => this.setState({ activePage }, () => this.sortEntities());
 
   getEntities = () => {
     const { activePage, itemsPerPage, sort, order } = this.state;
@@ -62,7 +62,94 @@ export class Transaction extends React.Component<ITransactionProps, ITransaction
         <CustomTab tabList={financeTabList} currentTab="All Transactions" />
         <div className="mx-4">
           {transactionList && transactionList.length > 0 ? (
-            transactionList.map(transaction => <TransactionCard transaction={transaction} />)
+            <Table responsive>
+              <thead>
+                <tr>
+                  <th className="hand" onClick={this.sort('id')}>
+                    <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th className="hand" onClick={this.sort('eventId')}>
+                    <Translate contentKey="clubmanagementApp.transaction.eventId">Event Id</Translate> <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th className="hand" onClick={this.sort('receiptId')}>
+                    <Translate contentKey="clubmanagementApp.transaction.receiptId">Receipt Id</Translate> <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th className="hand" onClick={this.sort('type')}>
+                    <Translate contentKey="clubmanagementApp.transaction.type">Type</Translate> <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th className="hand" onClick={this.sort('amount')}>
+                    <Translate contentKey="clubmanagementApp.transaction.amount">Amount</Translate> <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th className="hand" onClick={this.sort('details')}>
+                    <Translate contentKey="clubmanagementApp.transaction.details">Details</Translate> <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th className="hand" onClick={this.sort('receiptUrl')}>
+                    <Translate contentKey="clubmanagementApp.transaction.receiptUrl">Receipt Url</Translate> <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th className="hand" onClick={this.sort('fileName')}>
+                    <Translate contentKey="clubmanagementApp.transaction.fileName">File Name</Translate> <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th className="hand" onClick={this.sort('fileType')}>
+                    <Translate contentKey="clubmanagementApp.transaction.fileType">File Type</Translate> <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th className="hand" onClick={this.sort('createdBy')}>
+                    <Translate contentKey="clubmanagementApp.transaction.createdBy">Created By</Translate> <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th className="hand" onClick={this.sort('createdDate')}>
+                    <Translate contentKey="clubmanagementApp.transaction.createdDate">Created Date</Translate>{' '}
+                    <FontAwesomeIcon icon="sort" />
+                  </th>
+                  <th />
+                </tr>
+              </thead>
+              <tbody>
+                {transactionList.map((transaction, i) => (
+                  <tr key={`entity-${i}`}>
+                    <td>
+                      <Button tag={Link} to={`${match.url}/${transaction.id}`} color="link" size="sm">
+                        {transaction.id}
+                      </Button>
+                    </td>
+                    <td>{transaction.eventId}</td>
+                    <td>{transaction.receiptId}</td>
+                    <td>
+                      <Translate contentKey={`clubmanagementApp.TransactionType.${transaction.type}`} />
+                    </td>
+                    <td>{transaction.amount}</td>
+                    <td>{transaction.details}</td>
+                    <td>{transaction.receiptUrl}</td>
+                    <td>{transaction.fileName}</td>
+                    <td>{transaction.fileType}</td>
+                    <td>{transaction.createdBy}</td>
+                    <td>
+                      <TextFormat type="date" value={transaction.createdDate ?? ''} format={APP_DATE_FORMAT} />
+                    </td>
+                    <td className="text-right">
+                      <div className="btn-group flex-btn-group-container">
+                        <Button tag={Link} to={`${match.url}/${transaction.id}`} color="info" size="sm">
+                          <FontAwesomeIcon icon="eye" />{' '}
+                          <span className="d-none d-md-inline">
+                            <Translate contentKey="entity.action.view">View</Translate>
+                          </span>
+                        </Button>
+                        <Button tag={Link} to={`${match.url}/${transaction.id}/edit`} color="primary" size="sm">
+                          <FontAwesomeIcon icon="pencil-alt" />{' '}
+                          <span className="d-none d-md-inline">
+                            <Translate contentKey="entity.action.edit">Edit</Translate>
+                          </span>
+                        </Button>
+                        <Button tag={Link} to={`${match.url}/${transaction.id}/delete`} color="danger" size="sm">
+                          <FontAwesomeIcon icon="trash" />{' '}
+                          <span className="d-none d-md-inline">
+                            <Translate contentKey="entity.action.delete">Delete</Translate>
+                          </span>
+                        </Button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
           ) : (
             <div className="alert alert-warning">
               <Translate contentKey="clubmanagementApp.transaction.home.notFound">No Transactions found</Translate>
@@ -90,17 +177,14 @@ export class Transaction extends React.Component<ITransactionProps, ITransaction
 
 const mapStateToProps = ({ transaction }: IRootState) => ({
   transactionList: transaction.entities,
-  totalItems: transaction.totalItems
+  totalItems: transaction.totalItems,
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEntities,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Transaction);
+export default connect(mapStateToProps, mapDispatchToProps)(Transaction);

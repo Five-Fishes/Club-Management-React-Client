@@ -9,8 +9,9 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import firebase from 'firebase';
 import { toast } from 'react-toastify';
 import { getAuthToken, socialLogin } from 'app/shared/services/auth.service';
+import { IRedirectLocationState } from 'app/shared/auth/app-route';
 
-export interface IAuthLoginProps extends StateProps, RouteComponentProps<{}> {}
+export interface IAuthLoginProps extends StateProps, RouteComponentProps<{}, any, IRedirectLocationState> {}
 
 interface ILoginConfig {
   type: 'google' | 'facebook' | 'email';
@@ -21,7 +22,7 @@ interface ILoginConfig {
 }
 
 export class AuthLogin extends React.Component<IAuthLoginProps> {
-  constructor(props) {
+  constructor(props: IAuthLoginProps) {
     super(props);
     this.handleGoogleLogin = this.handleGoogleLogin.bind(this);
     this.handleFacebookLogin = this.handleFacebookLogin.bind(this);
@@ -55,9 +56,10 @@ export class AuthLogin extends React.Component<IAuthLoginProps> {
   }
 
   render() {
-    const { isAuthenticated } = this.props;
+    const { isAuthenticated, isLoading, location } = this.props;
+    if (isLoading) return <></>;
     if (isAuthenticated) {
-      return <Redirect to="/" />;
+      return location.state.from ? <Redirect to={location.state.from} /> : <Redirect to="/" />;
     }
     return (
       <>
@@ -87,27 +89,31 @@ const config: ILoginConfig[] = [
     displayName: 'Google',
     icon: ['fab', 'google'],
     bgColor: '#FFF',
-    textColor: '#533f03'
+    textColor: '#533f03',
   },
   {
     type: 'facebook',
     displayName: 'Facebook',
     icon: ['fab', 'facebook-f'],
     bgColor: '#3B5998',
-    textColor: '#FFF'
+    textColor: '#FFF',
   },
   {
     type: 'email',
     displayName: 'Email',
     icon: 'envelope',
     bgColor: '#1DB2A1',
-    textColor: '#FFF'
-  }
+    textColor: '#FFF',
+  },
 ];
 
-function LoginButton(props) {
-  const { handleLogin } = props;
-  const selectedConfig = config.find(el => el.type === props.type);
+interface ILoginButton {
+  handleLogin: () => void;
+  type: 'google' | 'facebook' | 'email';
+}
+
+const LoginButton: React.FC<ILoginButton> = ({ handleLogin, type }) => {
+  const selectedConfig = config.find(el => el.type === type);
   if (!selectedConfig) {
     throw new Error('config not declared for this sign in method');
   }
@@ -125,10 +131,11 @@ function LoginButton(props) {
       </div>
     </>
   );
-}
+};
 
 const mapStateToProps = ({ authentication }: IRootState) => ({
-  isAuthenticated: authentication.isAuthenticated
+  isAuthenticated: authentication.isAuthenticated,
+  isLoading: authentication.loading,
 });
 
 type StateProps = ReturnType<typeof mapStateToProps>;

@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
@@ -6,6 +6,8 @@ import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util'
 
 import { IBudget, defaultValue, IEventBudgetTotal, defaultEventBudgetTotal } from 'app/shared/model/budget.model';
 import { IGetAllByEventId, IDeleteEvent, IPutEvent, IGetEvent } from 'app/shared/type/event-custom-action';
+import { AnyAction } from 'redux';
+import { relativeTimeRounding } from 'moment';
 
 export const ACTION_TYPES = {
   FETCH_BUDGET_LIST: 'budget/FETCH_BUDGET_LIST',
@@ -18,12 +20,12 @@ export const ACTION_TYPES = {
   SET_EVENT_BUDGET_ID: 'budget/SET_EVENT_BUDGET_ID',
   SET_SHOW_ACTION_OPTIONS: 'budget/SET_SHOW_ACTION_OPTIONS',
   FETCH_TOTAL_BUDGET_AMOUNT: 'budget/FETCH_TOTAL_BUDGET_AMOUNT',
-  FETCH_TOTAL_REAL_AMOUNT: 'budget/FETCH_TOTAL_REAL_AMOUNT'
+  FETCH_TOTAL_REAL_AMOUNT: 'budget/FETCH_TOTAL_REAL_AMOUNT',
 };
 
-const initialState = {
+const initialState: IBudgetState = {
   loading: false,
-  errorMessage: null,
+  errResponse: null,
   entities: [] as ReadonlyArray<IBudget>,
   entity: defaultValue,
   updating: false,
@@ -32,31 +34,43 @@ const initialState = {
   selectedEventBudgetId: 0,
   showActionOptions: false,
   eventBudgetTotal: defaultEventBudgetTotal,
-  eventRealTotal: defaultEventBudgetTotal
+  eventRealTotal: defaultEventBudgetTotal,
 };
 
-export type BudgetState = Readonly<typeof initialState>;
+export interface IBudgetState {
+  loading: boolean;
+  errResponse: null | AxiosError;
+  entities: ReadonlyArray<IBudget>;
+  entity: Readonly<IBudget>;
+  updating: boolean;
+  totalItems: number;
+  updateSuccess: boolean;
+  selectedEventBudgetId: number;
+  showActionOptions: boolean;
+  eventBudgetTotal: Readonly<IEventBudgetTotal>;
+  eventRealTotal: Readonly<IEventBudgetTotal>;
+}
 
 // Reducer
 
-export default (state: BudgetState = initialState, action): BudgetState => {
+export default (state: IBudgetState = initialState, action: AnyAction): IBudgetState => {
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_BUDGET_LIST):
     case REQUEST(ACTION_TYPES.FETCH_BUDGET):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
-        loading: true
+        loading: true,
       };
     case REQUEST(ACTION_TYPES.CREATE_BUDGET):
     case REQUEST(ACTION_TYPES.UPDATE_BUDGET):
     case REQUEST(ACTION_TYPES.DELETE_BUDGET):
       return {
         ...state,
-        errorMessage: null,
+        errResponse: null,
         updateSuccess: false,
-        updating: true
+        updating: true,
       };
     case FAILURE(ACTION_TYPES.FETCH_BUDGET_LIST):
     case FAILURE(ACTION_TYPES.FETCH_BUDGET):
@@ -68,20 +82,20 @@ export default (state: BudgetState = initialState, action): BudgetState => {
         loading: false,
         updating: false,
         updateSuccess: false,
-        errorMessage: action.payload
+        errResponse: action.payload,
       };
     case SUCCESS(ACTION_TYPES.FETCH_BUDGET_LIST):
       return {
         ...state,
         loading: false,
         entities: action.payload.data,
-        totalItems: parseInt(action.payload.headers['x-total-count'], 10)
+        totalItems: parseInt(action.payload.headers['x-total-count'], 10),
       };
     case SUCCESS(ACTION_TYPES.FETCH_BUDGET):
       return {
         ...state,
         loading: false,
-        entity: action.payload.data
+        entity: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.CREATE_BUDGET):
     case SUCCESS(ACTION_TYPES.UPDATE_BUDGET):
@@ -89,14 +103,14 @@ export default (state: BudgetState = initialState, action): BudgetState => {
         ...state,
         updating: false,
         updateSuccess: true,
-        entity: action.payload.data
+        entity: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.DELETE_BUDGET):
       return {
         ...state,
         updating: false,
         updateSuccess: true,
-        entity: {}
+        entity: {},
       };
     case ACTION_TYPES.SET_BLOB:
       const { name, data, contentType } = action.payload;
@@ -105,34 +119,34 @@ export default (state: BudgetState = initialState, action): BudgetState => {
         entity: {
           ...state.entity,
           [name]: data,
-          [name + 'ContentType']: contentType
-        }
+          [name + 'ContentType']: contentType,
+        },
       };
     case ACTION_TYPES.RESET:
       return {
-        ...initialState
+        ...initialState,
       };
     case ACTION_TYPES.SET_EVENT_BUDGET_ID:
       const { eventBudgetId } = action.payload;
       return {
         ...state,
-        selectedEventBudgetId: eventBudgetId
+        selectedEventBudgetId: eventBudgetId,
       };
     case ACTION_TYPES.SET_SHOW_ACTION_OPTIONS:
       const { show } = action.payload;
       return {
         ...state,
-        showActionOptions: show
+        showActionOptions: show,
       };
     case SUCCESS(ACTION_TYPES.FETCH_TOTAL_BUDGET_AMOUNT):
       return {
         ...state,
-        eventBudgetTotal: action.payload.data
+        eventBudgetTotal: action.payload.data,
       };
     case SUCCESS(ACTION_TYPES.FETCH_TOTAL_REAL_AMOUNT):
       return {
         ...state,
-        eventRealTotal: action.payload.data
+        eventRealTotal: action.payload.data,
       };
     default:
       return state;
@@ -145,14 +159,14 @@ const apiUrl = 'api/event-budget';
 
 export const getEntities: ICrudGetAllAction<IBudget> = (page, size, sort) => ({
   type: ACTION_TYPES.FETCH_BUDGET_LIST,
-  payload: axios.get<IBudget>(`${apiUrl}?cacheBuster=${new Date().getTime()}`)
+  payload: axios.get<IBudget>(`${apiUrl}?cacheBuster=${new Date().getTime()}`),
 });
 
 export const getEventBudgetByEventId: IGetAllByEventId<IBudget> = (eventId, page, size, sort) => {
   const requestUrl = `${apiUrl}/event/${eventId}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_BUDGET_LIST,
-    payload: axios.get<IBudget>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`)
+    payload: axios.get<IBudget>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
   };
 };
 
@@ -160,70 +174,73 @@ export const getEntity: IGetEvent<IBudget> = (id, eventId) => {
   const requestUrl = `${apiUrl}/${id}/event/${eventId}`;
   return {
     type: ACTION_TYPES.FETCH_BUDGET,
-    payload: axios.get<IBudget>(requestUrl)
+    payload: axios.get<IBudget>(requestUrl),
   };
 };
 
 export const createEntity: ICrudPutAction<IBudget> = entity => async dispatch => {
+  if (!entity || !entity.eventId) return;
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_BUDGET,
-    payload: axios.post(apiUrl, cleanEntity(entity))
+    payload: axios.post(apiUrl, cleanEntity(entity)),
   });
   dispatch(getEventBudgetByEventId(entity.eventId.toString()));
   return result;
 };
 
 export const updateEntity: ICrudPutAction<IBudget> = entity => async dispatch => {
+  if (!entity || !entity.eventId) return;
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_BUDGET,
-    payload: axios.put(apiUrl, cleanEntity(entity))
+    payload: axios.put(apiUrl, cleanEntity(entity)),
   });
-  dispatch(getEntities());
+  dispatch(getEventBudgetByEventId(entity.eventId.toString()));
   return result;
 };
 
 export const deleteEntity: IDeleteEvent<IBudget> = (id, eventId) => async dispatch => {
+  if (!eventId) return;
   const requestUrl = `${apiUrl}/${id}/event/${eventId}`;
   const result = await dispatch({
     type: ACTION_TYPES.DELETE_BUDGET,
-    payload: axios.delete(requestUrl)
+    payload: axios.delete(requestUrl),
   });
   dispatch(getEventBudgetByEventId(eventId.toString()));
   return result;
 };
 
-export const setBlob = (name, data, contentType?) => ({
+export const setBlob = (name: any, data: any, contentType?: any) => ({
   type: ACTION_TYPES.SET_BLOB,
   payload: {
     name,
     data,
-    contentType
-  }
+    contentType,
+  },
 });
 
 export const reset = () => ({
-  type: ACTION_TYPES.RESET
+  type: ACTION_TYPES.RESET,
 });
 
-export const setSelectedEventBudgetId = eventBudgetId => ({
+export const setSelectedEventBudgetId = (eventBudgetId: number) => ({
   type: ACTION_TYPES.SET_EVENT_BUDGET_ID,
   payload: {
-    eventBudgetId
-  }
+    eventBudgetId,
+  },
 });
 
-export const setShowActionOptions = show => ({
+export const setShowActionOptions = (show: boolean) => ({
   type: ACTION_TYPES.SET_SHOW_ACTION_OPTIONS,
   payload: {
-    show
-  }
+    show,
+  },
 });
 
 export const getEventBudgetTotal: ICrudGetAction<IEventBudgetTotal> = eventId => {
   const requestUrl = `${apiUrl}/event/${eventId}/total`;
   return {
     type: ACTION_TYPES.FETCH_TOTAL_BUDGET_AMOUNT,
-    payload: axios.get<IEventBudgetTotal>(requestUrl)
+    payload: axios.get<IEventBudgetTotal>(requestUrl),
   };
 };
 
@@ -231,6 +248,6 @@ export const getEventRealTotal: ICrudGetAction<IEventBudgetTotal> = eventId => {
   const requestUrl = `api/transactions/event/${eventId}/total`;
   return {
     type: ACTION_TYPES.FETCH_TOTAL_REAL_AMOUNT,
-    payload: axios.get<IEventBudgetTotal>(requestUrl)
+    payload: axios.get<IEventBudgetTotal>(requestUrl),
   };
 };

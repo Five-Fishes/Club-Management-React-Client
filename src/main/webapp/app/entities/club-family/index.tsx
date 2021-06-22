@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { RouteComponentProps, Switch } from 'react-router-dom';
 
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 
@@ -8,7 +8,7 @@ import ClubFamilyDetail from './club-family-detail';
 import ClubFamilyUpdate from './club-family-update';
 import ClubFamilyDeleteDialog from './club-family-delete-dialog';
 
-const Routes = ({ match }) => (
+const Routes: React.FC<RouteComponentProps> = ({ match }) => (
   <>
     <Switch>
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={ClubFamilyUpdate} />

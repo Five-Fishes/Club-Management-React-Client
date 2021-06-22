@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, Button } from 'reactstrap';
-import { getSortState, IPaginationBaseState, Translate } from 'react-jhipster';
+import { getSortState, IPaginationBaseState, Translate, translate } from 'react-jhipster';
 
 import { IRootState } from 'app/shared/reducers';
 import {
@@ -10,15 +10,18 @@ import {
   setSelectedEventBudgetId,
   setShowActionOptions,
   getEventBudgetTotal,
-  getEventRealTotal
+  getEventRealTotal,
 } from './budget.reducer';
 import { eventTabList } from 'app/shared/util/tab.constants';
 import classnames from 'classnames';
 import '../../styles/event-module.scss';
-import { CustomTab } from 'app/shared/components/customTab/custom-tab';
+import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import { ListingCard } from 'app/shared/components/listing-card/listing-card';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
+import EventRole from 'app/shared/model/enum/event-role.enum';
 
 export interface IBudgetProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string; eventId: string }> {}
 
@@ -26,7 +29,7 @@ export type IEventBudgetState = IPaginationBaseState;
 
 export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
   state: IEventBudgetState = {
-    ...getSortState(this.props.location, ITEMS_PER_PAGE)
+    ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
   componentDidMount() {
@@ -35,17 +38,17 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
     this.getEventRealTotal();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: IBudgetProps) {
     if (prevProps.totalItems !== this.props.totalItems) {
       this.getEventBudgetTotal();
     }
   }
 
-  sort = prop => () => {
+  sort = (prop: any) => () => {
     this.setState(
       {
         order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop
+        sort: prop,
       },
       () => this.sortEntities()
     );
@@ -56,7 +59,7 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
   }
 
-  handlePagination = activePage => this.setState({ activePage }, () => this.sortEntities());
+  handlePagination = (activePage: number) => this.setState({ activePage }, () => this.sortEntities());
 
   getEntities = () => {
     const eventId = this.props.match.params.eventId;
@@ -74,7 +77,8 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
     this.props.getEventRealTotal(eventId);
   };
 
-  showCardAction = (eventBudgetId: number) => {
+  showCardAction = (eventBudgetId?: number) => {
+    if (typeof eventBudgetId === 'undefined') return;
     this.props.setSelectedEventBudgetId(eventBudgetId);
     this.props.setShowActionOptions(true);
   };
@@ -85,8 +89,7 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
 
   render() {
     const { budgetList, match, totalItems, selectedEventBudgetId, eventBudgetTotal, eventRealTotal } = this.props;
-    const { eventId } = this.props.match.params;
-
+    const eventId: number = parseInt(this.props.match.params.eventId, 10);
     return (
       <div>
         <h2 id="event-budget-heading" className="event-module-heading">
@@ -106,11 +109,11 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
                 <span>
                   <span className="text-income">
                     <Translate contentKey="clubmanagementApp.eventBudget.income">Income</Translate>: &nbsp;
-                    <span className="small">RM {eventBudgetTotal.totalIncome.toFixed(2)}</span>
+                    <span className="small">{eventBudgetTotal.totalIncome && `RM ${eventBudgetTotal.totalIncome.toFixed(2)}`}</span>
                   </span>
                   <span className="float-right text-expense">
                     <Translate contentKey="clubmanagementApp.eventBudget.expense">Expense</Translate>: &nbsp;
-                    <span className="small">RM {eventBudgetTotal.totalExpense.toFixed(2)}</span>
+                    <span className="small">{eventBudgetTotal.totalExpense && `RM ${eventBudgetTotal.totalExpense.toFixed(2)}`}</span>
                   </span>
                 </span>
               </div>
@@ -123,22 +126,24 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
                 <span>
                   <span className="text-income">
                     <Translate contentKey="clubmanagementApp.eventBudget.income">Income</Translate>: &nbsp;
-                    <span className="small">RM {eventRealTotal.totalIncome.toFixed(2)}</span>
+                    <span className="small">{eventBudgetTotal.totalIncome && `RM ${eventBudgetTotal.totalIncome.toFixed(2)}`}</span>
                   </span>
                   <span className="float-right text-expense">
                     <Translate contentKey="clubmanagementApp.eventBudget.expense">Expense</Translate>: &nbsp;
-                    <span className="small">RM {eventRealTotal.totalExpense.toFixed(2)}</span>
+                    <span className="small">{eventBudgetTotal.totalExpense && `RM ${eventBudgetTotal.totalExpense.toFixed(2)}`}</span>
                   </span>
                 </span>
               </div>
             )}
           </div>
           <div className="text-center">
-            <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
-              <FontAwesomeIcon icon="plus" />
-              &nbsp;
-              <Translate contentKey="entity.action.add">Add</Translate>
-            </Link>
+            <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={eventId}>
+              <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
+                <FontAwesomeIcon icon="plus" />
+                &nbsp;
+                <Translate contentKey="entity.action.add">Add</Translate>
+              </Link>
+            </AuthorizationChecker>
           </div>
           <div>
             {budgetList && budgetList.length > 0 ? (
@@ -147,6 +152,11 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
                   key={`event-budget-${eventBudget.id}`}
                   showActionMenu
                   actionMenuHandler={this.showCardAction.bind(this, eventBudget.id)}
+                  actionMenuAuthorizationProps={{
+                    ccRole: CCRole.ADMIN,
+                    eventRole: EventRole.HEAD,
+                    eventId: eventBudget.eventId,
+                  }}
                 >
                   <span
                     className={classnames(
@@ -154,7 +164,7 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
                       eventBudget.type === 'INCOME' ? 'text-income' : 'text-expense'
                     )}
                   >
-                    {'RM ' + eventBudget.amount.toFixed(2).toString()}
+                    {eventBudget.amount && `RM ${eventBudget.amount.toFixed(2)}`}
                   </span>
                   <span className="card-item d-block mb-2">
                     <span>
@@ -165,7 +175,9 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
                   <span className="card-item d-block mb-2">
                     <span>
                       <Translate contentKey="clubmanagementApp.eventBudget.type">Type</Translate>:{' '}
-                      <span className="font-weight-bolder text-dark">{eventBudget.type}</span>
+                      <span className="font-weight-bolder text-dark">
+                        {translate(`clubmanagementApp.TransactionType.${eventBudget.type}`)}
+                      </span>
                     </span>
                   </span>
                   <span className="card-item d-block mb-2">
@@ -184,34 +196,36 @@ export class Budget extends React.Component<IBudgetProps, IEventBudgetState> {
           </div>
         </div>
 
-        <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions}>
+        <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions} centered>
           <ModalHeader toggle={this.toggleShowOptions} />
-          <ModalBody>
+          <ModalBody className="px-4">
             <h2 className="text-center">Options</h2>
-            <Button
-              tag={Link}
-              to={`${match.url}/${selectedEventBudgetId}/edit`}
-              onClick={this.toggleShowOptions}
-              color="primary"
-              className="d-block mx-auto my-3 w-75"
-            >
-              <FontAwesomeIcon icon="pencil-alt" />{' '}
-              <span>
-                <Translate contentKey="entity.action.update">Update</Translate>
-              </span>
-            </Button>
-            <Button
-              tag={Link}
-              to={`${match.url}/${selectedEventBudgetId}/delete`}
-              onClick={this.toggleShowOptions}
-              color="cancel"
-              className="d-block mx-auto my-3 w-75"
-            >
-              <FontAwesomeIcon icon="trash" />{' '}
-              <span>
-                <Translate contentKey="entity.action.delete">Delete</Translate>
-              </span>
-            </Button>
+            <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={eventId}>
+              <Button
+                tag={Link}
+                to={`${match.url}/${selectedEventBudgetId}/edit`}
+                onClick={this.toggleShowOptions}
+                color="secondary"
+                className="d-block mx-auto my-3 w-100"
+              >
+                <span>
+                  <Translate contentKey="entity.action.update">Update</Translate>
+                </span>
+              </Button>
+            </AuthorizationChecker>
+            <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD} eventId={eventId}>
+              <Button
+                tag={Link}
+                to={`${match.url}/${selectedEventBudgetId}/delete`}
+                onClick={this.toggleShowOptions}
+                color="cancel"
+                className="d-block mx-auto my-3 w-100"
+              >
+                <span>
+                  <Translate contentKey="entity.action.delete">Delete</Translate>
+                </span>
+              </Button>
+            </AuthorizationChecker>
           </ModalBody>
         </Modal>
       </div>
@@ -225,7 +239,7 @@ const mapStateToProps = ({ budget }: IRootState) => ({
   selectedEventBudgetId: budget.selectedEventBudgetId,
   showActionOptions: budget.showActionOptions,
   eventBudgetTotal: budget.eventBudgetTotal,
-  eventRealTotal: budget.eventRealTotal
+  eventRealTotal: budget.eventRealTotal,
 });
 
 const mapDispatchToProps = {
@@ -233,13 +247,10 @@ const mapDispatchToProps = {
   setSelectedEventBudgetId,
   setShowActionOptions,
   getEventBudgetTotal,
-  getEventRealTotal
+  getEventRealTotal,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Budget);
+export default connect(mapStateToProps, mapDispatchToProps)(Budget);

@@ -1,49 +1,59 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from 'reactstrap';
-import { IEventCrew } from 'app/shared/model/event-crew.model';
-import { IEventAttendee } from 'app/shared/model/event-attendee.model';
+import { IColumns } from '../../model/columns.model';
 
 export interface IEventTableRowProps {
-  user: IEventCrew | IEventAttendee;
+  hasNumbering?: boolean;
   index: number;
-  openModal: Function;
+  columns: IColumns[];
+  data: { [key: string]: any };
+  whatsappKey?: string;
+  action?: (id: number) => void;
 }
 
 export class EventTableRow extends React.Component<IEventTableRowProps> {
-  state = { user: this.props.user };
-  onToggleModal = () => this.props.openModal(this.props.user.id);
+  constructor(props: IEventTableRowProps) {
+    super(props);
+    this.action = this.action.bind(this);
+    this.contactUser = this.contactUser.bind(this);
+  }
 
-  contactUser = () => {
-    window.open(`https://wa.me/${this.props.user.contactNumber}`, '_blank');
-  };
+  contactUser(): void {
+    if (this.props.whatsappKey) {
+      window.open(`https://wa.me/+6${this.props.data[this.props.whatsappKey]}`, '_blank');
+    }
+  }
+
+  action(): void {
+    if (this.props.action) {
+      this.props.action(this.props.data.id);
+    }
+  }
 
   render() {
-    const { user, index } = this.props;
-
-    let thirdColumn;
-    if ('role' in user) {
-      thirdColumn = user.role;
-    } else if ('year' in user) {
-      thirdColumn = user.year;
-    }
+    const { data, columns, hasNumbering, whatsappKey, index, action } = this.props;
 
     return (
       <tr>
-        <td scope="row">{index + 1}</td>
-        <td>{user.userName}</td>
-        <td>{thirdColumn}</td>
-        <td>{'provideTransport' in user ? <FontAwesomeIcon icon="car" /> : null}</td>
-        <td>
-          <Button color="Link" className="icon-btn" onClick={this.contactUser}>
-            <FontAwesomeIcon icon={['fab', 'whatsapp-square']} color="#25D366" size="lg" />
-          </Button>
-        </td>
-        <td>
-          <Button onClick={this.onToggleModal} color="Link" className="icon-btn">
-            <FontAwesomeIcon icon="ellipsis-v" color="#07ade1" />
-          </Button>
-        </td>
+        {hasNumbering && <td scope="row">{index + 1}</td>}
+        {columns.map(column => (
+          <td key={data[column.key]}>{column.replaceValue && data[column.key] ? column.replaceValue : data[column.key]}</td>
+        ))}
+        {whatsappKey && (
+          <td>
+            <Button color="Link" className="icon-btn" onClick={this.contactUser} disabled={!this.props.data[whatsappKey]}>
+              <FontAwesomeIcon icon={['fab', 'whatsapp-square']} color="#25D366" size="lg" />
+            </Button>
+          </td>
+        )}
+        {action && (
+          <td>
+            <Button color="Link" className="icon-btn" onClick={this.action}>
+              <FontAwesomeIcon icon="ellipsis-v" color="#07ade1" />
+            </Button>
+          </td>
+        )}
       </tr>
     );
   }

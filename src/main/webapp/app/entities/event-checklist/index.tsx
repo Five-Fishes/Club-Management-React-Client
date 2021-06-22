@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { RouteComponentProps, Switch } from 'react-router-dom';
 
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 
@@ -8,7 +8,7 @@ import EventChecklistDetail from './event-checklist-detail';
 import EventChecklistUpdate from './event-checklist-update';
 import EventChecklistDeleteDialog from './event-checklist-delete-dialog';
 
-const Routes = ({ match }) => (
+const Routes: React.FC<RouteComponentProps> = ({ match }) => (
   <>
     <Switch>
       <ErrorBoundaryRoute exact path={`${match.url}/event/:eventId/new`} component={EventChecklistUpdate} />
