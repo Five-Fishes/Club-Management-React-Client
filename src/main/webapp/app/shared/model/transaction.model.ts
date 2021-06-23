@@ -2,27 +2,29 @@ import { Moment } from 'moment';
 
 export const enum TransactionType {
   INCOME = 'INCOME',
-  EXPENSE = 'EXPENSE'
+  EXPENSE = 'EXPENSE',
 }
 
 export const enum TransactionStatus {
-  COLLECTED = 'COLLECTED',
-  PENDING = 'PENDING'
+  COMPLETED = 'COMPLETED',
+  INVALID = 'INVALID',
+  PENDING = 'PENDING',
 }
 
 export interface ITransaction {
   id?: number;
   eventId?: number;
-  receiptId?: number;
-  type?: TransactionType;
-  amount?: number;
-  details?: string;
-  receiptUrl?: string;
-  fileName?: string;
-  fileType?: string;
+  transactionType?: TransactionType;
+  transactionAmount?: number;
+  description?: string;
+  transactionStatus?: TransactionStatus;
   createdBy?: string;
   createdDate?: Moment;
-  status?: TransactionStatus;
+  closedBy?: string;
+  title?: string;
+  imageLink?: string;
+  transactionDate?: Moment;
+  multipartFile?: File;
 }
 
 export const defaultValue: Readonly<ITransaction> = {};

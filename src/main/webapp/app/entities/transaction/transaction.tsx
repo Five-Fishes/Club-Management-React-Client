@@ -12,10 +12,9 @@ import { getEntities } from './transaction.reducer';
 // tslint:disable-next-line:no-unused-variable
 import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import { CustomTab } from 'app/shared/components/customTab/custom-tab';
+import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { financeTabList } from 'app/shared/util/tab.constants';
-
-import TransactionCard from './transactionCard';
+import { TransactionCard } from './transactionCard';
 
 export interface ITransactionProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -62,94 +61,7 @@ export class Transaction extends React.Component<ITransactionProps, ITransaction
         <CustomTab tabList={financeTabList} currentTab="All Transactions" />
         <div className="mx-4">
           {transactionList && transactionList.length > 0 ? (
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th className="hand" onClick={this.sort('id')}>
-                    <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('eventId')}>
-                    <Translate contentKey="clubmanagementApp.transaction.eventId">Event Id</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('receiptId')}>
-                    <Translate contentKey="clubmanagementApp.transaction.receiptId">Receipt Id</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('type')}>
-                    <Translate contentKey="clubmanagementApp.transaction.type">Type</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('amount')}>
-                    <Translate contentKey="clubmanagementApp.transaction.amount">Amount</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('details')}>
-                    <Translate contentKey="clubmanagementApp.transaction.details">Details</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('receiptUrl')}>
-                    <Translate contentKey="clubmanagementApp.transaction.receiptUrl">Receipt Url</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('fileName')}>
-                    <Translate contentKey="clubmanagementApp.transaction.fileName">File Name</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('fileType')}>
-                    <Translate contentKey="clubmanagementApp.transaction.fileType">File Type</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('createdBy')}>
-                    <Translate contentKey="clubmanagementApp.transaction.createdBy">Created By</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('createdDate')}>
-                    <Translate contentKey="clubmanagementApp.transaction.createdDate">Created Date</Translate>{' '}
-                    <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {transactionList.map((transaction, i) => (
-                  <tr key={`entity-${i}`}>
-                    <td>
-                      <Button tag={Link} to={`${match.url}/${transaction.id}`} color="link" size="sm">
-                        {transaction.id}
-                      </Button>
-                    </td>
-                    <td>{transaction.eventId}</td>
-                    <td>{transaction.receiptId}</td>
-                    <td>
-                      <Translate contentKey={`clubmanagementApp.TransactionType.${transaction.type}`} />
-                    </td>
-                    <td>{transaction.amount}</td>
-                    <td>{transaction.details}</td>
-                    <td>{transaction.receiptUrl}</td>
-                    <td>{transaction.fileName}</td>
-                    <td>{transaction.fileType}</td>
-                    <td>{transaction.createdBy}</td>
-                    <td>
-                      <TextFormat type="date" value={transaction.createdDate ?? ''} format={APP_DATE_FORMAT} />
-                    </td>
-                    <td className="text-right">
-                      <div className="btn-group flex-btn-group-container">
-                        <Button tag={Link} to={`${match.url}/${transaction.id}`} color="info" size="sm">
-                          <FontAwesomeIcon icon="eye" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.view">View</Translate>
-                          </span>
-                        </Button>
-                        <Button tag={Link} to={`${match.url}/${transaction.id}/edit`} color="primary" size="sm">
-                          <FontAwesomeIcon icon="pencil-alt" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.edit">Edit</Translate>
-                          </span>
-                        </Button>
-                        <Button tag={Link} to={`${match.url}/${transaction.id}/delete`} color="danger" size="sm">
-                          <FontAwesomeIcon icon="trash" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.delete">Delete</Translate>
-                          </span>
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+            transactionList.map((transaction, i) => <TransactionCard transaction={transaction} />)
           ) : (
             <div className="alert alert-warning">
               <Translate contentKey="clubmanagementApp.transaction.home.notFound">No Transactions found</Translate>

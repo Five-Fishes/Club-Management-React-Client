@@ -23,38 +23,45 @@ export interface ITransactionCardState {
 }
 
 export class TransactionCard extends React.Component<ITransactionCardProps, ITransactionCardState> {
-  state = {
-    event: undefined
-  };
-
-  componentDidMount() {
-    this.getEvent(this.props.transaction.eventId);
+  constructor(props: ITransactionCardProps) {
+    super(props);
+    this.state = {
+      event: undefined,
+    };
   }
 
-  getEvent = async eventId => {
+  componentDidMount() {
+    if (this.props.transaction.eventId) {
+      this.getEvent(this.props.transaction.eventId);
+    }
+  }
+
+  async getEvent(eventId: number) {
     const event = await axios.get<IEvent>(`api/events/${eventId}`);
     this.setState({ event: event.data });
-  };
+  }
+
   render() {
     const { transaction } = this.props;
     const { event } = this.state;
     return event ? (
       <Card className="my-3 transaction-card">
         <div className="d-flex justify-content-between">
-          <h5>{this.state.event.name}</h5>
-          <p>
-            <TextFormat type="date" value={transaction.createdDate} format={APP_LOCAL_DATE_FORMAT} />
-          </p>
+          <h5> {event && event.name} </h5>
+          <p>{transaction.createdDate && <TextFormat type="date" value={transaction.createdDate} format={APP_LOCAL_DATE_FORMAT} />}</p>
         </div>
 
-        <p>
-          {transaction.type}: RM{transaction.amount}
-        </p>
         <div className="d-flex justify-content-between">
-          <div className={`status-tag ${transaction.status === TransactionStatus.COLLECTED ? 'collected-tag' : 'pending-tag'}`}>
-            {transaction.status}
-          </div>
+          <p>
+            {transaction.transactionType}: RM {transaction.transactionAmount}
+          </p>
           <p>{transaction.createdBy}</p>
+        </div>
+        <div className="d-flex justify-content-between">
+          <div className={`status-tag ${transaction.transactionStatus === TransactionStatus.COMPLETED ? 'collected-tag' : 'pending-tag'}`}>
+            {transaction.transactionStatus}
+          </div>
+          <p>{transaction.closedBy}</p>
         </div>
       </Card>
     ) : null;
@@ -68,7 +75,4 @@ const mapStateToProps = ({ event }: IRootState) => ({});
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TransactionCard);
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionCard);
