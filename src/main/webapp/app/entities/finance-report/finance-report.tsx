@@ -92,17 +92,20 @@ class FinanceReport extends React.Component<IFinanceReportProps> {
               </Row>
             </div>
           </div>
-          <PieChart
-            label={this.displayPercentage}
-            data={chartData}
-            lineWidth={50}
-            labelStyle={{
-              fill: 'white',
-              fontSize: '5px',
-              fontFamily: 'sans-serif',
-            }}
-            labelPosition={75}
-          />
+          <div className="paper">
+            <PieChart
+              label={this.displayPercentage}
+              data={chartData}
+              lineWidth={50}
+              labelStyle={{
+                fill: 'black',
+                fontSize: '5px',
+                fontFamily: 'sans-serif',
+              }}
+              radius={30}
+              labelPosition={110}
+            />
+          </div>
         </div>
       </div>
     );
