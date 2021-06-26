@@ -17,4 +17,3 @@ Components: (if any)
 Usage: View user profile information
 
 - [ ] Development
-- [ ] Unit Test

@@ -1,9 +1,10 @@
 import { Moment } from 'moment';
+import { IImageStorage } from './image-storage.model';
 
 export const enum EventStatus {
   OPEN = 'OPEN',
   POSTPONED = 'POSTPONED',
-  CANCELLED = 'CANCELLED'
+  CANCELLED = 'CANCELLED',
 }
 
 export interface IEvent {
@@ -17,11 +18,10 @@ export interface IEvent {
   fee?: number;
   requiredTransport?: boolean;
   status?: EventStatus;
-  imageUrl?: string;
-  fileName?: string;
-  fileType?: string;
+  imageStorageDTO?: IImageStorage;
+  imageFile?: File;
 }
 
 export const defaultValue: Readonly<IEvent> = {
-  requiredTransport: false
+  requiredTransport: false,
 };

@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
 import { getEntity, updateEntity, createEntity, reset } from './transaction.reducer';
-import { getEntities as getEvents } from 'app/entities/event/event.reducer';
+// import { getEntities as getEvents } from 'app/entities/event/event.reducer';
 import { ITransaction } from 'app/shared/model/transaction.model';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
@@ -23,14 +23,14 @@ export interface ITransactionUpdateState {
 }
 
 export class TransactionUpdate extends React.Component<ITransactionUpdateProps, ITransactionUpdateState> {
-  constructor(props) {
+  constructor(props: ITransactionUpdateProps) {
     super(props);
     this.state = {
-      isNew: !this.props.match.params || !this.props.match.params.id
+      isNew: !this.props.match.params || !this.props.match.params.id,
     };
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: ITransactionUpdateProps, nextState: ITransactionUpdateState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
       this.handleClose();
     }
@@ -39,20 +39,20 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
   componentDidMount() {
     if (this.state.isNew) {
       this.props.reset();
-      this.props.getEvents();
+      //   this.props.getEvents();
     } else {
       this.props.getEntity(this.props.match.params.id);
     }
   }
 
-  saveEntity = (event, errors, values) => {
+  saveEntity = (event: any, errors: any, values: any) => {
     values.createdDate = convertDateTimeToServer(values.createdDate);
 
     if (errors.length === 0) {
       const { transactionEntity } = this.props;
       const entity = {
         ...transactionEntity,
-        ...values
+        ...values,
       };
 
       if (this.state.isNew) {
@@ -108,7 +108,7 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
                     className="form-control"
                     name="eventId"
                     validate={{
-                      required: { value: true, errorMessage: 'Please select an event' }
+                      required: { value: true, errorMessage: 'Please select an event' },
                     }}
                   >
                     <option value="" disabled hidden>
@@ -138,7 +138,7 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
                     type="select"
                     className="form-control"
                     name="type"
-                    value={(!isNew && transactionEntity.type) || 'INCOME'}
+                    value={(!isNew && transactionEntity.transactionType) || 'INCOME'}
                   >
                     <option value="INCOME">{translate('clubmanagementApp.TransactionType.INCOME')}</option>
                     <option value="EXPENSE">{translate('clubmanagementApp.TransactionType.EXPENSE')}</option>
@@ -155,7 +155,10 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
                     validate={{
                       required: { value: true, errorMessage: 'Please enter an amount for this budget' },
                       min: { value: 0, errorMessage: 'Amount cannot be less than 0' },
-                      pattern: { value: '^([0-9]*.?[0-9]{1,2})$', errorMessage: 'Please enter a valid amount with max of 2 decimal values' }
+                      pattern: {
+                        value: '^([0-9]*.?[0-9]{1,2})$',
+                        errorMessage: 'Please enter a valid amount with max of 2 decimal values',
+                      },
                     }}
                   />
                 </AvGroup>
@@ -175,7 +178,7 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
                     accept="image/*"
                     name="receiptUrl"
                     validate={{
-                      required: { value: true, errorMessage: 'Please upload an receipt' }
+                      required: { value: true, errorMessage: 'Please upload an receipt' },
                     }}
                   />
                 </AvGroup>
@@ -240,21 +243,18 @@ const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.transaction.loading,
   updating: storeState.transaction.updating,
   updateSuccess: storeState.transaction.updateSuccess,
-  userId: storeState.authentication.id
+  userId: storeState.authentication.id,
 });
 
 const mapDispatchToProps = {
-  getEvents,
+  //   getEvents,
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TransactionUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionUpdate);

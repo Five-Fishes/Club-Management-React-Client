@@ -13,11 +13,11 @@ import { createEntity, reset } from './budget.reducer';
 export interface IBudgetCreateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
 export class EventBudgetCreate extends React.Component<IBudgetCreateProps> {
-  constructor(props) {
+  constructor(props: IBudgetCreateProps) {
     super(props);
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: IBudgetCreateProps) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
       this.handleClose();
     }
@@ -27,12 +27,12 @@ export class EventBudgetCreate extends React.Component<IBudgetCreateProps> {
     this.props.reset();
   }
 
-  saveEntity = (event, errors, values) => {
+  saveEntity = (event: any, errors: any, values: any) => {
     if (errors.length === 0) {
       const { budgetEntity } = this.props;
       const entity = {
         ...budgetEntity,
-        ...values
+        ...values,
       };
 
       this.props.createEntity(entity);
@@ -44,7 +44,7 @@ export class EventBudgetCreate extends React.Component<IBudgetCreateProps> {
   };
 
   render() {
-    const { loading, updating, errorMessage } = this.props;
+    const { loading, updating, errResponse } = this.props;
     const { eventId } = this.props.match.params;
 
     return (
@@ -75,7 +75,10 @@ export class EventBudgetCreate extends React.Component<IBudgetCreateProps> {
                     validate={{
                       required: { value: true, errorMessage: 'Please enter an amount for this budget' },
                       min: { value: 0, errorMessage: 'Amount cannot be less than 0' },
-                      pattern: { value: '^([0-9]*.?[0-9]{1,2})$', errorMessage: 'Please enter a valid amount with max of 2 decimal values' }
+                      pattern: {
+                        value: '^([0-9]*.?[0-9]{1,2})$',
+                        errorMessage: 'Please enter a valid amount with max of 2 decimal values',
+                      },
                     }}
                   />
                 </AvGroup>
@@ -90,7 +93,7 @@ export class EventBudgetCreate extends React.Component<IBudgetCreateProps> {
                     required
                     validate={{
                       required: { value: true, errorMessage: 'Please enter a name for this budget' },
-                      maxLength: { value: 100, errorMessage: 'Name cannot be more than 100 characters' }
+                      maxLength: { value: 100, errorMessage: 'Name cannot be more than 100 characters' },
                     }}
                   />
                 </AvGroup>
@@ -115,11 +118,11 @@ export class EventBudgetCreate extends React.Component<IBudgetCreateProps> {
                     type="textarea"
                     name="details"
                     validate={{
-                      maxLength: { value: 200, errorMessage: 'Details cannot be more than 200 characters' }
+                      maxLength: { value: 200, errorMessage: 'Details cannot be more than 200 characters' },
                     }}
                   />
                 </AvGroup>
-                <span className="text-error">{errorMessage ? errorMessage.response.data.detail : ''}</span>
+                <span className="text-error">{errResponse ? errResponse.response?.data?.detail : ''}</span>
                 <div className="general-buttonContainer--flexContainer">
                   <Button
                     className="general-button--width"
@@ -150,18 +153,15 @@ const mapStateToProps = (storeState: IRootState) => ({
   loading: storeState.budget.loading,
   updating: storeState.budget.updating,
   updateSuccess: storeState.budget.updateSuccess,
-  errorMessage: storeState.budget.errorMessage
+  errResponse: storeState.budget.errResponse,
 });
 
 const mapDispatchToProps = {
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventBudgetCreate);
+export default connect(mapStateToProps, mapDispatchToProps)(EventBudgetCreate);

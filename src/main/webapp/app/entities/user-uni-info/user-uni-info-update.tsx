@@ -21,14 +21,14 @@ export interface IUserUniInfoUpdateState {
 }
 
 export class UserUniInfoUpdate extends React.Component<IUserUniInfoUpdateProps, IUserUniInfoUpdateState> {
-  constructor(props) {
+  constructor(props: IUserUniInfoUpdateProps) {
     super(props);
     this.state = {
-      isNew: !this.props.match.params || !this.props.match.params.id
+      isNew: !this.props.match.params || !this.props.match.params.id,
     };
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: IUserUniInfoUpdateProps, nextState: IUserUniInfoUpdateState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
       this.handleClose();
     }
@@ -42,12 +42,12 @@ export class UserUniInfoUpdate extends React.Component<IUserUniInfoUpdateProps, 
     }
   }
 
-  saveEntity = (event, errors, values) => {
+  saveEntity = (event: any, errors: any, values: any) => {
     if (errors.length === 0) {
       const { userUniInfoEntity } = this.props;
       const entity = {
         ...userUniInfoEntity,
-        ...values
+        ...values,
       };
 
       if (this.state.isNew) {
@@ -174,20 +174,17 @@ const mapStateToProps = (storeState: IRootState) => ({
   userUniInfoEntity: storeState.userUniInfo.entity,
   loading: storeState.userUniInfo.loading,
   updating: storeState.userUniInfo.updating,
-  updateSuccess: storeState.userUniInfo.updateSuccess
+  updateSuccess: storeState.userUniInfo.updateSuccess,
 });
 
 const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserUniInfoUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(UserUniInfoUpdate);

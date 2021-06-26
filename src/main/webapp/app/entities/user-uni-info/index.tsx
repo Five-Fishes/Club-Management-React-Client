@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
+import { RouteComponentProps, Switch } from 'react-router-dom';
 
 import ErrorBoundaryRoute from 'app/shared/error/error-boundary-route';
 
@@ -8,7 +8,7 @@ import UserUniInfoDetail from './user-uni-info-detail';
 import UserUniInfoUpdate from './user-uni-info-update';
 import UserUniInfoDeleteDialog from './user-uni-info-delete-dialog';
 
-const Routes = ({ match }) => (
+const Routes: React.FC<RouteComponentProps> = ({ match }) => (
   <>
     <Switch>
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={UserUniInfoUpdate} />

@@ -1,0 +1,50 @@
+.status-tag {
+  border-radius: 8px;
+  text-align: center;
+  color: white;
+  width: 70px;
+  height: 15px;
+  font-size: 11px;
+  font-weight: 500;
+  margin: 3px;
+}
+
+.transaction-card {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.text-end {
+  text-align: end;
+}
+
+.text-overflow-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rows-overflow-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  /* autoprefixer: off */
+}
+
+.transaction-card h5,
+.transaction-card p {
+  margin: 3px;
+  color: black;
+}
+
+.pending-tag {
+  background: #dd5959;
+}
+
+.collected-tag {
+  background: #7ec073;
+}

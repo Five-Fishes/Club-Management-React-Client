@@ -13,10 +13,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface IHeaderProps {
   isAuthenticated: boolean;
-  isAdmin: boolean;
   ribbonEnv: string;
   isSwaggerEnabled: boolean;
-  currentLocale: string;
+  currentLocale?: string;
   onLocaleChange: Function;
 }
 
@@ -26,11 +25,11 @@ export interface IHeaderState {
 
 export default class Header extends React.Component<IHeaderProps, IHeaderState> {
   state: IHeaderState = {
-    menuOpen: false
+    menuOpen: false,
   };
 
-  handleLocaleChange = event => {
-    const langKey = event.target.value;
+  handleLocaleChange = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const langKey = (event.target as HTMLButtonElement).value;
     Storage.session.set('locale', langKey);
     this.props.onLocaleChange(langKey);
   };
@@ -40,7 +39,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
   };
 
   render() {
-    const { currentLocale, isAuthenticated, isAdmin, isSwaggerEnabled } = this.props;
+    const { currentLocale, isAuthenticated, isSwaggerEnabled } = this.props;
 
     const btn = (
       <Button outline color="primary" aria-label="Menu" onClick={this.toggleMenu} style={{ background: 'white' }}>
@@ -59,7 +58,7 @@ export default class Header extends React.Component<IHeaderProps, IHeaderState> 
           <Nav id="header-tabs" className="h-100 ml-auto">
             <LocaleMenu currentLocale={currentLocale} onClick={this.handleLocaleChange} />
             {isAuthenticated ? (
-              <Link to="/profile" className="h-100 p-1">
+              <Link to="/profile/stats" className="h-100 p-1">
                 <img
                   className="mh-100 border rounded-circle shadow"
                   src="content/images/jhipster_family_member_0_head-192.png"

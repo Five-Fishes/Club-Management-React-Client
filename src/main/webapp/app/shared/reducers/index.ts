@@ -5,90 +5,93 @@ import locale, { LocaleState } from './locale';
 import authentication, { IAuthenticationInitialState } from './authentication';
 import applicationProfile, { ApplicationProfileState } from './application-profile';
 
-import administration, { AdministrationState } from 'app/modules/administration/administration.reducer';
-import userManagement, { UserManagementState } from 'app/modules/administration/user-management/user-management.reducer';
+import administration, { IAdministrationState } from 'app/modules/administration/administration.reducer';
+import userManagement, { IUserManagementState } from 'app/modules/administration/user-management/user-management.reducer';
 // prettier-ignore
 import event, {
-  EventState
+  IEventState
 } from 'app/entities/event/event.reducer';
 // prettier-ignore
 import eventCrew, {
-  EventCrewState
+  IEventCrewState
 } from 'app/entities/event-crew/event-crew.reducer';
 // prettier-ignore
 import eventAttendee, {
-  EventAttendeeState
+  IEventAttendeeState
 } from 'app/entities/event-attendee/event-attendee.reducer';
 // prettier-ignore
 import budget, {
-  BudgetState
+  IBudgetState
 } from 'app/entities/budget/budget.reducer';
 // prettier-ignore
 import eventActivity, {
-  EventActivityState
+  IEventActivityState
 } from 'app/entities/event-activity/event-activity.reducer';
 // prettier-ignore
 import eventChecklist, {
-  EventChecklistState
+  IEventChecklistState
 } from 'app/entities/event-checklist/event-checklist.reducer';
 // prettier-ignore
 import transaction, {
-  TransactionState
+  ITransactionState
 } from 'app/entities/transaction/transaction.reducer';
 // prettier-ignore
 import claim, {
-  ClaimState
+  IClaimState
 } from 'app/entities/claim/claim.reducer';
 // prettier-ignore
 import debt, {
-  DebtState
+  IDebtState
 } from 'app/entities/debt/debt.reducer';
 // prettier-ignore
 import administrator, {
-  AdministratorState
+  IAdministratorState
 } from 'app/entities/administrator/administrator.reducer';
 // prettier-ignore
 import clubFamily, {
-  ClubFamilyState
+  IClubFamilyState
 } from 'app/entities/club-family/club-family.reducer';
 // prettier-ignore
 import userCCInfo, {
-  UserCCInfoState
+  IUserCCInfoState
 } from 'app/entities/user-cc-info/user-cc-info.reducer';
 // prettier-ignore
 import userUniInfo, {
-  UserUniInfoState
+  IUserUniInfoState
 } from 'app/entities/user-uni-info/user-uni-info.reducer';
 // prettier-ignore
 import faculty, {
-  FacultyState
+  IFacultyState
 } from 'app/entities/faculty/faculty.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
-import completeProfile, { CompleteProfileState } from 'app/modules/auth/complete-profile/complete-profile.reducer';
+// prettier-ignore
+import user, {
+  IUserState
+} from 'app/modules/user-profile/user-profile.reducer';
 
 export interface IRootState {
   readonly authentication: IAuthenticationInitialState;
   readonly locale: LocaleState;
   readonly applicationProfile: ApplicationProfileState;
-  readonly administration: AdministrationState;
-  readonly userManagement: UserManagementState;
-  readonly event: EventState;
-  readonly eventCrew: EventCrewState;
-  readonly eventAttendee: EventAttendeeState;
-  readonly budget: BudgetState;
-  readonly eventActivity: EventActivityState;
-  readonly eventChecklist: EventChecklistState;
-  readonly transaction: TransactionState;
-  readonly claim: ClaimState;
-  readonly debt: DebtState;
-  readonly administrator: AdministratorState;
-  readonly clubFamily: ClubFamilyState;
-  readonly userCCInfo: UserCCInfoState;
-  readonly userUniInfo: UserUniInfoState;
-  readonly faculty: FacultyState;
+  readonly administration: IAdministrationState;
+  readonly userManagement: IUserManagementState;
+  readonly event: IEventState;
+  readonly eventCrew: IEventCrewState;
+  readonly eventAttendee: IEventAttendeeState;
+  readonly budget: IBudgetState;
+  readonly eventActivity: IEventActivityState;
+  readonly eventChecklist: IEventChecklistState;
+  readonly transaction: ITransactionState;
+  readonly claim: IClaimState;
+  readonly debt: IDebtState;
+  readonly administrator: IAdministratorState;
+  readonly clubFamily: IClubFamilyState;
+  readonly userCCInfo: IUserCCInfoState;
+  readonly userUniInfo: IUserUniInfoState;
+  readonly faculty: IFacultyState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
-  readonly completeProfile: CompleteProfileState;
+  readonly user: IUserState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -113,7 +116,7 @@ const rootReducer = combineReducers<IRootState>({
   faculty,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
-  completeProfile
+  user,
 });
 
 export default rootReducer;

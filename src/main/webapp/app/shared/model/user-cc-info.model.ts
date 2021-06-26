@@ -1,6 +1,6 @@
 export const enum ClubFamilyRole {
   FATHER = 'FATHER',
-  MOTHER = 'MOTHER'
+  MOTHER = 'MOTHER',
 }
 
 export interface IUserCCInfo {
@@ -10,6 +10,7 @@ export interface IUserCCInfo {
   familyRole?: ClubFamilyRole;
   yearSession?: string;
   clubFamilyName?: string;
+  fishLevel?: string;
 }
 
 export const defaultValue: Readonly<IUserCCInfo> = {};

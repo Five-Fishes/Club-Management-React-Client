@@ -1,11 +1,25 @@
 import moment from 'moment';
 
-import { APP_LOCAL_DATETIME_FORMAT, APP_LOCAL_DATETIME_FORMAT_Z } from 'app/config/constants';
+import { APP_LOCAL_DATETIME_FORMAT, APP_LOCAL_DATETIME_FORMAT_Z, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 
-export const convertDateTimeFromServer = date => (date ? moment(date).format(APP_LOCAL_DATETIME_FORMAT) : null);
+export function convertDateTimeFromServer(date?: moment.MomentInput): string | null {
+  if (!date) return null;
+  return moment(date).format(APP_LOCAL_DATETIME_FORMAT);
+}
 
-export const convertDateTimeToServer = date => (date ? moment(date, APP_LOCAL_DATETIME_FORMAT_Z).toDate() : null);
+export function convertDateTimeToServer(date?: moment.MomentInput): Date | null {
+  if (!date) return null;
+  return moment(date, APP_LOCAL_DATETIME_FORMAT_Z).toDate();
+}
 
-export const convertDateTimeFromServerToLocaleDate = date => (date ? new Date(date.toLocaleString()).toLocaleDateString() : '');
+export function convertDateTimeFromServerToLocaleDate(date?: moment.MomentInput): string {
+  if (!date) return '';
+  date = new Date(date.toLocaleString());
+  return moment(date).format(APP_LOCAL_DATE_FORMAT);
+}
 
-export const convertDateTimeFromServerToLocaleDateTime = date => (date ? new Date(date.toLocaleString()).toLocaleString() : '');
+export function convertDateTimeFromServerToLocaleDateTime(date?: moment.MomentInput): string {
+  if (!date) return '';
+  date = new Date(date.toLocaleString());
+  return moment(date).format(APP_LOCAL_DATETIME_FORMAT);
+}

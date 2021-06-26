@@ -18,14 +18,14 @@ import { IEvent } from 'app/shared/model/event.model';
 export interface IEventAttendeeUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
 
 export interface IEventAttendeeUpdateState {
-  event: IEvent;
+  event: IEvent | null;
 }
 
 export class EventAttendeeUpdate extends React.Component<IEventAttendeeUpdateProps, IEventAttendeeUpdateState> {
-  constructor(props) {
+  constructor(props: IEventAttendeeUpdateProps) {
     super(props);
     this.state = {
-      event: null
+      event: null,
     };
   }
 
@@ -38,18 +38,18 @@ export class EventAttendeeUpdate extends React.Component<IEventAttendeeUpdatePro
     this.getEvent();
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentWillUpdate(nextProps: IEventAttendeeUpdateProps, nextState: IEventAttendeeUpdateState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
       this.handleClose();
     }
   }
 
-  saveEntity = (event, errors, values) => {
+  saveEntity = (event: any, errors: any, values: any) => {
     if (errors.length === 0) {
       const { eventAttendeeEntity } = this.props;
       const entity = {
         ...eventAttendeeEntity,
-        ...values
+        ...values,
       };
 
       this.props.createEntity(entity);
@@ -146,20 +146,17 @@ const mapStateToProps = (storeState: IRootState) => ({
   eventAttendeeEntity: storeState.eventAttendee.entity,
   loading: storeState.eventAttendee.loading,
   updating: storeState.eventAttendee.updating,
-  updateSuccess: storeState.eventAttendee.updateSuccess
+  updateSuccess: storeState.eventAttendee.updateSuccess,
 });
 
 const mapDispatchToProps = {
   getEntity,
   updateEntity,
   createEntity,
-  reset
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EventAttendeeUpdate);
+export default connect(mapStateToProps, mapDispatchToProps)(EventAttendeeUpdate);

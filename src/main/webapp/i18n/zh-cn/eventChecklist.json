@@ -2,26 +2,26 @@
   "clubmanagementApp": {
     "eventChecklist": {
       "home": {
-        "title": "Event Checklists",
-        "createLabel": "创建新 Event Checklist",
+        "title": "活动筹备清单",
+        "createLabel": "创建新筹备清单",
         "createOrEditLabel": "创建或编辑筹备清单",
-        "notFound": "No Event Checklist found"
+        "notFound": "未发现任何筹备清单"
       },
-      "created": "Event Checklist {{ param }} 创建成功",
-      "updated": "Event Checklist {{ param }} 更新成功",
-      "deleted": "Event Checklist {{ param }} 删除成功",
+      "created": "筹备清单 {{ param }} 创建成功",
+      "updated": "筹备清单 {{ param }} 更新成功",
+      "deleted": "筹备清单 {{ param }} 删除成功",
       "delete": {
-        "question": "你确定要删除 Event Checklist {{ id }} 吗？"
+        "question": "你确定要删除筹备清单 {{ id }} 吗？"
       },
       "detail": {
-        "title": "Event Checklist"
+        "title": "活动筹备清单"
       },
-      "eventId": "Event Id",
-      "name": "Name",
-      "description": "Description",
-      "status": "Status",
-      "type": "Type",
-      "tab": "Checklist"
+      "eventId": "活动 ID",
+      "name": "名称",
+      "description": "描述",
+      "status": "状态",
+      "type": "类型",
+      "tab": "筹备清单"
     }
   }
 }
