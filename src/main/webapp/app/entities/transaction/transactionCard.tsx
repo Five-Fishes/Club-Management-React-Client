@@ -2,7 +2,7 @@ import './transaction.scss';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Card } from 'reactstrap';
+import { Card, Row, Col } from 'reactstrap';
 import { Translate, ICrudGetAllAction, TextFormat, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ITransaction, TransactionStatus } from 'app/shared/model/transaction.model';
@@ -18,51 +18,53 @@ export interface ITransactionCardProps extends StateProps, DispatchProps {
   transaction: ITransaction;
 }
 
-export interface ITransactionCardState {
-  event?: IEvent;
-}
-
-export class TransactionCard extends React.Component<ITransactionCardProps, ITransactionCardState> {
+export class TransactionCard extends React.Component<ITransactionCardProps> {
   constructor(props: ITransactionCardProps) {
     super(props);
-    this.state = {
-      event: undefined,
-    };
+    // this.state = {
+    //   event: undefined,
+    // };
   }
 
-  componentDidMount() {
-    if (this.props.transaction.eventId) {
-      this.getEvent(this.props.transaction.eventId);
-    }
-  }
+  // componentDidMount() {
+  //   if (this.props.transaction.eventId) {
+  //     this.getEvent(this.props.transaction.eventId);
+  //   }
+  // }
 
-  async getEvent(eventId: number) {
-    const event = await axios.get<IEvent>(`api/events/${eventId}`);
-    this.setState({ event: event.data });
-  }
+  // async getEvent(eventId: number) {
+  //   const event = await axios.get<IEvent>(`api/events/${eventId}`);
+  //   this.setState({ event: event.data });
+  // }
 
   render() {
     const { transaction } = this.props;
-    const { event } = this.state;
-    return event ? (
+
+    return transaction ? (
       <Card className="my-3 transaction-card">
         <div className="d-flex justify-content-between">
-          <h5> {event && event.name} </h5>
-          <p>{transaction.createdDate && <TextFormat type="date" value={transaction.createdDate} format={APP_LOCAL_DATE_FORMAT} />}</p>
-        </div>
-
-        <div className="d-flex justify-content-between">
-          <p>
-            {transaction.transactionType}: RM {transaction.transactionAmount}
+          <h5 className="rows-overflow-ellipsis"> {transaction?.title} </h5>
+          <p className="ml-4">
+            {transaction.createdDate && <TextFormat type="date" value={transaction.createdDate} format={APP_LOCAL_DATE_FORMAT} />}
           </p>
-          <p>{transaction.createdBy}</p>
         </div>
-        <div className="d-flex justify-content-between">
-          <div className={`status-tag ${transaction.transactionStatus === TransactionStatus.COMPLETED ? 'collected-tag' : 'pending-tag'}`}>
-            {transaction.transactionStatus}
-          </div>
-          <p>{transaction.closedBy}</p>
-        </div>
+        <p>
+          {transaction.transactionType}: RM {transaction.transactionAmount}
+        </p>
+        <Row className="d-flex justify-content-between">
+          <Col xs="4">
+            <div
+              className={`mt-1 status-tag ${
+                transaction.transactionStatus === TransactionStatus.COMPLETED ? 'collected-tag' : 'pending-tag'
+              }`}
+            >
+              {transaction.transactionStatus}
+            </div>
+          </Col>
+          <Col xs="8">
+            <p className="text-end text-overflow-ellipsis">{transaction.createdBy}</p>
+          </Col>
+        </Row>
       </Card>
     ) : null;
   }

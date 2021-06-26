@@ -10,7 +10,29 @@
 }
 
 .transaction-card {
-  padding: 15px;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 2px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.text-end {
+  text-align: end;
+}
+
+.text-overflow-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rows-overflow-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  /* autoprefixer: off */
 }
 
 .transaction-card h5,
