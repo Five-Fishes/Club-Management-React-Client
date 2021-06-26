@@ -21,7 +21,7 @@ class FinanceReport extends React.Component<IFinanceReportProps> {
 
   // the dataEntry is from PieChart component
   displayPercentage({ dataEntry }: any) {
-    return !!dataEntry.value ? `${Math.round(dataEntry.percentage)} %` : '';
+    return !!dataEntry.value ? `${dataEntry.percentage.toFixed(2)} %` : '';
   }
 
   render() {
