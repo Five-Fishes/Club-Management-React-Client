@@ -18,6 +18,7 @@ import ClubFamily from './club-family';
 import UserCCInfo from './user-cc-info';
 import UserUniInfo from './user-uni-info';
 import Faculty from './faculty';
+import FinanceReport from './finance-report';
 /* jhipster-needle-add-route-import - JHipster will add routes here */
 
 const Routes: React.FC<RouteComponentProps> = ({ match }) => (
@@ -38,6 +39,7 @@ const Routes: React.FC<RouteComponentProps> = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}/user-cc-info`} component={UserCCInfo} />
       <ErrorBoundaryRoute path={`${match.url}/user-uni-info`} component={UserUniInfo} />
       <ErrorBoundaryRoute path={`${match.url}/faculty`} component={Faculty} />
+      <ErrorBoundaryRoute path={`${match.url}/finance-report`} component={FinanceReport} />
       {/* jhipster-needle-add-route-path - JHipster will add routes here */}
     </Switch>
   </div>

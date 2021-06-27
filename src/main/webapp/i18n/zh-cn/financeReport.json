@@ -1,7 +1,14 @@
 {
   "clubmanagementApp": {
     "financeReport": {
-      "tab": "报告"
+      "tab": "财务报告",
+      "income": "收入",
+      "expense": "支出",
+      "invalidExpense": "无效费用",
+      "badDebt": "坏账",
+      "realised": "以实现",
+      "pending": "待定",
+      "title": "财务报告"
     }
   }
 }

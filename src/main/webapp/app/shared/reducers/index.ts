@@ -63,6 +63,7 @@ import userUniInfo, {
 import faculty, {
   IFacultyState
 } from 'app/entities/faculty/faculty.reducer';
+import financeReport, { IFinanceReportState } from 'app/entities/finance-report/finance-report.reducer';
 /* jhipster-needle-add-reducer-import - JHipster will add reducer here */
 // prettier-ignore
 import user, {
@@ -89,6 +90,7 @@ export interface IRootState {
   readonly userCCInfo: IUserCCInfoState;
   readonly userUniInfo: IUserUniInfoState;
   readonly faculty: IFacultyState;
+  readonly financeReport: IFinanceReportState;
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
   readonly user: IUserState;
@@ -114,6 +116,7 @@ const rootReducer = combineReducers<IRootState>({
   userCCInfo,
   userUniInfo,
   faculty,
+  financeReport,
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
   user,

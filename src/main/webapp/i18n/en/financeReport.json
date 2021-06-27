@@ -1,7 +1,14 @@
 {
   "clubmanagementApp": {
     "financeReport": {
-      "tab": "Report"
+      "tab": "Finance Report",
+      "income": "INCOME",
+      "expense": "EXPENSE",
+      "invalidExpense": "INVALID EXPENSE",
+      "badDebt": "BAD DEBT",
+      "realised": "REALISED",
+      "pending": "PENDING",
+      "title": "Finance Report"
     }
   }
 }
