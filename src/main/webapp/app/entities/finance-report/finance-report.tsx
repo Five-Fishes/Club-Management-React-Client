@@ -99,10 +99,10 @@ class FinanceReport extends React.Component<IFinanceReportProps> {
               lineWidth={50}
               labelStyle={{
                 fill: 'black',
-                fontSize: '5px',
+                fontSize: '4.5px',
                 fontFamily: 'sans-serif',
               }}
-              radius={30}
+              radius={27}
               labelPosition={110}
             />
           </div>
