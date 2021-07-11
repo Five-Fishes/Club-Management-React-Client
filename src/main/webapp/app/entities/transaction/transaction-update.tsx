@@ -112,7 +112,7 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
                     type="select"
                     className="form-control"
                     name="type"
-                    value={(!isNew && transactionEntity.type) || 'INCOME'}
+                    value={(!isNew && transactionEntity.transactionType) || 'INCOME'}
                   >
                     <option value="INCOME">{translate('clubmanagementApp.TransactionType.INCOME')}</option>
                     <option value="EXPENSE">{translate('clubmanagementApp.TransactionType.EXPENSE')}</option>
