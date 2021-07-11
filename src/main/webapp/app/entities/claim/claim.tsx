@@ -164,7 +164,7 @@ export class Claim extends React.Component<IClaimProps, IClaimState> {
         <h2 id="claim-heading" className="finance-module-heading">
           <Translate contentKey="clubmanagementApp.claim.home.title">Claims</Translate>
         </h2>
-        <CustomTab tabList={financeTabList} currentTab="CC Debt" />
+        <CustomTab tabList={financeTabList} currentTab="CC Debt" key={Date.now()} />
         <div className="mx-4">
           <div>
             {claimList && claimList.length > 0 ? (

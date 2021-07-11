@@ -164,7 +164,7 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
         <h2 id="debt-heading" className="finance-module-heading">
           <Translate contentKey="clubmanagementApp.debt.home.title">Debts</Translate>
         </h2>
-        <CustomTab tabList={financeTabList} currentTab="Members Debt" />
+        <CustomTab tabList={financeTabList} currentTab="Members Debt" key={Date.now()} />
         <div className="mx-4">
           <div>
             {debtList && debtList.length > 0 ? (
