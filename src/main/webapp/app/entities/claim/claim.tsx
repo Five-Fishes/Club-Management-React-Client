@@ -54,27 +54,19 @@ export class Claim extends React.Component<IClaimProps, IClaimState> {
     this.getEntities();
   }
 
-  sort = (prop: any) => () => {
-    this.setState(
-      {
-        order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop,
-      },
-      () => this.sortEntities()
-    );
-  };
-
-  sortEntities() {
+  sortEntities(): void {
     this.getEntities();
     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
   }
 
-  handlePagination = (activePage: number) => this.setState({ activePage }, () => this.sortEntities());
+  handlePagination(activePage: number): void {
+    this.setState({ activePage }, () => this.sortEntities());
+  }
 
-  getEntities = () => {
+  getEntities(): void {
     const { activePage, itemsPerPage, sort, order } = this.state;
     this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
-  };
+  }
 
   pay(claimId?: number): void {
     if (typeof claimId === 'undefined') return;
