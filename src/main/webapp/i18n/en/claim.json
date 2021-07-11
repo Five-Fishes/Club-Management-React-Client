@@ -13,6 +13,14 @@
       "delete": {
         "question": "Are you sure you want to delete Claim {{ id }}?"
       },
+      "pay": {
+        "title": "Confirm pay operation",
+        "question": "Are you sure you want to change status of Claim {{ id }} as paid?"
+      },
+      "dismiss": {
+        "title": "Confirm dismiss operation",
+        "question": "Are you sure you want to change status of Claim {{ id }} as dismissed?"
+      },
       "detail": {
         "title": "Claim"
       },

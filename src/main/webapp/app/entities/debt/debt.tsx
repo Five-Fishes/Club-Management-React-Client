@@ -10,21 +10,23 @@ import {
   getEntities,
   setSelectedDebtId,
   updateEntityStatus,
-  setShowActionOptions,
   setShowBadDebtDialog,
   setShowCollectDialog,
+  setSelectedDebt,
+  setShowTransactionDetailsDialog,
 } from './debt.reducer';
-import { DebtStatus } from 'app/shared/model/debt.model';
 import '../../styles/finance-module.scss';
 // tslint:disable-next-line:no-unused-variable
-import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { DATE_WITH_MONTH_ABBREVIATION_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
-import { ListingCard } from 'app/shared/components/listing-card/listing-card';
 import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { financeTabList } from 'app/shared/util/tab.constants';
 import moment from 'moment';
-import CCRole from 'app/shared/model/enum/cc-role.enum';
 import FinanceConfirmationDialog from 'app/shared/components/financeConfirmationDialog/finance-confirmation-dialog';
+import { FinanceComponentListingCardWithButton } from 'app/shared/components/finance-component-listing-card/finance-component-listing-card';
+import { ITransaction, TransactionStatus } from 'app/shared/model/transaction.model';
+import { TransactionDetailDialog } from 'app/entities/transaction/transaction-detail-dialog';
+import { FinanceActionButton } from 'app/shared/components/finance-action-button/finance-action-button';
 
 export interface IDebtProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -40,10 +42,10 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
     this.sortEntities = this.sortEntities.bind(this);
     this.handlePagination = this.handlePagination.bind(this);
     this.getEntities = this.getEntities.bind(this);
-    this.showCardAction = this.showCardAction.bind(this);
+    this.toggleTransactionDetailsModal = this.toggleTransactionDetailsModal.bind(this);
     this.collect = this.collect.bind(this);
     this.badDebt = this.badDebt.bind(this);
-    this.toggleShowOptions = this.toggleShowOptions.bind(this);
+    this.closeTransactionDetailsModal = this.closeTransactionDetailsModal.bind(this);
     this.toggleShowCollectDialog = this.toggleShowCollectDialog.bind(this);
     this.toggleShowBadDebtDialog = this.toggleShowBadDebtDialog.bind(this);
   }
@@ -66,58 +68,98 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
     this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
   }
 
-  showCardAction(debtId?: number): void {
+  collect(debtId?: number): void {
     if (typeof debtId === 'undefined') return;
-    this.props.setSelectedDebtId(debtId);
-    this.props.setShowActionOptions(true);
-  }
-
-  collect(): void {
-    this.props.updateEntityStatus(this.props.selectedDebtId, DebtStatus.COLLECTED);
+    this.props.updateEntityStatus(debtId, TransactionStatus.COMPLETED);
     this.props.setShowCollectDialog(!this.props.showCollectDialog);
+    this.props.setShowTransactionDetailsDialog(false);
   }
 
-  badDebt(): void {
-    this.props.updateEntityStatus(this.props.selectedDebtId, DebtStatus.UNREACHABLE);
+  badDebt(debtId?: number): void {
+    if (typeof debtId === 'undefined') return;
+    this.props.updateEntityStatus(debtId, TransactionStatus.INVALID);
     this.props.setShowBadDebtDialog(!this.props.showBadDebtDialog);
+    this.props.setShowTransactionDetailsDialog(false);
   }
 
-  toggleShowOptions(): void {
-    this.props.setShowActionOptions(!this.props.showActionOptions);
+  closeTransactionDetailsModal(): void {
+    this.props.setShowTransactionDetailsDialog(false);
   }
 
-  toggleShowCollectDialog(): void {
-    this.props.setShowActionOptions(false);
+  toggleTransactionDetailsModal(debt: ITransaction): void {
+    this.props.setSelectedDebt(debt);
+    this.props.setShowTransactionDetailsDialog(!this.props.showTransactionDetailsDialog);
+  }
+
+  toggleShowCollectDialog(debtId?: number): void {
+    if (typeof debtId !== 'undefined') {
+      this.props.setSelectedDebtId(debtId);
+    }
     this.props.setShowCollectDialog(!this.props.showCollectDialog);
   }
 
-  toggleShowBadDebtDialog(): void {
-    this.props.setShowActionOptions(false);
+  toggleShowBadDebtDialog(debtId?: number): void {
+    if (typeof debtId !== 'undefined') {
+      this.props.setSelectedDebtId(debtId);
+    }
     this.props.setShowBadDebtDialog(!this.props.showBadDebtDialog);
   }
 
   render() {
-    const { debtList, totalItems, showCollectDialog, showBadDebtDialog, showActionOptions } = this.props;
+    const {
+      selectedDebt,
+      debtList,
+      totalItems,
+      showCollectDialog,
+      showBadDebtDialog,
+      showTransactionDetailsDialog,
+      selectedDebtId,
+    } = this.props;
     const { activePage, itemsPerPage } = this.state;
     return (
       <div>
         <FinanceConfirmationDialog
+          transactionId={selectedDebtId}
           isOpen={showCollectDialog}
           entityType="debt"
           action="collect"
           confirmQuestion="Are you sure you want to change status of this Debt as collected?"
+          confirmButtonName="Collect"
           confirmButtonColor="success"
           confirmActionCallback={this.collect}
           toggleModal={this.toggleShowCollectDialog}
         />
         <FinanceConfirmationDialog
+          transactionId={selectedDebtId}
           isOpen={showBadDebtDialog}
           entityType="debt"
           action="badDebt"
           confirmQuestion="Are you sure you want to change status of this Debt as bad debt?"
+          confirmButtonName="Bad Debt"
           confirmButtonColor="cancel"
           confirmActionCallback={this.badDebt}
           toggleModal={this.toggleShowBadDebtDialog}
+        />
+        <TransactionDetailDialog
+          transactionEntity={selectedDebt}
+          isOpen={showTransactionDetailsDialog}
+          withButton
+          transactionId={selectedDebtId}
+          invalidActionButton={
+            <FinanceActionButton
+              name={<Translate contentKey="entity.action.badDebt">Bad Debt</Translate>}
+              color="cancel"
+              onClick={this.toggleShowBadDebtDialog}
+            />
+          }
+          completedActionButton={
+            <FinanceActionButton
+              name={<Translate contentKey="entity.action.collect">Collect</Translate>}
+              color="success"
+              onClick={this.toggleShowCollectDialog}
+            />
+          }
+          toggleModal={this.closeTransactionDetailsModal}
         />
         <h2 id="debt-heading" className="finance-module-heading">
           <Translate contentKey="clubmanagementApp.debt.home.title">Debts</Translate>
@@ -128,29 +170,61 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
             {debtList && debtList.length > 0 ? (
               debtList.map((debt, i) => (
                 // tslint:disable
-                <ListingCard
+                <FinanceComponentListingCardWithButton
                   key={`debt-${debt.id}`}
-                  showActionMenu
-                  title={debt.eventName}
-                  date={moment(debt.createdDate).format(APP_LOCAL_DATE_FORMAT)}
-                  actionMenuHandler={this.showCardAction.bind(this, debt.id)}
-                  actionMenuAuthorizationProps={{
-                    ccRole: CCRole.ADMIN,
-                  }}
+                  completedAction="collect"
+                  invalidAction="badDebt"
+                  completedActionColor="success"
+                  invalidActionColor="cancel"
+                  completedActionCallback={this.toggleShowCollectDialog.bind(this, debt.id)}
+                  invalidActionCallback={this.toggleShowBadDebtDialog.bind(this, debt.id)}
+                  onClick={this.toggleTransactionDetailsModal.bind(this, debt)}
+                  withButton
                 >
+                  {!!debt.title ? (
+                    <span className="card-item d-block mb-1 finance-title">
+                      <span>
+                        <span className="font-weight-bolder text-dark">{debt.title}</span>
+                      </span>
+                    </span>
+                  ) : (
+                    <span className="card-item d-block mb-1 finance-title">
+                      <span>
+                        <Translate contentKey="clubmanagementApp.transaction.title">TITLE</Translate>:&nbsp;
+                        <span className="font-weight-bolder text-dark">N/A</span>
+                      </span>
+                    </span>
+                  )}
                   <span className="card-item d-block mb-1">
                     <span>
-                      <Translate contentKey="clubmanagementApp.debt.income">INCOME</Translate>:&nbsp;
-                      <span className="font-weight-bolder text-dark">{debt.amount}</span>
+                      <Translate contentKey="clubmanagementApp.transaction.eventName">Event Name</Translate>:&nbsp;
+                      {!!debt.eventName ? (
+                        <span className="font-weight-bolder text-dark">{debt.eventName}</span>
+                      ) : (
+                        <span className="font-weight-bolder text-dark">N/A</span>
+                      )}
+                    </span>
+                  </span>
+                  <span className="card-item d-block mb-1">
+                    <span className="text-success">
+                      <Translate contentKey="clubmanagementApp.transaction.income">INCOME</Translate>:&nbsp;
+                      <span>RM{!!debt.transactionAmount ? debt.transactionAmount.toFixed(2) : '0.00'}</span>
                     </span>
                   </span>
                   <span className="card-item d-block">
                     <span>
-                      <span className="font-weight-bolder text-dark">{debt.userName}</span>:&nbsp;
-                      <Translate contentKey="clubmanagementApp.debt.participationFee">Participation Fee</Translate>
+                      <Translate contentKey="clubmanagementApp.transaction.belongsTo">Belongs to</Translate>:&nbsp;
+                      <span className="font-weight-bolder text-dark">{debt.createdBy}</span>
                     </span>
                   </span>
-                </ListingCard>
+                  <span className="card-item d-block">
+                    <span>
+                      <span className="font-weight-bolder text-dark">
+                        {moment(debt.createdDate).format(DATE_WITH_MONTH_ABBREVIATION_FORMAT)}
+                      </span>
+                    </span>
+                  </span>
+                </FinanceComponentListingCardWithButton>
               ))
             ) : (
               <div className="alert alert-warning">
@@ -172,22 +246,6 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
               />
             </Row>
           </div>
-          <Modal size="sm" centered isOpen={showActionOptions} toggle={this.toggleShowOptions}>
-            <ModalHeader toggle={this.toggleShowOptions} />
-            <ModalBody>
-              <h2 className="text-center">Options</h2>
-              <Button color="primary" className="d-block mx-auto my-3 w-75" onClick={this.toggleShowCollectDialog}>
-                <span>
-                  <Translate contentKey="entity.action.collect">Collect</Translate>
-                </span>
-              </Button>
-              <Button color="cancel" className="d-block mx-auto my-3 w-75" onClick={this.toggleShowBadDebtDialog}>
-                <span>
-                  <Translate contentKey="entity.action.badDebt">Bad Debt</Translate>
-                </span>
-              </Button>
-            </ModalBody>
-          </Modal>
         </div>
       </div>
     );
@@ -198,7 +256,8 @@ const mapStateToProps = ({ debt }: IRootState) => ({
   debtList: debt.entities,
   totalItems: debt.totalItems,
   selectedDebtId: debt.selectedDebtId,
-  showActionOptions: debt.showActionOptions,
+  selectedDebt: debt.selectedDebt,
+  showTransactionDetailsDialog: debt.showTransactionDetailsDialog,
   showCollectDialog: debt.showCollectDialog,
   showBadDebtDialog: debt.showBadDebtDialog,
 });
@@ -207,7 +266,8 @@ const mapDispatchToProps = {
   getEntities,
   updateEntityStatus,
   setSelectedDebtId,
-  setShowActionOptions,
+  setSelectedDebt,
+  setShowTransactionDetailsDialog,
   setShowCollectDialog,
   setShowBadDebtDialog,
 };
