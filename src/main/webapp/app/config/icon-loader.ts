@@ -50,6 +50,7 @@ import { faWhatsappSquare } from '@fortawesome/free-brands-svg-icons/faWhatsappS
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faSortAmountUp } from '@fortawesome/free-solid-svg-icons/faSortAmountUp';
 import { faEuroSign } from '@fortawesome/free-solid-svg-icons/faEuroSign';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 export const loadIcons = () => {
   library.add(
@@ -82,6 +83,7 @@ export const loadIcons = () => {
     faRoad,
     faCloud,
     faTimesCircle,
+    faTimes,
     faSearch,
     faGlobe,
     faEnvelope,

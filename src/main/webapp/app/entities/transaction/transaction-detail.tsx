@@ -39,43 +39,37 @@ export class TransactionDetail extends React.Component<ITransactionDetailProps> 
                 <Translate contentKey="clubmanagementApp.transaction.receiptId">Receipt Id</Translate>
               </span>
             </dt>
-            <dd>{transactionEntity.receiptId}</dd>
+            <dd>{transactionEntity.transactionType}</dd>
             <dt>
-              <span id="type">
-                <Translate contentKey="clubmanagementApp.transaction.type">Type</Translate>
-              </span>
-            </dt>
-            <dd>{transactionEntity.type}</dd>
-            <dt>
-              <span id="amount">
+              <span id="transactionAmount">
                 <Translate contentKey="clubmanagementApp.transaction.amount">Amount</Translate>
               </span>
             </dt>
-            <dd>{transactionEntity.amount}</dd>
+            <dd>{transactionEntity.transactionAmount}</dd>
             <dt>
-              <span id="details">
-                <Translate contentKey="clubmanagementApp.transaction.details">Details</Translate>
+              <span id="description">
+                <Translate contentKey="clubmanagementApp.transaction.details">Description</Translate>
               </span>
             </dt>
-            <dd>{transactionEntity.details}</dd>
+            <dd>{transactionEntity.description}</dd>
             <dt>
-              <span id="receiptUrl">
-                <Translate contentKey="clubmanagementApp.transaction.receiptUrl">Receipt Url</Translate>
+              <span id="transactionStatus">
+                <Translate contentKey="clubmanagementApp.transaction.receiptUrl">Status</Translate>
               </span>
             </dt>
-            <dd>{transactionEntity.receiptUrl}</dd>
+            <dd>{transactionEntity.transactionStatus}</dd>
             <dt>
-              <span id="fileName">
-                <Translate contentKey="clubmanagementApp.transaction.fileName">File Name</Translate>
+              <span id="title">
+                <Translate contentKey="clubmanagementApp.transaction.fileName">Title</Translate>
               </span>
             </dt>
-            <dd>{transactionEntity.fileName}</dd>
+            <dd>{transactionEntity.title}</dd>
             <dt>
-              <span id="fileType">
-                <Translate contentKey="clubmanagementApp.transaction.fileType">File Type</Translate>
+              <span id="closedBy">
+                <Translate contentKey="clubmanagementApp.transaction.fileType">Close By</Translate>
               </span>
             </dt>
-            <dd>{transactionEntity.fileType}</dd>
+            <dd>{transactionEntity.closedBy}</dd>
             <dt>
               <span id="createdBy">
                 <Translate contentKey="clubmanagementApp.transaction.createdBy">Created By</Translate>

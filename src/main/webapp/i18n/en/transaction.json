@@ -3,7 +3,8 @@
     "transaction": {
       "home": {
         "title": "Transactions",
-        "createLabel": "Create a new Transaction",
+        "createLabel": "Create Transaction",
+        "editLabel": "Update Transaction",
         "createOrEditLabel": "Create or edit a Transaction",
         "notFound": "No Transaction found"
       },
@@ -16,16 +17,18 @@
       "detail": {
         "title": "Transaction"
       },
+      "event": "Event",
       "eventId": "Event Id",
-      "receiptId": "Receipt Id",
+      "title": "Title",
       "type": "Type",
       "amount": "Amount",
-      "details": "Details",
-      "receiptUrl": "Receipt Url",
-      "fileName": "File Name",
-      "fileType": "File Type",
+      "description": "Description",
+      "status": "Status",
+      "transactionDate": "Transaction Date",
       "createdBy": "Created By",
+      "closedBy": "Closed By",
       "createdDate": "Created Date",
+      "receipt": "Receipt",
       "tab": "All Transactions"
     }
   }
