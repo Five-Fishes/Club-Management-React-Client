@@ -1,20 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Card, Button, Col, Row, Table } from 'reactstrap';
 // tslint:disable-next-line:no-unused-variable
-import { Translate, ICrudGetAllAction, TextFormat, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Translate, getSortState, IPaginationBaseState } from 'react-jhipster';
 
 import { IRootState } from 'app/shared/reducers';
 import { getEntities } from './transaction.reducer';
 
 // tslint:disable-next-line:no-unused-variable
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
 import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { financeTabList } from 'app/shared/util/tab.constants';
 import { TransactionCard } from './transactionCard';
+
+import FloatButton from 'app/shared/components/floatButton/FloatButton';
+import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
+import EventRole from 'app/shared/model/enum/event-role.enum';
 
 export interface ITransactionProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -52,16 +54,21 @@ export class Transaction extends React.Component<ITransactionProps, ITransaction
   };
 
   render() {
-    const { transactionList, match, totalItems } = this.props;
+    const { transactionList } = this.props;
     return (
       <div>
+        <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD}>
+          <Link to="/entity/transaction/new">
+            <FloatButton />
+          </Link>
+        </AuthorizationChecker>
         <h2 id="transaction-heading" className="finance-module-heading">
           <Translate contentKey="clubmanagementApp.transaction.home.title">Transactions</Translate>
         </h2>
         <CustomTab tabList={financeTabList} currentTab="All Transactions" />
         <div className="mx-4">
           {transactionList && transactionList.length > 0 ? (
-            transactionList.map((transaction, i) => <TransactionCard transaction={transaction} />)
+            transactionList.map(transaction => <TransactionCard key={transaction.id} transaction={transaction} />)
           ) : (
             <div className="alert alert-warning">
               <Translate contentKey="clubmanagementApp.transaction.home.notFound">No Transactions found</Translate>

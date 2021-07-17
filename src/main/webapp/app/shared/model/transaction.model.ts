@@ -14,14 +14,14 @@ export const enum TransactionStatus {
 export interface ITransaction {
   id?: number;
   eventId?: number;
+  title?: string;
   transactionType?: TransactionType;
   transactionAmount?: number;
-  description?: string;
   transactionStatus?: TransactionStatus;
+  description?: string;
   createdBy?: string;
   createdDate?: Moment;
   closedBy?: string;
-  title?: string;
   imageLink?: string;
   transactionDate?: Moment;
   multipartFile?: File;

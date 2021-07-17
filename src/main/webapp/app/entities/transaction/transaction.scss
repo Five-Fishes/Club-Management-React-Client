@@ -48,3 +48,17 @@
 .collected-tag {
   background: #7ec073;
 }
+
+.preview {
+  height: 290px;
+  width: 100%;
+  margin: auto;
+  object-fit: scale-down;
+}
+
+.reset-preview {
+  position: absolute;
+  z-index: 1;
+  right: 15px;
+  border: none;
+}

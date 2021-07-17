@@ -5,7 +5,7 @@
         "title": "交易",
         "createLabel": "创建新交易",
         "createOrEditLabel": "创建或编辑交易",
-        "notFound": "No Transaction found"
+        "notFound": "无发现任何交易记录"
       },
       "created": "交易 {{ param }} 创建成功",
       "updated": "交易 {{ param }} 更新成功",
@@ -18,16 +18,16 @@
       },
       "event": "活动",
       "eventId": "活动ID",
-      "receiptId": "收据ID",
-      "receiptFile": "收据文件",
+      "title": "标题",
       "type": "类型",
       "amount": "总额",
-      "details": "详情",
-      "receiptUrl": "收据链接",
-      "fileName": "文件名字",
-      "fileType": "文件类型",
+      "description": "详情",
+      "status": "状态",
+      "transactionDate": "交易日期",
       "createdBy": "创建者",
+      "closedBy": "终结者",
       "createdDate": "创建日期",
+      "receipt": "收据",
       "tab": "全部收支"
     }
   }

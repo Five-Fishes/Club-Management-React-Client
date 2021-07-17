@@ -19,16 +19,16 @@
       },
       "event": "Event",
       "eventId": "Event Id",
-      "receiptId": "Receipt Id",
-      "receiptFile": "Receipt File",
+      "title": "Title",
       "type": "Type",
       "amount": "Amount",
-      "details": "Details",
-      "receiptUrl": "Receipt Url",
-      "fileName": "File Name",
-      "fileType": "File Type",
+      "description": "Description",
+      "status": "Status",
+      "transactionDate": "Transaction Date",
       "createdBy": "Created By",
+      "closedBy": "Closed By",
       "createdDate": "Created Date",
+      "receipt": "Receipt",
       "tab": "All Transactions"
     }
   }
