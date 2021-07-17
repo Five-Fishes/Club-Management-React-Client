@@ -5,17 +5,9 @@ import promiseMiddleware from 'redux-promise-middleware';
 import thunk from 'redux-thunk';
 import sinon from 'sinon';
 
-import reducer, {
-  ACTION_TYPES,
-  createEntity,
-  deleteEntity,
-  getEntities,
-  getEntity,
-  updateEntity,
-  reset,
-} from 'app/entities/debt/debt.reducer';
+import reducer, { ACTION_TYPES, getEntities, getEntity, updateEntity, reset } from 'app/entities/debt/debt.reducer';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { IDebt, defaultValue } from 'app/shared/model/debt.model';
+import { ITransaction, defaultValue } from 'app/shared/model/transaction.model';
 
 // tslint:disable no-invalid-template-strings
 describe('Entities reducer tests', () => {
@@ -30,15 +22,16 @@ describe('Entities reducer tests', () => {
   const initialState = {
     loading: false,
     errResponse: null,
-    entities: [] as ReadonlyArray<IDebt>,
+    entities: [] as ReadonlyArray<ITransaction>,
     entity: defaultValue,
     updating: false,
     totalItems: 0,
     updateSuccess: false,
     selectedDebtId: 0,
-    showActionOptions: false,
+    showTransactionDetailsDialog: false,
     showCollectDialog: false,
     showBadDebtDialog: false,
+    selectedDebt: defaultValue,
   };
 
   function testInitialState(state) {
@@ -76,17 +69,13 @@ describe('Entities reducer tests', () => {
     });
 
     it('should set state to updating', () => {
-      testMultipleTypes(
-        [REQUEST(ACTION_TYPES.CREATE_DEBT), REQUEST(ACTION_TYPES.UPDATE_DEBT), REQUEST(ACTION_TYPES.DELETE_DEBT)],
-        {},
-        state => {
-          expect(state).toMatchObject({
-            errResponse: null,
-            updateSuccess: false,
-            updating: true,
-          });
-        }
-      );
+      testMultipleTypes([REQUEST(ACTION_TYPES.UPDATE_DEBT), REQUEST(ACTION_TYPES.UPDATE_DEBT_STATUS)], {}, state => {
+        expect(state).toMatchObject({
+          errResponse: null,
+          updateSuccess: false,
+          updating: true,
+        });
+      });
     });
 
     it('should reset the state', () => {
@@ -109,9 +98,8 @@ describe('Entities reducer tests', () => {
         [
           FAILURE(ACTION_TYPES.FETCH_DEBT_LIST),
           FAILURE(ACTION_TYPES.FETCH_DEBT),
-          FAILURE(ACTION_TYPES.CREATE_DEBT),
           FAILURE(ACTION_TYPES.UPDATE_DEBT),
-          FAILURE(ACTION_TYPES.DELETE_DEBT),
+          FAILURE(ACTION_TYPES.UPDATE_DEBT_STATUS),
         ],
         'error message',
         state => {
@@ -159,7 +147,7 @@ describe('Entities reducer tests', () => {
       const payload = { data: 'fake payload' };
       expect(
         reducer(undefined, {
-          type: SUCCESS(ACTION_TYPES.CREATE_DEBT),
+          type: SUCCESS(ACTION_TYPES.UPDATE_DEBT),
           payload,
         })
       ).toEqual({
@@ -167,18 +155,6 @@ describe('Entities reducer tests', () => {
         updating: false,
         updateSuccess: true,
         entity: payload.data,
-      });
-    });
-
-    it('should delete entity', () => {
-      const payload = 'fake payload';
-      const toTest = reducer(undefined, {
-        type: SUCCESS(ACTION_TYPES.DELETE_DEBT),
-        payload,
-      });
-      expect(toTest).toMatchObject({
-        updating: false,
-        updateSuccess: true,
       });
     });
   });
@@ -222,26 +198,6 @@ describe('Entities reducer tests', () => {
       await store.dispatch(getEntity(42666)).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
 
-    it('dispatches ACTION_TYPES.CREATE_DEBT actions', async () => {
-      const expectedActions = [
-        {
-          type: REQUEST(ACTION_TYPES.CREATE_DEBT),
-        },
-        {
-          type: SUCCESS(ACTION_TYPES.CREATE_DEBT),
-          payload: resolvedObject,
-        },
-        {
-          type: REQUEST(ACTION_TYPES.FETCH_DEBT_LIST),
-        },
-        {
-          type: SUCCESS(ACTION_TYPES.FETCH_DEBT_LIST),
-          payload: resolvedObject,
-        },
-      ];
-      await store.dispatch(createEntity({ id: 1 })).then(() => expect(store.getActions()).toEqual(expectedActions));
-    });
-
     it('dispatches ACTION_TYPES.UPDATE_DEBT actions', async () => {
       const expectedActions = [
         {
@@ -260,26 +216,6 @@ describe('Entities reducer tests', () => {
         },
       ];
       await store.dispatch(updateEntity({ id: 1 })).then(() => expect(store.getActions()).toEqual(expectedActions));
-    });
-
-    it('dispatches ACTION_TYPES.DELETE_DEBT actions', async () => {
-      const expectedActions = [
-        {
-          type: REQUEST(ACTION_TYPES.DELETE_DEBT),
-        },
-        {
-          type: SUCCESS(ACTION_TYPES.DELETE_DEBT),
-          payload: resolvedObject,
-        },
-        {
-          type: REQUEST(ACTION_TYPES.FETCH_DEBT_LIST),
-        },
-        {
-          type: SUCCESS(ACTION_TYPES.FETCH_DEBT_LIST),
-          payload: resolvedObject,
-        },
-      ];
-      await store.dispatch(deleteEntity(42666)).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
 
     it('dispatches ACTION_TYPES.RESET actions', async () => {

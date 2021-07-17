@@ -113,10 +113,10 @@ export class Transaction extends React.Component<ITransactionProps, ITransaction
                     <td>{transaction.eventId}</td>
                     <td>{transaction.receiptId}</td>
                     <td>
-                      <Translate contentKey={`clubmanagementApp.TransactionType.${transaction.type}`} />
+                      <Translate contentKey={`clubmanagementApp.TransactionType.${transaction.transactionType}`} />
                     </td>
-                    <td>{transaction.amount}</td>
-                    <td>{transaction.details}</td>
+                    <td>{transaction.transactionAmount}</td>
+                    <td>{transaction.description}</td>
                     <td>{transaction.receiptUrl}</td>
                     <td>{transaction.fileName}</td>
                     <td>{transaction.fileType}</td>

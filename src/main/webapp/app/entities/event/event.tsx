@@ -117,7 +117,7 @@ export class Event extends React.Component<IEventProps, IEventState> {
         </AuthorizationChecker>
         <h1>Events</h1>
         <div className="my-3">
-          <CustomTab currentTab={tab === 'previous' ? 'Previous' : 'Upcoming'} tabList={eventMainTabList} />
+          <CustomTab currentTab={tab === 'previous' ? 'Previous' : 'Upcoming'} tabList={eventMainTabList} key={Date.now()} />
         </div>
         <div className="d-flex justify-content-center">{/* <CustomTab tabList={sampleTabList} currentTab="Upcoming" /> */}</div>
         <div>

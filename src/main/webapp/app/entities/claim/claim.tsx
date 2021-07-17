@@ -1,17 +1,32 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row, Table } from 'reactstrap';
+import { RouteComponentProps } from 'react-router-dom';
+import { Row } from 'reactstrap';
 // tslint:disable-next-line:no-unused-variable
-import { Translate, ICrudGetAllAction, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Translate, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
 
 import { IRootState } from 'app/shared/reducers';
-import { getEntities } from './claim.reducer';
-import { IClaim } from 'app/shared/model/claim.model';
+import {
+  getEntities,
+  setSelectedClaimId,
+  updateEntityStatus,
+  setShowDismissDialog,
+  setShowPayDialog,
+  setSelectedClaim,
+  setShowTransactionDetailsDialog,
+} from './claim.reducer';
+import '../../styles/finance-module.scss';
 // tslint:disable-next-line:no-unused-variable
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { DATE_WITH_MONTH_ABBREVIATION_FORMAT } from 'app/config/constants';
 import { ITEMS_PER_PAGE } from 'app/shared/util/pagination.constants';
+import CustomTab from 'app/shared/components/customTab/custom-tab';
+import { financeTabList } from 'app/shared/util/tab.constants';
+import moment from 'moment';
+import FinanceConfirmationDialog from 'app/shared/components/financeConfirmationDialog/finance-confirmation-dialog';
+import { FinanceComponentListingCardWithButton } from 'app/shared/components/finance-component-listing-card/finance-component-listing-card';
+import { ITransaction, TransactionStatus } from 'app/shared/model/transaction.model';
+import { TransactionDetailDialog } from 'app/entities/transaction/transaction-detail-dialog';
+import { FinanceActionButton } from 'app/shared/components/finance-action-button/finance-action-button';
 
 export interface IClaimProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -22,138 +37,215 @@ export class Claim extends React.Component<IClaimProps, IClaimState> {
     ...getSortState(this.props.location, ITEMS_PER_PAGE),
   };
 
+  constructor(props: IClaimProps) {
+    super(props);
+    this.sortEntities = this.sortEntities.bind(this);
+    this.handlePagination = this.handlePagination.bind(this);
+    this.getEntities = this.getEntities.bind(this);
+    this.toggleTransactionDetailsModal = this.toggleTransactionDetailsModal.bind(this);
+    this.pay = this.pay.bind(this);
+    this.dismiss = this.dismiss.bind(this);
+    this.closeTransactionDetailsModal = this.closeTransactionDetailsModal.bind(this);
+    this.toggleShowPayDialog = this.toggleShowPayDialog.bind(this);
+    this.toggleShowDismissDialog = this.toggleShowDismissDialog.bind(this);
+  }
+
   componentDidMount() {
     this.getEntities();
   }
 
-  sort = (prop: any) => () => {
-    this.setState(
-      {
-        order: this.state.order === 'asc' ? 'desc' : 'asc',
-        sort: prop,
-      },
-      () => this.sortEntities()
-    );
-  };
-
-  sortEntities() {
+  sortEntities(): void {
     this.getEntities();
     this.props.history.push(`${this.props.location.pathname}?page=${this.state.activePage}&sort=${this.state.sort},${this.state.order}`);
   }
 
-  handlePagination = (activePage: number) => this.setState({ activePage }, () => this.sortEntities());
+  handlePagination(activePage: number): void {
+    this.setState({ activePage }, () => this.sortEntities());
+  }
 
-  getEntities = () => {
+  getEntities(): void {
     const { activePage, itemsPerPage, sort, order } = this.state;
     this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
-  };
+  }
+
+  pay(): void {
+    if (typeof this.props.selectedClaimId === 'undefined') return;
+    this.props.updateEntityStatus(this.props.selectedClaimId, TransactionStatus.COMPLETED);
+    this.props.setShowPayDialog(!this.props.showPayDialog);
+    this.props.setShowTransactionDetailsDialog(false);
+  }
+
+  dismiss(): void {
+    if (typeof this.props.selectedClaimId === 'undefined') return;
+    this.props.updateEntityStatus(this.props.selectedClaimId, TransactionStatus.INVALID);
+    this.props.setShowDismissDialog(!this.props.showDismissDialog);
+    this.props.setShowTransactionDetailsDialog(false);
+  }
+
+  closeTransactionDetailsModal(): void {
+    this.props.setShowTransactionDetailsDialog(false);
+  }
+
+  toggleTransactionDetailsModal(claim: ITransaction): void {
+    this.props.setSelectedClaim(claim);
+    this.props.setShowTransactionDetailsDialog(!this.props.showTransactionDetailsDialog);
+  }
+
+  toggleShowPayDialog(claimId?: number): void {
+    if (typeof claimId !== 'undefined') {
+      this.props.setSelectedClaimId(claimId);
+    }
+    this.props.setShowPayDialog(!this.props.showPayDialog);
+  }
+
+  toggleShowDismissDialog(claimId?: number): void {
+    if (typeof claimId !== 'undefined') {
+      this.props.setSelectedClaimId(claimId);
+    }
+    this.props.setShowDismissDialog(!this.props.showDismissDialog);
+  }
 
   render() {
-    const { claimList, match, totalItems } = this.props;
+    const {
+      selectedClaim,
+      claimList,
+      totalItems,
+      showPayDialog,
+      showDismissDialog,
+      showTransactionDetailsDialog,
+      selectedClaimId,
+    } = this.props;
+    const { activePage, itemsPerPage } = this.state;
     return (
       <div>
-        <h2 id="claim-heading">
-          <Translate contentKey="clubmanagementApp.claim.home.title">Claims</Translate>
-          <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-            <FontAwesomeIcon icon="plus" />
-            &nbsp;
-            <Translate contentKey="clubmanagementApp.claim.home.createLabel">Create new Claim</Translate>
-          </Link>
-        </h2>
-        <div className="table-responsive">
-          {claimList && claimList.length > 0 ? (
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th className="hand" onClick={this.sort('id')}>
-                    <Translate contentKey="global.field.id">ID</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('receiptId')}>
-                    <Translate contentKey="clubmanagementApp.claim.receiptId">Receipt Id</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('transactionId')}>
-                    <Translate contentKey="clubmanagementApp.claim.transactionId">Transaction Id</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('amount')}>
-                    <Translate contentKey="clubmanagementApp.claim.amount">Amount</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('status')}>
-                    <Translate contentKey="clubmanagementApp.claim.status">Status</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('receiptUrl')}>
-                    <Translate contentKey="clubmanagementApp.claim.receiptUrl">Receipt Url</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('fileName')}>
-                    <Translate contentKey="clubmanagementApp.claim.fileName">File Name</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th className="hand" onClick={this.sort('fileType')}>
-                    <Translate contentKey="clubmanagementApp.claim.fileType">File Type</Translate> <FontAwesomeIcon icon="sort" />
-                  </th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {claimList.map((claim, i) => (
-                  <tr key={`entity-${i}`}>
-                    <td>
-                      <Button tag={Link} to={`${match.url}/${claim.id}`} color="link" size="sm">
-                        {claim.id}
-                      </Button>
-                    </td>
-                    <td>{claim.receiptId}</td>
-                    <td>{claim.transactionId}</td>
-                    <td>{claim.amount}</td>
-                    <td>
-                      <Translate contentKey={`clubmanagementApp.ClaimStatus.${claim.status}`} />
-                    </td>
-                    <td>{claim.receiptUrl}</td>
-                    <td>{claim.fileName}</td>
-                    <td>{claim.fileType}</td>
-                    <td className="text-right">
-                      <div className="btn-group flex-btn-group-container">
-                        <Button tag={Link} to={`${match.url}/${claim.id}`} color="info" size="sm">
-                          <FontAwesomeIcon icon="eye" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.view">View</Translate>
-                          </span>
-                        </Button>
-                        <Button tag={Link} to={`${match.url}/${claim.id}/edit`} color="primary" size="sm">
-                          <FontAwesomeIcon icon="pencil-alt" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.edit">Edit</Translate>
-                          </span>
-                        </Button>
-                        <Button tag={Link} to={`${match.url}/${claim.id}/delete`} color="danger" size="sm">
-                          <FontAwesomeIcon icon="trash" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.delete">Delete</Translate>
-                          </span>
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
-          ) : (
-            <div className="alert alert-warning">
-              <Translate contentKey="clubmanagementApp.claim.home.notFound">No Claims found</Translate>
-            </div>
-          )}
-        </div>
-        <div className={claimList && claimList.length > 0 ? '' : 'd-none'}>
-          <Row className="justify-content-center">
-            <JhiItemCount page={this.state.activePage} total={totalItems} itemsPerPage={this.state.itemsPerPage} i18nEnabled />
-          </Row>
-          <Row className="justify-content-center">
-            <JhiPagination
-              activePage={this.state.activePage}
-              onSelect={this.handlePagination}
-              maxButtons={5}
-              itemsPerPage={this.state.itemsPerPage}
-              totalItems={this.props.totalItems}
+        <FinanceConfirmationDialog
+          transactionId={selectedClaimId}
+          isOpen={showPayDialog}
+          entityType="claim"
+          action="pay"
+          confirmQuestion="Are you sure you want to change status of this Claim as paid?"
+          confirmButtonName="Pay"
+          confirmButtonColor="success"
+          confirmActionCallback={this.pay}
+          toggleModal={this.toggleShowPayDialog}
+        />
+        <FinanceConfirmationDialog
+          transactionId={selectedClaimId}
+          isOpen={showDismissDialog}
+          entityType="claim"
+          action="dismiss"
+          confirmQuestion="Are you sure you want to change status of this Claim as dismissed?"
+          confirmButtonName="Dismiss"
+          confirmButtonColor="cancel"
+          confirmActionCallback={this.dismiss}
+          toggleModal={this.toggleShowDismissDialog}
+        />
+        <TransactionDetailDialog
+          transactionEntity={selectedClaim}
+          isOpen={showTransactionDetailsDialog}
+          withButton
+          transactionId={selectedClaimId}
+          invalidActionButton={
+            <FinanceActionButton
+              name={<Translate contentKey="entity.action.dismiss">Dismiss</Translate>}
+              color="cancel"
+              onClick={this.toggleShowDismissDialog}
             />
-          </Row>
+          }
+          completedActionButton={
+            <FinanceActionButton
+              name={<Translate contentKey="entity.action.pay">Pay</Translate>}
+              color="success"
+              onClick={this.toggleShowPayDialog}
+            />
+          }
+          toggleModal={this.closeTransactionDetailsModal}
+        />
+        <h2 id="claim-heading" className="finance-module-heading">
+          <Translate contentKey="clubmanagementApp.claim.home.title">Claims</Translate>
+        </h2>
+        <CustomTab tabList={financeTabList} currentTab="CC Debt" key={Date.now()} />
+        <div className="mx-4">
+          <div>
+            {claimList && claimList.length > 0 ? (
+              claimList.map((claim, i) => (
+                // tslint:disable
+                <FinanceComponentListingCardWithButton
+                  key={`claim-${claim.id}`}
+                  completedAction="pay"
+                  invalidAction="dismiss"
+                  completedActionColor="success"
+                  invalidActionColor="cancel"
+                  completedActionCallback={this.toggleShowPayDialog.bind(this, claim.id)}
+                  invalidActionCallback={this.toggleShowDismissDialog.bind(this, claim.id)}
+                  onClick={this.toggleTransactionDetailsModal.bind(this, claim)}
+                  withButton
+                >
+                  {!!claim.title ? (
+                    <span className="card-item d-block mb-1 finance-title">
+                      <span>
+                        <span className="font-weight-bolder text-dark">{claim.title}</span>
+                      </span>
+                    </span>
+                  ) : (
+                    <span className="card-item d-block mb-1 finance-title">
+                      <span>
+                        <Translate contentKey="clubmanagementApp.transaction.title">TITLE</Translate>:&nbsp;
+                        <span className="font-weight-bolder text-dark">N/A</span>
+                      </span>
+                    </span>
+                  )}
+                  <span className="card-item d-block mb-1">
+                    <span>
+                      <Translate contentKey="clubmanagementApp.transaction.eventName">Event Name</Translate>:&nbsp;
+                      {!!claim.eventName ? (
+                        <span className="font-weight-bolder text-dark">{claim.eventName}</span>
+                      ) : (
+                        <span className="font-weight-bolder text-dark">N/A</span>
+                      )}
+                    </span>
+                  </span>
+                  <span className="card-item d-block mb-1">
+                    <span className="text-danger">
+                      <Translate contentKey="clubmanagementApp.transaction.expense">EXPENSE</Translate>:&nbsp;
+                      <span>RM{!!claim.transactionAmount ? claim.transactionAmount.toFixed(2) : '0.00'}</span>
+                    </span>
+                  </span>
+                  <span className="card-item d-block">
+                    <span>
+                      <Translate contentKey="clubmanagementApp.transaction.belongsTo">Belongs to</Translate>:&nbsp;
+                      <span className="font-weight-bolder text-dark">{claim.createdBy}</span>
+                    </span>
+                  </span>
+                  <span className="card-item d-block">
+                    <span>
+                      <span className="font-weight-bolder text-dark">
+                        {moment(claim.createdDate).format(DATE_WITH_MONTH_ABBREVIATION_FORMAT)}
+                      </span>
+                    </span>
+                  </span>
+                </FinanceComponentListingCardWithButton>
+              ))
+            ) : (
+              <div className="alert alert-warning">
+                <Translate contentKey="clubmanagementApp.claim.home.notFound">No Claims found</Translate>
+              </div>
+            )}
+          </div>
+          <div className={claimList && claimList.length > 0 ? '' : 'd-none'}>
+            <Row className="justify-content-center">
+              <JhiItemCount page={activePage} total={totalItems} itemsPerPage={itemsPerPage} i18nEnabled />
+            </Row>
+            <Row className="justify-content-center">
+              <JhiPagination
+                activePage={activePage}
+                onSelect={this.handlePagination}
+                maxButtons={5}
+                itemsPerPage={itemsPerPage}
+                totalItems={totalItems}
+              />
+            </Row>
+          </div>
         </div>
       </div>
     );
@@ -163,10 +255,21 @@ export class Claim extends React.Component<IClaimProps, IClaimState> {
 const mapStateToProps = ({ claim }: IRootState) => ({
   claimList: claim.entities,
   totalItems: claim.totalItems,
+  selectedClaimId: claim.selectedClaimId,
+  selectedClaim: claim.selectedClaim,
+  showTransactionDetailsDialog: claim.showTransactionDetailsDialog,
+  showPayDialog: claim.showPayDialog,
+  showDismissDialog: claim.showDismissDialog,
 });
 
 const mapDispatchToProps = {
   getEntities,
+  updateEntityStatus,
+  setSelectedClaimId,
+  setSelectedClaim,
+  setShowTransactionDetailsDialog,
+  setShowPayDialog,
+  setShowDismissDialog,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

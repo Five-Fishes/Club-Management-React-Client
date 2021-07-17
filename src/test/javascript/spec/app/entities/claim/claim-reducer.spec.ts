@@ -5,17 +5,9 @@ import promiseMiddleware from 'redux-promise-middleware';
 import thunk from 'redux-thunk';
 import sinon from 'sinon';
 
-import reducer, {
-  ACTION_TYPES,
-  createEntity,
-  deleteEntity,
-  getEntities,
-  getEntity,
-  updateEntity,
-  reset,
-} from 'app/entities/claim/claim.reducer';
+import reducer, { ACTION_TYPES, getEntities, getEntity, updateEntity, reset } from 'app/entities/claim/claim.reducer';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
-import { IClaim, defaultValue } from 'app/shared/model/claim.model';
+import { ITransaction, defaultValue } from 'app/shared/model/transaction.model';
 
 // tslint:disable no-invalid-template-strings
 describe('Entities reducer tests', () => {
@@ -30,11 +22,16 @@ describe('Entities reducer tests', () => {
   const initialState = {
     loading: false,
     errResponse: null,
-    entities: [] as ReadonlyArray<IClaim>,
+    entities: [] as ReadonlyArray<ITransaction>,
     entity: defaultValue,
     totalItems: 0,
     updating: false,
     updateSuccess: false,
+    selectedClaimId: 0,
+    selectedClaim: defaultValue,
+    showTransactionDetailsDialog: false,
+    showPayDialog: false,
+    showDismissDialog: false,
   };
 
   function testInitialState(state) {
@@ -72,17 +69,13 @@ describe('Entities reducer tests', () => {
     });
 
     it('should set state to updating', () => {
-      testMultipleTypes(
-        [REQUEST(ACTION_TYPES.CREATE_CLAIM), REQUEST(ACTION_TYPES.UPDATE_CLAIM), REQUEST(ACTION_TYPES.DELETE_CLAIM)],
-        {},
-        state => {
-          expect(state).toMatchObject({
-            errResponse: null,
-            updateSuccess: false,
-            updating: true,
-          });
-        }
-      );
+      testMultipleTypes([REQUEST(ACTION_TYPES.UPDATE_CLAIM), REQUEST(ACTION_TYPES.UPDATE_CLAIM_STATUS)], {}, state => {
+        expect(state).toMatchObject({
+          errResponse: null,
+          updateSuccess: false,
+          updating: true,
+        });
+      });
     });
 
     it('should reset the state', () => {
@@ -105,9 +98,8 @@ describe('Entities reducer tests', () => {
         [
           FAILURE(ACTION_TYPES.FETCH_CLAIM_LIST),
           FAILURE(ACTION_TYPES.FETCH_CLAIM),
-          FAILURE(ACTION_TYPES.CREATE_CLAIM),
           FAILURE(ACTION_TYPES.UPDATE_CLAIM),
-          FAILURE(ACTION_TYPES.DELETE_CLAIM),
+          FAILURE(ACTION_TYPES.UPDATE_CLAIM_STATUS),
         ],
         'error message',
         state => {
@@ -155,7 +147,7 @@ describe('Entities reducer tests', () => {
       const payload = { data: 'fake payload' };
       expect(
         reducer(undefined, {
-          type: SUCCESS(ACTION_TYPES.CREATE_CLAIM),
+          type: SUCCESS(ACTION_TYPES.UPDATE_CLAIM),
           payload,
         })
       ).toEqual({
@@ -163,18 +155,6 @@ describe('Entities reducer tests', () => {
         updating: false,
         updateSuccess: true,
         entity: payload.data,
-      });
-    });
-
-    it('should delete entity', () => {
-      const payload = 'fake payload';
-      const toTest = reducer(undefined, {
-        type: SUCCESS(ACTION_TYPES.DELETE_CLAIM),
-        payload,
-      });
-      expect(toTest).toMatchObject({
-        updating: false,
-        updateSuccess: true,
       });
     });
   });
@@ -218,26 +198,6 @@ describe('Entities reducer tests', () => {
       await store.dispatch(getEntity(42666)).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
 
-    it('dispatches ACTION_TYPES.CREATE_CLAIM actions', async () => {
-      const expectedActions = [
-        {
-          type: REQUEST(ACTION_TYPES.CREATE_CLAIM),
-        },
-        {
-          type: SUCCESS(ACTION_TYPES.CREATE_CLAIM),
-          payload: resolvedObject,
-        },
-        {
-          type: REQUEST(ACTION_TYPES.FETCH_CLAIM_LIST),
-        },
-        {
-          type: SUCCESS(ACTION_TYPES.FETCH_CLAIM_LIST),
-          payload: resolvedObject,
-        },
-      ];
-      await store.dispatch(createEntity({ id: 1 })).then(() => expect(store.getActions()).toEqual(expectedActions));
-    });
-
     it('dispatches ACTION_TYPES.UPDATE_CLAIM actions', async () => {
       const expectedActions = [
         {
@@ -256,26 +216,6 @@ describe('Entities reducer tests', () => {
         },
       ];
       await store.dispatch(updateEntity({ id: 1 })).then(() => expect(store.getActions()).toEqual(expectedActions));
-    });
-
-    it('dispatches ACTION_TYPES.DELETE_CLAIM actions', async () => {
-      const expectedActions = [
-        {
-          type: REQUEST(ACTION_TYPES.DELETE_CLAIM),
-        },
-        {
-          type: SUCCESS(ACTION_TYPES.DELETE_CLAIM),
-          payload: resolvedObject,
-        },
-        {
-          type: REQUEST(ACTION_TYPES.FETCH_CLAIM_LIST),
-        },
-        {
-          type: SUCCESS(ACTION_TYPES.FETCH_CLAIM_LIST),
-          payload: resolvedObject,
-        },
-      ];
-      await store.dispatch(deleteEntity(42666)).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
 
     it('dispatches ACTION_TYPES.RESET actions', async () => {

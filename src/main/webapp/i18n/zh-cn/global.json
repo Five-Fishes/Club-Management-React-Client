@@ -130,7 +130,9 @@
       "deregister": "注销",
       "complete": "完成",
       "collect": "收钱",
-      "badDebt": "坏账"
+      "badDebt": "坏账",
+      "pay": "支付",
+      "dismiss": "驳回"
     },
     "detail": {
       "field": "字段",

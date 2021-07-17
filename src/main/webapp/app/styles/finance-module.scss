@@ -5,3 +5,10 @@
   padding-left: 20px;
   padding-right: 20px;
 }
+
+.finance-title {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: inherit;
+}
