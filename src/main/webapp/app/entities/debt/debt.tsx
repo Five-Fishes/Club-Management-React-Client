@@ -68,16 +68,16 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
     this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
   }
 
-  collect(debtId?: number): void {
-    if (typeof debtId === 'undefined') return;
-    this.props.updateEntityStatus(debtId, TransactionStatus.COMPLETED);
+  collect(): void {
+    if (typeof this.props.selectedDebtId === 'undefined') return;
+    this.props.updateEntityStatus(this.props.selectedDebtId, TransactionStatus.COMPLETED);
     this.props.setShowCollectDialog(!this.props.showCollectDialog);
     this.props.setShowTransactionDetailsDialog(false);
   }
 
-  badDebt(debtId?: number): void {
-    if (typeof debtId === 'undefined') return;
-    this.props.updateEntityStatus(debtId, TransactionStatus.INVALID);
+  badDebt(): void {
+    if (typeof this.props.selectedDebtId === 'undefined') return;
+    this.props.updateEntityStatus(this.props.selectedDebtId, TransactionStatus.INVALID);
     this.props.setShowBadDebtDialog(!this.props.showBadDebtDialog);
     this.props.setShowTransactionDetailsDialog(false);
   }

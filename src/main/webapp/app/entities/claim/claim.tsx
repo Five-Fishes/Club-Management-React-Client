@@ -68,16 +68,16 @@ export class Claim extends React.Component<IClaimProps, IClaimState> {
     this.props.getEntities(activePage - 1, itemsPerPage, `${sort},${order}`);
   }
 
-  pay(claimId?: number): void {
-    if (typeof claimId === 'undefined') return;
-    this.props.updateEntityStatus(claimId, TransactionStatus.COMPLETED);
+  pay(): void {
+    if (typeof this.props.selectedClaimId === 'undefined') return;
+    this.props.updateEntityStatus(this.props.selectedClaimId, TransactionStatus.COMPLETED);
     this.props.setShowPayDialog(!this.props.showPayDialog);
     this.props.setShowTransactionDetailsDialog(false);
   }
 
-  dismiss(claimId?: number): void {
-    if (typeof claimId === 'undefined') return;
-    this.props.updateEntityStatus(claimId, TransactionStatus.INVALID);
+  dismiss(): void {
+    if (typeof this.props.selectedClaimId === 'undefined') return;
+    this.props.updateEntityStatus(this.props.selectedClaimId, TransactionStatus.INVALID);
     this.props.setShowDismissDialog(!this.props.showDismissDialog);
     this.props.setShowTransactionDetailsDialog(false);
   }
@@ -206,8 +206,8 @@ export class Claim extends React.Component<IClaimProps, IClaimState> {
                     </span>
                   </span>
                   <span className="card-item d-block mb-1">
-                    <span className="text-success">
-                      <Translate contentKey="clubmanagementApp.transaction.income">INCOME</Translate>:&nbsp;
+                    <span className="text-danger">
+                      <Translate contentKey="clubmanagementApp.transaction.expense">EXPENSE</Translate>:&nbsp;
                       <span>RM{!!claim.transactionAmount ? claim.transactionAmount.toFixed(2) : '0.00'}</span>
                     </span>
                   </span>
