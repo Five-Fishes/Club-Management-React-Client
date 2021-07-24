@@ -18,6 +18,8 @@ import UserProfileEvolution from './user-profile-evolution';
 import UserProfileRole from './user-profile-role';
 import { concatFullName } from 'app/shared/util/string-util';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IClubFamily } from 'app/shared/model/club-family.model';
+import { getClubFamilyDetails } from 'app/shared/services/club-family-info.service';
 
 export interface IUserProfileProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -53,7 +55,8 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
 
   render() {
     const { match, location, history, currentProfileTab } = this.props;
-    const { firstName, lastName, gender, imageUrl, clubFamilyId, clubFamilyName, clubFamilyDescription } = this.props.userProfile;
+    const { firstName, lastName, gender, imageUrl, clubFamilyCode } = this.props.userProfile;
+    const clubFamily: IClubFamily = getClubFamilyDetails(clubFamilyCode ?? '');
 
     let imageSrc = 'content/images/placeholder.png';
     if (imageUrl) {
@@ -71,13 +74,13 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
         </div>
         <div className="text-center">
           <h1>{concatFullName(firstName ?? '', lastName ?? '')}</h1>
-          {Boolean(clubFamilyId) && (
+          {Boolean(clubFamilyCode) && (
             <>
               <h3 className="d-block mx-auto mb-3 family-label py-2 px-3">
                 <FontAwesomeIcon icon="fish" />
-                &nbsp;{clubFamilyName}
+                &nbsp;{clubFamily.name}
               </h3>
-              <p className="family-description">{clubFamilyDescription}</p>
+              <p className="family-description">{clubFamily.description}</p>
             </>
           )}
         </div>
