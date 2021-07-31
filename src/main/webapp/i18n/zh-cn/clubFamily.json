@@ -2,10 +2,10 @@
   "clubmanagementApp": {
     "clubFamily": {
       "home": {
-        "title": "Club Families",
+        "title": "CC家族",
         "createLabel": "创建新 Club Family",
         "createOrEditLabel": "创建或编辑 Club Family",
-        "notFound": "No Club Family found"
+        "notFound": "未发现任何CC家族"
       },
       "created": "Club Family {{ param }} 创建成功",
       "updated": "Club Family {{ param }} 更新成功",
@@ -16,8 +16,36 @@
       "detail": {
         "title": "Club Family"
       },
-      "name": "Name",
-      "slogan": "Slogan"
+      "name": "名称",
+      "slogan": "口号",
+      "description": "详情",
+      "tab": "CC家族",
+
+      "bimu": {
+        "name": "比目鱼",
+        "slogan": "比目比目，不比你白目",
+        "description": "比目家的鱼儿灵巧有趣"
+      },
+      "jinlong": {
+        "name": "金龙鱼",
+        "slogan": "金龙精神，靓仔美人",
+        "description": "金龙家闻名于帅鱼美鱼"
+      },
+      "kongque": {
+        "name": "孔雀鱼",
+        "slogan": "我们是比精英中的精英还要更精英的精英",
+        "description": "孔雀家的鱼儿都是棒棒哒"
+      },
+      "qicai": {
+        "name": "七彩鱼",
+        "slogan": "七彩七彩，见你就踩",
+        "description": "七彩家鱼为人友善诚恳"
+      },
+      "xiaochou": {
+        "name": "小丑鱼",
+        "slogan": "Nemo Nemo, 不再Emo",
+        "description": "小丑家的鱼儿总是充满正能量，让你远离负能量"
+      }
     }
   }
 }

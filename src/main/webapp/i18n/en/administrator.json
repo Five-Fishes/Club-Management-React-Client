@@ -19,7 +19,8 @@
       "userId": "User Id",
       "yearSession": "Year Session",
       "role": "Role",
-      "status": "Status"
+      "status": "Status",
+      "tab": "Administrator"
     }
   }
 }
