@@ -123,12 +123,12 @@ export const memberTabList: ITabInfo[] = [
   },
   {
     tabName: 'CC Family',
-    tabTranslateKey: 'clubmanagementApp.ccFamily.tab',
+    tabTranslateKey: 'clubmanagementApp.clubFamily.tab',
     tabRoute: '/entity/members/cc-family',
     asLongAsIsAuthenticated: true,
   },
   {
-    tabName: 'CC Members',
+    tabName: 'CC Member',
     tabTranslateKey: 'clubmanagementApp.ccMembers.tab',
     tabRoute: '/entity/members/cc-member',
     asLongAsIsAuthenticated: true,
