@@ -6,7 +6,7 @@ import { IRootState } from 'app/shared/reducers';
 import { getCurrentUserProfile, setUserProfileCurrentTab } from './user-profile.reducer';
 import { Button } from 'reactstrap';
 import { toast } from 'react-toastify';
-import { Translate } from 'react-jhipster';
+import { Translate, translate } from 'react-jhipster';
 
 import { logout } from 'app/shared/services/auth.service';
 import CustomTab from 'app/shared/components/customTab/custom-tab';
@@ -78,9 +78,9 @@ export class UserProfile extends React.Component<IUserProfileProps, {}> {
             <>
               <h3 className="d-block mx-auto mb-3 family-label py-2 px-3">
                 <FontAwesomeIcon icon="fish" />
-                &nbsp;{clubFamily.name}
+                &nbsp;{translate(clubFamily.name ?? '')}
               </h3>
-              <p className="family-description">{clubFamily.description}</p>
+              <p className="family-description">{translate(clubFamily.description ?? '')}</p>
             </>
           )}
         </div>
