@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
+import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction, IPayload } from 'react-jhipster';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
@@ -14,6 +14,8 @@ export const ACTION_TYPES = {
   UPDATE_ADMINISTRATOR: 'administrator/UPDATE_ADMINISTRATOR',
   DELETE_ADMINISTRATOR: 'administrator/DELETE_ADMINISTRATOR',
   RESET: 'administrator/RESET',
+  SET_ADMINISTRATOR_ID: 'SET_ADMINISTRATOR_ID',
+  SET_SHOW_ACTION_OPTIONS: 'SET_SHOW_ACTION_OPTIONS',
 };
 
 const initialState: IAdministratorState = {
@@ -23,6 +25,8 @@ const initialState: IAdministratorState = {
   entity: defaultValue,
   updating: false,
   updateSuccess: false,
+  selectedAdministratorId: 0,
+  showActionOptions: false,
 };
 
 export interface IAdministratorState {
@@ -32,6 +36,8 @@ export interface IAdministratorState {
   entity: Readonly<IAdministrator>;
   updating: boolean;
   updateSuccess: boolean;
+  selectedAdministratorId: number;
+  showActionOptions: boolean;
 }
 
 // Reducer
@@ -94,6 +100,18 @@ export default (state: IAdministratorState = initialState, action: AnyAction): I
         updateSuccess: true,
         entity: {},
       };
+    case ACTION_TYPES.SET_ADMINISTRATOR_ID:
+      const { administratorId } = action.payload;
+      return {
+        ...state,
+        selectedAdministratorId: administratorId,
+      };
+    case ACTION_TYPES.SET_SHOW_ACTION_OPTIONS:
+      const { show } = action.payload;
+      return {
+        ...state,
+        showActionOptions: show,
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState,
@@ -107,10 +125,17 @@ const apiUrl = 'api/administrators';
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<IAdministrator> = (page, size, sort) => ({
-  type: ACTION_TYPES.FETCH_ADMINISTRATOR_LIST,
-  payload: axios.get<IAdministrator>(`${apiUrl}?cacheBuster=${new Date().getTime()}`),
-});
+export const getEntities: any = (yearSession?: string, status?: string) => {
+  let requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`;
+  window.console.log('REQUEST URL BEFORE BOOLEAN', requestUrl);
+  Boolean(yearSession) ? (requestUrl = `${requestUrl}&yearSession.equals=${yearSession}`) : '';
+  window.console.log('REQUEST URL AFTER BOOLEAN', requestUrl);
+  Boolean(status) ? (requestUrl = `${requestUrl}&status.equals=${status}`) : requestUrl;
+  return {
+    type: ACTION_TYPES.FETCH_ADMINISTRATOR_LIST,
+    payload: axios.get<IAdministrator>(`${requestUrl}`),
+  };
+};
 
 export const getEntity: ICrudGetAction<IAdministrator> = id => {
   const requestUrl = `${apiUrl}/${id}`;
@@ -147,6 +172,20 @@ export const deleteEntity: ICrudDeleteAction<IAdministrator> = id => async dispa
   dispatch(getEntities());
   return result;
 };
+
+export const setSelectedAdministratorId = (administratorId: number) => ({
+  type: ACTION_TYPES.SET_ADMINISTRATOR_ID,
+  payload: {
+    administratorId,
+  },
+});
+
+export const setShowActionOptions = (show: boolean) => ({
+  type: ACTION_TYPES.SET_SHOW_ACTION_OPTIONS,
+  payload: {
+    show,
+  },
+});
 
 export const reset = () => ({
   type: ACTION_TYPES.RESET,

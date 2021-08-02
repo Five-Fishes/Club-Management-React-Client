@@ -1,124 +1,147 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Col, Row, Table } from 'reactstrap';
-// tslint:disable-next-line:no-unused-variable
-import { Translate, ICrudGetAllAction } from 'react-jhipster';
+import { Button, Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { Translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import '../../styles/member-module.scss';
 import { IRootState } from 'app/shared/reducers';
-import { getEntities } from './administrator.reducer';
-import { IAdministrator } from 'app/shared/model/administrator.model';
-// tslint:disable-next-line:no-unused-variable
-import { APP_DATE_FORMAT, APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
+import CustomTab from 'app/shared/components/customTab/custom-tab';
+import { memberTabList } from 'app/shared/util/tab.constants';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
+import ListingCard from 'app/shared/components/listing-card/listing-card';
+import { concatFullName } from 'app/shared/util/string-util';
+import { AdministratorStatus } from 'app/shared/model/administrator.model';
+import { getEntities, setSelectedAdministratorId, setShowActionOptions } from './administrator.reducer';
 
 export interface IAdministratorProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
 export class Administrator extends React.Component<IAdministratorProps> {
-  componentDidMount() {
-    this.props.getEntities();
+  constructor(props: IAdministratorProps) {
+    super(props);
+    this.state = {
+      selectedYearSession: '',
+    };
   }
 
+  componentDidMount() {
+    this.props.getEntities('2020/2021', AdministratorStatus.ACTIVE);
+  }
+
+  showCardAction = (administratorId?: number): void => {
+    if (typeof administratorId === 'undefined') return;
+    this.props.setSelectedAdministratorId(administratorId);
+    this.props.setShowActionOptions(true);
+  };
+
+  toggleShowOptions = () => {
+    this.props.setShowActionOptions(!this.props.showActionOptions);
+  };
+
+  setYearSession = (yearSession: string): void => {
+    this.setState({
+      ...this.state,
+      selectedYearSession: yearSession,
+    });
+    this.props.getEntities(yearSession, AdministratorStatus.ACTIVE);
+  };
+
   render() {
-    const { administratorList, match } = this.props;
+    const { administratorList, match, selectedAdministratorId } = this.props;
     return (
       <div>
-        <h2 id="administrator-heading">
+        <h2 id="administrator-heading" className="member-module-heading">
           <Translate contentKey="clubmanagementApp.administrator.home.title">Administrators</Translate>
-          <Link to={`${match.url}/new`} className="btn btn-primary float-right jh-create-entity" id="jh-create-entity">
-            <FontAwesomeIcon icon="plus" />
-            &nbsp;
-            <Translate contentKey="clubmanagementApp.administrator.home.createLabel">Create new Administrator</Translate>
-          </Link>
+          {/* Year Session Filter Component */}
         </h2>
-        <div className="table-responsive">
+        <div className="my-3">
+          <CustomTab tabList={memberTabList} currentTab="Administrator" />
+        </div>
+        <div className="mx-4">
+          <AuthorizationChecker ccRole={CCRole.ADMIN}>
+            <div className="text-center">
+              <Link to={`${match.url}/new`} className="btn btn-action jh-create-entity mobile-fullWidth my-2" id="jh-create-entity">
+                <FontAwesomeIcon icon="plus" />
+                &nbsp;
+                <Translate contentKey="entity.action.add">Add</Translate>
+              </Link>
+            </div>
+          </AuthorizationChecker>
           {administratorList && administratorList.length > 0 ? (
-            <Table responsive>
-              <thead>
-                <tr>
-                  <th>
-                    <Translate contentKey="global.field.id">ID</Translate>
-                  </th>
-                  <th>
-                    <Translate contentKey="clubmanagementApp.administrator.userId">User Id</Translate>
-                  </th>
-                  <th>
-                    <Translate contentKey="clubmanagementApp.administrator.yearSession">Year Session</Translate>
-                  </th>
-                  <th>
-                    <Translate contentKey="clubmanagementApp.administrator.role">Role</Translate>
-                  </th>
-                  <th>
-                    <Translate contentKey="clubmanagementApp.administrator.status">Status</Translate>
-                  </th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {administratorList.map((administrator, i) => (
-                  <tr key={`entity-${i}`}>
-                    <td>
-                      <Button tag={Link} to={`${match.url}/${administrator.id}`} color="link" size="sm">
-                        {administrator.id}
-                      </Button>
-                    </td>
-                    <td>{administrator.userId}</td>
-                    <td>{administrator.yearSession}</td>
-                    <td>
-                      <Translate contentKey={`clubmanagementApp.AdministratorRole.${administrator.role}`} />
-                    </td>
-                    <td>
-                      <Translate contentKey={`clubmanagementApp.AdministratorStatus.${administrator.status}`} />
-                    </td>
-                    <td className="text-right">
-                      <div className="btn-group flex-btn-group-container">
-                        <Button tag={Link} to={`${match.url}/${administrator.id}`} color="info" size="sm">
-                          <FontAwesomeIcon icon="eye" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.view">View</Translate>
-                          </span>
-                        </Button>
-                        <Button tag={Link} to={`${match.url}/${administrator.id}/edit`} color="primary" size="sm">
-                          <FontAwesomeIcon icon="pencil-alt" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.edit">Edit</Translate>
-                          </span>
-                        </Button>
-                        <Button tag={Link} to={`${match.url}/${administrator.id}/delete`} color="danger" size="sm">
-                          <FontAwesomeIcon icon="trash" />{' '}
-                          <span className="d-none d-md-inline">
-                            <Translate contentKey="entity.action.delete">Delete</Translate>
-                          </span>
-                        </Button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+            administratorList.map((administrator, i) => (
+              <ListingCard
+                key={`administrator-${administrator.id}`}
+                showActionMenu
+                title={concatFullName(administrator.firstName ?? '', administrator.lastName ?? '')}
+                actionMenuHandler={this.showCardAction.bind(this, administrator.id)}
+                actionMenuAuthorizationProps={{
+                  ccRole: CCRole.ADMIN,
+                }}
+              >
+                <span className="card-item d-block mb-2">
+                  <span className="font-weight-bolder text-dark">{administrator.role}</span>
+                </span>
+              </ListingCard>
+            ))
           ) : (
             <div className="alert alert-warning">
               <Translate contentKey="clubmanagementApp.administrator.home.notFound">No Administrators found</Translate>
             </div>
           )}
         </div>
+
+        <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions} centered>
+          <ModalHeader toggle={this.toggleShowOptions} />
+          <ModalBody className="px-4">
+            <h2 className="text-center">Options</h2>
+            <AuthorizationChecker ccRole={CCRole.ADMIN}>
+              <Button
+                tag={Link}
+                to={`${match.url}/${selectedAdministratorId}/edit`}
+                onClick={this.toggleShowOptions}
+                color="secondary"
+                className="d-block mx-auto my-3 w-100"
+              >
+                <span>
+                  <Translate contentKey="entity.action.update">Update</Translate>
+                </span>
+              </Button>
+            </AuthorizationChecker>
+            <AuthorizationChecker ccRole={CCRole.ADMIN}>
+              <Button
+                tag={Link}
+                to={`${match.url}/${selectedAdministratorId}/delete`}
+                onClick={this.toggleShowOptions}
+                color="cancel"
+                className="d-block mx-auto my-3 w-100"
+              >
+                <span>
+                  <Translate contentKey="entity.action.delete">Delete</Translate>
+                </span>
+              </Button>
+            </AuthorizationChecker>
+          </ModalBody>
+        </Modal>
       </div>
     );
   }
 }
 
 const mapStateToProps = ({ administrator }: IRootState) => ({
-  administratorList: administrator.entities
+  administratorList: administrator.entities,
+  selectedAdministratorId: administrator.selectedAdministratorId,
+  showActionOptions: administrator.showActionOptions,
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEntities,
+  setSelectedAdministratorId,
+  setShowActionOptions,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Administrator);
+export default connect(mapStateToProps, mapDispatchToProps)(Administrator);
