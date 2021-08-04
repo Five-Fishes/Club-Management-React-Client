@@ -14,7 +14,14 @@ import CCRole from 'app/shared/model/enum/cc-role.enum';
 import ListingCard from 'app/shared/components/listing-card/listing-card';
 import { concatFullName } from 'app/shared/util/string-util';
 import { AdministratorStatus } from 'app/shared/model/administrator.model';
-import { getEntities, setSelectedAdministratorId, setShowActionOptions } from './administrator.reducer';
+import {
+  getEntities,
+  setSelectedAdministratorId,
+  setShowActionOptions,
+  setSelectedYearSessionFilter,
+  getYearSessionOptions,
+} from './administrator.reducer';
+import FilterButton from 'app/shared/components/filterButton/filterButton';
 
 export interface IAdministratorProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -22,12 +29,13 @@ export class Administrator extends React.Component<IAdministratorProps> {
   constructor(props: IAdministratorProps) {
     super(props);
     this.state = {
-      selectedYearSession: '',
+      showYearSessionOptions: false,
     };
   }
 
   componentDidMount() {
-    this.props.getEntities('2020/2021', AdministratorStatus.ACTIVE);
+    this.props.getYearSessionOptions(0, 12, 'value,desc');
+    this.props.getEntities(this.props.selectedYearSessionFilter, AdministratorStatus.ACTIVE);
   }
 
   showCardAction = (administratorId?: number): void => {
@@ -41,20 +49,18 @@ export class Administrator extends React.Component<IAdministratorProps> {
   };
 
   setYearSession = (yearSession: string): void => {
-    this.setState({
-      ...this.state,
-      selectedYearSession: yearSession,
-    });
+    this.props.setSelectedYearSessionFilter(yearSession);
     this.props.getEntities(yearSession, AdministratorStatus.ACTIVE);
   };
 
   render() {
-    const { administratorList, match, selectedAdministratorId } = this.props;
+    const { administratorList, match, selectedAdministratorId, yearSessionOptions, selectedYearSessionFilter } = this.props;
     return (
       <div>
         <h2 id="administrator-heading" className="member-module-heading">
           <Translate contentKey="clubmanagementApp.administrator.home.title">Administrators</Translate>
-          {/* Year Session Filter Component */}
+          {/* TODO: Year Session Filter Component */}
+          <FilterButton selectedValue={selectedYearSessionFilter} filterOptions={yearSessionOptions} onChange={this.setYearSession} />
         </h2>
         <div className="my-3">
           <CustomTab tabList={memberTabList} currentTab="Administrator" />
@@ -77,7 +83,7 @@ export class Administrator extends React.Component<IAdministratorProps> {
                 title={concatFullName(administrator.firstName ?? '', administrator.lastName ?? '')}
                 actionMenuHandler={this.showCardAction.bind(this, administrator.id)}
                 actionMenuAuthorizationProps={{
-                  ccRole: CCRole.ADMIN,
+                  ccRole: CCRole.HEAD,
                 }}
               >
                 <span className="card-item d-block mb-2">
@@ -92,11 +98,12 @@ export class Administrator extends React.Component<IAdministratorProps> {
           )}
         </div>
 
+        {/* TODO: Confirm on Modal UI */}
         <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions} centered>
           <ModalHeader toggle={this.toggleShowOptions} />
           <ModalBody className="px-4">
             <h2 className="text-center">Options</h2>
-            <AuthorizationChecker ccRole={CCRole.ADMIN}>
+            <AuthorizationChecker ccRole={CCRole.HEAD}>
               <Button
                 tag={Link}
                 to={`${match.url}/${selectedAdministratorId}/edit`}
@@ -109,7 +116,7 @@ export class Administrator extends React.Component<IAdministratorProps> {
                 </span>
               </Button>
             </AuthorizationChecker>
-            <AuthorizationChecker ccRole={CCRole.ADMIN}>
+            <AuthorizationChecker ccRole={CCRole.HEAD}>
               <Button
                 tag={Link}
                 to={`${match.url}/${selectedAdministratorId}/delete`}
@@ -133,12 +140,16 @@ const mapStateToProps = ({ administrator }: IRootState) => ({
   administratorList: administrator.entities,
   selectedAdministratorId: administrator.selectedAdministratorId,
   showActionOptions: administrator.showActionOptions,
+  selectedYearSessionFilter: administrator.selectedYearSessionFilter,
+  yearSessionOptions: administrator.yearSessionOptions,
 });
 
 const mapDispatchToProps = {
   getEntities,
   setSelectedAdministratorId,
   setShowActionOptions,
+  setSelectedYearSessionFilter,
+  getYearSessionOptions,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
