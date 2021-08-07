@@ -2,6 +2,7 @@ import React, { ButtonHTMLAttributes, MouseEventHandler, useEffect } from 'react
 import { Button, Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './filterButton.scss';
+import classNames from 'classnames';
 
 interface IFilterButtonProps {
   selectedValue: string;
@@ -58,8 +59,8 @@ class FilterButton extends React.Component<IFilterButtonProps, IFilterButtonStat
             <Row>
               {filterOptions.length > 0 &&
                 filterOptions.map((option, i) => (
-                  <Col md="4" xs="6">
-                    <FilterOption key={`filter-option-${i}`} text={option} value={option} onClick={this.selectFilterOption} />
+                  <Col md="4" xs="6" key={`filter-option-${i}`}>
+                    <FilterOption text={option} value={option} selected={selectedValue === option} onClick={this.selectFilterOption} />
                   </Col>
                 ))}
             </Row>
@@ -73,15 +74,17 @@ class FilterButton extends React.Component<IFilterButtonProps, IFilterButtonStat
 interface IFilterOption {
   text: string;
   value: string;
+  selected: boolean;
   onClick: (valueChanged: string) => void;
 }
 
-const FilterOption: React.FC<IFilterOption> = ({ text, value, onClick }) => {
+const FilterOption: React.FC<IFilterOption> = ({ text, value, onClick, selected }) => {
   const buttonClickHandler = () => onClick(value);
+  const btnClassName = classNames('d-block', 'mx-auto', 'mb-2', 'filter-option', selected ? 'selected-filter-option' : '');
 
   return (
     <>
-      <Button className="d-block mx-auto mb-2" onClick={buttonClickHandler}>
+      <Button className={btnClassName} onClick={buttonClickHandler}>
         {text}
       </Button>
     </>

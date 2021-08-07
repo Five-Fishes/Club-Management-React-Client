@@ -33,8 +33,8 @@ export class Administrator extends React.Component<IAdministratorProps> {
     };
   }
 
-  componentDidMount() {
-    this.props.getYearSessionOptions(0, 12, 'value,desc');
+  async componentDidMount() {
+    await this.props.getYearSessionOptions(0, 12, 'value,desc');
     this.props.getEntities(this.props.selectedYearSessionFilter, AdministratorStatus.ACTIVE);
   }
 

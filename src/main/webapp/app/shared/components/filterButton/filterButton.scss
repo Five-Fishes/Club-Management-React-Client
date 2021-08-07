@@ -13,3 +13,15 @@
   line-height: 16px;
   font-weight: bold;
 }
+
+.filter-option {
+  background-color: transparent;
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.selected-filter-option {
+  background-color: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
