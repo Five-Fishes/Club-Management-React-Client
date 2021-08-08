@@ -129,7 +129,9 @@
       "deregister": "Deregister",
       "complete": "Complete",
       "collect": "Collect",
-      "badDebt": "Bad Debt"
+      "badDebt": "Bad Debt",
+      "pay": "Pay",
+      "dismiss": "Dismiss"
     },
     "detail": {
       "field": "Field",

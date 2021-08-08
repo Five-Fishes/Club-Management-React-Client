@@ -33,7 +33,9 @@
       "fileType": "File Type",
       "income": "INCOME",
       "participationFee": "Participation Fee",
-      "tab": "Members Debt"
+      "tab": "Members Debt",
+      "belongsTo": "Belongs To",
+      "eventName": "Event Name"
     }
   }
 }
