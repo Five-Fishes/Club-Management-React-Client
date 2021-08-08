@@ -22,6 +22,7 @@ import {
   getYearSessionOptions,
 } from './administrator.reducer';
 import FilterButton from 'app/shared/components/filterButton/filterButton';
+import EventModal from 'app/shared/components/eventModal/event-modal';
 
 export interface IAdministratorProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -54,12 +55,18 @@ export class Administrator extends React.Component<IAdministratorProps> {
   };
 
   render() {
-    const { administratorList, match, selectedAdministratorId, yearSessionOptions, selectedYearSessionFilter } = this.props;
+    const {
+      administratorList,
+      match,
+      selectedAdministratorId,
+      yearSessionOptions,
+      selectedYearSessionFilter,
+      showActionOptions,
+    } = this.props;
     return (
       <div>
         <h2 id="administrator-heading" className="member-module-heading">
           <Translate contentKey="clubmanagementApp.administrator.home.title">Administrators</Translate>
-          {/* TODO: Year Session Filter Component */}
           <FilterButton selectedValue={selectedYearSessionFilter} filterOptions={yearSessionOptions} onChange={this.setYearSession} />
         </h2>
         <div className="my-3">
@@ -98,39 +105,18 @@ export class Administrator extends React.Component<IAdministratorProps> {
           )}
         </div>
 
-        {/* TODO: Confirm on Modal UI */}
-        <Modal isOpen={this.props.showActionOptions} toggle={this.toggleShowOptions} centered>
-          <ModalHeader toggle={this.toggleShowOptions} />
-          <ModalBody className="px-4">
-            <h2 className="text-center">Options</h2>
-            <AuthorizationChecker ccRole={CCRole.HEAD}>
-              <Button
-                tag={Link}
-                to={`${match.url}/${selectedAdministratorId}/edit`}
-                onClick={this.toggleShowOptions}
-                color="secondary"
-                className="d-block mx-auto my-3 w-100"
-              >
-                <span>
-                  <Translate contentKey="entity.action.update">Update</Translate>
-                </span>
-              </Button>
-            </AuthorizationChecker>
-            <AuthorizationChecker ccRole={CCRole.HEAD}>
-              <Button
-                tag={Link}
-                to={`${match.url}/${selectedAdministratorId}/delete`}
-                onClick={this.toggleShowOptions}
-                color="cancel"
-                className="d-block mx-auto my-3 w-100"
-              >
-                <span>
-                  <Translate contentKey="entity.action.delete">Delete</Translate>
-                </span>
-              </Button>
-            </AuthorizationChecker>
-          </ModalBody>
-        </Modal>
+        <EventModal
+          isOpen={showActionOptions}
+          updatePath={`${match.url}/${selectedAdministratorId}/edit`}
+          deletePath={`${match.url}/${selectedAdministratorId}/delete`}
+          toggleModal={this.toggleShowOptions}
+          updateBtnAuthorizationProps={{
+            ccRole: CCRole.HEAD,
+          }}
+          deleteBtnAuthorizationProps={{
+            ccRole: CCRole.HEAD,
+          }}
+        />
       </div>
     );
   }

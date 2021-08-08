@@ -3,6 +3,7 @@ import { Button, Col, Modal, ModalBody, ModalHeader, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './filterButton.scss';
 import classNames from 'classnames';
+import { Translate } from 'react-jhipster';
 
 interface IFilterButtonProps {
   selectedValue: string;
@@ -51,19 +52,22 @@ class FilterButton extends React.Component<IFilterButtonProps, IFilterButtonStat
           &nbsp;<span className="filter-display-text">{selectedValue}</span>
         </Button>
 
-        <Modal isOpen={showOptions} toggle={this.toggleShowOptions} centered>
-          <ModalHeader toggle={this.toggleShowOptions}>
-            <h2 className="text-center">Filter Options</h2>
-          </ModalHeader>
-          <ModalBody className="px-4">
-            <Row>
-              {filterOptions.length > 0 &&
-                filterOptions.map((option, i) => (
-                  <Col md="4" xs="6" key={`filter-option-${i}`}>
-                    <FilterOption text={option} value={option} selected={selectedValue === option} onClick={this.selectFilterOption} />
-                  </Col>
-                ))}
-            </Row>
+        <Modal size="md" isOpen={showOptions} toggle={this.toggleShowOptions} centered>
+          <ModalHeader toggle={this.toggleShowOptions} className="filter-modal-header" />
+          <ModalBody className="filter-modal-body">
+            <h2 className="text-center">
+              <Translate contentKey="global.menu.entities.filterOptions">Filter Options</Translate>{' '}
+            </h2>
+            <div className="d-flex flex-column mt-4">
+              <Row>
+                {filterOptions.length > 0 &&
+                  filterOptions.map((option, i) => (
+                    <Col md="4" xs="6" key={`filter-option-${i}`}>
+                      <FilterOption text={option} value={option} selected={selectedValue === option} onClick={this.selectFilterOption} />
+                    </Col>
+                  ))}
+              </Row>
+            </div>
           </ModalBody>
         </Modal>
       </>

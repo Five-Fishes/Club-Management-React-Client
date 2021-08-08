@@ -21,7 +21,8 @@
         "userUniInfo": "User Uni Info",
         "faculty": "Faculty",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
-        "options": "Options"
+        "options": "Options",
+        "filterOptions": "Filter Options"
       },
       "account": {
         "main": "Account",

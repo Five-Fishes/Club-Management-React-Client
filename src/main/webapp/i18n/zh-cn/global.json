@@ -22,7 +22,8 @@
         "userUniInfo": "User Uni Info",
         "faculty": "Faculty",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
-        "options": "选项"
+        "options": "选项",
+        "filterOptions": "筛选选项"
       },
       "account": {
         "main": "账号",
