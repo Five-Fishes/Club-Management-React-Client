@@ -1,13 +1,15 @@
 import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
 import { Translate } from 'react-jhipster';
+import { FinanceActionButton } from 'app/shared/components/finance-action-button/finance-action-button';
 
-export interface IDebtCollectDialogProps extends RouteComponentProps<{ id: string }> {
+export interface IDebtCollectDialogProps {
+  transactionId?: number;
   isOpen: boolean;
   entityType: string;
   action: string;
   confirmQuestion: string;
+  confirmButtonName: string;
   confirmButtonColor: string;
   confirmActionCallback: () => void;
   toggleModal: () => void;
@@ -15,29 +17,42 @@ export interface IDebtCollectDialogProps extends RouteComponentProps<{ id: strin
 
 export class FinanceConfirmationDialog extends React.Component<IDebtCollectDialogProps> {
   render() {
-    const { isOpen, toggleModal, entityType, action, confirmQuestion, confirmButtonColor, confirmActionCallback } = this.props;
-    const { id } = this.props.match.params;
+    const {
+      transactionId,
+      isOpen,
+      toggleModal,
+      entityType,
+      action,
+      confirmQuestion,
+      confirmButtonName,
+      confirmButtonColor,
+      confirmActionCallback,
+    } = this.props;
     return (
       <Modal size="sm" centered isOpen={isOpen} toggle={toggleModal}>
         <ModalHeader toggle={toggleModal}>
-          <Translate contentKey={`clubmanagementApp.${entityType}.${action}.title`}>Confirm collect operation</Translate>
+          <Translate contentKey={`clubmanagementApp.${entityType}.${action}.title`}>Confirm {action} operation</Translate>
         </ModalHeader>
         <ModalBody id={`clubmanagementApp.${entityType}.${action}.question`}>
-          <Translate contentKey={`clubmanagementApp.${entityType}.${action}.question`} interpolate={{ id: { id } }}>
+          <Translate contentKey={`clubmanagementApp.${entityType}.${action}.question`} interpolate={{ id: { transactionId } }}>
             {confirmQuestion}
           </Translate>
         </ModalBody>
         <ModalFooter className="justify-content-between mx-3">
-          <Button color="secondary" onClick={toggleModal}>
-            <Translate contentKey="entity.action.cancel">Cancel</Translate>
-          </Button>
-          <Button id={`jhi-confirm-${action}-${entityType}`} color={confirmButtonColor} onClick={confirmActionCallback}>
-            <Translate contentKey={`entity.action.${action}`}>{action}</Translate>
-          </Button>
+          <FinanceActionButton
+            name={<Translate contentKey="entity.action.cancel">Cancel</Translate>}
+            color="secondary"
+            onClick={toggleModal}
+          />
+          <FinanceActionButton
+            name={<Translate contentKey={`entity.action.${action}`}>{confirmButtonName}</Translate>}
+            color={confirmButtonColor}
+            onClick={confirmActionCallback}
+          />
         </ModalFooter>
       </Modal>
     );
   }
 }
 
-export default withRouter(FinanceConfirmationDialog);
+export default FinanceConfirmationDialog;

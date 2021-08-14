@@ -13,6 +13,14 @@
       "delete": {
         "question": "你确定要删除 Claim {{ id }} 吗？"
       },
+      "pay": {
+        "title": "确认收钱",
+        "question": "你确定要更改CC 欠款 {{ id }} 的状况为已付钱吗？"
+      },
+      "dismiss": {
+        "title": "驳回",
+        "question": "你确定要更改CC 欠款 {{ id }} 的状况为不再理会吗?"
+      },
       "detail": {
         "title": "Claim"
       },

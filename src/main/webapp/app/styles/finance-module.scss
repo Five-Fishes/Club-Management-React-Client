@@ -6,6 +6,13 @@
   padding-right: 20px;
 }
 
+.finance-title {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: inherit;
+}
+
 .paper {
   padding: 5px;
   border-radius: 20px;
