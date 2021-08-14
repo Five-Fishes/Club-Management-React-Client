@@ -1,10 +1,10 @@
 export interface IFinanceReportStatistic {
-  realiseExpense?: bigint;
-  realiseIncome?: bigint;
-  pendingExpense?: bigint;
-  pendingIncome?: bigint;
-  invalidExpense?: bigint;
-  badDebt?: bigint;
+  realiseExpense?: number;
+  realiseIncome?: number;
+  pendingExpense?: number;
+  pendingIncome?: number;
+  invalidExpense?: number;
+  badDebt?: number;
 }
 
 export const defaultValue: Readonly<IFinanceReportStatistic> = {};
