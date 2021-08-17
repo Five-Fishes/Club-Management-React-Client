@@ -120,6 +120,11 @@ export const getEntity: ICrudGetAction<IUserCCInfo> = id => {
   };
 };
 
+export const getUsersWithoutFamily: ICrudGetAllAction<IUserCCInfo> = (page, size, sort) => ({
+  type: ACTION_TYPES.FETCH_USERCCINFO_LIST,
+  payload: axios.get<IUserCCInfo>(`${apiUrl}?clubFamilyCode.specified=false`),
+});
+
 export const createEntity: ICrudPutAction<IUserCCInfo> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.CREATE_USERCCINFO,
