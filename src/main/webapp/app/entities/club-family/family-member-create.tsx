@@ -11,9 +11,23 @@ import { createEntity } from 'app/entities/user-cc-info/user-cc-info.reducer';
 import { IRootState } from 'app/shared/reducers';
 import { IUser } from 'app/shared/model/user.model';
 
-export interface IFamilyMemberCreateProps extends StateProps, DispatchProps, RouteComponentProps {}
+export interface IFamilyMemberCreateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
+  constructor(props: IFamilyMemberCreateProps) {
+    super(props);
+  }
+
+  componentWillUpdate(nextProps: IFamilyMemberCreateProps) {
+    if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
+      this.handleClose();
+    }
+  }
+
+  handleClose = () => {
+    this.props.history.push(`/entity/club-family/members/${this.props.match.params.id}`);
+  };
+
   componentDidMount() {
     this.props.getUsersWithoutFamily();
   }
@@ -40,6 +54,7 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
 
   render() {
     const { users } = this.props;
+    const { id: familyCode } = this.props.match.params;
     return (
       <div className="mx-3">
         <Row className="justify-content-center">
@@ -63,7 +78,7 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
                 <Label id="familyLabel" for="club-family">
                   Family
                 </Label>
-                <AvField id="club-family" type="select" name="clubFamilyCode" value="JIN_LONG">
+                <AvField id="club-family" type="select" name="clubFamilyCode" value={familyCode} disabled>
                   <option value="JIN_LONG">Jin Long</option>
                   <option value="BI_MU">Bi Mu</option>
                   <option value="QI_CAI">Qi Cai</option>
@@ -82,7 +97,14 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
                 </AvInput>
               </AvGroup>
               <div className="general-buttonContainer--flexContainer">
-                <Button className="general-button--width" tag={Link} id="cancel-save" to="/entity/event" replace color="cancel">
+                <Button
+                  className="general-button--width"
+                  tag={Link}
+                  id="cancel-save"
+                  to={`/entity/club-family/members/${familyCode}`}
+                  replace
+                  color="cancel"
+                >
                   <Translate contentKey="entity.action.cancel">Cancel</Translate>
                 </Button>
                 &nbsp;
@@ -102,11 +124,13 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
 const mapStateToProps = (storeState: IRootState) => ({
   users: storeState.userManagement.users,
   userEntity: storeState.userCCInfo.entity,
+  updateSuccess: storeState.userCCInfo.updateSuccess,
 });
 
 // Reducer Action Creators
 const mapDispatchToProps = {
   getUsersWithoutFamily,
+
   createEntity,
 };
 

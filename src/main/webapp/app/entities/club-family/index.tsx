@@ -15,7 +15,7 @@ const Routes: React.FC<RouteComponentProps> = ({ match }) => (
       <ErrorBoundaryRoute exact path={`${match.url}/new`} component={ClubFamilyUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={ClubFamilyUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={ClubFamilyDetail} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/new`} component={FamilyMemberCreate} />
+      <ErrorBoundaryRoute exact path={`${match.url}/:id/members/new`} component={FamilyMemberCreate} />
       <ErrorBoundaryRoute path={match.url} component={ClubFamily} />
     </Switch>
     <ErrorBoundaryRoute path={`${match.url}/:id/delete`} component={ClubFamilyDeleteDialog} />
