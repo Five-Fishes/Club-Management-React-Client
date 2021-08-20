@@ -2,10 +2,10 @@
   "clubmanagementApp": {
     "administrator": {
       "home": {
-        "title": "Administrators",
+        "title": "管理员",
         "createLabel": "创建新 Administrator",
         "createOrEditLabel": "创建或编辑 Administrator",
-        "notFound": "No Administrator found"
+        "notFound": "未发现任何管理员"
       },
       "created": "Administrator {{ param }} 创建成功",
       "updated": "Administrator {{ param }} 更新成功",
@@ -19,7 +19,8 @@
       "userId": "User Id",
       "yearSession": "Year Session",
       "role": "Role",
-      "status": "Status"
+      "status": "Status",
+      "tab": "管理员"
     }
   }
 }
