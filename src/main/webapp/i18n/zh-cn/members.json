@@ -1,0 +1,11 @@
+{
+  "clubmanagementApp": {
+    "ccMembers": {
+      "home": {
+        "title": "CC成员",
+        "notFound": "未发现任何CC成员"
+      },
+      "tab": "CC成员"
+    }
+  }
+}

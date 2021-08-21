@@ -41,6 +41,12 @@ export class TransactionDetail extends React.Component<ITransactionDetailProps> 
             </dt>
             <dd>{transactionEntity.transactionType}</dd>
             <dt>
+              <span id="type">
+                <Translate contentKey="clubmanagementApp.transaction.type">Type</Translate>
+              </span>
+            </dt>
+            <dd>{transactionEntity.transactionType}</dd>
+            <dt>
               <span id="transactionAmount">
                 <Translate contentKey="clubmanagementApp.transaction.amount">Amount</Translate>
               </span>

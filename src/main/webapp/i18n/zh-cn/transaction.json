@@ -2,32 +2,40 @@
   "clubmanagementApp": {
     "transaction": {
       "home": {
-        "title": "交易",
-        "createLabel": "创建新交易",
-        "createOrEditLabel": "创建或编辑交易",
-        "notFound": "无发现任何交易记录"
+        "title": "收支记录",
+        "createLabel": "创建新收支记录",
+        "createOrEditLabel": "创建或编辑收支记录",
+        "notFound": "没有找到收支记录"
       },
-      "created": "交易 {{ param }} 创建成功",
-      "updated": "交易 {{ param }} 更新成功",
-      "deleted": "交易 {{ param }} 删除成功",
+      "created": "收支记录 {{ param }} 创建成功",
+      "updated": "收支记录 {{ param }} 更新成功",
+      "deleted": "收支记录 {{ param }} 删除成功",
       "delete": {
-        "question": "你确定要删除 Transaction {{ id }} 吗？"
+        "question": "你确定要删除收支记录 {{ id }} 吗？"
       },
       "detail": {
-        "title": "交易"
+        "title": "收支记录"
       },
-      "event": "活动",
-      "eventId": "活动ID",
       "title": "标题",
-      "type": "类型",
-      "amount": "总额",
-      "description": "详情",
-      "status": "状态",
-      "transactionDate": "交易日期",
-      "createdBy": "创建者",
-      "closedBy": "终结者",
-      "createdDate": "创建日期",
+      "eventId": "活动 Id",
+      "eventName": "活动",
+      "receiptId": "收据 Id",
       "receipt": "收据",
+      "transactionType": "收支记录类型",
+      "transactionAmount": "收支记录数额",
+      "income": "收入",
+      "expense": "支出",
+      "belongsTo": "属于",
+      "description": "描述",
+      "status": "状态",
+      "imageLink": "图片链接",
+      "receiptUrl": "收据网址",
+      "fileName": "文件名称",
+      "fileType": "文件类型",
+      "createdBy": "创建人",
+      "closedBy": "结帐人",
+      "createdDate": "创建日期",
+      "transactionDate": "交易日期",
       "tab": "全部收支"
     }
   }

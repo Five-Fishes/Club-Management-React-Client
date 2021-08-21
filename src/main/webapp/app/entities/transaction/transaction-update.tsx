@@ -185,7 +185,7 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
 
                 <AvGroup>
                   <Label id="eventIdLabel" for="transaction-eventId">
-                    <Translate contentKey="clubmanagementApp.transaction.event">Event</Translate>
+                    <Translate contentKey="clubmanagementApp.transaction.eventName">Event</Translate>
                   </Label>
 
                   <AvField id="transaction-eventId" type="select" className="form-control" name="eventId">
@@ -215,7 +215,7 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
                 </AvGroup>
                 <AvGroup>
                   <Label id="typeLabel" for="transaction-title">
-                    <Translate contentKey="clubmanagementApp.transaction.type">Type</Translate>
+                    <Translate contentKey="clubmanagementApp.transaction.transactionType">Type</Translate>
                   </Label>
                   <AvInput
                     id="transaction-type"
@@ -231,7 +231,7 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
                 </AvGroup>
                 <AvGroup>
                   <Label id="amountLabel" for="transaction-amount">
-                    <Translate contentKey="clubmanagementApp.transaction.amount">Amount</Translate>
+                    <Translate contentKey="clubmanagementApp.transaction.transactionAmount">Amount</Translate>
                   </Label>
                   <AvField
                     id="transaction-amount"

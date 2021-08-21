@@ -4,18 +4,18 @@ import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
-import { IDebt, defaultValue } from 'app/shared/model/debt.model';
+import { ITransaction, defaultValue } from 'app/shared/model/transaction.model';
 import { AnyAction } from 'redux';
 
 export const ACTION_TYPES = {
   FETCH_DEBT_LIST: 'debt/FETCH_DEBT_LIST',
   FETCH_DEBT: 'debt/FETCH_DEBT',
-  CREATE_DEBT: 'debt/CREATE_DEBT',
   UPDATE_DEBT: 'debt/UPDATE_DEBT',
-  DELETE_DEBT: 'debt/DELETE_DEBT',
+  UPDATE_DEBT_STATUS: 'debt/UPDATE_DEBT_STATUS',
   RESET: 'debt/RESET',
   SET_DEBT_ID: 'debt/SET_DEBT_ID',
-  SET_SHOW_ACTION_OPTIONS: 'debt/SET_SHOW_ACTION_OPTIONS',
+  SET_DEBT: 'debt/SET_DEBT',
+  SET_SHOW_TRANSACTION_DETAILS_DIALOG: 'debt/SET_SHOW_TRANSACTION_DETAILS_DIALOG',
   SET_SHOW_COLLECT_DIALOG: 'debt/SET_SHOW_COLLECT_DIALOG',
   SET_SHOW_BAD_DEBT_DIALOG: 'debt/SET_SHOW_BAD_DEBT_DIALOG',
 };
@@ -23,13 +23,14 @@ export const ACTION_TYPES = {
 const initialState: IDebtState = {
   loading: false,
   errResponse: null,
-  entities: [] as ReadonlyArray<IDebt>,
+  entities: [] as ReadonlyArray<ITransaction>,
   entity: defaultValue,
   updating: false,
   totalItems: 0,
   updateSuccess: false,
   selectedDebtId: 0,
-  showActionOptions: false,
+  selectedDebt: defaultValue,
+  showTransactionDetailsDialog: false,
   showCollectDialog: false,
   showBadDebtDialog: false,
 };
@@ -37,13 +38,14 @@ const initialState: IDebtState = {
 export interface IDebtState {
   loading: boolean;
   errResponse: null | AxiosError;
-  entities: ReadonlyArray<IDebt>;
-  entity: Readonly<IDebt>;
+  entities: ReadonlyArray<ITransaction>;
+  entity: Readonly<ITransaction>;
   updating: boolean;
   totalItems: number;
   updateSuccess: boolean;
   selectedDebtId: number;
-  showActionOptions: boolean;
+  selectedDebt: ITransaction;
+  showTransactionDetailsDialog: boolean;
   showCollectDialog: boolean;
   showBadDebtDialog: boolean;
 }
@@ -60,9 +62,8 @@ export default (state: IDebtState = initialState, action: AnyAction): IDebtState
         updateSuccess: false,
         loading: true,
       };
-    case REQUEST(ACTION_TYPES.CREATE_DEBT):
     case REQUEST(ACTION_TYPES.UPDATE_DEBT):
-    case REQUEST(ACTION_TYPES.DELETE_DEBT):
+    case REQUEST(ACTION_TYPES.UPDATE_DEBT_STATUS):
       return {
         ...state,
         errResponse: null,
@@ -71,9 +72,8 @@ export default (state: IDebtState = initialState, action: AnyAction): IDebtState
       };
     case FAILURE(ACTION_TYPES.FETCH_DEBT_LIST):
     case FAILURE(ACTION_TYPES.FETCH_DEBT):
-    case FAILURE(ACTION_TYPES.CREATE_DEBT):
     case FAILURE(ACTION_TYPES.UPDATE_DEBT):
-    case FAILURE(ACTION_TYPES.DELETE_DEBT):
+    case FAILURE(ACTION_TYPES.UPDATE_DEBT_STATUS):
       return {
         ...state,
         loading: false,
@@ -94,20 +94,13 @@ export default (state: IDebtState = initialState, action: AnyAction): IDebtState
         loading: false,
         entity: action.payload.data,
       };
-    case SUCCESS(ACTION_TYPES.CREATE_DEBT):
     case SUCCESS(ACTION_TYPES.UPDATE_DEBT):
+    case SUCCESS(ACTION_TYPES.UPDATE_DEBT_STATUS):
       return {
         ...state,
         updating: false,
         updateSuccess: true,
         entity: action.payload.data,
-      };
-    case SUCCESS(ACTION_TYPES.DELETE_DEBT):
-      return {
-        ...state,
-        updating: false,
-        updateSuccess: true,
-        entity: {},
       };
     case ACTION_TYPES.RESET:
       return {
@@ -119,11 +112,17 @@ export default (state: IDebtState = initialState, action: AnyAction): IDebtState
         ...state,
         selectedDebtId: debtId,
       };
-    case ACTION_TYPES.SET_SHOW_ACTION_OPTIONS:
+    case ACTION_TYPES.SET_DEBT:
+      const { debt } = action.payload;
+      return {
+        ...state,
+        selectedDebt: debt,
+      };
+    case ACTION_TYPES.SET_SHOW_TRANSACTION_DETAILS_DIALOG:
       const { show } = action.payload;
       return {
         ...state,
-        showActionOptions: show,
+        showTransactionDetailsDialog: show,
       };
     case ACTION_TYPES.SET_SHOW_COLLECT_DIALOG:
       const { showCollect } = action.payload;
@@ -142,59 +141,42 @@ export default (state: IDebtState = initialState, action: AnyAction): IDebtState
   }
 };
 
-const apiUrl = 'api/debts';
+const apiUrl = 'api/transactions';
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<IDebt> = (page, size, sort) => {
+export const getEntities: ICrudGetAllAction<ITransaction> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {
     type: ACTION_TYPES.FETCH_DEBT_LIST,
-    payload: axios.get<IDebt>(`${requestUrl}${sort ? '&' : '?'}cacheBuster=${new Date().getTime()}`),
+    payload: axios.get<ITransaction>(
+      `${requestUrl}${sort ? '&' : '?'}transactionType.equals=INCOME&transactionStatus.equals=PENDING&cacheBuster=${new Date().getTime()}`
+    ),
   };
 };
 
-export const getEntity: ICrudGetAction<IDebt> = id => {
+export const getEntity: ICrudGetAction<ITransaction> = id => {
   const requestUrl = `${apiUrl}/${id}`;
   return {
     type: ACTION_TYPES.FETCH_DEBT,
-    payload: axios.get<IDebt>(requestUrl),
+    payload: axios.get<ITransaction>(requestUrl),
   };
 };
 
 export const updateEntityStatus = (id: number, status: any) => async (dispatch: any) => {
   const requestUrl = `${apiUrl}/${id}/status/${status}`;
   const result = await dispatch({
-    type: ACTION_TYPES.UPDATE_DEBT,
+    type: ACTION_TYPES.UPDATE_DEBT_STATUS,
     payload: axios.put(requestUrl),
   });
   dispatch(getEntities());
   return result;
 };
 
-export const createEntity: ICrudPutAction<IDebt> = entity => async dispatch => {
-  const result = await dispatch({
-    type: ACTION_TYPES.CREATE_DEBT,
-    payload: axios.post(apiUrl, cleanEntity(entity)),
-  });
-  dispatch(getEntities());
-  return result;
-};
-
-export const updateEntity: ICrudPutAction<IDebt> = entity => async dispatch => {
+export const updateEntity: ICrudPutAction<ITransaction> = entity => async dispatch => {
   const result = await dispatch({
     type: ACTION_TYPES.UPDATE_DEBT,
     payload: axios.put(apiUrl, cleanEntity(entity)),
-  });
-  dispatch(getEntities());
-  return result;
-};
-
-export const deleteEntity: ICrudDeleteAction<IDebt> = id => async dispatch => {
-  const requestUrl = `${apiUrl}/${id}`;
-  const result = await dispatch({
-    type: ACTION_TYPES.DELETE_DEBT,
-    payload: axios.delete(requestUrl),
   });
   dispatch(getEntities());
   return result;
@@ -211,8 +193,15 @@ export const setSelectedDebtId = (debtId: number) => ({
   },
 });
 
-export const setShowActionOptions = (show: boolean) => ({
-  type: ACTION_TYPES.SET_SHOW_ACTION_OPTIONS,
+export const setSelectedDebt = (debt: ITransaction) => ({
+  type: ACTION_TYPES.SET_DEBT,
+  payload: {
+    debt,
+  },
+});
+
+export const setShowTransactionDetailsDialog = (show: boolean) => ({
+  type: ACTION_TYPES.SET_SHOW_TRANSACTION_DETAILS_DIALOG,
   payload: {
     show,
   },

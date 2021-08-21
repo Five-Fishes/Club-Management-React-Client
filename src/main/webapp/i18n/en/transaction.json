@@ -17,18 +17,26 @@
       "detail": {
         "title": "Transaction"
       },
-      "event": "Event",
-      "eventId": "Event Id",
       "title": "Title",
-      "type": "Type",
-      "amount": "Amount",
+      "eventId": "Event Id",
+      "eventName": "Event",
+      "receiptId": "Receipt Id",
+      "receipt": "Receipt",
+      "transactionType": "Transaction Type",
+      "transactionAmount": "Transaction Amount",
+      "income": "Income",
+      "expense": "Expense",
+      "belongsTo": "Belongs To",
       "description": "Description",
       "status": "Status",
-      "transactionDate": "Transaction Date",
+      "imageLink": "Image Link",
+      "receiptUrl": "Receipt Url",
+      "fileName": "File Name",
+      "fileType": "File Type",
       "createdBy": "Created By",
       "closedBy": "Closed By",
       "createdDate": "Created Date",
-      "receipt": "Receipt",
+      "transactionDate": "Transaction Date",
       "tab": "All Transactions"
     }
   }
