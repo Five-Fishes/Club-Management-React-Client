@@ -1,9 +1,9 @@
 {
   "clubmanagementApp": {
     "ClubFamilyRole": {
-      "MEMBER": "MEMBER",
-      "FATHER": "FATHER",
-      "MOTHER": "MOTHER"
+      "MEMBER": "Member",
+      "FATHER": "Father",
+      "MOTHER": "Mother"
     }
   }
 }
