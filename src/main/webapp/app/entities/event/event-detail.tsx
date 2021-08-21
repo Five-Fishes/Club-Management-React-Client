@@ -5,7 +5,7 @@ import React from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Container } from 'reactstrap';
+import { Button } from 'reactstrap';
 // tslint:disable-next-line:no-unused-variable
 import { Translate, TextFormat } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
