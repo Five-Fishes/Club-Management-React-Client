@@ -4,7 +4,6 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, Label } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
 import { Translate, translate } from 'react-jhipster';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { connect } from 'react-redux';
 import { getUsersWithoutFamily } from 'app/modules/administration/user-management/user-management.reducer';
 import { createEntity } from 'app/entities/user-cc-info/user-cc-info.reducer';
@@ -25,7 +24,7 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
   }
 
   handleClose = () => {
-    this.props.history.push(`/entity/club-family/members/${this.props.match.params.id}`);
+    this.props.history.push(`/entity/members/club-family/${this.props.match.params.id}`);
   };
 
   componentDidMount() {
@@ -42,6 +41,10 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
 
   saveEntity = (event: any, errors: any, values: any) => {
     if (errors.length === 0) {
+      if (values.familyRole === 'MEMBER') {
+        values.familyRole = null;
+      }
+
       const { userEntity } = this.props;
       const entity = {
         ...userEntity,
@@ -59,7 +62,9 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
       <div className="mx-3">
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.clubFamily.home.createOrEditLabel">Add Family Member</h2>
+            <h2>
+              <Translate contentKey="clubmanagementApp.clubFamily.member.createLabel">Add Family Member</Translate>
+            </h2>
           </Col>
         </Row>
         <Row className="justify-content-center">
@@ -79,21 +84,21 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
                   Family
                 </Label>
                 <AvField id="club-family" type="select" name="clubFamilyCode" value={familyCode} disabled>
-                  <option value="JIN_LONG">Jin Long</option>
-                  <option value="BI_MU">Bi Mu</option>
-                  <option value="QI_CAI">Qi Cai</option>
-                  <option value="KONG_QUE">Peacock</option>
-                  <option value="XIAO_CHOU">Nemo</option>
+                  <option value="JIN_LONG">{translate('clubmanagementApp.clubFamily.jinlong.name')}</option>
+                  <option value="BI_MU">{translate('clubmanagementApp.clubFamily.bimu.name')}</option>
+                  <option value="QI_CAI">{translate('clubmanagementApp.clubFamily.qicai.name')}</option>
+                  <option value="KONG_QUE">{translate('clubmanagementApp.clubFamily.kongque.name')}</option>
+                  <option value="XIAO_CHOU">{translate('clubmanagementApp.clubFamily.xiaochou.name')}</option>
                 </AvField>
               </AvGroup>
               <AvGroup>
                 <Label id="roleLabel" for="club-member-role">
                   Role
                 </Label>
-                <AvInput id="club-member-role" type="select" name="familyRole" value={null}>
-                  <option value={null}>Member</option>
-                  <option value="FATHER">Father</option>
-                  <option value="MOTHER">Mother</option>
+                <AvInput id="club-member-role" type="select" name="familyRole" value={'MEMBER'}>
+                  <option value={'MEMBER'}>{translate('clubmanagementApp.ClubFamilyRole.MEMBER')}</option>
+                  <option value="FATHER">{translate('clubmanagementApp.ClubFamilyRole.FATHER')}</option>
+                  <option value="MOTHER">{translate('clubmanagementApp.ClubFamilyRole.MOTHER')}</option>
                 </AvInput>
               </AvGroup>
               <div className="general-buttonContainer--flexContainer">
@@ -101,7 +106,7 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
                   className="general-button--width"
                   tag={Link}
                   id="cancel-save"
-                  to={`/entity/club-family/members/${familyCode}`}
+                  to={`/entity/members/club-family/${familyCode}`}
                   replace
                   color="cancel"
                 >

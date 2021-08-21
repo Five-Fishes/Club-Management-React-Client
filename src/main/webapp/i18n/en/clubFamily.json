@@ -2,10 +2,16 @@
   "clubmanagementApp": {
     "clubFamily": {
       "home": {
-        "title": "Club Families",
+        "title": "CC Family",
         "createLabel": "Create a new Club Family",
         "createOrEditLabel": "Create or edit a Club Family",
-        "notFound": "No Club Family found"
+        "notFound": "No CC Family found"
+      },
+      "member": {
+        "title": "CClub Family Member",
+        "createLabel": "Add a new Club Family member",
+        "createOrEditLabel": "Add or edit a Club Family Member",
+        "notFound": "No CC Family Member found"
       },
       "created": "A new Club Family is created with identifier {{ param }}",
       "updated": "A Club Family is updated with identifier {{ param }}",
@@ -14,10 +20,38 @@
         "question": "Are you sure you want to delete Club Family {{ id }}?"
       },
       "detail": {
-        "title": "Club Family"
+        "title": "CC Family"
       },
       "name": "Name",
-      "slogan": "Slogan"
+      "slogan": "Slogan",
+      "description": "Description",
+      "tab": "CC Family",
+
+      "bimu": {
+        "name": "Bi Mu",
+        "slogan": "Bi Mu Bi Mu, No Dumb than you",
+        "description": "Bi Mu Family is famous for its smart and interesting fishes"
+      },
+      "jinlong": {
+        "name": "Jin Long",
+        "slogan": "Jin Long Spirit, Leng Zai Leng Nui",
+        "description": "Jin Long Family is famous for its Leng Zai Leng lui"
+      },
+      "kongque": {
+        "name": "Peacock",
+        "slogan": "We are better than the best among the best of the best",
+        "description": "Peacock Family Fishes are the best of the best"
+      },
+      "qicai": {
+        "name": "Qi Cai",
+        "slogan": "Qi Cai Qi Cai, Step on You",
+        "description": "Qi Cai Family Fishes are friendly and truth personality"
+      },
+      "xiaochou": {
+        "name": "Nemo",
+        "slogan": "Nemo Nemo, No More Emo",
+        "description": "Nemo Family Fishes always full with positive energy and make you away from Emo"
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 {
   "clubmanagementApp": {
     "ClubFamilyRole": {
-      "null": "",
+      "MEMBER": "MEMBER",
       "FATHER": "FATHER",
       "MOTHER": "MOTHER"
     }

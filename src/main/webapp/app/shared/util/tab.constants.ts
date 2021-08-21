@@ -113,3 +113,24 @@ export const profileTab: ITabInfo[] = [
     asLongAsIsAuthenticated: true,
   },
 ];
+
+export const memberTabList: ITabInfo[] = [
+  {
+    tabName: 'Administrator',
+    tabTranslateKey: 'clubmanagementApp.administrator.tab',
+    tabRoute: '/entity/members/administrator',
+    ccRole: CCRole.ADMIN,
+  },
+  {
+    tabName: 'CC Family',
+    tabTranslateKey: 'clubmanagementApp.clubFamily.tab',
+    tabRoute: '/entity/members/cc-family',
+    asLongAsIsAuthenticated: true,
+  },
+  {
+    tabName: 'CC Member',
+    tabTranslateKey: 'clubmanagementApp.ccMembers.tab',
+    tabRoute: '/entity/members/cc-member',
+    asLongAsIsAuthenticated: true,
+  },
+];
