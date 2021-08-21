@@ -115,7 +115,7 @@ export default (state: IUserState = initialState, action: AnyAction): IUserState
         updateSuccess: true,
         loading: false,
         errResponse: null,
-        userProfile: action?.payload?.data ?? defaultUserUniInfo,
+        userProfile: action?.payload?.data || defaultUserUniInfo,
       };
     case ACTION_TYPES.SET_CURRENT_TAB:
       return {
