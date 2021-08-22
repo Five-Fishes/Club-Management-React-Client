@@ -9,6 +9,7 @@ import { getUsersWithoutFamily } from 'app/modules/administration/user-managemen
 import { createEntity } from 'app/entities/user-cc-info/user-cc-info.reducer';
 import { IRootState } from 'app/shared/reducers';
 import { IUser } from 'app/shared/model/user.model';
+import { concatFullName } from 'app/shared/util/string-util';
 
 export interface IFamilyMemberCreateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -34,7 +35,11 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
   renderNames(users: readonly IUser[]): ReactNode {
     return users.map((user: IUser) => {
       if (user) {
-        return <option key={user.id} value={user.id}>{`${user.firstName ?? ''} ${user.lastName ?? ''}`}</option>;
+        return (
+          <option key={user.id} value={user.id}>
+            {concatFullName(user.firstName, user.lastName)}
+          </option>
+        );
       }
     });
   }

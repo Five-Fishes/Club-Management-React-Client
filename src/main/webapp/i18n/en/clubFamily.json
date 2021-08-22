@@ -8,9 +8,9 @@
         "notFound": "No CC Family found"
       },
       "member": {
-        "title": "CClub Family Member",
-        "createLabel": "Add a new Club Family Member",
-        "createOrEditLabel": "Add or edit a Club Family Member",
+        "title": "CC Family Member",
+        "createLabel": "Add a new CC Family Member",
+        "createOrEditLabel": "Add or edit a CC Family Member",
         "notFound": "No CC Family Member found"
       },
       "created": "A new Club Family is created with identifier {{ param }}",
