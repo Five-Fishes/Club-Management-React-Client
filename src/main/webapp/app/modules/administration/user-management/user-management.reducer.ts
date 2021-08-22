@@ -120,7 +120,7 @@ const apiUrl = 'api/users';
 // Actions
 
 export const getUsersWithoutFamily: ICrudGetAllAction<IUser> = () => {
-  const requestUrl = `${apiUrl}/?family=false`;
+  const requestUrl = `${apiUrl}/family?hasFamily=false`;
   return {
     type: ACTION_TYPES.FETCH_USERS,
     payload: axios.get<IUser>(requestUrl),
