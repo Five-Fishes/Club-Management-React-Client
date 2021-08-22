@@ -6,7 +6,7 @@ import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validatio
 import { Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { getUsersWithoutFamily } from 'app/modules/administration/user-management/user-management.reducer';
-import { createEntity } from 'app/entities/user-cc-info/user-cc-info.reducer';
+import { createEntity, reset } from 'app/entities/user-cc-info/user-cc-info.reducer';
 import { IRootState } from 'app/shared/reducers';
 import { IUser } from 'app/shared/model/user.model';
 import { concatFullName } from 'app/shared/util/string-util';
@@ -29,6 +29,7 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
   };
 
   componentDidMount() {
+    this.props.reset();
     this.props.getUsersWithoutFamily();
   }
 
@@ -140,8 +141,8 @@ const mapStateToProps = (storeState: IRootState) => ({
 // Reducer Action Creators
 const mapDispatchToProps = {
   getUsersWithoutFamily,
-
   createEntity,
+  reset,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
