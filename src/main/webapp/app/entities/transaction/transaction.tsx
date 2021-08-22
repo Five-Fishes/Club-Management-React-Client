@@ -57,23 +57,25 @@ export class Transaction extends React.Component<ITransactionProps, ITransaction
     const { transactionList } = this.props;
     return (
       <div>
-        <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD}>
-          <Link to="/entity/transaction/new">
-            <FloatButton />
-          </Link>
-        </AuthorizationChecker>
         <h2 id="transaction-heading" className="finance-module-heading">
           <Translate contentKey="clubmanagementApp.transaction.home.title">Transactions</Translate>
         </h2>
         <CustomTab tabList={financeTabList} currentTab="All Transactions" />
         <div className="mx-4">
-          {transactionList && transactionList.length > 0 ? (
-            transactionList.map(transaction => <TransactionCard key={transaction.id} transaction={transaction} />)
-          ) : (
-            <div className="alert alert-warning">
-              <Translate contentKey="clubmanagementApp.transaction.home.notFound">No Transactions found</Translate>
-            </div>
-          )}
+          <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD}>
+            <Link className="btn btn-action jh-create-entity w-100 my-2" to="/entity/transaction/new">
+              <Translate contentKey="entity.action.add">Add</Translate>
+            </Link>
+          </AuthorizationChecker>
+          <div>
+            {transactionList && transactionList.length > 0 ? (
+              transactionList.map(transaction => <TransactionCard key={transaction.id} transaction={transaction} />)
+            ) : (
+              <div className="alert alert-warning">
+                <Translate contentKey="clubmanagementApp.transaction.home.notFound">No Transactions found</Translate>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );

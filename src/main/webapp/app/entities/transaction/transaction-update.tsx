@@ -17,7 +17,12 @@ import { mapIdList } from 'app/shared/util/entity-utils';
 import eventModal from 'app/shared/components/eventModal/event-modal';
 import transaction from './transaction';
 
-export interface ITransactionUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+import { IRedirectLocationState } from 'app/shared/auth/app-route';
+
+export interface ITransactionUpdateProps
+  extends StateProps,
+    DispatchProps,
+    RouteComponentProps<{ id: string }, any, IRedirectLocationState> {}
 
 export interface ITransactionUpdateState {
   isNew: boolean;
@@ -33,9 +38,8 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
       isNew: !this.props.match.params || !this.props.match.params.id,
       fileURL: '',
       transactionFile: undefined,
-      transactionType: 'INCOME',
+      transactionType: this.props.location.state?.value ?? 'INCOME',
     };
-
     this.setPreview = this.setPreview.bind(this);
     this.resetPreview = this.resetPreview.bind(this);
     this.setTransactionType = this.setTransactionType.bind(this);
@@ -128,9 +132,8 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
   };
 
   render() {
-    const { transactionEntity, loading, updating, events, userId } = this.props;
+    const { location, transactionEntity, loading, updating, events, userId } = this.props;
     const { isNew, transactionType } = this.state;
-
     return (
       <div className="mx-4">
         <Row className="justify-content-center">
@@ -222,7 +225,7 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
                     type="select"
                     className="form-control"
                     name="transactionType"
-                    value={(!isNew && transactionEntity.transactionType) || 'INCOME'}
+                    value={(!isNew && transactionEntity.transactionType) || transactionType}
                     onChange={this.setTransactionType}
                   >
                     <option value="INCOME">{translate('clubmanagementApp.TransactionType.INCOME')}</option>
@@ -260,7 +263,14 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
                   <AvField id="transaction-createdBy" type="text" name="createdBy" value={userId} />
                 </AvGroup>
                 <div className="general-buttonContainer--flexContainer">
-                  <Button className="general-button--width" tag={Link} id="cancel-save" to="/entity/transaction" replace color="cancel">
+                  <Button
+                    className="general-button--width"
+                    tag={Link}
+                    id="cancel-save"
+                    to={location.state?.from ?? '/entity/transaction'}
+                    replace
+                    color="cancel"
+                  >
                     <Translate contentKey="entity.action.cancel">Cancel</Translate>
                   </Button>
                   &nbsp;
