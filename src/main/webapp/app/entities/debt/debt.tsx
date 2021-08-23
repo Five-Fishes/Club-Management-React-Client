@@ -28,7 +28,6 @@ import { ITransaction, TransactionStatus } from 'app/shared/model/transaction.mo
 import { TransactionDetailDialog } from 'app/entities/transaction/transaction-detail-dialog';
 import { FinanceActionButton } from 'app/shared/components/finance-action-button/finance-action-button';
 
-import FloatButton from 'app/shared/components/floatButton/FloatButton';
 import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
 import CCRole from 'app/shared/model/enum/cc-role.enum';
 import EventRole from 'app/shared/model/enum/event-role.enum';
