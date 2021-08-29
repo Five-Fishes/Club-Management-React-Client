@@ -34,8 +34,8 @@ const Routes: React.FC<RouteComponentProps> = ({ match }) => (
       <ErrorBoundaryRoute path={`${match.url}/transaction`} component={Transaction} />
       <ErrorBoundaryRoute path={`${match.url}/claim`} component={Claim} />
       <ErrorBoundaryRoute path={`${match.url}/debt`} component={Debt} />
-      <ErrorBoundaryRoute path={`${match.url}/administrator`} component={Administrator} />
-      <ErrorBoundaryRoute path={`${match.url}/members/club-family`} component={ClubFamily} />
+      <ErrorBoundaryRoute path={`${match.url}/members/administrator`} component={Administrator} />
+      <ErrorBoundaryRoute path={`${match.url}/members/cc-family`} component={ClubFamily} />
       <ErrorBoundaryRoute path={`${match.url}/user-cc-info`} component={UserCCInfo} />
       <ErrorBoundaryRoute path={`${match.url}/user-uni-info`} component={UserUniInfo} />
       <ErrorBoundaryRoute path={`${match.url}/faculty`} component={Faculty} />

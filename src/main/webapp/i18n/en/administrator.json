@@ -5,6 +5,7 @@
         "title": "Administrators",
         "createLabel": "Create a new Administrator",
         "createOrEditLabel": "Create or edit a Administrator",
+        "editLabel": "Edit a Administrator",
         "notFound": "No Administrator found"
       },
       "created": "A new Administrator is created with identifier {{ param }}",
