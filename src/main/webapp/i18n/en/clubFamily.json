@@ -7,6 +7,12 @@
         "createOrEditLabel": "Create or edit a Club Family",
         "notFound": "No CC Family found"
       },
+      "member": {
+        "title": "CC Family Member",
+        "createLabel": "Add a new CC Family Member",
+        "createOrEditLabel": "Add or edit a CC Family Member",
+        "notFound": "No CC Family Member found"
+      },
       "created": "A new Club Family is created with identifier {{ param }}",
       "updated": "A Club Family is updated with identifier {{ param }}",
       "deleted": "A Club Family is deleted with identifier {{ param }}",

@@ -39,7 +39,7 @@ export class UserCCInfoDetail extends React.Component<IUserCCInfoDetailProps> {
                 <Translate contentKey="clubmanagementApp.userCCInfo.clubFamilyId">Club Family Id</Translate>
               </span>
             </dt>
-            <dd>{userCCInfoEntity.clubFamilyId}</dd>
+            <dd>{userCCInfoEntity.clubFamilyCode}</dd>
             <dt>
               <span id="familyRole">
                 <Translate contentKey="clubmanagementApp.userCCInfo.familyRole">Family Role</Translate>
@@ -79,7 +79,7 @@ export class UserCCInfoDetail extends React.Component<IUserCCInfoDetailProps> {
 }
 
 const mapStateToProps = ({ userCCInfo }: IRootState) => ({
-  userCCInfoEntity: userCCInfo.entity
+  userCCInfoEntity: userCCInfo.entity,
 });
 
 const mapDispatchToProps = { getEntity };
@@ -87,7 +87,4 @@ const mapDispatchToProps = { getEntity };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserCCInfoDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(UserCCInfoDetail);

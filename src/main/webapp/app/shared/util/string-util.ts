@@ -1,1 +1,1 @@
-export const concatFullName = (firstName: string, lastName: string) => lastName + ' ' + firstName;
+export const concatFullName = (firstName?: string, lastName?: string) => `${firstName ?? ''} ${lastName ?? ''}`;
