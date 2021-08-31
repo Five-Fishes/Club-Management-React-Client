@@ -37,6 +37,7 @@ export const ModuleMenu: React.FC<IModuleMenu> = ({ button }) => {
         <div style={{ paddingTop: 30, paddingBottom: 30 }}>
           <Module moduleName="Event" iconName="plane-departure" path="/entity/event" sideNavToggler={handler} />
           <Module moduleName="Finance" iconName="euro-sign" path="/entity/debt" sideNavToggler={handler} />
+          <Module moduleName="Member" iconName="fish" path="/entity/members/cc-family" sideNavToggler={handler} />
         </div>
       </div>
     </div>

@@ -1,0 +1,40 @@
+.filter-button {
+  width: max-content;
+  height: 33px;
+  background: #ffffff;
+  border: 1px solid #c4c4c4;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+.filter-display-text {
+  color: #07ade1;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: bold;
+}
+
+.filter-option {
+  background-color: transparent;
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.selected-filter-option {
+  background-color: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+}
+
+.filter-modal-header {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.filter-modal-body {
+  padding: 1rem 2rem 3rem 2rem;
+}
+
+.filter-modal-body button {
+  font-family: 'Roboto';
+}
