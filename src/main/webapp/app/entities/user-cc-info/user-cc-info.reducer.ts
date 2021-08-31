@@ -1,11 +1,12 @@
 import axios, { AxiosError } from 'axios';
 import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
+import { AnyAction } from 'redux';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IUserCCInfo, defaultValue } from 'app/shared/model/user-cc-info.model';
-import { AnyAction } from 'redux';
+import { IGetUsersWithFamilyCode } from 'app/shared/type/custom-action';
 
 export const ACTION_TYPES = {
   FETCH_USERCCINFO_LIST: 'userCCInfo/FETCH_USERCCINFO_LIST',
@@ -123,6 +124,11 @@ export const getEntity: ICrudGetAction<IUserCCInfo> = id => {
 export const getUsersWithoutFamily: ICrudGetAllAction<IUserCCInfo> = (page, size, sort) => ({
   type: ACTION_TYPES.FETCH_USERCCINFO_LIST,
   payload: axios.get<IUserCCInfo>(`${apiUrl}?clubFamilyCode.specified=false`),
+});
+
+export const getUsersWithFamilyCode: IGetUsersWithFamilyCode<IUserCCInfo> = familyCode => ({
+  type: ACTION_TYPES.FETCH_USERCCINFO_LIST,
+  payload: axios.get<IUserCCInfo>(`${apiUrl}?clubFamilyCode.equals=${familyCode}`),
 });
 
 export const createEntity: ICrudPutAction<IUserCCInfo> = entity => async dispatch => {
