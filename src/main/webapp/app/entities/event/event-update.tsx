@@ -34,9 +34,6 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
 
   componentWillUpdate(nextProps: IEventUpdateProps, nextState: IEventUpdateState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
-      window.console.log('State after Created: ');
-      window.console.log(nextState.isNew);
-      window.console.log(this.state.isNew);
       if (this.state.isNew && nextProps.eventEntity.id !== undefined) {
         this.redirectToCreateEventHead(nextProps.eventEntity.id);
       } else {
