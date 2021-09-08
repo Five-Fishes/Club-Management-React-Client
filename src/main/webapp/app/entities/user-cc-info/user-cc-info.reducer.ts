@@ -14,6 +14,8 @@ export const ACTION_TYPES = {
   CREATE_USERCCINFO: 'userCCInfo/CREATE_USERCCINFO',
   UPDATE_USERCCINFO: 'userCCInfo/UPDATE_USERCCINFO',
   DELETE_USERCCINFO: 'userCCInfo/DELETE_USERCCINFO',
+  FETCH_YEAR_SESSION_OPTIONS: 'FETCH_YEAR_SESSION_OPTIONS',
+  SET_SELECTED_YEAR_SESSION_FILTER: 'SET_SELECTED_YEAR_SESSION_FILTER',
   RESET: 'userCCInfo/RESET',
 };
 
@@ -24,6 +26,8 @@ const initialState: IUserCCInfoState = {
   entity: defaultValue,
   updating: false,
   updateSuccess: false,
+  yearSessionOptions: [],
+  selectedYearSessionFilter: '',
 };
 
 export interface IUserCCInfoState {
@@ -33,6 +37,8 @@ export interface IUserCCInfoState {
   entity: Readonly<IUserCCInfo>;
   updating: boolean;
   updateSuccess: boolean;
+  yearSessionOptions: string[];
+  selectedYearSessionFilter: string;
 }
 
 // Reducer
@@ -41,6 +47,7 @@ export default (state: IUserCCInfoState = initialState, action: AnyAction): IUse
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_USERCCINFO_LIST):
     case REQUEST(ACTION_TYPES.FETCH_USERCCINFO):
+    case REQUEST(ACTION_TYPES.FETCH_YEAR_SESSION_OPTIONS):
       return {
         ...state,
         errResponse: null,
@@ -61,6 +68,7 @@ export default (state: IUserCCInfoState = initialState, action: AnyAction): IUse
     case FAILURE(ACTION_TYPES.CREATE_USERCCINFO):
     case FAILURE(ACTION_TYPES.UPDATE_USERCCINFO):
     case FAILURE(ACTION_TYPES.DELETE_USERCCINFO):
+    case FAILURE(ACTION_TYPES.FETCH_YEAR_SESSION_OPTIONS):
       return {
         ...state,
         loading: false,
@@ -95,6 +103,19 @@ export default (state: IUserCCInfoState = initialState, action: AnyAction): IUse
         updateSuccess: true,
         entity: {},
       };
+    case SUCCESS(ACTION_TYPES.FETCH_YEAR_SESSION_OPTIONS):
+      return {
+        ...state,
+        loading: false,
+        yearSessionOptions: action.payload.data,
+        selectedYearSessionFilter: action.payload.data[0],
+      };
+    case ACTION_TYPES.SET_SELECTED_YEAR_SESSION_FILTER:
+      const { selectedYearSession } = action.payload;
+      return {
+        ...state,
+        selectedYearSessionFilter: selectedYearSession,
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState,
@@ -126,10 +147,16 @@ export const getUsersWithoutFamily: ICrudGetAllAction<IUserCCInfo> = (page, size
   payload: axios.get<IUserCCInfo>(`${apiUrl}?clubFamilyCode.specified=false`),
 });
 
-export const getUsersWithFamilyCode: IGetUsersWithFamilyCode<IUserCCInfo> = familyCode => ({
-  type: ACTION_TYPES.FETCH_USERCCINFO_LIST,
-  payload: axios.get<IUserCCInfo>(`${apiUrl}?clubFamilyCode.equals=${familyCode}`),
-});
+export const getUsersWithFamilyCode: IGetUsersWithFamilyCode<IUserCCInfo> = (familyCode: string, yearSession?: string) => {
+  let requestUrl = `${apiUrl}?clubFamilyCode.equals=${familyCode}`;
+  if (yearSession) {
+    requestUrl = `${requestUrl}&yearSession.equals=${yearSession}`;
+  }
+  return {
+    type: ACTION_TYPES.FETCH_USERCCINFO_LIST,
+    payload: axios.get<IUserCCInfo>(requestUrl),
+  };
+};
 
 export const createEntity: ICrudPutAction<IUserCCInfo> = entity => async dispatch => {
   const result = await dispatch({
@@ -158,6 +185,20 @@ export const deleteEntity: ICrudDeleteAction<IUserCCInfo> = id => async dispatch
   dispatch(getEntities());
   return result;
 };
+
+export const getYearSessionOptions: ICrudGetAllAction<string> = (page, size, sort) => ({
+  type: ACTION_TYPES.FETCH_YEAR_SESSION_OPTIONS,
+  payload: axios.get<string>(
+    `api/year-sessions/values?cacheBuster=${new Date().getTime()}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`
+  ),
+});
+
+export const setSelectedYearSessionFilter = (selectedYearSession: string) => ({
+  type: ACTION_TYPES.SET_SELECTED_YEAR_SESSION_FILTER,
+  payload: {
+    selectedYearSession,
+  },
+});
 
 export const reset = () => ({
   type: ACTION_TYPES.RESET,

@@ -64,3 +64,13 @@
   font-weight: 400;
   color: #7b7b7b;
 }
+
+.square-image {
+  position: relative;
+  padding-bottom: 100%;
+  overflow: hidden;
+}
+
+.square-image img {
+  position: absolute;
+}

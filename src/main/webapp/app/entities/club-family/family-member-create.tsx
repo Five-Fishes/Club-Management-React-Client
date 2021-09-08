@@ -25,7 +25,7 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
   }
 
   handleClose = () => {
-    this.props.history.push(`/entity/members/club-family/${this.props.match.params.id}`);
+    this.props.history.push(`/entity/members/cc-family/${this.props.match.params.id}`);
   };
 
   componentDidMount() {
@@ -112,7 +112,7 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
                   className="general-button--width"
                   tag={Link}
                   id="cancel-save"
-                  to={`/entity/members/club-family/${familyCode}`}
+                  to={`/entity/members/cc-family/${familyCode}`}
                   replace
                   color="cancel"
                 >
