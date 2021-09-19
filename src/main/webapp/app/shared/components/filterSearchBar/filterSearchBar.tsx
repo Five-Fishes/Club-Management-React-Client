@@ -1,64 +1,98 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, Label, Input } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
 import { Translate } from 'react-jhipster';
+import { IRootState } from 'app/shared/reducers';
+import { getYearSessionOptions } from 'app/entities/user-cc-info/user-cc-info.reducer';
+import { getEntities as getFacultyOptions } from 'app/entities/faculty/faculty.reducer';
+import { IFaculty } from 'app/shared/model/faculty.model';
+
 import './filterSearchBar.scss';
 
-interface IFilterSearchBarProps {
-  //   onChange: () => void;
+interface IFilterSearchBarProps extends StateProps, DispatchProps {
+  showModal: boolean;
+  toggleModal: () => void;
+  familyCode: string;
+  searchUsers: (familyCode: string, filters: any) => void;
 }
+
 interface IFilterSearchBarState {
-  showOptions: boolean;
+  filters: {
+    userFirstName?: string;
+    userLastName?: string;
+    faculty?: IFaculty;
+    intakeYearSession?: string;
+  };
 }
 
 class FilterSearchBar extends React.Component<IFilterSearchBarProps, IFilterSearchBarState> {
   constructor(props: IFilterSearchBarProps) {
     super(props);
     this.state = {
-      showOptions: false,
+      filters: {
+        userFirstName: '',
+        userLastName: '',
+        faculty: undefined,
+        intakeYearSession: '',
+      },
     };
   }
 
-  showOptionsModal = (): void => {
-    this.setState({
-      ...this.state,
-      showOptions: true,
-    });
-  };
+  componentDidMount() {
+    this.props.getYearSessionOptions(0, 12, 'value,desc');
+    this.props.getFacultyOptions();
+  }
 
-  toggleShowOptions = (): void => {
-    this.setState({
-      ...this.state,
-      showOptions: !this.state.showOptions,
-    });
+  renderYearSessionOptions = () => this.props.yearSessionOptions.map(year => <option key={year}>{year}</option>);
+
+  renderFacultyOptions = () => this.props.facultyOptions.map(faculty => <option key={faculty?.id}>{faculty?.name}</option>);
+
+  searchEntities = (event: any, errors: any, values: any) => {
+    if (errors.length === 0) {
+      const { filters } = this.state;
+      const { familyCode, searchUsers } = this.props;
+      const entity = {
+        ...filters,
+        ...values,
+      };
+      searchUsers(familyCode, entity);
+      this.props.toggleModal();
+    }
   };
 
   render() {
-    const { showOptions } = this.state;
+    const { showModal, familyCode } = this.props;
     return (
-      <>
-        <Button className="filter-bar" onClick={this.showOptionsModal}>
-          <div className="float-left">
-            <FontAwesomeIcon icon="search" color="#07ADE1" />
-            &nbsp; <span className="filter-bar-text">Type to search more...</span>
-          </div>
-        </Button>
-
-        <Modal id="myModal" className="advanced-search-modal" size="md" isOpen={showOptions} toggle={this.toggleShowOptions} centered>
-          <ModalHeader toggle={this.toggleShowOptions} className="filter-modal-header" />
-          <ModalBody className="filter-modal-body">
-            <h2 className="text-center mb-4">Advanced Search</h2>
-            <AvForm>
-              <AvGroup>
-                <AvInput id="myInput" type="text" placeholder="Name" className="form-control" name="id" autoFocus />
-              </AvGroup>
-              <AvGroup>
-                <AvInput type="text" placeholder="Faculty" className="form-control" name="id" />
-              </AvGroup>
-              <AvGroup>
-                <AvInput type="text" placeholder="Enrolled Year" className="form-control" name="id" />
-              </AvGroup>
+      <Modal id="myModal" className="advanced-search-modal" size="md" isOpen={showModal} toggle={this.props.toggleModal} centered>
+        <ModalHeader toggle={this.props.toggleModal} className="filter-modal-header" />
+        <ModalBody className="filter-modal-body">
+          <h2 className="text-center mb-4">Advanced Search</h2>
+          <AvForm model={this.state.filters} onSubmit={this.searchEntities}>
+            <AvGroup>
+              <AvInput id="first-name" type="text" placeholder="First Name" className="form-control" name="userFirstName" autoFocus />
+            </AvGroup>
+            <AvGroup>
+              <AvInput id="last-name" type="text" placeholder="Last Name" className="form-control" name="userLastName" autoFocus />
+            </AvGroup>
+            <AvGroup>
+              <AvInput id="faculty" type="select" placeholder="Faculty" className="form-control" name="faculty">
+                <option disabled value="" hidden>
+                  Faculty
+                </option>
+                {this.renderFacultyOptions()}
+              </AvInput>
+            </AvGroup>
+            <AvGroup>
+              <AvInput id="enrolled-year" type="select" placeholder="Enrolled Year" className="form-control" name="intakeYearSession">
+                <option disabled value="" hidden>
+                  Enrolled Year
+                </option>
+                {this.renderYearSessionOptions()}
+              </AvInput>
+            </AvGroup>
+            {familyCode ? null : (
               <AvGroup>
                 <h6 className="ml-2 ">CC Family</h6>
                 <div className="family-button-group">
@@ -79,21 +113,34 @@ class FilterSearchBar extends React.Component<IFilterSearchBarProps, IFilterSear
                   </Button>
                 </div>
               </AvGroup>
-              <div className="general-buttonContainer--flexContainer mt-5">
-                <Button className="general-button--width" id="cancel-save" replace color="cancel" onClick={this.toggleShowOptions}>
-                  <Translate contentKey="entity.action.cancel">Cancel</Translate>
-                </Button>
-                &nbsp;
-                <Button className="general-button--width" color="action" id="save-entity" type="submit">
-                  Search
-                </Button>
-              </div>
-            </AvForm>
-          </ModalBody>
-        </Modal>
-      </>
+            )}
+            <div className="general-buttonContainer--flexContainer mt-5">
+              <Button className="general-button--width" id="cancel-save" color="cancel" onClick={this.props.toggleModal}>
+                <Translate contentKey="entity.action.cancel">Cancel</Translate>
+              </Button>
+              &nbsp;
+              <Button className="general-button--width" color="action" id="save-entity" type="submit">
+                Search
+              </Button>
+            </div>
+          </AvForm>
+        </ModalBody>
+      </Modal>
     );
   }
 }
 
-export default FilterSearchBar;
+const mapStateToProps = ({ userCCInfo, faculty }: IRootState) => ({
+  yearSessionOptions: userCCInfo.yearSessionOptions,
+  facultyOptions: faculty.entities,
+});
+
+const mapDispatchToProps = {
+  getYearSessionOptions,
+  getFacultyOptions,
+};
+
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = typeof mapDispatchToProps;
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilterSearchBar);

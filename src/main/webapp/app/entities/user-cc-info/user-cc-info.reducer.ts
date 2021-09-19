@@ -6,7 +6,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IUserCCInfo, defaultValue } from 'app/shared/model/user-cc-info.model';
-import { IGetUsersWithFamilyCode } from 'app/shared/type/custom-action';
+import { IGetUsersWithFilters } from 'app/shared/type/custom-action';
 
 export const ACTION_TYPES = {
   FETCH_USERCCINFO_LIST: 'userCCInfo/FETCH_USERCCINFO_LIST',
@@ -147,11 +147,31 @@ export const getUsersWithoutFamily: ICrudGetAllAction<IUserCCInfo> = (page, size
   payload: axios.get<IUserCCInfo>(`${apiUrl}?clubFamilyCode.specified=false`),
 });
 
-export const getUsersWithFamilyCode: IGetUsersWithFamilyCode<IUserCCInfo> = (familyCode: string, yearSession?: string) => {
+export const getUsersWithFamilyCode: IGetUsersWithFilters<IUserCCInfo> = (familyCode: string, yearSession?: string) => {
   let requestUrl = `${apiUrl}?clubFamilyCode.equals=${familyCode}`;
   if (yearSession) {
     requestUrl = `${requestUrl}&yearSession.equals=${yearSession}`;
   }
+  return {
+    type: ACTION_TYPES.FETCH_USERCCINFO_LIST,
+    payload: axios.get<IUserCCInfo>(requestUrl),
+  };
+};
+
+export const getUsersWithFilter: any = (familyCode?: string, filters?: any) => {
+  let requestUrl = apiUrl;
+
+  if (familyCode) {
+    requestUrl = `${apiUrl}?clubFamilyCode.equals=${familyCode}`;
+  }
+  if (filters) {
+    for (const filter in filters) {
+      if (filters[filter]) {
+        requestUrl = `${requestUrl}&${filter}.equals=${filters[filter]}`;
+      }
+    }
+  }
+
   return {
     type: ACTION_TYPES.FETCH_USERCCINFO_LIST,
     payload: axios.get<IUserCCInfo>(requestUrl),

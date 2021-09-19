@@ -14,42 +14,56 @@ import MemberCard from './member-card';
 import FilterSearchBar from 'app/shared/components/filterSearchBar/filterSearchBar';
 import './family-member.scss';
 
-import {
-  getUsersWithFamilyCode,
-  setSelectedYearSessionFilter,
-  getYearSessionOptions,
-  getEntities,
-} from 'app/entities/user-cc-info/user-cc-info.reducer';
+import { getUsersWithFilter, setSelectedYearSessionFilter, getYearSessionOptions } from 'app/entities/user-cc-info/user-cc-info.reducer';
 import { getClubFamilyDetails } from 'app/shared/services/club-family-info.service';
 
 export interface IFamilyMemberProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface IFamilyMemberState {
-  searchedName: string;
+  showModal: boolean;
 }
 class FamilyMember extends React.Component<IFamilyMemberProps, IFamilyMemberState> {
   constructor(props: IFamilyMemberProps) {
     super(props);
     this.state = {
-      searchedName: '',
+      showModal: false,
     };
   }
 
   async componentDidMount() {
     await this.props.getYearSessionOptions(0, 12, 'value,desc');
-    this.props.getUsersWithFamilyCode(this.props.match.params.id, this.props.selectedYearSessionFilter);
+    this.props.getUsersWithFilter(this.props.match.params.id);
   }
 
   setYearSession = async (yearSession: string): Promise<void> => {
     await this.props.setSelectedYearSessionFilter(yearSession);
-    this.props.getUsersWithFamilyCode(this.props.match.params.id, this.props.selectedYearSessionFilter);
+    this.props.getUsersWithFilter(this.props.match.params.id);
+  };
+
+  showModal = (): void => {
+    this.setState({
+      showModal: true,
+    });
+  };
+
+  toggleModal = (): void => {
+    this.setState({
+      showModal: !this.state.showModal,
+    });
   };
 
   render() {
-    const { users, yearSessionOptions, selectedYearSessionFilter, match } = this.props;
+    const { users, yearSessionOptions, selectedYearSessionFilter, getUsersWithFilter, match } = this.props;
+    const { showModal } = this.state;
     const familyName = getClubFamilyDetails(match.params.id).name;
     return (
       <div>
+        <FilterSearchBar
+          showModal={showModal}
+          toggleModal={this.toggleModal}
+          familyCode={this.props.match.params.id}
+          searchUsers={getUsersWithFilter}
+        />
         <h2 id="event-activity-heading" className="event-module-heading">
           {familyName ? translate(familyName) : null}
         </h2>
@@ -59,14 +73,13 @@ class FamilyMember extends React.Component<IFamilyMemberProps, IFamilyMemberStat
               <Translate contentKey="entity.action.add">Add</Translate>
             </Link>
           </AuthorizationChecker>
-          {/* <FilterSearchBar></FilterSearchBar> */}
           <InputGroup>
             <InputGroupAddon className="search-bar-prepend" addonType="prepend" color="white">
               🔎
             </InputGroupAddon>
-            <Input placeholder="Type a name to filter" className="search-bar-input" onKeyPress={this.inputOnChange} />
+            <Input placeholder="Type a name to filter" className="search-bar-input" />
             <InputGroupAddon addonType="append">
-              <Button className="search-bar-append">
+              <Button className="search-bar-append" onClick={this.toggleModal}>
                 <FontAwesomeIcon icon="filter" color="#07ADE1" />
               </Button>
             </InputGroupAddon>
@@ -95,7 +108,7 @@ const mapStateToProps = ({ userCCInfo }: IRootState) => ({
 });
 
 const mapDispatchToProps = {
-  getUsersWithFamilyCode,
+  getUsersWithFilter,
   setSelectedYearSessionFilter,
   getYearSessionOptions,
 };
