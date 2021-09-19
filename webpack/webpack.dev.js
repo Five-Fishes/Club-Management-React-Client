@@ -33,6 +33,19 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
             options: { implementation: sass }
           }
         ]
+      },
+      {
+        test: /.js$/, // Transform all .js files required somewhere with Babel
+        include: /node_modules[\\/]@availity/, // Only try to load the availity module
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              ['@babel/preset-env', { targets: 'defaults' }],
+              ['@babel/preset-react', { targets: 'defaults' }]
+            ]
+          }
+        },
       }
     ]
   },

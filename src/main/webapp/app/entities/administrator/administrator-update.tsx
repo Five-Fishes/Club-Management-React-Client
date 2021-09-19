@@ -1,23 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
-import { Button, Row, Col, Label } from 'reactstrap';
+import { Container, Button, Row, Col, Label } from 'reactstrap';
 import { AvFeedback, AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
 // tslint:disable-next-line:no-unused-variable
 import { Translate, translate, ICrudGetAction, ICrudGetAllAction, ICrudPutAction } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
-import { getEntity, updateEntity, createEntity, reset } from './administrator.reducer';
-import { IAdministrator } from 'app/shared/model/administrator.model';
+import { getEntities, getEntity, updateEntity, createEntity, reset, getYearSessionOptions } from './administrator.reducer';
 // tslint:disable-next-line:no-unused-variable
-import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
-import { mapIdList } from 'app/shared/util/entity-utils';
+import { IUser } from 'app/shared/model/user.model';
+import axios from 'axios';
+import { AdministratorStatus } from 'app/shared/model/administrator.model';
+import { concatFullName } from 'app/shared/util/string-util';
+import { AvSelectField } from '@availity/reactstrap-validation-select';
 
 export interface IAdministratorUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
 export interface IAdministratorUpdateState {
   isNew: boolean;
+  allUsers: ReadonlyArray<IUser>;
 }
 
 export class AdministratorUpdate extends React.Component<IAdministratorUpdateProps, IAdministratorUpdateState> {
@@ -25,8 +28,14 @@ export class AdministratorUpdate extends React.Component<IAdministratorUpdatePro
     super(props);
     this.state = {
       isNew: !this.props.match.params || !this.props.match.params.id,
+      allUsers: [],
     };
   }
+
+  getAllNonAdministratorUsers = async () => {
+    const users = await axios.get<IUser[]>(`/api/users`);
+    this.setState({ allUsers: users.data });
+  };
 
   componentWillUpdate(nextProps: IAdministratorUpdateProps, nextState: IAdministratorUpdateState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
@@ -35,19 +44,23 @@ export class AdministratorUpdate extends React.Component<IAdministratorUpdatePro
   }
 
   componentDidMount() {
+    this.props.getYearSessionOptions(0, 1, 'value,desc');
     if (this.state.isNew) {
       this.props.reset();
     } else {
       this.props.getEntity(this.props.match.params.id);
     }
+    this.getAllNonAdministratorUsers();
+    this.props.getEntities('', AdministratorStatus.ACTIVE);
   }
 
   saveEntity = (event: any, errors: any, values: any) => {
     if (errors.length === 0) {
-      const { administratorEntity } = this.props;
+      const { administratorEntity, yearSessionOptions } = this.props;
       const entity = {
         ...administratorEntity,
         ...values,
+        yearSession: yearSessionOptions[0],
       };
 
       if (this.state.isNew) {
@@ -59,15 +72,25 @@ export class AdministratorUpdate extends React.Component<IAdministratorUpdatePro
   };
 
   handleClose = () => {
-    this.props.history.push('/entity/administrator');
+    this.props.history.push('/entity/members/administrator');
   };
 
   render() {
-    const { administratorEntity, loading, updating } = this.props;
-    const { isNew } = this.state;
+    const { administratorList, administratorEntity, loading, updating } = this.props;
+    const { isNew, allUsers } = this.state;
+    let options = [];
+    let toFilter = administratorList;
+    if (!isNew && administratorEntity) {
+      toFilter = toFilter.filter(admin => admin.id !== administratorEntity.id);
+    }
+    options = allUsers?.filter(user => toFilter?.every(admin => admin.userId !== user.id));
+    const selectOptions = options.map(option => ({
+      value: option.id,
+      label: concatFullName(option.firstName ?? '', option.lastName ?? ''),
+    }));
 
     return (
-      <div>
+      <Container>
         <Row className="justify-content-center">
           <Col md="8">
             <h2 id="clubmanagementApp.administrator.home.createOrEditLabel">
@@ -81,25 +104,17 @@ export class AdministratorUpdate extends React.Component<IAdministratorUpdatePro
               <p>Loading...</p>
             ) : (
               <AvForm model={isNew ? {} : administratorEntity} onSubmit={this.saveEntity}>
-                {!isNew ? (
-                  <AvGroup>
-                    <Label for="administrator-id">
-                      <Translate contentKey="global.field.id">ID</Translate>
-                    </Label>
-                    <AvInput id="administrator-id" type="text" className="form-control" name="id" required readOnly />
-                  </AvGroup>
-                ) : null}
                 <AvGroup>
-                  <Label id="userIdLabel" for="administrator-userId">
-                    <Translate contentKey="clubmanagementApp.administrator.userId">User Id</Translate>
+                  <Label for="user-id">
+                    <Translate contentKey="global.form.username.label">User Name</Translate>
                   </Label>
-                  <AvField id="administrator-userId" type="string" className="form-control" name="userId" />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="yearSessionLabel" for="administrator-yearSession">
-                    <Translate contentKey="clubmanagementApp.administrator.yearSession">Year Session</Translate>
-                  </Label>
-                  <AvField id="administrator-yearSession" type="text" name="yearSession" />
+                  <AvSelectField
+                    name="userId"
+                    options={selectOptions}
+                    validate={{
+                      required: { value: true, errorMessage: 'Please select user name' },
+                    }}
+                  />
                 </AvGroup>
                 <AvGroup>
                   <Label id="roleLabel" for="administrator-role">
@@ -111,6 +126,7 @@ export class AdministratorUpdate extends React.Component<IAdministratorUpdatePro
                     className="form-control"
                     name="role"
                     value={(!isNew && administratorEntity.role) || 'CC_HEAD'}
+                    required
                   >
                     <option value="CC_HEAD">{translate('clubmanagementApp.AdministratorRole.CC_HEAD')}</option>
                     <option value="VICE_CC_HEAD">{translate('clubmanagementApp.AdministratorRole.VICE_CC_HEAD')}</option>
@@ -118,55 +134,51 @@ export class AdministratorUpdate extends React.Component<IAdministratorUpdatePro
                     <option value="TEASURER">{translate('clubmanagementApp.AdministratorRole.TEASURER')}</option>
                   </AvInput>
                 </AvGroup>
-                <AvGroup>
-                  <Label id="statusLabel" for="administrator-status">
-                    <Translate contentKey="clubmanagementApp.administrator.status">Status</Translate>
-                  </Label>
-                  <AvInput
-                    id="administrator-status"
-                    type="select"
-                    className="form-control"
-                    name="status"
-                    value={(!isNew && administratorEntity.status) || 'ACTIVE'}
+                <div className="general-buttonContainer--flexContainer">
+                  <Button
+                    className="general-button--width"
+                    tag={Link}
+                    id="cancel-save"
+                    to="/entity/members/administrator"
+                    replace
+                    color="cancel"
                   >
-                    <option value="ACTIVE">{translate('clubmanagementApp.AdministratorStatus.ACTIVE')}</option>
-                    <option value="DEACTIVATE">{translate('clubmanagementApp.AdministratorStatus.DEACTIVATE')}</option>
-                    <option value="PENDING">{translate('clubmanagementApp.AdministratorStatus.PENDING')}</option>
-                  </AvInput>
-                </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/administrator" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
-                  &nbsp;
-                  <span className="d-none d-md-inline">
-                    <Translate contentKey="entity.action.back">Back</Translate>
-                  </span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp;
-                  <Translate contentKey="entity.action.save">Save</Translate>
-                </Button>
+                    <Translate contentKey="entity.action.cancel">Cancel</Translate>
+                  </Button>
+                  {isNew ? (
+                    <Button className="general-button--width" color="action" id="save-entity" type="submit" disabled={updating}>
+                      <Translate contentKey="entity.action.create">Create</Translate>
+                    </Button>
+                  ) : (
+                    <Button className="general-button--width" color="action" id="save-entity" type="submit" disabled={updating}>
+                      <Translate contentKey="entity.action.update">Update</Translate>
+                    </Button>
+                  )}
+                </div>
               </AvForm>
             )}
           </Col>
         </Row>
-      </div>
+      </Container>
     );
   }
 }
 
-const mapStateToProps = (storeState: IRootState) => ({
-  administratorEntity: storeState.administrator.entity,
-  loading: storeState.administrator.loading,
-  updating: storeState.administrator.updating,
-  updateSuccess: storeState.administrator.updateSuccess,
+const mapStateToProps = ({ administrator }: IRootState) => ({
+  administratorList: administrator.entities,
+  administratorEntity: administrator.entity,
+  loading: administrator.loading,
+  updating: administrator.updating,
+  updateSuccess: administrator.updateSuccess,
+  yearSessionOptions: administrator.yearSessionOptions,
 });
 
 const mapDispatchToProps = {
+  getEntities,
   getEntity,
   updateEntity,
   createEntity,
+  getYearSessionOptions,
   reset,
 };
 
