@@ -34,7 +34,11 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
 
   componentWillUpdate(nextProps: IEventUpdateProps, nextState: IEventUpdateState) {
     if (nextProps.updateSuccess !== this.props.updateSuccess && nextProps.updateSuccess) {
-      this.handleClose();
+      if (this.state.isNew && nextProps.eventEntity.id !== undefined) {
+        this.redirectToCreateEventHead(nextProps.eventEntity.id);
+      } else {
+        this.handleClose();
+      }
     }
   }
 
@@ -104,6 +108,10 @@ export class EventUpdate extends React.Component<IEventUpdateProps, IEventUpdate
 
   handleClose = () => {
     this.props.history.push('/entity/event');
+  };
+
+  redirectToCreateEventHead = (eventId: number) => {
+    this.props.history.push(`/entity/event-crew/event/${eventId}/new/head`);
   };
 
   render() {

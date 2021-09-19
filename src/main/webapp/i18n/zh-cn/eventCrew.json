@@ -4,6 +4,8 @@
       "home": {
         "title": "活动工委",
         "createLabel": "创建新活动工委",
+        "createHeadLabel": "创建新活动领导",
+        "editLabel": "编辑活动工委",
         "createOrEditLabel": "创建或编辑活动工委",
         "notFound": "未发现任何活动工委"
       },
