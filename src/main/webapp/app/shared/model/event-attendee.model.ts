@@ -9,5 +9,5 @@ export interface IEventAttendee {
 }
 
 export const defaultValue: Readonly<IEventAttendee> = {
-  provideTransport: false
+  provideTransport: false,
 };

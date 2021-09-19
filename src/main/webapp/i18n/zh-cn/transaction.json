@@ -18,14 +18,16 @@
       },
       "title": "标题",
       "eventId": "活动 Id",
-      "eventName": "活动名称",
+      "eventName": "活动",
       "receiptId": "收据 Id",
+      "receipt": "收据",
       "transactionType": "收支记录类型",
       "transactionAmount": "收支记录数额",
       "income": "收入",
       "expense": "支出",
       "belongsTo": "属于",
       "description": "描述",
+      "status": "状态",
       "imageLink": "图片链接",
       "receiptUrl": "收据网址",
       "fileName": "文件名称",
@@ -33,6 +35,7 @@
       "createdBy": "创建人",
       "closedBy": "结帐人",
       "createdDate": "创建日期",
+      "transactionDate": "交易日期",
       "tab": "全部收支"
     }
   }
