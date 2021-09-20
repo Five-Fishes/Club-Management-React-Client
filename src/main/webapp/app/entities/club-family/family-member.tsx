@@ -11,11 +11,12 @@ import AuthorizationChecker from 'app/shared/components/authorization-checker/au
 import CCRole from 'app/shared/model/enum/cc-role.enum';
 import EventRole from 'app/shared/model/enum/event-role.enum';
 import MemberCard from './member-card';
-import FilterSearchBar from 'app/shared/components/filterSearchBar/filterSearchBar';
+import FilterSearchBar from 'app/shared/components/advancedSearchModal/advancedSearchModal';
 import './family-member.scss';
 
 import { getUsersWithFilter, setSelectedYearSessionFilter, getYearSessionOptions } from 'app/entities/user-cc-info/user-cc-info.reducer';
 import { getClubFamilyDetails } from 'app/shared/services/club-family-info.service';
+import { reset as resetFilter } from 'app/shared/components/advancedSearchModal/advancedSearchModal.reducer';
 
 export interface IFamilyMemberProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
 
@@ -33,6 +34,10 @@ class FamilyMember extends React.Component<IFamilyMemberProps, IFamilyMemberStat
   async componentDidMount() {
     await this.props.getYearSessionOptions(0, 12, 'value,desc');
     this.props.getUsersWithFilter(this.props.match.params.id);
+  }
+
+  componentWillUnmount() {
+    this.props.resetFilter();
   }
 
   setYearSession = async (yearSession: string): Promise<void> => {
@@ -68,7 +73,7 @@ class FamilyMember extends React.Component<IFamilyMemberProps, IFamilyMemberStat
           {familyName ? translate(familyName) : null}
         </h2>
         <div className="mx-4">
-          <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD}>
+          <AuthorizationChecker ccRole={CCRole.ADMIN}>
             <Link className="btn btn-action jh-create-entity w-100 my-2" to={`/entity/members/cc-family/${match.params.id}/new`}>
               <Translate contentKey="entity.action.add">Add</Translate>
             </Link>
@@ -111,6 +116,7 @@ const mapDispatchToProps = {
   getUsersWithFilter,
   setSelectedYearSessionFilter,
   getYearSessionOptions,
+  resetFilter,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

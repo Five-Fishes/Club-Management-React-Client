@@ -69,7 +69,7 @@ import financeReport, { IFinanceReportState } from 'app/entities/finance-report/
 import user, {
   IUserState
 } from 'app/modules/user-profile/user-profile.reducer';
-
+import advancedSearchModal, { IAdvancedSearchModalState } from 'app/shared/components/advancedSearchModal/advancedSearchModal.reducer';
 export interface IRootState {
   readonly authentication: IAuthenticationInitialState;
   readonly locale: LocaleState;
@@ -94,6 +94,7 @@ export interface IRootState {
   /* jhipster-needle-add-reducer-type - JHipster will add reducer type here */
   readonly loadingBar: any;
   readonly user: IUserState;
+  readonly advancedSearchModal: IAdvancedSearchModalState;
 }
 
 const rootReducer = combineReducers<IRootState>({
@@ -120,6 +121,7 @@ const rootReducer = combineReducers<IRootState>({
   /* jhipster-needle-add-reducer-combine - JHipster will add reducer here */
   loadingBar,
   user,
+  advancedSearchModal,
 });
 
 export default rootReducer;
