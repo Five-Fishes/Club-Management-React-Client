@@ -14,12 +14,12 @@ export const enum TransactionStatus {
 
 export interface ITransaction {
   id?: number;
+  title?: string;
   eventId?: number;
   eventName?: string;
   receiptId?: number;
   transactionType?: TransactionType;
   transactionAmount?: number;
-  title?: string;
   description?: string;
   imageLink?: string;
   transactionStatus?: TransactionStatus;

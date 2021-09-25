@@ -17,6 +17,7 @@ const UnauthorizedBanner: React.ReactElement = (
 
 export interface IRedirectLocationState {
   from?: Location;
+  value?: string;
 }
 
 interface IAppRouteOwnProps extends RouteProps, IAuthorizationCheckerOwnProps {}

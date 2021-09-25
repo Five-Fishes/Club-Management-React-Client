@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Modal, ModalHeader, ModalBody } from 'reactstrap';
 // tslint:disable-next-line:no-unused-variable
 import { Translate, getSortState, IPaginationBaseState, JhiPagination, JhiItemCount } from 'react-jhipster';
@@ -27,6 +27,10 @@ import { FinanceComponentListingCardWithButton } from 'app/shared/components/fin
 import { ITransaction, TransactionStatus } from 'app/shared/model/transaction.model';
 import { TransactionDetailDialog } from 'app/entities/transaction/transaction-detail-dialog';
 import { FinanceActionButton } from 'app/shared/components/finance-action-button/finance-action-button';
+
+import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
+import CCRole from 'app/shared/model/enum/cc-role.enum';
+import EventRole from 'app/shared/model/enum/event-role.enum';
 
 export interface IDebtProps extends StateProps, DispatchProps, RouteComponentProps<{ url: string }> {}
 
@@ -166,6 +170,14 @@ export class Debt extends React.Component<IDebtProps, IDebtState> {
         </h2>
         <CustomTab tabList={financeTabList} currentTab="Members Debt" key={Date.now()} />
         <div className="mx-4">
+          <AuthorizationChecker ccRole={CCRole.ADMIN} eventRole={EventRole.HEAD}>
+            <Link
+              className="btn btn-action jh-create-entity w-100 my-2"
+              to={{ pathname: '/entity/transaction/new', state: { from: this.props.match.url } }}
+            >
+              <Translate contentKey="entity.action.add">Add</Translate>
+            </Link>
+          </AuthorizationChecker>
           <div>
             {debtList && debtList.length > 0 ? (
               debtList.map((debt, i) => (
