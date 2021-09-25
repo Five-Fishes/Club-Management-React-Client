@@ -11,8 +11,9 @@ import FamilyMember from './family-member';
 const Routes: React.FC<RouteComponentProps> = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/:id`} component={FamilyMember} />
-      <ErrorBoundaryRoute exact path={`${match.url}/:id/new`} component={FamilyMemberCreate} />
+      <ErrorBoundaryRoute exact path={`${match.url}/:familyCode`} component={FamilyMember} />
+      <ErrorBoundaryRoute exact path={`${match.url}/:familyCode/new`} component={FamilyMemberCreate} />
+      <ErrorBoundaryRoute exact path={`${match.url}/:id/edit`} component={FamilyMemberCreate} />
       <ErrorBoundaryRoute path={match.url} component={ClubFamily} />
     </Switch>
   </>

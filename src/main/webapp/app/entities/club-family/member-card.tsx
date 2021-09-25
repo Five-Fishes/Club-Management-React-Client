@@ -15,10 +15,11 @@ import { IUserCCInfo } from 'app/shared/model/user-cc-info.model';
 
 export interface IMemberCardProps {
   userCCInfo: IUserCCInfo;
+  editPath: {};
 }
 
-const MemberCard: React.FC<IMemberCardProps> = ({ userCCInfo }) => (
-  <Card className="p-3 my-3">
+const MemberCard: React.FC<IMemberCardProps> = ({ userCCInfo, editPath }) => (
+  <Card className="member-card">
     <Row noGutters>
       <Col xs="2" className="mr-1">
         <div className="square-image">
@@ -30,8 +31,8 @@ const MemberCard: React.FC<IMemberCardProps> = ({ userCCInfo }) => (
         <p className="mb-0">{userCCInfo.familyRole ?? 'Member'}</p>
       </Col>
       <Col xs="1" className="d-flex justify-content-end align-items-center">
-        <Button color="link" className="p-0">
-          <FontAwesomeIcon icon={'ellipsis-v'} />
+        <Button tag={Link} to={editPath} color="link" className="p-0">
+          <FontAwesomeIcon icon={'pen'} />
         </Button>
       </Col>
     </Row>

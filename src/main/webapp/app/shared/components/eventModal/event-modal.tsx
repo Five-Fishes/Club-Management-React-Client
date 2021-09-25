@@ -8,10 +8,10 @@ import './event-modal.scss';
 export interface IEventModalProps extends RouteComponentProps {
   isOpen: boolean;
   toggleModal: React.MouseEventHandler<any>;
-  updatePath: string;
-  deletePath: string;
-  updateBtnAuthorizationProps: IAuthorizationCheckerOwnProps;
-  deleteBtnAuthorizationProps: IAuthorizationCheckerOwnProps;
+  updatePath?: string;
+  deletePath?: string;
+  updateBtnAuthorizationProps?: IAuthorizationCheckerOwnProps;
+  deleteBtnAuthorizationProps?: IAuthorizationCheckerOwnProps;
 }
 
 class EventModal extends React.Component<IEventModalProps> {
@@ -26,15 +26,19 @@ class EventModal extends React.Component<IEventModalProps> {
           </h2>
           <div className="d-flex flex-column mt-4">
             <AuthorizationChecker {...updateBtnAuthorizationProps}>
-              <Button tag={Link} to={updatePath} color="secondary">
-                <Translate contentKey="entity.action.update">Update</Translate>
-              </Button>
+              {updatePath && (
+                <Button tag={Link} to={updatePath} color="secondary">
+                  <Translate contentKey="entity.action.update">Update</Translate>
+                </Button>
+              )}
             </AuthorizationChecker>
             <br />
             <AuthorizationChecker {...deleteBtnAuthorizationProps}>
-              <Button tag={Link} to={deletePath} color="cancel">
-                <Translate contentKey="entity.action.delete">Delete</Translate>
-              </Button>
+              {deletePath && (
+                <Button tag={Link} to={deletePath} color="cancel">
+                  <Translate contentKey="entity.action.delete">Delete</Translate>
+                </Button>
+              )}
             </AuthorizationChecker>
           </div>
         </ModalBody>

@@ -11,7 +11,7 @@ import { IFilter, setFilter } from './advancedSearchModal.reducer';
 import './advancedSearchModal.scss';
 
 interface IFilterSearchBarProps extends StateProps, DispatchProps {
-  showModal: boolean;
+  isOpen: boolean;
   toggleModal: () => void;
   familyCode: string;
   searchUsers: (familyCode: string, filters: any) => void;
@@ -36,7 +36,7 @@ class AdvancedSearchModal extends React.Component<IFilterSearchBarProps, IAdvanc
 
   componentDidMount() {
     this.props.getYearSessionOptions(0, 12, 'value,desc');
-    this.props.getCourseProgramOptions();
+    this.props.getCourseProgramOptions(0, 12, 'value,desc');
   }
 
   renderYearSessionOptions = () => this.props.yearSessionOptions.map(year => <option key={year}>{year}</option>);
@@ -62,9 +62,9 @@ class AdvancedSearchModal extends React.Component<IFilterSearchBarProps, IAdvanc
   };
 
   render() {
-    const { showModal, familyCode, toggleModal, filters } = this.props;
+    const { isOpen, familyCode, toggleModal, filters } = this.props;
     return (
-      <Modal id="myModal" className="advanced-search-modal" size="md" isOpen={showModal} toggle={toggleModal} centered>
+      <Modal id="myModal" className="advanced-search-modal" size="md" isOpen={isOpen} toggle={toggleModal} centered>
         <ModalHeader toggle={toggleModal} className="filter-modal-header" />
         <ModalBody className="filter-modal-body">
           <h2 className="text-center mb-4">Advanced Search</h2>

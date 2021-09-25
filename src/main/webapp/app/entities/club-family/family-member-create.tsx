@@ -6,16 +6,26 @@ import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validatio
 import { Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { getUsersWithoutFamily } from 'app/modules/administration/user-management/user-management.reducer';
-import { createEntity, reset } from 'app/entities/user-cc-info/user-cc-info.reducer';
+import { getEntity, createEntity, updateEntity, reset } from 'app/entities/user-cc-info/user-cc-info.reducer';
 import { IRootState } from 'app/shared/reducers';
 import { IUser } from 'app/shared/model/user.model';
 import { concatFullName } from 'app/shared/util/string-util';
+import { IRedirectLocationState } from 'app/shared/auth/app-route';
 
-export interface IFamilyMemberCreateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IFamilyMemberCreateProps
+  extends StateProps,
+    DispatchProps,
+    RouteComponentProps<{ id: string; familyCode: string }, any, IRedirectLocationState> {}
 
-class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
+export interface IFamilyMemberState {
+  isNew: boolean;
+}
+class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps, IFamilyMemberState> {
   constructor(props: IFamilyMemberCreateProps) {
     super(props);
+    this.state = {
+      isNew: !!this.props.match.params.familyCode && !this.props.match.params.id,
+    };
   }
 
   componentWillUpdate(nextProps: IFamilyMemberCreateProps) {
@@ -24,13 +34,18 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
     }
   }
 
+  // Different routing
   handleClose = () => {
     this.props.history.push(`/entity/members/cc-family/${this.props.match.params.id}`);
   };
 
   componentDidMount() {
-    this.props.reset();
-    this.props.getUsersWithoutFamily();
+    if (this.props.match.params.id) {
+      this.props.getEntity(this.props.match.params.id);
+    } else {
+      this.props.reset();
+      this.props.getUsersWithoutFamily();
+    }
   }
 
   renderNames(users: readonly IUser[]): ReactNode {
@@ -57,13 +72,18 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
         ...values,
       };
 
-      this.props.createEntity(entity);
+      if (this.state.isNew) {
+        this.props.createEntity(entity);
+      } else {
+        this.props.updateEntity(entity);
+      }
     }
   };
 
   render() {
-    const { users } = this.props;
-    const { id: familyCode } = this.props.match.params;
+    const { location, users, userEntity, loading } = this.props;
+    const { familyCode, id } = this.props.match.params;
+    const { isNew } = this.state;
     return (
       <div className="mx-3">
         <Row className="justify-content-center">
@@ -75,55 +95,76 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
         </Row>
         <Row className="justify-content-center">
           <Col md="8">
-            <AvForm model={{}} onSubmit={this.saveEntity}>
-              <AvGroup>
-                <Label for="memberLabel">Name</Label>
-                <AvField id="member-name" type="select" className="form-control" name="userId" required>
-                  <option value="" disabled hidden>
-                    {translate('global.select.selectUser')}
-                  </option>
-                  {this.renderNames(users)}
-                </AvField>
-              </AvGroup>
-              <AvGroup>
-                <Label id="familyLabel" for="club-family">
-                  Family
-                </Label>
-                <AvField id="club-family" type="select" name="clubFamilyCode" value={familyCode} disabled>
-                  <option value="JIN_LONG">{translate('clubmanagementApp.clubFamily.jinlong.name')}</option>
-                  <option value="BI_MU">{translate('clubmanagementApp.clubFamily.bimu.name')}</option>
-                  <option value="QI_CAI">{translate('clubmanagementApp.clubFamily.qicai.name')}</option>
-                  <option value="KONG_QUE">{translate('clubmanagementApp.clubFamily.kongque.name')}</option>
-                  <option value="XIAO_CHOU">{translate('clubmanagementApp.clubFamily.xiaochou.name')}</option>
-                </AvField>
-              </AvGroup>
-              <AvGroup>
-                <Label id="roleLabel" for="club-member-role">
-                  Role
-                </Label>
-                <AvInput id="club-member-role" type="select" name="familyRole" value={'MEMBER'}>
-                  <option value={'MEMBER'}>{translate('clubmanagementApp.ClubFamilyRole.MEMBER')}</option>
-                  <option value="FATHER">{translate('clubmanagementApp.ClubFamilyRole.FATHER')}</option>
-                  <option value="MOTHER">{translate('clubmanagementApp.ClubFamilyRole.MOTHER')}</option>
-                </AvInput>
-              </AvGroup>
-              <div className="general-buttonContainer--flexContainer">
-                <Button
-                  className="general-button--width"
-                  tag={Link}
-                  id="cancel-save"
-                  to={`/entity/members/cc-family/${familyCode}`}
-                  replace
-                  color="cancel"
-                >
-                  <Translate contentKey="entity.action.cancel">Cancel</Translate>
-                </Button>
-                &nbsp;
-                <Button className="general-button--width" color="action" id="save-entity" type="submit">
-                  <Translate contentKey="entity.action.add">Add</Translate>
-                </Button>
-              </div>
-            </AvForm>
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              <AvForm model={isNew ? {} : userEntity} onSubmit={this.saveEntity}>
+                <AvGroup>
+                  <Label for="memberLabel">Name</Label>
+                  <AvField id="member-name" type="select" className="form-control" name="userId" required disabled={!isNew}>
+                    <option value="" disabled hidden>
+                      {translate('global.select.selectUser')}
+                    </option>
+
+                    {isNew ? (
+                      this.renderNames(users)
+                    ) : (
+                      <option key={userEntity.id} value={userEntity.id}>
+                        {concatFullName(userEntity?.user?.firstName, userEntity?.user?.lastName)}
+                      </option>
+                    )}
+                  </AvField>
+                </AvGroup>
+                <AvGroup>
+                  <Label id="familyLabel" for="club-family">
+                    Family
+                  </Label>
+                  <AvField
+                    id="club-family"
+                    type="select"
+                    name="clubFamilyCode"
+                    value={familyCode ?? userEntity.clubFamilyCode}
+                    disabled={isNew}
+                  >
+                    <option value="JIN_LONG">{translate('clubmanagementApp.clubFamily.jinlong.name')}</option>
+                    <option value="BI_MU">{translate('clubmanagementApp.clubFamily.bimu.name')}</option>
+                    <option value="QI_CAI">{translate('clubmanagementApp.clubFamily.qicai.name')}</option>
+                    <option value="KONG_QUE">{translate('clubmanagementApp.clubFamily.kongque.name')}</option>
+                    <option value="XIAO_CHOU">{translate('clubmanagementApp.clubFamily.xiaochou.name')}</option>
+                  </AvField>
+                </AvGroup>
+                <AvGroup>
+                  <Label id="roleLabel" for="club-member-role">
+                    Role
+                  </Label>
+                  <AvInput id="club-member-role" type="select" name="familyRole" value={(!isNew && userEntity.familyRole) || 'MEMBER'}>
+                    <option value={'MEMBER'}>{translate('clubmanagementApp.ClubFamilyRole.MEMBER')}</option>
+                    <option value="FATHER">{translate('clubmanagementApp.ClubFamilyRole.FATHER')}</option>
+                    <option value="MOTHER">{translate('clubmanagementApp.ClubFamilyRole.MOTHER')}</option>
+                  </AvInput>
+                </AvGroup>
+                <div className="general-buttonContainer--flexContainer">
+                  <Button
+                    className="general-button--width"
+                    tag={Link}
+                    id="cancel-save"
+                    to={location.state?.from ?? '/entity/members/cc-family'}
+                    replace
+                    color="cancel"
+                  >
+                    <Translate contentKey="entity.action.cancel">Cancel</Translate>
+                  </Button>
+                  &nbsp;
+                  <Button className="general-button--width" color="action" id="save-entity" type="submit">
+                    {isNew ? (
+                      <Translate contentKey="entity.action.add">Add</Translate>
+                    ) : (
+                      <Translate contentKey="entity.action.update">Update</Translate>
+                    )}
+                  </Button>
+                </div>
+              </AvForm>
+            )}
           </Col>
         </Row>
       </div>
@@ -134,14 +175,17 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps> {
 // Reducer props
 const mapStateToProps = (storeState: IRootState) => ({
   users: storeState.userManagement.users,
+  loading: storeState.userCCInfo.loading,
   userEntity: storeState.userCCInfo.entity,
   updateSuccess: storeState.userCCInfo.updateSuccess,
 });
 
 // Reducer Action Creators
 const mapDispatchToProps = {
+  getEntity,
   getUsersWithoutFamily,
   createEntity,
+  updateEntity,
   reset,
 };
 

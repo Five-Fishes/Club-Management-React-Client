@@ -1,5 +1,5 @@
+import './family-member.scss';
 import React from 'react';
-
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { Button, Row, Col, InputGroupAddon, InputGroup, Input } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,28 +12,28 @@ import CCRole from 'app/shared/model/enum/cc-role.enum';
 import EventRole from 'app/shared/model/enum/event-role.enum';
 import MemberCard from './member-card';
 import FilterSearchBar from 'app/shared/components/advancedSearchModal/advancedSearchModal';
-import './family-member.scss';
+import EventModal from 'app/shared/components/eventModal/event-modal';
 
 import { getUsersWithFilter, setSelectedYearSessionFilter, getYearSessionOptions } from 'app/entities/user-cc-info/user-cc-info.reducer';
 import { getClubFamilyDetails } from 'app/shared/services/club-family-info.service';
 import { reset as resetFilter } from 'app/shared/components/advancedSearchModal/advancedSearchModal.reducer';
 
-export interface IFamilyMemberProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+export interface IFamilyMemberProps extends StateProps, DispatchProps, RouteComponentProps<{ familyCode: string }> {}
 
 export interface IFamilyMemberState {
-  showModal: boolean;
+  searchModalIsOpen: boolean;
 }
 class FamilyMember extends React.Component<IFamilyMemberProps, IFamilyMemberState> {
   constructor(props: IFamilyMemberProps) {
     super(props);
     this.state = {
-      showModal: false,
+      searchModalIsOpen: false,
     };
   }
 
   async componentDidMount() {
     await this.props.getYearSessionOptions(0, 12, 'value,desc');
-    this.props.getUsersWithFilter(this.props.match.params.id);
+    this.props.getUsersWithFilter(this.props.match.params.familyCode);
   }
 
   componentWillUnmount() {
@@ -42,31 +42,33 @@ class FamilyMember extends React.Component<IFamilyMemberProps, IFamilyMemberStat
 
   setYearSession = async (yearSession: string): Promise<void> => {
     await this.props.setSelectedYearSessionFilter(yearSession);
-    this.props.getUsersWithFilter(this.props.match.params.id);
+    this.props.getUsersWithFilter(this.props.match.params.familyCode);
   };
 
-  showModal = (): void => {
+  showSearchModal = (): void => {
     this.setState({
-      showModal: true,
+      searchModalIsOpen: true,
     });
   };
 
-  toggleModal = (): void => {
+  toggleSearchModal = (): void => {
     this.setState({
-      showModal: !this.state.showModal,
+      searchModalIsOpen: !this.state.searchModalIsOpen,
     });
   };
+
+  onEditButtonClick = (userCCInfoId?: number): void => {};
 
   render() {
-    const { users, yearSessionOptions, selectedYearSessionFilter, getUsersWithFilter, match } = this.props;
-    const { showModal } = this.state;
-    const familyName = getClubFamilyDetails(match.params.id).name;
+    const { users, match } = this.props;
+    const { searchModalIsOpen } = this.state;
+    const familyName = getClubFamilyDetails(match.params.familyCode).name;
     return (
       <div>
         <FilterSearchBar
-          showModal={showModal}
-          toggleModal={this.toggleModal}
-          familyCode={this.props.match.params.id}
+          isOpen={searchModalIsOpen}
+          toggleModal={this.toggleSearchModal}
+          familyCode={this.props.match.params.familyCode}
           searchUsers={getUsersWithFilter}
         />
         <h2 id="event-activity-heading" className="event-module-heading">
@@ -74,17 +76,23 @@ class FamilyMember extends React.Component<IFamilyMemberProps, IFamilyMemberStat
         </h2>
         <div className="mx-4">
           <AuthorizationChecker ccRole={CCRole.ADMIN}>
-            <Link className="btn btn-action jh-create-entity w-100 my-2" to={`/entity/members/cc-family/${match.params.id}/new`}>
+            <Link
+              className="btn btn-action jh-create-entity w-100 my-2"
+              to={{ pathname: `/entity/members/cc-family/${match.params.familyCode}/new`, state: { from: this.props.match.url } }}
+            >
               <Translate contentKey="entity.action.add">Add</Translate>
             </Link>
           </AuthorizationChecker>
           <InputGroup>
             <InputGroupAddon className="search-bar-prepend" addonType="prepend" color="white">
-              🔎
+              {/* ADD IN SEARCH ONCLICK TO THE BUTTON BELOW*/}
+              <Button color="primary">
+                <FontAwesomeIcon icon="search" />
+              </Button>
             </InputGroupAddon>
             <Input placeholder="Type a name to filter" className="search-bar-input" />
             <InputGroupAddon addonType="append">
-              <Button className="search-bar-append" onClick={this.toggleModal}>
+              <Button className="search-bar-append" onClick={this.toggleSearchModal}>
                 <FontAwesomeIcon icon="filter" color="#07ADE1" />
               </Button>
             </InputGroupAddon>
@@ -92,7 +100,11 @@ class FamilyMember extends React.Component<IFamilyMemberProps, IFamilyMemberStat
           {users && users.length > 0 ? (
             <div>
               {users.map(user => (
-                <MemberCard key={user.id} userCCInfo={user} />
+                <MemberCard
+                  key={user.id}
+                  userCCInfo={user}
+                  editPath={{ pathname: `/entity/members/cc-family/${user.id}/edit`, state: { from: this.props.match.url } }}
+                />
               ))}
             </div>
           ) : (
