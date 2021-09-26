@@ -6,7 +6,7 @@ import { Translate } from 'react-jhipster';
 import { IRootState } from 'app/shared/reducers';
 import { getYearSessionOptions } from 'app/entities/user-cc-info/user-cc-info.reducer';
 import { getCourseProgramOptions } from 'app/entities/user-uni-info/user-uni-info.reducer';
-import { IFilter, setFilter } from './advancedSearchModal.reducer';
+import { IFilter, setEntity } from './advancedSearchModal.reducer';
 
 import './advancedSearchModal.scss';
 
@@ -34,9 +34,11 @@ class AdvancedSearchModal extends React.Component<IFilterSearchBarProps, IAdvanc
     };
   }
 
-  componentDidMount() {
-    this.props.getYearSessionOptions(0, 12, 'value,desc');
-    this.props.getCourseProgramOptions(0, 12, 'value,desc');
+  componentDidUpdate(prevProps: IFilterSearchBarProps) {
+    if (this.props.isOpen !== prevProps.isOpen) {
+      this.props.getYearSessionOptions(0, 12, 'value,desc');
+      this.props.getCourseProgramOptions(0, 12, 'value,desc');
+    }
   }
 
   renderYearSessionOptions = () => this.props.yearSessionOptions.map(year => <option key={year}>{year}</option>);
@@ -50,12 +52,12 @@ class AdvancedSearchModal extends React.Component<IFilterSearchBarProps, IAdvanc
 
   searchEntities = (event: any, errors: any, values: any) => {
     if (errors.length === 0) {
-      const { familyCode, searchUsers, filters, setFilter } = this.props;
+      const { familyCode, searchUsers, filters } = this.props;
       const entity = {
         ...filters,
         ...values,
       };
-      setFilter(entity);
+      this.props.setFilter(entity);
       searchUsers(familyCode, entity);
       this.props.toggleModal();
     }
@@ -134,7 +136,7 @@ const mapStateToProps = ({ userCCInfo, userUniInfo, advancedSearchModal }: IRoot
 const mapDispatchToProps = {
   getYearSessionOptions,
   getCourseProgramOptions,
-  setFilter,
+  setFilter: setEntity,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

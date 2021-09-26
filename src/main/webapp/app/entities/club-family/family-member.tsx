@@ -14,7 +14,7 @@ import MemberCard from './member-card';
 import FilterSearchBar from 'app/shared/components/advancedSearchModal/advancedSearchModal';
 import EventModal from 'app/shared/components/eventModal/event-modal';
 
-import { getUsersWithFilter, setSelectedYearSessionFilter, getYearSessionOptions } from 'app/entities/user-cc-info/user-cc-info.reducer';
+import { getUsersWithFilter, reset as resetUsers } from 'app/entities/user-cc-info/user-cc-info.reducer';
 import { getClubFamilyDetails } from 'app/shared/services/club-family-info.service';
 import { reset as resetFilter } from 'app/shared/components/advancedSearchModal/advancedSearchModal.reducer';
 
@@ -32,18 +32,13 @@ class FamilyMember extends React.Component<IFamilyMemberProps, IFamilyMemberStat
   }
 
   async componentDidMount() {
-    await this.props.getYearSessionOptions(0, 12, 'value,desc');
     this.props.getUsersWithFilter(this.props.match.params.familyCode);
   }
 
   componentWillUnmount() {
     this.props.resetFilter();
+    this.props.resetUsers();
   }
-
-  setYearSession = async (yearSession: string): Promise<void> => {
-    await this.props.setSelectedYearSessionFilter(yearSession);
-    this.props.getUsersWithFilter(this.props.match.params.familyCode);
-  };
 
   showSearchModal = (): void => {
     this.setState({
@@ -69,7 +64,7 @@ class FamilyMember extends React.Component<IFamilyMemberProps, IFamilyMemberStat
           isOpen={searchModalIsOpen}
           toggleModal={this.toggleSearchModal}
           familyCode={this.props.match.params.familyCode}
-          searchUsers={getUsersWithFilter}
+          searchUsers={this.props.getUsersWithFilter}
         />
         <h2 id="event-activity-heading" className="event-module-heading">
           {familyName ? translate(familyName) : null}
@@ -126,9 +121,8 @@ const mapStateToProps = ({ userCCInfo }: IRootState) => ({
 
 const mapDispatchToProps = {
   getUsersWithFilter,
-  setSelectedYearSessionFilter,
-  getYearSessionOptions,
   resetFilter,
+  resetUsers,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;

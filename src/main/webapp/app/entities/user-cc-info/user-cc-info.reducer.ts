@@ -183,7 +183,6 @@ export const createEntity: ICrudPutAction<IUserCCInfo> = entity => async dispatc
     type: ACTION_TYPES.CREATE_USERCCINFO,
     payload: axios.post(apiUrl, cleanEntity(entity)),
   });
-  dispatch(getEntities());
   return result;
 };
 
@@ -192,7 +191,6 @@ export const updateEntity: ICrudPutAction<IUserCCInfo> = entity => async dispatc
     type: ACTION_TYPES.UPDATE_USERCCINFO,
     payload: axios.put(apiUrl, cleanEntity(entity)),
   });
-  dispatch(getEntities());
   return result;
 };
 
@@ -202,7 +200,6 @@ export const deleteEntity: ICrudDeleteAction<IUserCCInfo> = id => async dispatch
     type: ACTION_TYPES.DELETE_USERCCINFO,
     payload: axios.delete(requestUrl),
   });
-  dispatch(getEntities());
   return result;
 };
 

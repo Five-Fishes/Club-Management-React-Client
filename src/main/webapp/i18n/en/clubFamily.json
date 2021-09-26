@@ -51,7 +51,8 @@
         "name": "Nemo",
         "slogan": "Nemo Nemo, No More Emo",
         "description": "Nemo Family Fishes always full with positive energy and make you away from Emo"
-      }
+      },
+      "none": "None"
     }
   }
 }

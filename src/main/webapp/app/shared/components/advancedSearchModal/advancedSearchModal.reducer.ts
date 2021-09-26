@@ -36,12 +36,10 @@ export default (state: IAdvancedSearchModalState = initialState, action: AnyActi
   }
 };
 
-export const setFilter = (filters: IFilter) => {
-  return {
-    type: ACTION_TYPES.SET_FILTER,
-    payload: filters,
-  };
-};
+export const setEntity = (filters: IFilter) => ({
+  type: ACTION_TYPES.SET_FILTER,
+  payload: filters,
+});
 
 export const reset = () => ({
   type: ACTION_TYPES.RESET,

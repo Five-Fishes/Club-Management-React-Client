@@ -6,7 +6,7 @@ import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validatio
 import { Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { getUsersWithoutFamily } from 'app/modules/administration/user-management/user-management.reducer';
-import { getEntity, createEntity, updateEntity, reset } from 'app/entities/user-cc-info/user-cc-info.reducer';
+import { getEntity, createEntity, updateEntity, deleteEntity, reset } from 'app/entities/user-cc-info/user-cc-info.reducer';
 import { IRootState } from 'app/shared/reducers';
 import { IUser } from 'app/shared/model/user.model';
 import { concatFullName } from 'app/shared/util/string-util';
@@ -19,13 +19,17 @@ export interface IFamilyMemberCreateProps
 
 export interface IFamilyMemberState {
   isNew: boolean;
+  hasFamilyCode: boolean;
 }
-class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps, IFamilyMemberState> {
+export class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps, IFamilyMemberState> {
   constructor(props: IFamilyMemberCreateProps) {
     super(props);
     this.state = {
       isNew: !!this.props.match.params.familyCode && !this.props.match.params.id,
+      hasFamilyCode: !!this.props.match.params.familyCode || !!this.props.match.params.id,
     };
+    this.renderNames = this.renderNames.bind(this);
+    this.setFamilyCode = this.setFamilyCode.bind(this);
   }
 
   componentWillUpdate(nextProps: IFamilyMemberCreateProps) {
@@ -34,30 +38,45 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps, IFami
     }
   }
 
-  // Different routing
-  handleClose = () => {
-    this.props.history.push(`/entity/members/cc-family/${this.props.match.params.id}`);
-  };
-
   componentDidMount() {
-    if (this.props.match.params.id) {
-      this.props.getEntity(this.props.match.params.id);
-    } else {
+    if (this.state.isNew) {
       this.props.reset();
       this.props.getUsersWithoutFamily();
+    } else {
+      this.props.getEntity(this.props.match.params.id);
     }
   }
 
   renderNames(users: readonly IUser[]): ReactNode {
-    return users.map((user: IUser) => {
-      if (user) {
-        return (
-          <option key={user.id} value={user.id}>
-            {concatFullName(user.firstName, user.lastName)}
-          </option>
-        );
-      }
-    });
+    return users && users.length <= 0 ? (
+      <option disabled>{translate('error.userNotFound')}</option>
+    ) : (
+      users.map((user: IUser) => {
+        if (user) {
+          return (
+            <option key={user.id} value={user.id}>
+              {concatFullName(user.firstName, user.lastName)}
+            </option>
+          );
+        }
+      })
+    );
+  }
+
+  handleClose = () => {
+    this.props.history.push(`${this.props.location.state?.from}` ?? '/entity/members/cc-family');
+  };
+
+  setFamilyCode(event: { target: HTMLInputElement }): void {
+    if (event.target.value === '') {
+      this.setState({
+        hasFamilyCode: false,
+      });
+    } else {
+      this.setState({
+        hasFamilyCode: true,
+      });
+    }
   }
 
   saveEntity = (event: any, errors: any, values: any) => {
@@ -65,25 +84,27 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps, IFami
       if (values.familyRole === 'MEMBER') {
         values.familyRole = null;
       }
-
       const { userEntity } = this.props;
       const entity = {
         ...userEntity,
         ...values,
       };
-
       if (this.state.isNew) {
         this.props.createEntity(entity);
       } else {
-        this.props.updateEntity(entity);
+        if (entity.clubFamilyCode === '') {
+          this.props.deleteEntity(entity.id);
+        } else {
+          this.props.updateEntity(entity);
+        }
       }
     }
   };
 
   render() {
     const { location, users, userEntity, loading } = this.props;
-    const { familyCode, id } = this.props.match.params;
-    const { isNew } = this.state;
+    const { familyCode } = this.props.match.params;
+    const { isNew, hasFamilyCode } = this.state;
     return (
       <div className="mx-3">
         <Row className="justify-content-center">
@@ -125,7 +146,9 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps, IFami
                     name="clubFamilyCode"
                     value={familyCode ?? userEntity.clubFamilyCode}
                     disabled={isNew}
+                    onChange={this.setFamilyCode}
                   >
+                    {isNew ? null : <option value="">{translate('clubmanagementApp.clubFamily.none')}</option>}
                     <option value="JIN_LONG">{translate('clubmanagementApp.clubFamily.jinlong.name')}</option>
                     <option value="BI_MU">{translate('clubmanagementApp.clubFamily.bimu.name')}</option>
                     <option value="QI_CAI">{translate('clubmanagementApp.clubFamily.qicai.name')}</option>
@@ -133,16 +156,18 @@ class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps, IFami
                     <option value="XIAO_CHOU">{translate('clubmanagementApp.clubFamily.xiaochou.name')}</option>
                   </AvField>
                 </AvGroup>
-                <AvGroup>
-                  <Label id="roleLabel" for="club-member-role">
-                    Role
-                  </Label>
-                  <AvInput id="club-member-role" type="select" name="familyRole" value={(!isNew && userEntity.familyRole) || 'MEMBER'}>
-                    <option value={'MEMBER'}>{translate('clubmanagementApp.ClubFamilyRole.MEMBER')}</option>
-                    <option value="FATHER">{translate('clubmanagementApp.ClubFamilyRole.FATHER')}</option>
-                    <option value="MOTHER">{translate('clubmanagementApp.ClubFamilyRole.MOTHER')}</option>
-                  </AvInput>
-                </AvGroup>
+                {hasFamilyCode ? (
+                  <AvGroup>
+                    <Label id="roleLabel" for="club-member-role">
+                      Role
+                    </Label>
+                    <AvInput id="club-member-role" type="select" name="familyRole" value={(!isNew && userEntity.familyRole) || 'MEMBER'}>
+                      <option value={'MEMBER'}>{translate('clubmanagementApp.ClubFamilyRole.MEMBER')}</option>
+                      <option value="FATHER">{translate('clubmanagementApp.ClubFamilyRole.FATHER')}</option>
+                      <option value="MOTHER">{translate('clubmanagementApp.ClubFamilyRole.MOTHER')}</option>
+                    </AvInput>
+                  </AvGroup>
+                ) : null}
                 <div className="general-buttonContainer--flexContainer">
                   <Button
                     className="general-button--width"
@@ -186,6 +211,7 @@ const mapDispatchToProps = {
   getUsersWithoutFamily,
   createEntity,
   updateEntity,
+  deleteEntity,
   reset,
 };
 

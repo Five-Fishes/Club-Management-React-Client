@@ -51,7 +51,8 @@
         "name": "小丑鱼",
         "slogan": "Nemo Nemo, 不再Emo",
         "description": "小丑家的鱼儿总是充满正能量，让你远离负能量"
-      }
+      },
+      "none": "无"
     }
   }
 }

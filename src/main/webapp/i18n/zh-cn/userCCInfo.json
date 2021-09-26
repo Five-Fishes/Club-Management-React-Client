@@ -2,25 +2,25 @@
   "clubmanagementApp": {
     "userCCInfo": {
       "home": {
-        "title": "User CC Infos",
-        "createLabel": "创建新 User CC Info",
-        "createOrEditLabel": "创建或编辑 User CC Info",
-        "notFound": "No User CC Info found"
+        "title": "个人宿舍资料",
+        "createLabel": "创建新 个人宿舍资料",
+        "createOrEditLabel": "创建或编辑 个人宿舍资料",
+        "notFound": "无个人宿舍资料"
       },
-      "created": "User CC Info {{ param }} 创建成功",
-      "updated": "User CC Info {{ param }} 更新成功",
-      "deleted": "User CC Info {{ param }} 删除成功",
+      "created": "个人宿舍资料 {{ param }} 创建成功",
+      "updated": "个人宿舍资料 {{ param }} 更新成功",
+      "deleted": "个人宿舍资料 {{ param }} 删除成功",
       "delete": {
-        "question": "你确定要删除 User CC Info {{ id }} 吗？"
+        "question": "你确定要删除 个人宿舍资料 {{ id }} 吗？"
       },
       "detail": {
-        "title": "User CC Info"
+        "title": "个人宿舍资料"
       },
-      "userId": "User Id",
-      "clubFamilyId": "Club Family Id",
-      "familyRole": "Family Role",
-      "yearSession": "Year Session",
-      "clubFamilyName": "Club Family Name"
+      "userId": "用户 Id",
+      "clubFamilyId": "家族 Id",
+      "familyRole": "家中角色",
+      "yearSession": "学年",
+      "clubFamilyName": "家族名称"
     }
   }
 }
