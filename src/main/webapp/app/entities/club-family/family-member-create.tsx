@@ -121,8 +121,8 @@ export class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps
             ) : (
               <AvForm model={isNew ? {} : userEntity} onSubmit={this.saveEntity}>
                 <AvGroup>
-                  <Label for="memberLabel">Name</Label>
-                  <AvField id="member-name" type="select" className="form-control" name="userId" required disabled={!isNew}>
+                  <Label for="user-id">Name</Label>
+                  <AvField id="user-id" type="select" className="form-control" name="userId" required={isNew} disabled={!isNew}>
                     <option value="" disabled hidden>
                       {translate('global.select.selectUser')}
                     </option>
