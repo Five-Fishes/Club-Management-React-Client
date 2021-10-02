@@ -66,7 +66,7 @@ export class UserCCInfo extends React.Component<IUserCCInfoProps> {
                       </Button>
                     </td>
                     <td>{userCCInfo.userId}</td>
-                    <td>{userCCInfo.clubFamilyId}</td>
+                    <td>{userCCInfo.clubFamilyCode}</td>
                     <td>
                       <Translate contentKey={`clubmanagementApp.ClubFamilyRole.${userCCInfo.familyRole}`} />
                     </td>
@@ -110,17 +110,14 @@ export class UserCCInfo extends React.Component<IUserCCInfoProps> {
 }
 
 const mapStateToProps = ({ userCCInfo }: IRootState) => ({
-  userCCInfoList: userCCInfo.entities
+  userCCInfoList: userCCInfo.entities,
 });
 
 const mapDispatchToProps = {
-  getEntities
+  getEntities,
 };
 
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserCCInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(UserCCInfo);

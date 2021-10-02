@@ -3,9 +3,15 @@
     "clubFamily": {
       "home": {
         "title": "CC家族",
-        "createLabel": "创建新 Club Family",
-        "createOrEditLabel": "创建或编辑 Club Family",
+        "createLabel": "创建新CC家族",
+        "createOrEditLabel": "创建或编辑CC家族",
         "notFound": "未发现任何CC家族"
+      },
+      "member": {
+        "title": "CC家族成员",
+        "createLabel": "添加新CC家族成员",
+        "createOrEditLabel": "添加或编辑CC家族成员",
+        "notFound": "未发现任何CC家族成员"
       },
       "created": "Club Family {{ param }} 创建成功",
       "updated": "Club Family {{ param }} 更新成功",

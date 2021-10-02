@@ -16,12 +16,16 @@ import { IUser } from 'app/shared/model/user.model';
 import axios from 'axios';
 import { IEvent } from 'app/shared/model/event.model';
 
-export interface IEventCrewUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string; eventId: string }> {}
+export interface IEventCrewUpdateProps
+  extends StateProps,
+    DispatchProps,
+    RouteComponentProps<{ id: string; eventId: string; role?: string }> {}
 
 export interface IEventCrewUpdateState {
   isNew: boolean;
   users: IUser[];
   event: IEvent | null;
+  role?: string;
 }
 
 export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEventCrewUpdateState> {
@@ -31,6 +35,7 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
       isNew: !this.props.match.params || !this.props.match.params.id,
       users: [],
       event: null,
+      role: this.props.match.params.role || undefined,
     };
   }
 
@@ -85,13 +90,24 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
   render() {
     const { eventCrewEntity, loading, updating } = this.props;
     const { isNew } = this.state;
+    const isCreateHead = this.state.role !== undefined && this.state.role === 'head';
     return (
       <Container>
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.eventCrew.home.createOrEditLabel" className="event-module-form-heading">
-              {isNew ? 'Create Event Crew' : 'Edit Event Crew'}
-            </h2>
+            {isNew ? (
+              <h2 id="clubmanagementApp.eventCrew.home.createLabel" className="event-module-form-heading">
+                {isCreateHead ? (
+                  <Translate contentKey="clubmanagementApp.eventCrew.home.createHeadLabel">Create Event Head</Translate>
+                ) : (
+                  <Translate contentKey="clubmanagementApp.eventCrew.home.createLabel">Create Event Crew</Translate>
+                )}
+              </h2>
+            ) : (
+              <h2 id="clubmanagementApp.event.home.editLabel" className="event-module-form-heading">
+                <Translate contentKey="clubmanagementApp.event.home.editLabel">Edit Event Crew</Translate>
+              </h2>
+            )}
           </Col>
         </Row>
         <Row className="justify-content-center">
@@ -150,8 +166,9 @@ export class EventCrewUpdate extends React.Component<IEventCrewUpdateProps, IEve
                     type="select"
                     className="form-control"
                     name="role"
-                    value={(!isNew && eventCrewEntity.role) || ''}
+                    value={isCreateHead ? 'HEAD' : (!isNew && eventCrewEntity.role) || ''}
                     required
+                    disabled={isCreateHead}
                   >
                     <option value="" disabled hidden>
                       {translate('global.select.selectOne')}

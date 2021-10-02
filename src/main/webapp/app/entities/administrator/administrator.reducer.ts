@@ -1,11 +1,12 @@
 import axios, { AxiosError } from 'axios';
-import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction } from 'react-jhipster';
+import { ICrudGetAction, ICrudGetAllAction, ICrudPutAction, ICrudDeleteAction, IPayload } from 'react-jhipster';
 
 import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IAdministrator, defaultValue } from 'app/shared/model/administrator.model';
 import { AnyAction } from 'redux';
+import { IYearSession } from 'app/shared/model/year-session.model';
 
 export const ACTION_TYPES = {
   FETCH_ADMINISTRATOR_LIST: 'administrator/FETCH_ADMINISTRATOR_LIST',
@@ -14,6 +15,10 @@ export const ACTION_TYPES = {
   UPDATE_ADMINISTRATOR: 'administrator/UPDATE_ADMINISTRATOR',
   DELETE_ADMINISTRATOR: 'administrator/DELETE_ADMINISTRATOR',
   RESET: 'administrator/RESET',
+  SET_ADMINISTRATOR_ID: 'SET_ADMINISTRATOR_ID',
+  SET_SHOW_ACTION_OPTIONS: 'SET_SHOW_ACTION_OPTIONS',
+  FETCH_YEAR_SESSION_OPTIONS: 'FETCH_YEAR_SESSION_OPTIONS',
+  SET_SELECTED_YEAR_SESSION_FILTER: 'SET_SELECTED_YEAR_SESSION_FILTER',
 };
 
 const initialState: IAdministratorState = {
@@ -23,6 +28,10 @@ const initialState: IAdministratorState = {
   entity: defaultValue,
   updating: false,
   updateSuccess: false,
+  selectedAdministratorId: 0,
+  showActionOptions: false,
+  yearSessionOptions: [],
+  selectedYearSessionFilter: '',
 };
 
 export interface IAdministratorState {
@@ -32,6 +41,10 @@ export interface IAdministratorState {
   entity: Readonly<IAdministrator>;
   updating: boolean;
   updateSuccess: boolean;
+  selectedAdministratorId: number;
+  showActionOptions: boolean;
+  yearSessionOptions: string[];
+  selectedYearSessionFilter: string;
 }
 
 // Reducer
@@ -40,6 +53,7 @@ export default (state: IAdministratorState = initialState, action: AnyAction): I
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_ADMINISTRATOR_LIST):
     case REQUEST(ACTION_TYPES.FETCH_ADMINISTRATOR):
+    case REQUEST(ACTION_TYPES.FETCH_YEAR_SESSION_OPTIONS):
       return {
         ...state,
         errResponse: null,
@@ -60,6 +74,7 @@ export default (state: IAdministratorState = initialState, action: AnyAction): I
     case FAILURE(ACTION_TYPES.CREATE_ADMINISTRATOR):
     case FAILURE(ACTION_TYPES.UPDATE_ADMINISTRATOR):
     case FAILURE(ACTION_TYPES.DELETE_ADMINISTRATOR):
+    case FAILURE(ACTION_TYPES.FETCH_YEAR_SESSION_OPTIONS):
       return {
         ...state,
         loading: false,
@@ -94,6 +109,31 @@ export default (state: IAdministratorState = initialState, action: AnyAction): I
         updateSuccess: true,
         entity: {},
       };
+    case SUCCESS(ACTION_TYPES.FETCH_YEAR_SESSION_OPTIONS):
+      return {
+        ...state,
+        loading: false,
+        yearSessionOptions: action.payload.data,
+        selectedYearSessionFilter: action.payload.data[0],
+      };
+    case ACTION_TYPES.SET_SELECTED_YEAR_SESSION_FILTER:
+      const { selectedYearSession } = action.payload;
+      return {
+        ...state,
+        selectedYearSessionFilter: selectedYearSession,
+      };
+    case ACTION_TYPES.SET_ADMINISTRATOR_ID:
+      const { administratorId } = action.payload;
+      return {
+        ...state,
+        selectedAdministratorId: administratorId,
+      };
+    case ACTION_TYPES.SET_SHOW_ACTION_OPTIONS:
+      const { show } = action.payload;
+      return {
+        ...state,
+        showActionOptions: show,
+      };
     case ACTION_TYPES.RESET:
       return {
         ...initialState,
@@ -107,10 +147,19 @@ const apiUrl = 'api/administrators';
 
 // Actions
 
-export const getEntities: ICrudGetAllAction<IAdministrator> = (page, size, sort) => ({
-  type: ACTION_TYPES.FETCH_ADMINISTRATOR_LIST,
-  payload: axios.get<IAdministrator>(`${apiUrl}?cacheBuster=${new Date().getTime()}`),
-});
+export const getEntities: any = (yearSession?: string, status?: string) => {
+  let requestUrl = `${apiUrl}?cacheBuster=${new Date().getTime()}`;
+  if (yearSession) {
+    requestUrl = `${requestUrl}&yearSession.equals=${yearSession}`;
+  }
+  if (status) {
+    requestUrl = `${requestUrl}&status.equals=${status}`;
+  }
+  return {
+    type: ACTION_TYPES.FETCH_ADMINISTRATOR_LIST,
+    payload: axios.get<IAdministrator>(`${requestUrl}`),
+  };
+};
 
 export const getEntity: ICrudGetAction<IAdministrator> = id => {
   const requestUrl = `${apiUrl}/${id}`;
@@ -147,6 +196,34 @@ export const deleteEntity: ICrudDeleteAction<IAdministrator> = id => async dispa
   dispatch(getEntities());
   return result;
 };
+
+export const setSelectedAdministratorId = (administratorId: number) => ({
+  type: ACTION_TYPES.SET_ADMINISTRATOR_ID,
+  payload: {
+    administratorId,
+  },
+});
+
+export const setShowActionOptions = (show: boolean) => ({
+  type: ACTION_TYPES.SET_SHOW_ACTION_OPTIONS,
+  payload: {
+    show,
+  },
+});
+
+export const getYearSessionOptions: ICrudGetAllAction<string> = (page, size, sort) => ({
+  type: ACTION_TYPES.FETCH_YEAR_SESSION_OPTIONS,
+  payload: axios.get<string>(
+    `api/year-sessions/values?cacheBuster=${new Date().getTime()}${sort ? `&page=${page}&size=${size}&sort=${sort}` : ''}`
+  ),
+});
+
+export const setSelectedYearSessionFilter = (selectedYearSession: string) => ({
+  type: ACTION_TYPES.SET_SELECTED_YEAR_SESSION_FILTER,
+  payload: {
+    selectedYearSession,
+  },
+});
 
 export const reset = () => ({
   type: ACTION_TYPES.RESET,

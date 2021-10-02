@@ -118,6 +118,14 @@ export default (state: IUserManagementState = initialState, action: AnyAction): 
 
 const apiUrl = 'api/users';
 // Actions
+
+export const getUsersWithoutFamily: ICrudGetAllAction<IUser> = () => {
+  const requestUrl = `${apiUrl}/family?hasFamily=false`;
+  return {
+    type: ACTION_TYPES.FETCH_USERS,
+    payload: axios.get<IUser>(requestUrl),
+  };
+};
 export const getUsers: ICrudGetAllAction<IUser> = (page, size, sort) => {
   const requestUrl = `${apiUrl}${sort ? `?page=${page}&size=${size}&sort=${sort}` : ''}`;
   return {

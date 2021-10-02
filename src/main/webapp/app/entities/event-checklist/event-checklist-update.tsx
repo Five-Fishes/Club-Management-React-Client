@@ -93,13 +93,27 @@ export class EventChecklistUpdate extends React.Component<IEventChecklistUpdateP
                   <Label id="nameLabel" for="event-checklist-name">
                     <Translate contentKey="clubmanagementApp.eventChecklist.name">Name</Translate>
                   </Label>
-                  <AvField id="event-checklist-name" type="text" name="name" />
+                  <AvField
+                    id="event-checklist-name"
+                    type="text"
+                    name="name"
+                    validate={{
+                      required: { value: true, errorMessage: 'Please enter a name for this checklist' },
+                    }}
+                  />
                 </AvGroup>
                 <AvGroup>
                   <Label id="descriptionLabel" for="event-checklist-description">
                     <Translate contentKey="clubmanagementApp.eventChecklist.description">Description</Translate>
                   </Label>
-                  <AvInput id="event-checklist-description" type="textarea" name="description" />
+                  <AvInput
+                    id="event-checklist-description"
+                    type="textarea"
+                    name="description"
+                    validate={{
+                      maxLength: { value: 200, errorMessage: 'Description cannot be more than 200 characters' },
+                    }}
+                  />
                 </AvGroup>
                 <AvGroup>
                   <Label id="statusLabel" for="event-checklist-status">

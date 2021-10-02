@@ -9,15 +9,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IRootState } from 'app/shared/reducers';
 
 import { getEntity, updateEntity, createEntity, reset } from './transaction.reducer';
-import { ITransaction } from 'app/shared/model/transaction.model';
+import { getUpcomingEntities as getEvents } from 'app/entities/event/event.reducer';
+import { ITransaction, TransactionStatus } from 'app/shared/model/transaction.model';
 // tslint:disable-next-line:no-unused-variable
 import { convertDateTimeFromServer, convertDateTimeToServer } from 'app/shared/util/date-utils';
 import { mapIdList } from 'app/shared/util/entity-utils';
+import eventModal from 'app/shared/components/eventModal/event-modal';
+import transaction from './transaction';
 
-export interface ITransactionUpdateProps extends StateProps, DispatchProps, RouteComponentProps<{ id: string }> {}
+import { IRedirectLocationState } from 'app/shared/auth/app-route';
+
+export interface ITransactionUpdateProps
+  extends StateProps,
+    DispatchProps,
+    RouteComponentProps<{ id: string }, any, IRedirectLocationState> {}
 
 export interface ITransactionUpdateState {
   isNew: boolean;
+  fileURL?: string;
+  transactionFile?: File;
+  transactionType?: string;
 }
 
 export class TransactionUpdate extends React.Component<ITransactionUpdateProps, ITransactionUpdateState> {
@@ -25,7 +36,13 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
     super(props);
     this.state = {
       isNew: !this.props.match.params || !this.props.match.params.id,
+      fileURL: '',
+      transactionFile: undefined,
+      transactionType: this.props.location.state?.value ?? 'INCOME',
     };
+    this.setPreview = this.setPreview.bind(this);
+    this.resetPreview = this.resetPreview.bind(this);
+    this.setTransactionType = this.setTransactionType.bind(this);
   }
 
   componentWillUpdate(nextProps: ITransactionUpdateProps, nextState: ITransactionUpdateState) {
@@ -37,8 +54,34 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
   componentDidMount() {
     if (this.state.isNew) {
       this.props.reset();
+      this.props.getEvents();
     } else {
       this.props.getEntity(this.props.match.params.id);
+    }
+  }
+
+  setPreview(event: { target: HTMLInputElement }): void {
+    const files = event.target.files;
+    if (files) {
+      this.setState({
+        fileURL: URL.createObjectURL(files[0]),
+        transactionFile: files[0],
+      });
+    }
+  }
+
+  resetPreview(): void {
+    this.setState({
+      fileURL: '',
+      transactionFile: undefined,
+    });
+  }
+
+  setTransactionType(event: { target: HTMLInputElement }): void {
+    if (event.target.value) {
+      this.setState({
+        transactionType: event.target.value,
+      });
     }
   }
 
@@ -50,31 +93,58 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
       const entity = {
         ...transactionEntity,
         ...values,
+        multipartFile: this.state.transactionFile,
       };
+      const entityFormData = this.convertToFormData(entity);
 
       if (this.state.isNew) {
-        this.props.createEntity(entity);
+        this.props.createEntity(entityFormData);
       } else {
-        this.props.updateEntity(entity);
+        this.props.updateEntity(entityFormData);
       }
     }
   };
+
+  convertToFormData(transactionEntity: ITransaction): FormData {
+    const formData = new FormData();
+    formData.append('eventId', (transactionEntity.eventId as any) ?? '');
+    formData.append('title', transactionEntity.title ?? '');
+    formData.append('transactionType', transactionEntity.transactionType ?? '');
+    formData.append('transactionAmount', transactionEntity.transactionAmount + '' ?? '0');
+    formData.append('transactionStatus', transactionEntity.transactionStatus ?? TransactionStatus.PENDING);
+    formData.append('description', transactionEntity.description ?? '');
+    formData.append('createdDate', transactionEntity.createdDate?.toISOString() ?? '');
+    formData.append('createdBy', transactionEntity.createdBy ?? '');
+    formData.append('closedBy', transactionEntity.closedBy ?? '');
+    formData.append('transactionDate', transactionEntity.transactionDate?.toISOString() ?? '');
+
+    if (transactionEntity.multipartFile !== undefined && transactionEntity.multipartFile.size > 0) {
+      formData.append('multipartFile', transactionEntity.multipartFile);
+    }
+    if (!this.state.isNew) {
+      formData.append('id', String(transactionEntity.id) ?? '');
+    }
+    return formData;
+  }
 
   handleClose = () => {
     this.props.history.push('/entity/transaction');
   };
 
   render() {
-    const { transactionEntity, loading, updating } = this.props;
-    const { isNew } = this.state;
-
+    const { location, transactionEntity, loading, updating, events, userId } = this.props;
+    const { isNew, transactionType } = this.state;
     return (
-      <div>
+      <div className="mx-4">
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.transaction.home.createOrEditLabel">
-              <Translate contentKey="clubmanagementApp.transaction.home.createOrEditLabel">Create or edit a Transaction</Translate>
-            </h2>
+            <h1 id="clubmanagementApp.transaction.home.createOrEditLabel">
+              {isNew ? (
+                <Translate contentKey="clubmanagementApp.transaction.home.createLabel">Create a Transaction</Translate>
+              ) : (
+                <Translate contentKey="clubmanagementApp.transaction.home.editLabel">Update Transaction</Translate>
+              )}
+            </h1>
           </Col>
         </Row>
         <Row className="justify-content-center">
@@ -92,27 +162,71 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
                   </AvGroup>
                 ) : null}
                 <AvGroup>
+                  <Label id="multipartFileLabel" for="transaction-multipartFile">
+                    <Translate contentKey="clubmanagementApp.transaction.receipt">Receipt</Translate>
+                  </Label>
+                  {this.state.fileURL ? (
+                    <div>
+                      <Button className="reset-preview bg-transparent" onClick={this.resetPreview}>
+                        <FontAwesomeIcon icon="times" size="xs" color="grey" />
+                      </Button>
+                      <img className="preview" src={this.state.fileURL} />
+                    </div>
+                  ) : (
+                    <AvField
+                      id="transaction-multipartFile"
+                      type="file"
+                      accept="image/*"
+                      name="multipartFile"
+                      onChange={this.setPreview}
+                      validate={{
+                        required: { value: transactionType === 'EXPENSE', errorMessage: 'Please upload an receipt' },
+                      }}
+                    />
+                  )}
+                </AvGroup>
+
+                <AvGroup>
                   <Label id="eventIdLabel" for="transaction-eventId">
-                    <Translate contentKey="clubmanagementApp.transaction.eventId">Event Id</Translate>
+                    <Translate contentKey="clubmanagementApp.transaction.eventName">Event</Translate>
                   </Label>
-                  <AvField id="transaction-eventId" type="string" className="form-control" name="eventId" />
+
+                  <AvField id="transaction-eventId" type="select" className="form-control" name="eventId">
+                    <option value="">—</option>
+                    {events
+                      ? events.map(event => (
+                          <option value={event.id} key={event.id}>
+                            {event.name}
+                          </option>
+                        ))
+                      : null}
+                  </AvField>
                 </AvGroup>
                 <AvGroup>
-                  <Label id="receiptIdLabel" for="transaction-receiptId">
-                    <Translate contentKey="clubmanagementApp.transaction.receiptId">Receipt Id</Translate>
+                  <Label id="titleLabel" for="transaction-title">
+                    <Translate contentKey="clubmanagementApp.transaction.title">Title</Translate>
                   </Label>
-                  <AvField id="transaction-receiptId" type="string" className="form-control" name="receiptId" />
+                  <AvField
+                    id="transaction-receiptId"
+                    type="string"
+                    className="form-control"
+                    name="title"
+                    validate={{
+                      required: { value: true, errorMessage: 'Please enter a title' },
+                    }}
+                  />
                 </AvGroup>
                 <AvGroup>
-                  <Label id="typeLabel" for="transaction-type">
-                    <Translate contentKey="clubmanagementApp.transaction.type">Type</Translate>
+                  <Label id="typeLabel" for="transaction-title">
+                    <Translate contentKey="clubmanagementApp.transaction.transactionType">Type</Translate>
                   </Label>
                   <AvInput
                     id="transaction-type"
                     type="select"
                     className="form-control"
-                    name="type"
-                    value={(!isNew && transactionEntity.transactionType) || 'INCOME'}
+                    name="transactionType"
+                    value={(!isNew && transactionEntity.transactionType) || transactionType}
+                    onChange={this.setTransactionType}
                   >
                     <option value="INCOME">{translate('clubmanagementApp.TransactionType.INCOME')}</option>
                     <option value="EXPENSE">{translate('clubmanagementApp.TransactionType.EXPENSE')}</option>
@@ -120,66 +234,56 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
                 </AvGroup>
                 <AvGroup>
                   <Label id="amountLabel" for="transaction-amount">
-                    <Translate contentKey="clubmanagementApp.transaction.amount">Amount</Translate>
+                    <Translate contentKey="clubmanagementApp.transaction.transactionAmount">Amount</Translate>
                   </Label>
-                  <AvField id="transaction-amount" type="text" name="amount" />
+                  <AvField
+                    id="transaction-amount"
+                    type="number"
+                    name="transactionAmount"
+                    validate={{
+                      required: { value: true, errorMessage: 'Please enter an amount for this budget' },
+                      min: { value: 0, errorMessage: 'Amount cannot be less than 0' },
+                      pattern: {
+                        value: '^([0-9]*.?[0-9]{1,2})$',
+                        errorMessage: 'Please enter a valid amount with max of 2 decimal values',
+                      },
+                    }}
+                  />
                 </AvGroup>
                 <AvGroup>
-                  <Label id="detailsLabel" for="transaction-details">
-                    <Translate contentKey="clubmanagementApp.transaction.details">Details</Translate>
+                  <Label id="descriptionLabel" for="transaction-description">
+                    <Translate contentKey="clubmanagementApp.transaction.description">Description</Translate>
                   </Label>
-                  <AvField id="transaction-details" type="text" name="details" />
+                  <AvField id="transaction-description" rows="3" type="textarea" name="description" />
                 </AvGroup>
-                <AvGroup>
-                  <Label id="receiptUrlLabel" for="transaction-receiptUrl">
-                    <Translate contentKey="clubmanagementApp.transaction.receiptUrl">Receipt Url</Translate>
-                  </Label>
-                  <AvField id="transaction-receiptUrl" type="text" name="receiptUrl" />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="fileNameLabel" for="transaction-fileName">
-                    <Translate contentKey="clubmanagementApp.transaction.fileName">File Name</Translate>
-                  </Label>
-                  <AvField id="transaction-fileName" type="text" name="fileName" />
-                </AvGroup>
-                <AvGroup>
-                  <Label id="fileTypeLabel" for="transaction-fileType">
-                    <Translate contentKey="clubmanagementApp.transaction.fileType">File Type</Translate>
-                  </Label>
-                  <AvField id="transaction-fileType" type="text" name="fileType" />
-                </AvGroup>
-                <AvGroup>
+                <AvGroup hidden>
                   <Label id="createdByLabel" for="transaction-createdBy">
                     <Translate contentKey="clubmanagementApp.transaction.createdBy">Created By</Translate>
                   </Label>
-                  <AvField id="transaction-createdBy" type="text" name="createdBy" />
+                  <AvField id="transaction-createdBy" type="text" name="createdBy" value={userId} />
                 </AvGroup>
-                <AvGroup>
-                  <Label id="createdDateLabel" for="transaction-createdDate">
-                    <Translate contentKey="clubmanagementApp.transaction.createdDate">Created Date</Translate>
-                  </Label>
-                  <AvInput
-                    id="transaction-createdDate"
-                    type="datetime-local"
-                    className="form-control"
-                    name="createdDate"
-                    placeholder={'YYYY-MM-DD HH:mm'}
-                    value={isNew ? null : convertDateTimeFromServer(this.props.transactionEntity.createdDate)}
-                  />
-                </AvGroup>
-                <Button tag={Link} id="cancel-save" to="/entity/transaction" replace color="info">
-                  <FontAwesomeIcon icon="arrow-left" />
+                <div className="general-buttonContainer--flexContainer">
+                  <Button
+                    className="general-button--width"
+                    tag={Link}
+                    id="cancel-save"
+                    to={location.state?.from ?? '/entity/transaction'}
+                    replace
+                    color="cancel"
+                  >
+                    <Translate contentKey="entity.action.cancel">Cancel</Translate>
+                  </Button>
                   &nbsp;
-                  <span className="d-none d-md-inline">
-                    <Translate contentKey="entity.action.back">Back</Translate>
-                  </span>
-                </Button>
-                &nbsp;
-                <Button color="primary" id="save-entity" type="submit" disabled={updating}>
-                  <FontAwesomeIcon icon="save" />
-                  &nbsp;
-                  <Translate contentKey="entity.action.save">Save</Translate>
-                </Button>
+                  {isNew ? (
+                    <Button className="general-button--width" color="action" id="save-entity" type="submit" disabled={updating}>
+                      <Translate contentKey="entity.action.create">Create</Translate>
+                    </Button>
+                  ) : (
+                    <Button className="general-button--width" color="action" id="save-entity" type="submit" disabled={updating}>
+                      <Translate contentKey="entity.action.update">Update</Translate>
+                    </Button>
+                  )}
+                </div>
               </AvForm>
             )}
           </Col>
@@ -190,13 +294,16 @@ export class TransactionUpdate extends React.Component<ITransactionUpdateProps, 
 }
 
 const mapStateToProps = (storeState: IRootState) => ({
+  events: storeState.event.entities,
   transactionEntity: storeState.transaction.entity,
   loading: storeState.transaction.loading,
   updating: storeState.transaction.updating,
   updateSuccess: storeState.transaction.updateSuccess,
+  userId: storeState.authentication.id,
 });
 
 const mapDispatchToProps = {
+  getEvents,
   getEntity,
   updateEntity,
   createEntity,

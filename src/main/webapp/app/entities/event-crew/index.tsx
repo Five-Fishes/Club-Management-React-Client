@@ -11,7 +11,7 @@ import EventCrewDeleteDialog from './event-crew-delete-dialog';
 const Routes: React.FC<RouteComponentProps> = ({ match }) => (
   <>
     <Switch>
-      <ErrorBoundaryRoute exact path={`${match.url}/event/:eventId/new`} component={EventCrewUpdate} />
+      <ErrorBoundaryRoute exact path={`${match.url}/event/:eventId/new/:role?`} component={EventCrewUpdate} />
       <ErrorBoundaryRoute exact path={`${match.url}/event/:eventId/:id/edit`} component={EventCrewUpdate} />
       {/* <ErrorBoundaryRoute exact path={`${match.url}/event/:eventId/:id`} component={EventCrewDetail} /> */}
       <ErrorBoundaryRoute path={`${match.url}/event/:eventId/`} component={EventCrew} />
