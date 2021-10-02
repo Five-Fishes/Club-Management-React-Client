@@ -57,10 +57,11 @@ export class AdministratorUpdate extends React.Component<IAdministratorUpdatePro
   saveEntity = (event: any, errors: any, values: any) => {
     if (errors.length === 0) {
       const { administratorEntity, yearSessionOptions } = this.props;
+      const { isNew } = this.state;
       const entity = {
         ...administratorEntity,
         ...values,
-        yearSession: yearSessionOptions[0],
+        ...(isNew && { yearSession: yearSessionOptions[0] }),
       };
 
       if (this.state.isNew) {
@@ -93,9 +94,15 @@ export class AdministratorUpdate extends React.Component<IAdministratorUpdatePro
       <Container>
         <Row className="justify-content-center">
           <Col md="8">
-            <h2 id="clubmanagementApp.administrator.home.createOrEditLabel">
-              <Translate contentKey="clubmanagementApp.administrator.home.createOrEditLabel">Create or edit a Administrator</Translate>
-            </h2>
+            {isNew ? (
+              <h2 id="clubmanagementApp.administrator.home.createLabel">
+                <Translate contentKey="clubmanagementApp.administrator.home.createLabel">Create new Administrator</Translate>
+              </h2>
+            ) : (
+              <h2 id="clubmanagementApp.administrator.home.editLabel">
+                <Translate contentKey="clubmanagementApp.administrator.home.editLabel">Edit Administrator</Translate>
+              </h2>
+            )}
           </Col>
         </Row>
         <Row className="justify-content-center">
@@ -108,13 +115,32 @@ export class AdministratorUpdate extends React.Component<IAdministratorUpdatePro
                   <Label for="user-id">
                     <Translate contentKey="global.form.username.label">User Name</Translate>
                   </Label>
-                  <AvSelectField
-                    name="userId"
-                    options={selectOptions}
-                    validate={{
-                      required: { value: true, errorMessage: 'Please select user name' },
-                    }}
-                  />
+                  {isNew ? (
+                    <AvSelectField
+                      id="user-id"
+                      name="userId"
+                      options={selectOptions}
+                      validate={{
+                        required: { value: true, errorMessage: 'Please select user name' },
+                      }}
+                    />
+                  ) : (
+                    <AvInput
+                      id="administrator-role"
+                      type="select"
+                      className="form-control"
+                      name="role"
+                      value={administratorEntity.userId}
+                      required
+                      disabled
+                    >
+                      {selectOptions.map(option => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </AvInput>
+                  )}
                 </AvGroup>
                 <AvGroup>
                   <Label id="roleLabel" for="administrator-role">
@@ -132,6 +158,38 @@ export class AdministratorUpdate extends React.Component<IAdministratorUpdatePro
                     <option value="VICE_CC_HEAD">{translate('clubmanagementApp.AdministratorRole.VICE_CC_HEAD')}</option>
                     <option value="SECRETARY">{translate('clubmanagementApp.AdministratorRole.SECRETARY')}</option>
                     <option value="TEASURER">{translate('clubmanagementApp.AdministratorRole.TEASURER')}</option>
+                  </AvInput>
+                </AvGroup>
+                {/* <AvGroup>
+                  <Label id="yearSessionLabel" for="administrator-yearSession">
+                    <Translate contentKey="clubmanagementApp.administrator.yearSession">Year Session</Translate>
+                  </Label>
+                  <AvInput
+                    id="administrator-yearSession"
+                    type="select"
+                    className="form-control"
+                    name="role"
+                    value={(!isNew && administratorEntity.yearSession) || 'CC_HEAD'}
+                    required
+                  >
+                    {
+                      yearSessionOptions.map(year => <option key={year} value={year}>{year}</option>)
+                    }
+                  </AvInput>
+                </AvGroup> */}
+                <AvGroup>
+                  <Label id="statusLabel" for="administrator-status">
+                    <Translate contentKey="clubmanagementApp.administrator.status">Status</Translate>
+                  </Label>
+                  <AvInput
+                    id="administrator-status"
+                    type="select"
+                    className="form-control"
+                    name="status"
+                    value={(!isNew && administratorEntity.status) || 'ACTIVE'}
+                  >
+                    <option value="ACTIVE">{translate('clubmanagementApp.AdministratorStatus.ACTIVE')}</option>
+                    <option value="DEACTIVATE">{translate('clubmanagementApp.AdministratorStatus.DEACTIVATE')}</option>
                   </AvInput>
                 </AvGroup>
                 <div className="general-buttonContainer--flexContainer">

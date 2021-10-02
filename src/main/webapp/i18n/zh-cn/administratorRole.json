@@ -2,10 +2,10 @@
   "clubmanagementApp": {
     "AdministratorRole": {
       "null": "",
-      "CC_HEAD": "CC_HEAD",
-      "VICE_CC_HEAD": "VICE_CC_HEAD",
-      "SECRETARY": "SECRETARY",
-      "TEASURER": "TEASURER"
+      "CC_HEAD": "CC HEAD",
+      "VICE_CC_HEAD": "副 CC HEAD",
+      "SECRETARY": "秘书",
+      "TEASURER": "财政"
     }
   }
 }
