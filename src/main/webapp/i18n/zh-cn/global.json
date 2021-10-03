@@ -166,8 +166,8 @@
     "idexists": "新建的 {{entityName}} 不能包含ID",
     "noname": "新建的 {{entityName}} 不能没有名字",
     "idnull": "Id 无效",
-    "resultNotFound": "未发现任何结果",
-    "userNotFound": "未发现任何用户"
+    "noResultFound": "未发现任何结果",
+    "noUserFound": "未发现任何用户"
   },
   "footer": "马大叁舍 ~ 鱼之家 @ 2020"
 }

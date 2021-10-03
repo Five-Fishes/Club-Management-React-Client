@@ -104,7 +104,7 @@ class FamilyMember extends React.Component<IFamilyMemberProps, IFamilyMemberStat
             </div>
           ) : (
             <div className="alert alert-warning my-3">
-              <Translate contentKey="clubmanagementApp.clubFamily.member.notFound">No Event Activities found</Translate>
+              <Translate contentKey="clubmanagementApp.clubFamily.member.notFound">No CC Family Member found</Translate>
             </div>
           )}
         </div>

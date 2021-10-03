@@ -3,8 +3,8 @@
     "clubFamily": {
       "home": {
         "title": "CC Family",
-        "createLabel": "Create a new Club Family",
-        "createOrEditLabel": "Create or edit a Club Family",
+        "createLabel": "Create a new CC Family",
+        "createOrEditLabel": "Create or edit a CC Family",
         "notFound": "No CC Family found"
       },
       "member": {
@@ -13,11 +13,11 @@
         "createOrEditLabel": "Add or edit a CC Family Member",
         "notFound": "No CC Family Member found"
       },
-      "created": "A new Club Family is created with identifier {{ param }}",
-      "updated": "A Club Family is updated with identifier {{ param }}",
-      "deleted": "A Club Family is deleted with identifier {{ param }}",
+      "created": "A new CC Family is created with identifier {{ param }}",
+      "updated": "A CC Family is updated with identifier {{ param }}",
+      "deleted": "A CC Family is deleted with identifier {{ param }}",
       "delete": {
-        "question": "Are you sure you want to delete Club Family {{ id }}?"
+        "question": "Are you sure you want to delete CC Family {{ id }}?"
       },
       "detail": {
         "title": "CC Family"

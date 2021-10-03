@@ -49,7 +49,7 @@ export class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps
 
   renderNames(users: readonly IUser[]): ReactNode {
     return users && users.length <= 0 ? (
-      <option disabled>{translate('error.userNotFound')}</option>
+      <option disabled>{translate('error.noUserFound')}</option>
     ) : (
       users.map((user: IUser) => {
         if (user) {
@@ -110,7 +110,7 @@ export class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps
         <Row className="justify-content-center">
           <Col md="8">
             <h2>
-              <Translate contentKey="clubmanagementApp.clubFamily.member.createLabel">Add Family Member</Translate>
+              <Translate contentKey="clubmanagementApp.clubFamily.member.createOrEditLabel">Add or edit a CC Family Member</Translate>
             </h2>
           </Col>
         </Row>
