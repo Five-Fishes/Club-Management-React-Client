@@ -9,7 +9,7 @@ export const updateKey = (state: any, key: string, value: any): any => {
 };
 
 export const updateKeys = (state: any, keyValuePairs: Map<string, any>): any => {
-  let newState = deepCopy(state);
+  const newState = deepCopy(state);
   keyValuePairs.forEach((value, key) => {
     newState[key] = value;
   });

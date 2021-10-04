@@ -41,14 +41,14 @@ export class ClubFamilyDetail extends React.Component<IClubFamilyDetailProps> {
             </dt>
             <dd>{clubFamilyEntity.slogan}</dd>
           </dl>
-          <Button tag={Link} to="/entity/club-family" replace color="info">
+          <Button tag={Link} to="/entity/members/club-family" replace color="info">
             <FontAwesomeIcon icon="arrow-left" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.back">Back</Translate>
             </span>
           </Button>
           &nbsp;
-          <Button tag={Link} to={`/entity/club-family/${clubFamilyEntity.id}/edit`} replace color="primary">
+          <Button tag={Link} to={`/entity/members/club-family/${clubFamilyEntity.id}/edit`} replace color="primary">
             <FontAwesomeIcon icon="pencil-alt" />{' '}
             <span className="d-none d-md-inline">
               <Translate contentKey="entity.action.edit">Edit</Translate>
@@ -61,7 +61,7 @@ export class ClubFamilyDetail extends React.Component<IClubFamilyDetailProps> {
 }
 
 const mapStateToProps = ({ clubFamily }: IRootState) => ({
-  clubFamilyEntity: clubFamily.entity
+  clubFamilyEntity: clubFamily.entity,
 });
 
 const mapDispatchToProps = { getEntity };
@@ -69,7 +69,4 @@ const mapDispatchToProps = { getEntity };
 type StateProps = ReturnType<typeof mapStateToProps>;
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ClubFamilyDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(ClubFamilyDetail);
