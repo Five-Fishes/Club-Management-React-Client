@@ -41,7 +41,12 @@ class AdvancedSearchModal extends React.Component<IFilterSearchBarProps, IAdvanc
     }
   }
 
-  renderYearSessionOptions = () => this.props.yearSessionOptions.map(year => <option key={year}>{year}</option>);
+  renderYearSessionOptions = () =>
+    this.props.yearSessionOptions.map(year => (
+      <option key={year} value={year}>
+        {year}
+      </option>
+    ));
 
   renderCourseProgramOptions = () =>
     this.props.courseProgramOptions.map(course => (
