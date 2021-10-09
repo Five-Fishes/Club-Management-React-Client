@@ -126,10 +126,10 @@ export class AdministratorUpdate extends React.Component<IAdministratorUpdatePro
                     />
                   ) : (
                     <AvInput
-                      id="administrator-role"
+                      id="user-id"
                       type="select"
                       className="form-control"
-                      name="role"
+                      name="userId"
                       value={administratorEntity.userId}
                       required
                       disabled
@@ -157,7 +157,7 @@ export class AdministratorUpdate extends React.Component<IAdministratorUpdatePro
                     <option value="CC_HEAD">{translate('clubmanagementApp.AdministratorRole.CC_HEAD')}</option>
                     <option value="VICE_CC_HEAD">{translate('clubmanagementApp.AdministratorRole.VICE_CC_HEAD')}</option>
                     <option value="SECRETARY">{translate('clubmanagementApp.AdministratorRole.SECRETARY')}</option>
-                    <option value="TEASURER">{translate('clubmanagementApp.AdministratorRole.TEASURER')}</option>
+                    <option value="TEASURER">{translate('clubmanagementApp.AdministratorRole.TREASURER')}</option>
                   </AvInput>
                 </AvGroup>
                 {/* <AvGroup>
