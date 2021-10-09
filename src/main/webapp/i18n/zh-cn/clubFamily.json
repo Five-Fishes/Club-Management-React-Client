@@ -10,6 +10,7 @@
       "member": {
         "title": "CC家族成员",
         "createLabel": "添加新CC家族成员",
+        "editLabel": "更新CC家族成员",
         "createOrEditLabel": "添加或编辑CC家族成员",
         "notFound": "未发现任何CC家族成员"
       },

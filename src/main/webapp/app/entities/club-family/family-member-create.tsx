@@ -109,9 +109,15 @@ export class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps
       <div className="mx-3">
         <Row className="justify-content-center">
           <Col md="8">
-            <h2>
-              <Translate contentKey="clubmanagementApp.clubFamily.member.createOrEditLabel">Add or edit a CC Family Member</Translate>
-            </h2>
+            {isNew ? (
+              <h2>
+                <Translate contentKey="clubmanagementApp.clubFamily.member.createLabel">Add CC Family Member</Translate>
+              </h2>
+            ) : (
+              <h2>
+                <Translate contentKey="clubmanagementApp.clubFamily.member.editLabel">Edit CC Family Member</Translate>
+              </h2>
+            )}
           </Col>
         </Row>
         <Row className="justify-content-center">

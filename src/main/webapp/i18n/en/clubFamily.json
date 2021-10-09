@@ -9,7 +9,8 @@
       },
       "member": {
         "title": "CC Family Member",
-        "createLabel": "Add a new CC Family Member",
+        "createLabel": "Add new CC Family Member",
+        "editLabel": "Edit CC Family Member",
         "createOrEditLabel": "Add or edit a CC Family Member",
         "notFound": "No CC Family Member found"
       },
