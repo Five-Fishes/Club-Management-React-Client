@@ -25,6 +25,8 @@ export interface IFamilyMemberState {
   filteredUsers: IUserCCInfo[];
 }
 class FamilyMember extends React.Component<IFamilyMemberProps, IFamilyMemberState> {
+  searchEngine: SearchEngine<IUserCCInfo> = new SearchEngine([], generateIndex);
+
   constructor(props: IFamilyMemberProps) {
     super(props);
     this.state = {
@@ -33,8 +35,6 @@ class FamilyMember extends React.Component<IFamilyMemberProps, IFamilyMemberStat
       filteredUsers: [],
     };
   }
-
-  searchEngine: SearchEngine<IUserCCInfo> = new SearchEngine([], generateIndex);
 
   async componentDidMount() {
     await this.props.getUsersWithFilter(this.props.match.params.familyCode);
