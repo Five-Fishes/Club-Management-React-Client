@@ -14,8 +14,7 @@ export interface IAdvancedSearchModalState {
 }
 
 export interface IFilter {
-  userFirstName?: string;
-  userLastName?: string;
+  memberName?: string;
   courseProgramId?: number;
   yearSession?: string;
 }

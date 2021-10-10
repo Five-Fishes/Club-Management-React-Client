@@ -55,7 +55,7 @@ export class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps
         if (user) {
           return (
             <option key={user.id} value={user.id}>
-              {concatFullName(user.firstName, user.lastName)}
+              {concatFullName(user.firstName ?? '', user.lastName ?? '')}
             </option>
           );
         }
@@ -137,7 +137,7 @@ export class FamilyMemberCreate extends React.Component<IFamilyMemberCreateProps
                       this.renderNames(users)
                     ) : (
                       <option key={userEntity.id} value={userEntity.id}>
-                        {concatFullName(userEntity?.user?.firstName, userEntity?.user?.lastName)}
+                        {concatFullName(userEntity?.user?.firstName ?? '', userEntity?.user?.lastName ?? '')}
                       </option>
                     )}
                   </AvField>
