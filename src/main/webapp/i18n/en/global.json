@@ -166,7 +166,8 @@
     "idexists": "A new {{ entityName }} cannot already have an ID",
     "noname": "A new {{ entityName }} cannot be created without a name",
     "idnull": "Invalid ID",
-    "noResultFound": "No result found"
+    "noResultFound": "No result found",
+    "noUserFound": "No user found"
   },
   "footer": "ThirdCC @ 2020"
 }

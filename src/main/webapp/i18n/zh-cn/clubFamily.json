@@ -10,17 +10,18 @@
       "member": {
         "title": "CC家族成员",
         "createLabel": "添加新CC家族成员",
+        "editLabel": "更新CC家族成员",
         "createOrEditLabel": "添加或编辑CC家族成员",
         "notFound": "未发现任何CC家族成员"
       },
-      "created": "Club Family {{ param }} 创建成功",
-      "updated": "Club Family {{ param }} 更新成功",
-      "deleted": "Club Family {{ param }} 删除成功",
+      "created": "CC家族 {{ param }} 创建成功",
+      "updated": "CC家族 {{ param }} 更新成功",
+      "deleted": "CC家族 {{ param }} 删除成功",
       "delete": {
-        "question": "你确定要删除 Club Family {{ id }} 吗？"
+        "question": "你确定要删除 CC家族 {{ id }} 吗？"
       },
       "detail": {
-        "title": "Club Family"
+        "title": "CC家族"
       },
       "name": "名称",
       "slogan": "口号",
@@ -39,7 +40,7 @@
       },
       "kongque": {
         "name": "孔雀鱼",
-        "slogan": "我们是比精英中的精英还要更精英的精英",
+        "slogan": "我们是比精英中的精英还要精英的精英",
         "description": "孔雀家的鱼儿都是棒棒哒"
       },
       "qicai": {
@@ -51,7 +52,8 @@
         "name": "小丑鱼",
         "slogan": "Nemo Nemo, 不再Emo",
         "description": "小丑家的鱼儿总是充满正能量，让你远离负能量"
-      }
+      },
+      "none": "无"
     }
   }
 }

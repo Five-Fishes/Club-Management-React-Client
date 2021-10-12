@@ -1,0 +1,25 @@
+.search-bar-prepend span {
+  background-color: white;
+  border-right: none;
+}
+
+.search-bar-input {
+  border-left: none;
+  border-right: none;
+}
+
+.search-bar-append {
+  background-color: white;
+  border-left: none;
+  border-color: #ced4da;
+}
+
+.search-bar-append:focus {
+  background-color: white;
+}
+
+.member-card {
+  padding: 1rem 0.5rem 1rem 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
