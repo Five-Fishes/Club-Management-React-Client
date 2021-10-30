@@ -24,7 +24,13 @@ export interface IAppProps extends StateProps, DispatchProps {}
 
 export class App extends React.Component<IAppProps> {
   componentDidMount() {
-    fetchAccount();
+    fetchAccount(); // TODO: @LUXIANZE Fix this, this api requires authenticated user, if user is logged out as token expired, this call will always fail
+    /**
+     * Work around while this is not fixes
+     * 1. Comment out line: 27
+     * 2. Start app and login
+     * 3. Re-enable line: 27
+     */
     this.props.getProfile();
   }
 

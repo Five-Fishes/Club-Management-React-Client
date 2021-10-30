@@ -59,7 +59,7 @@ export class AuthLogin extends React.Component<IAuthLoginProps> {
     const { isAuthenticated, isLoading, location } = this.props;
     if (isLoading) return <></>;
     if (isAuthenticated) {
-      return location.state.from ? <Redirect to={location.state.from} /> : <Redirect to="/" />;
+      return location.state?.from ? <Redirect to={location.state.from} /> : <Redirect to="/" />;
     }
     return (
       <>

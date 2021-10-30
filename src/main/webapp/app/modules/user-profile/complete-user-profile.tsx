@@ -7,7 +7,7 @@ import { Row, Col, Button, Label } from 'reactstrap';
 import { AvForm, AvGroup, AvInput, AvField } from 'availity-reactstrap-validation';
 import { Translate, translate } from 'react-jhipster';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { APP_LOCAL_DATE_FORMAT } from 'app/config/constants';
+import { APP_LOCAL_DATE_FORMAT, SERVER_DATE_FORMAT } from 'app/config/constants';
 import moment from 'moment';
 import { getCourseProgramByFacultyId, getFacultyList, getYearSessionList } from 'app/shared/services/uni-academic-info.service';
 import { completeUserProfile, getCurrentUserProfile } from './user-profile.reducer';
@@ -141,7 +141,7 @@ class CompleteUserProfile extends React.Component<ICompleteUserProfileProps, {}>
                         end: { value: moment().format(APP_LOCAL_DATE_FORMAT) },
                       },
                     }}
-                    value={userProfile.dateOfBirth ? userProfile.dateOfBirth.format(APP_LOCAL_DATE_FORMAT) : ''}
+                    value={userProfile.dateOfBirth ? moment(userProfile.dateOfBirth).format(APP_LOCAL_DATE_FORMAT) : ''}
                   />
                 </AvGroup>
 
@@ -258,6 +258,7 @@ class CompleteUserProfile extends React.Component<ICompleteUserProfileProps, {}>
                       required: { value: true, errorMessage: 'Please enter your current stay location' },
                       maxLength: { value: '200', errorMessage: 'Provide the location currently stay in within 200 chracters' },
                     }}
+                    value={userProfile.stayIn ?? ''}
                   />
                 </AvGroup>
 
