@@ -2,8 +2,8 @@
   "clubmanagementApp": {
     "AdministratorStatus": {
       "null": "",
-      "ACTIVE": "ACTIVE",
-      "DEACTIVATE": "DEACTIVATE",
+      "ACTIVE": "活跃",
+      "DEACTIVATE": "不活跃",
       "PENDING": "PENDING"
     }
   }

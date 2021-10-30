@@ -5,6 +5,7 @@ import { cleanEntity } from 'app/shared/util/entity-utils';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 
 import { IUserUniInfo, defaultValue } from 'app/shared/model/user-uni-info.model';
+import { ICourseProgram } from 'app/shared/model/course-program.model';
 import { AnyAction } from 'redux';
 
 export const ACTION_TYPES = {
@@ -13,6 +14,7 @@ export const ACTION_TYPES = {
   CREATE_USERUNIINFO: 'userUniInfo/CREATE_USERUNIINFO',
   UPDATE_USERUNIINFO: 'userUniInfo/UPDATE_USERUNIINFO',
   DELETE_USERUNIINFO: 'userUniInfo/DELETE_USERUNIINFO',
+  FETCH_COURSE_PROGRAM_OPTIONS: 'FETCH_COURSE_PROGRAM_OPTIONS',
   RESET: 'userUniInfo/RESET',
 };
 
@@ -23,6 +25,8 @@ const initialState: IUserUniInfoState = {
   entity: defaultValue,
   updating: false,
   updateSuccess: false,
+  courseProgramOptions: [],
+  selectedCourseProgram: null,
 };
 
 export interface IUserUniInfoState {
@@ -32,6 +36,8 @@ export interface IUserUniInfoState {
   entity: Readonly<IUserUniInfo>;
   updating: boolean;
   updateSuccess: boolean;
+  courseProgramOptions: ICourseProgram[];
+  selectedCourseProgram: null | ICourseProgram;
 }
 
 // Reducer
@@ -40,6 +46,7 @@ export default (state: IUserUniInfoState = initialState, action: AnyAction): IUs
   switch (action.type) {
     case REQUEST(ACTION_TYPES.FETCH_USERUNIINFO_LIST):
     case REQUEST(ACTION_TYPES.FETCH_USERUNIINFO):
+    case REQUEST(ACTION_TYPES.FETCH_COURSE_PROGRAM_OPTIONS):
       return {
         ...state,
         errResponse: null,
@@ -60,6 +67,7 @@ export default (state: IUserUniInfoState = initialState, action: AnyAction): IUs
     case FAILURE(ACTION_TYPES.CREATE_USERUNIINFO):
     case FAILURE(ACTION_TYPES.UPDATE_USERUNIINFO):
     case FAILURE(ACTION_TYPES.DELETE_USERUNIINFO):
+    case FAILURE(ACTION_TYPES.FETCH_COURSE_PROGRAM_OPTIONS):
       return {
         ...state,
         loading: false,
@@ -93,6 +101,13 @@ export default (state: IUserUniInfoState = initialState, action: AnyAction): IUs
         updating: false,
         updateSuccess: true,
         entity: {},
+      };
+    case SUCCESS(ACTION_TYPES.FETCH_COURSE_PROGRAM_OPTIONS):
+      return {
+        ...state,
+        loading: false,
+        courseProgramOptions: action.payload.data,
+        selectedCourseProgram: action.payload.data[0],
       };
     case ACTION_TYPES.RESET:
       return {
@@ -147,6 +162,11 @@ export const deleteEntity: ICrudDeleteAction<IUserUniInfo> = id => async dispatc
   dispatch(getEntities());
   return result;
 };
+
+export const getCourseProgramOptions: ICrudGetAllAction<string> = (page, size, sort) => ({
+  type: ACTION_TYPES.FETCH_COURSE_PROGRAM_OPTIONS,
+  payload: axios.get<string>(`api/course-programs/faculty?sort=${sort}`),
+});
 
 export const reset = () => ({
   type: ACTION_TYPES.RESET,
