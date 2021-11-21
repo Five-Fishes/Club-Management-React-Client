@@ -22,7 +22,7 @@ export const ACTION_TYPES = {
 const initialState: IUserCCInfoState = {
   loading: false,
   errResponse: null,
-  entities: [] as ReadonlyArray<IUserCCInfo>,
+  entities: [],
   entity: defaultValue,
   updating: false,
   updateSuccess: false,
@@ -33,7 +33,7 @@ const initialState: IUserCCInfoState = {
 export interface IUserCCInfoState {
   loading: boolean;
   errResponse: null | AxiosError;
-  entities: ReadonlyArray<IUserCCInfo>;
+  entities: IUserCCInfo[];
   entity: Readonly<IUserCCInfo>;
   updating: boolean;
   updateSuccess: boolean;

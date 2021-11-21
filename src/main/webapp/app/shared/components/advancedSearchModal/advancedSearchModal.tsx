@@ -10,7 +10,7 @@ import { IFilter, setEntity } from './advancedSearchModal.reducer';
 
 import './advancedSearchModal.scss';
 
-interface IFilterSearchBarProps extends StateProps, DispatchProps {
+interface IAdvancedSearchModalProps extends StateProps, DispatchProps {
   isOpen: boolean;
   toggleModal: () => void;
   familyCode: string;
@@ -21,20 +21,19 @@ interface IAdvancedSearchModalState {
   filters: IFilter;
 }
 
-class AdvancedSearchModal extends React.Component<IFilterSearchBarProps, IAdvancedSearchModalState> {
-  constructor(props: IFilterSearchBarProps) {
+class AdvancedSearchModal extends React.Component<IAdvancedSearchModalProps, IAdvancedSearchModalState> {
+  constructor(props: IAdvancedSearchModalProps) {
     super(props);
     this.state = {
       filters: {
-        userFirstName: '',
-        userLastName: '',
+        memberName: '',
         courseProgramId: undefined,
         yearSession: '',
       },
     };
   }
 
-  componentDidUpdate(prevProps: IFilterSearchBarProps) {
+  componentDidUpdate(prevProps: IAdvancedSearchModalProps) {
     if (this.props.isOpen !== prevProps.isOpen) {
       this.props.getYearSessionOptions(0, 12, 'value,desc');
       this.props.getCourseProgramOptions(0, 12, 'value,desc');
@@ -77,10 +76,7 @@ class AdvancedSearchModal extends React.Component<IFilterSearchBarProps, IAdvanc
           <h2 className="text-center mb-4">Advanced Search</h2>
           <AvForm model={filters ?? {}} onSubmit={this.searchEntities}>
             <AvGroup>
-              <AvInput id="first-name" type="text" placeholder="First Name" className="form-control" name="userFirstName" autoFocus />
-            </AvGroup>
-            <AvGroup>
-              <AvInput id="last-name" type="text" placeholder="Last Name" className="form-control" name="userLastName" autoFocus />
+              <AvInput id="member-name" type="text" placeholder="Member Name" className="form-control" name="memberName" autoFocus />
             </AvGroup>
             <AvGroup>
               <AvInput id="course-program" type="select" placeholder="Course Program" className="form-control" name="courseProgramId">

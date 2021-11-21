@@ -7,14 +7,14 @@ import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap
 import CustomTab from 'app/shared/components/customTab/custom-tab';
 import { SearchEngine } from 'app/shared/util/native-search-utils';
 import { IUserCCInfo } from 'app/shared/model/user-cc-info.model';
-import { genereateIndex } from './member.indexer';
+import { generateIndex } from './member.indexer';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
 const member: React.FC<RouteComponentProps> = (props: RouteComponentProps) => {
-  const searchEngine: SearchEngine<IUserCCInfo> = new SearchEngine([], genereateIndex);
+  const searchEngine: SearchEngine<IUserCCInfo> = new SearchEngine([], generateIndex);
   const query = useQuery();
   const [viewModel, setViewModel] = useState({
     isLoading: false,

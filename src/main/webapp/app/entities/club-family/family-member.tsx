@@ -6,33 +6,41 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Translate, translate } from 'react-jhipster';
 import { connect } from 'react-redux';
 import { IRootState } from 'app/shared/reducers';
-
+import { generateIndex } from '../cc-member/member.indexer';
 import AuthorizationChecker from 'app/shared/components/authorization-checker/authorization-checker';
 import CCRole from 'app/shared/model/enum/cc-role.enum';
-import EventRole from 'app/shared/model/enum/event-role.enum';
 import MemberCard from './member-card';
-import FilterSearchBar from 'app/shared/components/advancedSearchModal/advancedSearchModal';
-import EventModal from 'app/shared/components/eventModal/event-modal';
-
+import AdvancedSearchBar from 'app/shared/components/advancedSearchModal/advancedSearchModal';
 import { getUsersWithFilter, reset as resetUsers } from 'app/entities/user-cc-info/user-cc-info.reducer';
 import { getClubFamilyDetails } from 'app/shared/services/club-family-info.service';
 import { reset as resetFilter } from 'app/shared/components/advancedSearchModal/advancedSearchModal.reducer';
+import { SearchEngine } from 'app/shared/util/native-search-utils';
+import { IUserCCInfo } from 'app/shared/model/user-cc-info.model';
 
 export interface IFamilyMemberProps extends StateProps, DispatchProps, RouteComponentProps<{ familyCode: string }> {}
 
 export interface IFamilyMemberState {
   searchModalIsOpen: boolean;
+  memberName: string;
+  filteredUsers: IUserCCInfo[];
 }
 class FamilyMember extends React.Component<IFamilyMemberProps, IFamilyMemberState> {
+  searchEngine: SearchEngine<IUserCCInfo> = new SearchEngine([], generateIndex);
+
   constructor(props: IFamilyMemberProps) {
     super(props);
     this.state = {
       searchModalIsOpen: false,
+      memberName: '',
+      filteredUsers: [],
     };
   }
 
   async componentDidMount() {
-    this.props.getUsersWithFilter(this.props.match.params.familyCode);
+    await this.props.getUsersWithFilter(this.props.match.params.familyCode);
+    this.setState({
+      filteredUsers: this.props.users,
+    });
   }
 
   componentWillUnmount() {
@@ -52,19 +60,32 @@ class FamilyMember extends React.Component<IFamilyMemberProps, IFamilyMemberStat
     });
   };
 
-  onEditButtonClick = (userCCInfoId?: number): void => {};
+  updateMemberName = (event: { target: HTMLInputElement }): void => {
+    this.setState({ memberName: event.target.value });
+  };
+
+  searchMembers = (): void => {
+    const filteredUsers = this.searchEngine.updateEngine(this.props.users).search(this.state.memberName);
+    this.setState({ filteredUsers });
+  };
+
+  advanceSearch = async (familyCode: string, filters: any): Promise<void> => {
+    await this.props.getUsersWithFilter(familyCode, filters);
+    const filteredUsers = this.searchEngine.updateEngine(this.props.users).search(this.state.memberName);
+    this.setState({ filteredUsers });
+  };
 
   render() {
     const { users, match } = this.props;
-    const { searchModalIsOpen } = this.state;
+    const { searchModalIsOpen, memberName, filteredUsers } = this.state;
     const familyName = getClubFamilyDetails(match.params.familyCode).name;
     return (
       <div>
-        <FilterSearchBar
+        <AdvancedSearchBar
           isOpen={searchModalIsOpen}
           toggleModal={this.toggleSearchModal}
           familyCode={this.props.match.params.familyCode}
-          searchUsers={this.props.getUsersWithFilter}
+          searchUsers={this.advanceSearch}
         />
         <h2 id="event-activity-heading" className="event-module-heading">
           {familyName ? translate(familyName) : null}
@@ -80,21 +101,20 @@ class FamilyMember extends React.Component<IFamilyMemberProps, IFamilyMemberStat
           </AuthorizationChecker>
           <InputGroup>
             <InputGroupAddon className="search-bar-prepend" addonType="prepend" color="white">
-              {/* ADD IN SEARCH ONCLICK TO THE BUTTON BELOW*/}
-              <Button color="primary">
+              <Button color="primary" onClick={this.searchMembers}>
                 <FontAwesomeIcon icon="search" />
               </Button>
             </InputGroupAddon>
-            <Input placeholder="Type a name to filter" className="search-bar-input" />
+            <Input placeholder="Type a name to filter" className="search-bar-input" value={memberName} onChange={this.updateMemberName} />
             <InputGroupAddon addonType="append">
               <Button className="search-bar-append" onClick={this.toggleSearchModal}>
                 <FontAwesomeIcon icon="filter" color="#07ADE1" />
               </Button>
             </InputGroupAddon>
           </InputGroup>
-          {users && users.length > 0 ? (
+          {filteredUsers && filteredUsers.length > 0 ? (
             <div>
-              {users.map(user => (
+              {filteredUsers.map(user => (
                 <MemberCard
                   key={user.id}
                   userCCInfo={user}
