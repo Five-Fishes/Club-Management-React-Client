@@ -2,10 +2,10 @@
   "clubmanagementApp": {
     "AdministratorRole": {
       "null": "",
-      "CC_HEAD": "CC_HEAD",
-      "VICE_CC_HEAD": "VICE_CC_HEAD",
+      "CC_HEAD": "CC HEAD",
+      "VICE_CC_HEAD": "VICE CC HEAD",
       "SECRETARY": "SECRETARY",
-      "TEASURER": "TEASURER"
+      "TREASURER": "TREASURER"
     }
   }
 }

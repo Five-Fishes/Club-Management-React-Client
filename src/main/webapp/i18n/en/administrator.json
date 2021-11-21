@@ -3,9 +3,9 @@
     "administrator": {
       "home": {
         "title": "Administrators",
-        "createLabel": "Create a new Administrator",
+        "createLabel": "Create new Administrator",
         "createOrEditLabel": "Create or edit a Administrator",
-        "editLabel": "Edit a Administrator",
+        "editLabel": "Edit Administrator",
         "notFound": "No Administrator found"
       },
       "created": "A new Administrator is created with identifier {{ param }}",
